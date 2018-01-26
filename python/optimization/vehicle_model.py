@@ -53,10 +53,7 @@ class VehicleModel:
                 (self.max_long_dec, self.max_long_acc),
                 (-self.max_steering_angle, self.max_steering_angle))*(N + 1)
         return bnds    
-   
-   
-   
-   
+     
    
    
     def compute_friction(self,v):

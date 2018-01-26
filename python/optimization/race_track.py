@@ -19,6 +19,7 @@ class RaceTrack:
         self.track = [[0, 0]]
         self.track_width = 5
         self.simple_track()
+        self.trackPosition = -1
 
     def add_straight(self, direction): #always add 10m
         if(direction == 0): #upwards
@@ -136,9 +137,28 @@ class RaceTrack:
     def print_track(self):
         print self.track
     
-    def distance_to_track(self, pos):
-        a = min (math.sqrt((x- pos[0])**2 + (y - pos[1])**2) for (x,y) in self.track)        
-        print a
+    def distance_to_track(self, pos, trackPose):
+        if (trackPose == True):
+            if(self.trackPosition == -1):
+                    self.trackPosition = self.closest_track_point(pos)
+            else:
+                indx = self.closest_track_point_tracked(pos)
+                a = math.sqrt((self.track[indx][0]- pos[0])**2 + (self.track[indx][1] - pos[1])**2)
+        else:
+            a = min (math.sqrt((x- pos[0])**2 + (y - pos[1])**2) for (x,y) in self.track)        
+        return a
+
+    def closest_track_point_tracked(self, pos):
+        indx = 0
+        smallest = 100
+        for i in range(self.trackPosition, self.trackPosition + 200, 1):
+            dist = math.sqrt((self.track[i][0]- pos[0])**2 + (self.track[i][1] - pos[1])**2)
+            if(dist < smallest):
+                smallest = dist
+                indx = i
+        self.trackPosition = indx
+        return indx
+        
     
     def closest_track_point(self, pos):
         indx = 0

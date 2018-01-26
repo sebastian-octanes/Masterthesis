@@ -23,7 +23,8 @@ class CostFunction:
         k1 = -2.5
         k2 = 2.5
         return math.fabs(alpha/(k1 - x) + alpha/(k2 - x))
-        
+   
+     
     def cost_dist_line(self, X):
         """Take the vehicle poition and compute the distance to a vertical line at (3,0)"""
         p1 = np.array([3,0])
@@ -35,7 +36,14 @@ class CostFunction:
             cost = cost + math.fabs(np.cross(p2-p1, p3-p1)/np.linalg.norm(p2-p1))
         return cost
     
-    
+    def cost_dist_track(self, x):
+        n = x.size/6
+        cost = 0.0
+        for i in range(0,n,1):
+            pos = [x[i*6], x[i*6+1]]
+            cost = cost + self.track.distance_to_track(pos, False)
+        return cost
+        
     def cost_dist_origin(self, X):
         """Take the vehicle position and compute the distance to the origin"""
         N = X.size/6

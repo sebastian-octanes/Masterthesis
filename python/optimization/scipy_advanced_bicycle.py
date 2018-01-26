@@ -14,25 +14,37 @@ class Optimization:
             self.track = track_
             self.costFunction = cost_function_
             self.vehicleModel = vehicle_model_
-            self.vehicleModel.dt = 0.05
-            self.constraints = Constraints(self.vehicleModel)
-   
+            self.dt = 0.1
+            self.vehicleModel.dt = self.dt           
+            self.process = []
 
     def callb(self, X):
         print X
     
     def create_init_state_vec(self, N = 10, x= 0, y = 0, v = 0, orient = math.pi/2):
         X0 = np.zeros(6*(N+1))
-        X0[0] = y
-        X0[1] = x
+        X0[0] = x
+        X0[1] = y
         X0[2] = v
         X0[3] = orient
         X0[4] = 0.0
         X0[5] = 0.0
         return X0
         
+    def log_position(self, pos):
+        self.process.append(pos)
+        
+    def plot_race_process(self):
+        tmp = np.array(self.process)
+        plt.plot(tmp[:,0], tmp[:,1])
+        plt.show()        
+            
     def optimize(self, N):
         """filler"""
+        #Tsim = 2
+        
+        #set initial position 
+        X0 = self.create_init_state_vec(N, 2, 0, 4.0, math.pi/2)
 
         #constraints and bounds
         #define bounds fitting to N and Statevector
@@ -42,19 +54,30 @@ class Optimization:
         
         #constraints
         # {'type': 'eq', 'fun': const_eq}
-        cons =({'type': 'eq', 'fun': self.constraints.const_eq_base}, 
-               {'type': 'eq', 'fun': self.constraints.const_eq})
+        self.constraints = Constraints(X0[:4], self.vehicleModel)
+        cons =({'type': 'eq', 'fun': self.constraints.constraint_fix_init_state}, 
+               {'type': 'eq', 'fun': self.constraints.constraint_vehicle_model})
         
         #init state vector
         #[x, y, v, orient, acc, steer_angle]
-
-        X0 = self.create_init_state_vec(N)
         
-        res = minimize(self.costFunction.cost_dist_line, X0, method ='SLSQP', bounds = bnds, constraints=cons, callback = self.callb)
-        for i in range (0, N+1, 1):
-        	plt.plot(res.x[i*6], res.x[i*6 +1], "o")
-        plt.show()
-        	
+        print "X0"        
+        print X0
+        #for k in np.arange(0, Tsim, self.dt):
+        self.log_position(X0[0:4])
+        for k in range (0, 10, 1):         
+            res = minimize(self.costFunction.cost_dist_line, X0, method ='SLSQP', bounds = bnds, constraints=cons)#, callback = self.callb)        
+            x_new = self.vehicleModel.compute_next_state(res.x[0:6])          
+            self.log_position(x_new)
+            X0 = res.x
+            X0[0:4] = x_new
+            self.constraints.set_initial_state(X0[0:4])
+            #np.append(X0, [0,0,0,0,0,0])            	
+            #print res.x[0:1]
+        print X0
+        self.plot_race_process()
+
+            	
 
 #for k in np.arange(0, Tsim, dt):
 	

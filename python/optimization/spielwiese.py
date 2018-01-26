@@ -4,10 +4,10 @@ from scipy_advanced_bicycle import Optimization
 
 track = RaceTrack()
 cost = CostFunction(track)
-track.plot_track()
+
 
 opt = Optimization()
-opt.optimize(10)
+opt.optimize(20)
 #opt.track.plot_track()
 
 

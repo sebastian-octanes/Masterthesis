@@ -4,19 +4,19 @@ import math
 
 class Constraints:
         
-    def __init__(self, vehicleModel_ = VehicleModel(), initState_ = [2,0,4,math.pi/2]):
+    def __init__(self, initState_, vehicleModel_ = VehicleModel() ):
         self.vehicleModel = vehicleModel_
         self.initState = initState_
             
     def set_initial_state(self, initState_):
         self.initState = initState_
         
-    def const_eq_base(self, x):
+    def constraint_fix_init_state(self, x):
         """constraints the first 4 values to not be changed as of initial state"""
         ceq = x[0:4] - self.initState
         return ceq
 
-    def const_eq(self, x):
+    def constraint_vehicle_model(self, x):
         N = x.size/6 -1
         ceq = np.zeros(N*4)
         for i in range(0,N,1):
