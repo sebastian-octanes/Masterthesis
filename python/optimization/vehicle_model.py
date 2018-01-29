@@ -27,7 +27,7 @@ class VehicleModel:
     max_speed = 120/3.6 # 120km/h /3.6 = m/s
     max_long_acc = 1   #1g longitudinal acceleration max
     max_long_dec = 1   #1g longitudinal deceleration max
-    max_lat_acc = 2  # 2g lateral acceleration
+    max_lat_acc = 3  # 2g lateral acceleration
     max_steering_angle = (30.0/180.0)*math.pi #
     max_acceleration_time = 4.0 #seconds
  
@@ -39,6 +39,22 @@ class VehicleModel:
         x,y,v,orient,acc,steer = current_state
         Xnext = np.zeros(4)
         beta = np.arctan((self.lr/(self.lf +self.lr)) * math.tan(steer))
+        Xnext[0] = x + v * self.dt * math.cos(orient + beta)
+        Xnext[1] = y + v * self.dt * math.sin(orient + beta)
+        Xnext[2] = v + acc * self.dt
+        Xnext[3] = orient + (v*self.dt/self.lr) * math.sin(beta)
+        return Xnext
+        
+    def compute_next_state_(self, current_state):
+        x,y,v,orient,acc,steer = current_state
+        Xnext = np.zeros(4)
+        steer_max = (self.lf + self.lr) * self.max_lat_acc / v**2
+        if(steer > steer_max):
+            steer = steer_max
+        if(steer < -steer_max):
+            steer = -steer_max
+        beta = np.arctan((self.lr/(self.lf +self.lr)) * math.tan(steer))
+#        max_beta =  np.arctan(1/2 * (self.lf + self.lr) * self.max_lat_acc / v**2)
         Xnext[0] = x + v * self.dt * math.cos(orient + beta)
         Xnext[1] = y + v * self.dt * math.sin(orient + beta)
         Xnext[2] = v + acc * self.dt

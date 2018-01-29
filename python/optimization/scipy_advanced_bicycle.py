@@ -7,6 +7,7 @@ from race_track import RaceTrack
 from vehicle_model import VehicleModel
 from cost_function import CostFunction
 from constraints import Constraints
+import time
 
 class Optimization:
     
@@ -39,12 +40,12 @@ class Optimization:
         plt.plot(tmp[:,0], tmp[:,1])
         plt.show()        
             
-    def optimize(self, N):
+    def optimize(self, N, loops = 10):
         """filler"""
         #Tsim = 2
         
         #set initial position 
-        X0 = self.create_init_state_vec(N, 2, 0, 4.0, math.pi/2)
+        X0 = self.create_init_state_vec(N, 1, 0, 3.0, math.pi/2)
 
         #constraints and bounds
         #define bounds fitting to N and Statevector
@@ -65,16 +66,18 @@ class Optimization:
         print X0
         #for k in np.arange(0, Tsim, self.dt):
         self.log_position(X0[0:4])
-        for k in range (0, 10, 1):         
-            res = minimize(self.costFunction.cost_dist_line, X0, method ='SLSQP', bounds = bnds, constraints=cons)#, callback = self.callb)        
+        start = time.time()
+        for k in range (0, loops, 1):         
+            res = minimize(self.costFunction.cost_dist_track, X0, method ='SLSQP', bounds = bnds, constraints=cons)#, callback = self.callb)        
             x_new = self.vehicleModel.compute_next_state(res.x[0:6])          
             self.log_position(x_new)
             X0 = res.x
             X0[0:4] = x_new
             self.constraints.set_initial_state(X0[0:4])
-            #np.append(X0, [0,0,0,0,0,0])            	
-            #print res.x[0:1]
+            print ("schritt " + repr(k) + "von " + repr(loops) + ' ausgefuehrt')
         print X0
+        end = time.time()
+        print "time to compute in s: " + repr(end-start)
         self.plot_race_process()
 
             	

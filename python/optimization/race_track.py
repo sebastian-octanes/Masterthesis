@@ -19,7 +19,7 @@ class RaceTrack:
         self.track = [[0, 0]]
         self.track_width = 5
         self.simple_track()
-        self.trackPosition = -1
+        self.lastVehiclePosition = -1
 
     def add_straight(self, direction): #always add 10m
         if(direction == 0): #upwards
@@ -103,14 +103,12 @@ class RaceTrack:
 
     def simple_track(self):
         self.track = [[0, 0]]
-        self.add_straight(0)
-        self.add_straight(0)
-        self.add_right_turn(0, 7)
-        self.add_right_turn(1, 7)
+        self.add_straight(0)     
+        self.add_right_turn(0, 4)
+        self.add_right_turn(1, 4)
         self.add_straight(2)
-        self.add_straight(2)
-        self.add_right_turn(2, 7)
-        self.add_right_turn(3, 7)
+        self.add_right_turn(2, 4)
+        self.add_right_turn(3, 4)
 
     def complex_track(self):
         self.track = [[0, 0]]
@@ -136,59 +134,68 @@ class RaceTrack:
 
     def print_track(self):
         print self.track
-    
-    def distance_to_track(self, pos, trackPose):
-        if (trackPose == True):
-            if(self.trackPosition == -1):
-                    self.trackPosition = self.closest_track_point(pos)
-            else:
-                indx = self.closest_track_point_tracked(pos)
-                a = math.sqrt((self.track[indx][0]- pos[0])**2 + (self.track[indx][1] - pos[1])**2)
-        else:
-            a = min (math.sqrt((x- pos[0])**2 + (y - pos[1])**2) for (x,y) in self.track)        
-        return a
-
-    def closest_track_point_tracked(self, pos):
-        indx = 0
-        smallest = 100
-        for i in range(self.trackPosition, self.trackPosition + 200, 1):
-            dist = math.sqrt((self.track[i][0]- pos[0])**2 + (self.track[i][1] - pos[1])**2)
-            if(dist < smallest):
-                smallest = dist
-                indx = i
-        self.trackPosition = indx
-        return indx
+   
+   
+   
+    def distance_to_track(self, pos):
+        """for now this function returns the distance to the track this is done by searching for closest point and calculating the "lot" on 
+        this and its next point"""
+#            a = min (math.sqrt((x- pos[0])**2 + (y - pos[1])**2) for (x,y) in self.track) 
+        indx = self.closest_track_point(pos, 1)
+        next = indx +1
+        if next == self.track.__len__():
+            next = 0
+        p1 = np.array([self.track[indx][0], self.track[indx][1]])
+        p2 = np.array([self.track[next][0], self.track[next][1]])
+        p3 = np.array([pos[0], pos[1]])
         
-    
-    def closest_track_point(self, pos):
-        indx = 0
-        smallest = 100
-        for i in range(0, self.track.__len__(), 1):
-            dist = math.sqrt((self.track[i][0]- pos[0])**2 + (self.track[i][1] - pos[1])**2)
-            if(dist < smallest):
-                smallest = dist
-                indx = i
+        dist = math.fabs(np.cross(p2-p1, p3-p1)/np.linalg.norm(p2-p1))
+        
+        return dist
 
+
+    def closest_track_point(self, pos, tracked = -1):
+        """this function returns the point on the track closest to the vehicle, if tracked >=0 it searches based of the last known position.
+        To use this efficiently update the position every time the car "moves" (outer for loop) with set_new_vehicle_position"""
+        indx = 0
+        smallest = float("inf")
+        if tracked < 0:            
+            for i in range(0, self.track.__len__(), 1):
+                dist = math.sqrt((self.track[i][0]- pos[0])**2 + (self.track[i][1] - pos[1])**2)
+                if(dist < smallest):
+                    smallest = dist
+                    indx = i
+        else:
+            i = self.lastVehiclePosition
+            if(i <0):
+                i = 0
+            lastValue = float("inf")
+            counter = 0
+            while True:
+                dist = math.sqrt((self.track[i][0]- pos[0])**2 + (self.track[i][1] - pos[1])**2)
+                if(dist < smallest):
+                    smallest = dist
+                    indx = i
+                if(dist < self.track_width and dist > lastValue):
+                    break
+                lastValue = dist
+                if(i >= self.track.__len__() -1):
+                    i = 0
+                else:
+                    i = i+1
+                if counter >= self.track.__len__():
+                    break
+                counter = counter +1
         return indx
         
     def get_track_point(self, indx):
+        """returns koordinate of indx : (x/y)"""
         return self.track[indx]
         
-
-    def cost_func1(self, x):
-        alpha = 2/(8*(self.track_width/2.0)**7)
-        return alpha *(x)**8
     
-    def cost_func2(self, x):
-        alpha = 10000
-        k1 = -2.5
-        k2 = 2.5
-        return math.e**(alpha*(k1 + x)) + math.e**(-alpha*(k2 + x))
-
-    def cost_func3(self, x):
-        alpha = 1
-        k1 = -2.5
-        k2 = 2.5
-        return math.fabs(alpha/(k1 - x) + alpha/(k2 - x))
-            
+    def set_new_vehicle_positon(self, pos):
+        """this function is called every time the car position is updated in the outer loop.
+        It specifies the starting point from where we search for a new closest point in the track array"""
+        self.lastVehiclePosition = self.closest_track_point(pos, 1)
+        
     

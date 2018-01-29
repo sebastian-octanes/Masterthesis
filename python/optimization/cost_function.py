@@ -41,7 +41,7 @@ class CostFunction:
         cost = 0.0
         for i in range(0,n,1):
             pos = [x[i*6], x[i*6+1]]
-            cost = cost + self.track.distance_to_track(pos, False)
+            cost = cost + self.track.distance_to_track(pos)
         return cost
         
     def cost_dist_origin(self, X):
