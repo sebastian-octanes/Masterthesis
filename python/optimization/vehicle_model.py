@@ -69,7 +69,7 @@ class VehicleModel:
         #define bounds fitting to N and Statevector          
         bnds = ((None, None),(None, None),
                 (0, self.max_speed),(None, None),
-                (self.max_long_dec, self.max_long_acc),
+                (-self.max_long_dec, self.max_long_acc),
                 (-self.max_steering_angle, self.max_steering_angle))*(N + 1)
         return bnds    
      

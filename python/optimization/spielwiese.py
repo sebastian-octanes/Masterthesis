@@ -7,7 +7,7 @@ track.simple_track()
 cost = CostFunction(track)
 
 opt = Optimization()
-opt.optimize(6,15)
+opt.optimize(10,10)
 #opt.track.plot_track()
 
 
