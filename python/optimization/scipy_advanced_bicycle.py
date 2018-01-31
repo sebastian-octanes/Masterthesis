@@ -69,7 +69,7 @@ class Optimization:
         start = time.time()
         for k in range (0, loops, 1):         
             res = minimize(self.costFunction.cost_dist_track, X0, method ='SLSQP', bounds = bnds, constraints=cons)#, callback = self.callb)        
-            x_new = self.vehicleModel.compute_next_state_(res.x[0:6])          
+            x_new = self.vehicleModel.compute_next_state(res.x[0:6])          
             self.log_position(x_new)
             X0 = res.x
             X0[0:4] = x_new
