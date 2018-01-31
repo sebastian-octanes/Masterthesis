@@ -4,7 +4,7 @@ import math
 
 class Constraints:
         
-    def __init__(self, initState_, vehicleModel_ = VehicleModel() ):
+    def __init__(self, initState_, vehicleModel_ ):
         self.vehicleModel = vehicleModel_
         self.initState = initState_
             

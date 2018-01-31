@@ -32,7 +32,7 @@ class VehicleModel:
     max_acceleration_time = 4.0 #seconds
  
     
-    def __init__(self, dt_ = 0.1):
+    def __init__(self, dt_):
         self.dt = dt_
    
     def compute_next_state(self, current_state):

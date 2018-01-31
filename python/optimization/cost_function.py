@@ -44,6 +44,18 @@ class CostFunction:
             cost = cost + self.track.distance_to_track(pos)
         return cost
         
+    def cost_dist_track_speed(self, x):
+        n = x.size/6
+        cost = 0.0
+        for i in range(0,n,1):
+            pos = [x[i*6], x[i*6+1]]
+            cost = cost + self.track.distance_to_track(pos)
+            if(x[i*6 + 2] > 0.2):
+                cost += 1.0/x[i*6 + 2]
+            else:
+                cost += 5
+        return cost
+        
     def cost_dist_origin(self, X):
         """Take the vehicle position and compute the distance to the origin"""
         N = X.size/6

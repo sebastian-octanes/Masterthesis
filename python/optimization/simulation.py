@@ -4,7 +4,9 @@ import numpy as np
 import math
 from vehicle_model import VehicleModel
 from race_track import RaceTrack
-
+from cost_function import CostFunction
+from constraints import Constraints
+from scipy.optimize import minimize
 
 # Defines common colors
 black = (0, 0, 0)  # black
@@ -46,9 +48,23 @@ screen.blit(image,(160, 120))
 # Used for timing within the program.
 clock = pygame.time.Clock()
 #object of vehicle_model
-vehicleModel = VehicleModel()
+vehicleModel = VehicleModel(0.1)
 #object of race_track
 raceTrack = RaceTrack()
+
+#CostFunction for optimization
+costFunction = CostFunction()
+N = 5
+
+bnds = vehicleModel.get_bounds(N) 
+
+X0 = np.zeros(6*(N+1))
+X0[2] = 3.0
+X0[3] = math.pi/2
+constraints = Constraints(X0[:4], vehicleModel)
+cons =({'type': 'eq', 'fun': constraints.constraint_fix_init_state}, 
+       {'type': 'eq', 'fun': constraints.constraint_vehicle_model})    
+
 
 # define state vector [x, y, v, orient, acceleration, steer_angle]
 stateVector = np.zeros(6)
@@ -57,10 +73,11 @@ stateVector[:] = [0,0,0,math.pi/2,0,0]
 done = False
 complexTrack = False
 plotTrack = False
-simulationActive = False
+mpcActive = False
 plotCarPath = False
 car_path = []
 last = clock.get_time()
+timer_key_select = clock.get_time()
 while not done:
 
         for event in pygame.event.get():
@@ -68,75 +85,121 @@ while not done:
                         done = True
                 
         pressed = pygame.key.get_pressed()
-        stateVector[4:] = [0, 0]
-        if pressed[pygame.K_UP]: stateVector[4] = vehicleModel.get_max_acc() 
-        if pressed[pygame.K_DOWN]: stateVector[4] = - vehicleModel.get_max_dec()
-        if pressed[pygame.K_LEFT]: stateVector[5] = vehicleModel.get_max_steer_angle()
-        if pressed[pygame.K_RIGHT]: stateVector[5] = - vehicleModel.get_max_steer_angle()
+
         if pressed[pygame.K_r]: 
             stateVector[:] = [0,0,0,math.pi/2,0,0]
             car_path = []
-        if pressed[pygame.K_p]: 
-            plotTrack = not plotTrack
-            print plotTrack
+        if pressed[pygame.K_p]:
+            if(pygame.time.get_ticks() - timer_key_select >= 500):
+                plotTrack = not plotTrack
+                timer_key_select = pygame.time.get_ticks()
         if pressed[pygame.K_c]:
-            print complexTrack
-            complexTrack = not complexTrack
+            if(pygame.time.get_ticks() - timer_key_select >= 500):
+                timer_key_select = pygame.time.get_ticks()
+                complexTrack = not complexTrack
             if(complexTrack):   raceTrack.complex_track()
             else: raceTrack.simple_track()
-        if pressed[pygame.K_a]:
-            simulationActive = not simulationActive
+        if pressed[pygame.K_m]:
+            if(pygame.time.get_ticks() - timer_key_select >= 500):       
+                mpcActive = not mpcActive                
+                timer_key_select = pygame.time.get_ticks()
         if pressed[pygame.K_l]:
-            plotCarPath = not plotCarPath
+            if(pygame.time.get_ticks() - timer_key_select >= 500):
+                timer_key_select = pygame.time.get_ticks()
+                plotCarPath = not plotCarPath
         #reset canvas
         screen.fill(black)
         
-        #plot race_track
-        if(plotTrack):
-            points = raceTrack.get_track_points()
-            bounds = raceTrack.get_track_bounds()
-            for i in range(0, points.__len__(), 1):
-                #offset position by 250 to set track more to the center of the screen 
-                screen.set_at((int(points[i][0]*10 +150), -int(points[i][1]*10) +350), (125,125,125))
-                screen.set_at((int(bounds[i][0]*10 +150), -int(bounds[i][1]*10) +350), (0,125,125))
-                screen.set_at((int(bounds[i][2]*10 +150), -int(bounds[i][3]*10) +350), (0,125,125))
-        #plot racecar path
-        if(plotCarPath):
-            for i in range(0, car_path.__len__(), 1):
-                speed =int( math.fabs(car_path[i][2] * 2 * 5))
-                if(speed > 255): speed = 255
-                screen.set_at((int(car_path[i][0]*10 +150), -int(car_path[i][1]*10) +350), (speed, 255-speed, 0))
-        #plot racecar        
-        time = clock.get_time() - last
-        vehicleModel.set_dt(time/1000.0)
-        stateVector[0:4] = vehicleModel.compute_next_state_(stateVector)
-        if(car_path.__len__() >= 500):
-            car_path.pop(0)
-        car_path.append([stateVector[0], stateVector[1], stateVector[2]])
         
-        surf = pygame.transform.rotate(image_surf, stateVector[3] * 180/math.pi)
-        #offset position by 250 to set car on race_track if plottet
-        screen.blit(surf, (stateVector[0]*10 +150, - stateVector[1] *10 +350))
+        if(mpcActive):
+             #plot race_track
+            if(plotTrack):
+                points = raceTrack.get_track_points()
+                bounds = raceTrack.get_track_bounds()
+                for i in range(0, points.__len__(), 1):
+                    #offset position by 250 to set track more to the center of the screen 
+                    screen.set_at((int(points[i][0]*10 +150), -int(points[i][1]*10) +350), (125,125,125))
+                    screen.set_at((int(bounds[i][0]*10 +150), -int(bounds[i][1]*10) +350), (0,125,125))
+                    screen.set_at((int(bounds[i][2]*10 +150), -int(bounds[i][3]*10) +350), (0,125,125))
+            #plot racecar path
+            if(plotCarPath):
+                for i in range(0, car_path.__len__(), 1):
+                    speed =int( math.fabs(car_path[i][2] * 2 * 5))
+                    if(speed > 255): speed = 255
+                    screen.set_at((int(car_path[i][0]*10 +150), -int(car_path[i][1]*10) +350), (speed, 255-speed, 0))
+            
+            #optimization
+            res = minimize(costFunction.cost_dist_track_speed, X0, method ='SLSQP', bounds = bnds, constraints=cons)
+            x_new = vehicleModel.compute_next_state(res.x[0:6]) 
+            X0[0:4] = x_new
+            constraints.set_initial_state(X0[0:4])            
+            #add car positioins to plot
+            if(car_path.__len__() >= 500):
+                car_path.pop(0)
+            car_path.append([x_new[0], x_new[1], x_new[2]])
+            
+            surf = pygame.transform.rotate(image_surf, x_new[3] * 180/math.pi)
+            #offset position by 250 to set car on race_track if plottet
+            screen.blit(surf, (x_new[0]*10 +150, - x_new[1] *10 +350))
         
-        textsurface = myfont.render('Speed: {0:.3f} km/h' .format(stateVector[2]*3.6), False, (255, 255, 255))        
-        screen.blit(textsurface,(820,970))
+            textsurface = myfont.render('Simulation active', False, (255, 0, 0))        
+            screen.blit(textsurface,(570, 930))
+            textsurface = myfont.render('Speed: {0:.3f} km/h' .format(x_new[2]*3.6), False, (255, 255, 255))        
+            screen.blit(textsurface,(820,970))
+        
+        #control car with keyboard
+        else:
+            stateVector[4:] = [0, 0]
+            if pressed[pygame.K_UP]: stateVector[4] = vehicleModel.get_max_acc() 
+            if pressed[pygame.K_DOWN]: stateVector[4] = - vehicleModel.get_max_dec()
+            if pressed[pygame.K_LEFT]: stateVector[5] = vehicleModel.get_max_steer_angle()
+            if pressed[pygame.K_RIGHT]: stateVector[5] = - vehicleModel.get_max_steer_angle()
+            #plot race_track
+            if(plotTrack):
+                points = raceTrack.get_track_points()
+                bounds = raceTrack.get_track_bounds()
+                for i in range(0, points.__len__(), 1):
+                    #offset position by 250 to set track more to the center of the screen 
+                    screen.set_at((int(points[i][0]*10 +150), -int(points[i][1]*10) +350), (125,125,125))
+                    screen.set_at((int(bounds[i][0]*10 +150), -int(bounds[i][1]*10) +350), (0,125,125))
+                    screen.set_at((int(bounds[i][2]*10 +150), -int(bounds[i][3]*10) +350), (0,125,125))
+            #plot racecar path
+            if(plotCarPath):
+                for i in range(0, car_path.__len__(), 1):
+                    speed =int( math.fabs(car_path[i][2] * 2 * 5))
+                    if(speed > 255): speed = 255
+                    screen.set_at((int(car_path[i][0]*10 +150), -int(car_path[i][1]*10) +350), (speed, 255-speed, 0))
+            #plot racecar        
+            time = clock.get_time() - last
+            vehicleModel.set_dt(time/1000.0)
+            stateVector[0:4] = vehicleModel.compute_next_state_(stateVector)
+            if(car_path.__len__() >= 500):
+                car_path.pop(0)
+            car_path.append([stateVector[0], stateVector[1], stateVector[2]])
+            
+            surf = pygame.transform.rotate(image_surf, stateVector[3] * 180/math.pi)
+            #offset position by 250 to set car on race_track if plottet
+            screen.blit(surf, (stateVector[0]*10 +150, - stateVector[1] *10 +350))
+            
+            textsurface = myfont.render('Speed: {0:.3f} km/h' .format(stateVector[2]*3.6), False, (255, 255, 255))        
+            screen.blit(textsurface,(820,970))
         textsurface = myfont.render('Reset Car: r', False, (255, 255, 255))        
         screen.blit(textsurface,(020,970))        
         textsurface = myfont.render('Plot Racetrack: p', False, (255, 255, 255))        
         screen.blit(textsurface,(170,970))
         textsurface = myfont.render('Change Track: c', False, (255, 255, 255))        
         screen.blit(textsurface,(380,970)) 
-        textsurface = myfont.render('Activate Simulation: a', False, (255, 255, 255))        
+        textsurface = myfont.render('Activate MPC: m', False, (255, 255, 255))        
         screen.blit(textsurface,(570,970))       
         textsurface = myfont.render('Plot Car Path: l', False, (255, 255, 255))        
         screen.blit(textsurface,(020,930)) 
-        
-        
+            
+            
         #render new picture
         pygame.display.flip()
-
+    
         # Defines the frame rate. The number is number of frames per second.
         clock.tick(60)
-    
+        
     
     

@@ -81,13 +81,7 @@ class Optimization:
         print "time to compute in s: " + repr(end-start)
         self.plot_race_process()
 
-            	
-
-#for k in np.arange(0, Tsim, dt):
-	
-#	res = minimize(cost_dist, X0, method ='SLSQP', bounds = bnds, constraints=cons)
-#	print res
-#	X0[0:4] = model(X0[0:6])	
+        
 
 
 
