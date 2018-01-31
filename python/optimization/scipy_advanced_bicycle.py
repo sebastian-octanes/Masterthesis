@@ -11,12 +11,10 @@ import time
 
 class Optimization:
     
-    def __init__(self, track_ = RaceTrack(), cost_function_ = CostFunction(), vehicle_model_ = VehicleModel()):
+    def __init__(self, track_, cost_function_ , vehicle_model_):
             self.track = track_
             self.costFunction = cost_function_
-            self.vehicleModel = vehicle_model_
-            self.dt = 0.1
-            self.vehicleModel.dt = self.dt           
+            self.vehicleModel = vehicle_model_           
             self.process = []
 
     def callb(self, X):
@@ -69,7 +67,7 @@ class Optimization:
         start = time.time()
         for k in range (0, loops, 1):         
             res = minimize(self.costFunction.cost_dist_track, X0, method ='SLSQP', bounds = bnds, constraints=cons)#, callback = self.callb)        
-            x_new = self.vehicleModel.compute_next_state(res.x[0:6])          
+            x_new = self.vehicleModel.compute_next_state_(res.x[0:6])          
             self.log_position(x_new)
             X0 = res.x
             X0[0:4] = x_new

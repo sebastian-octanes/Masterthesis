@@ -76,6 +76,7 @@ plotTrack = False
 mpcActive = False
 plotCarPath = False
 car_path = []
+car_path.append([stateVector[0], stateVector[1], stateVector[2]])
 last = clock.get_time()
 timer_key_select = clock.get_time()
 while not done:
@@ -89,6 +90,7 @@ while not done:
         if pressed[pygame.K_r]: 
             stateVector[:] = [0,0,0,math.pi/2,0,0]
             car_path = []
+            car_path.append([stateVector[0], stateVector[1], stateVector[2]])
         if pressed[pygame.K_p]:
             if(pygame.time.get_ticks() - timer_key_select >= 500):
                 plotTrack = not plotTrack
@@ -101,7 +103,10 @@ while not done:
             else: raceTrack.simple_track()
         if pressed[pygame.K_m]:
             if(pygame.time.get_ticks() - timer_key_select >= 500):       
-                mpcActive = not mpcActive                
+                mpcActive = not mpcActive  
+                X0 = np.zeros(6*(N+1))
+                X0[2] = 3.0
+                X0[3] = math.pi/2
                 timer_key_select = pygame.time.get_ticks()
         if pressed[pygame.K_l]:
             if(pygame.time.get_ticks() - timer_key_select >= 500):
@@ -136,7 +141,8 @@ while not done:
             #add car positioins to plot
             if(car_path.__len__() >= 500):
                 car_path.pop(0)
-            car_path.append([x_new[0], x_new[1], x_new[2]])
+            if(math.sqrt((stateVector[0] - car_path[-1][0])**2 + (stateVector[1] - car_path[-1][1])**2) > 0.2):
+                car_path.append([x_new[0], x_new[1], x_new[2]])
             
             surf = pygame.transform.rotate(image_surf, x_new[3] * 180/math.pi)
             #offset position by 250 to set car on race_track if plottet
@@ -145,7 +151,7 @@ while not done:
             textsurface = myfont.render('Simulation active', False, (255, 0, 0))        
             screen.blit(textsurface,(570, 930))
             textsurface = myfont.render('Speed: {0:.3f} km/h' .format(x_new[2]*3.6), False, (255, 255, 255))        
-            screen.blit(textsurface,(820,970))
+            screen.blit(textsurface,(810,970))
         
         #control car with keyboard
         else:
@@ -160,7 +166,7 @@ while not done:
                 bounds = raceTrack.get_track_bounds()
                 for i in range(0, points.__len__(), 1):
                     #offset position by 250 to set track more to the center of the screen 
-                    screen.set_at((int(points[i][0]*10 +150), -int(points[i][1]*10) +350), (125,125,125))
+                    screen.set_at((int(points[i][0]*10 +150), -int(points[i][1]*10) +350), (125,125,125))                
                     screen.set_at((int(bounds[i][0]*10 +150), -int(bounds[i][1]*10) +350), (0,125,125))
                     screen.set_at((int(bounds[i][2]*10 +150), -int(bounds[i][3]*10) +350), (0,125,125))
             #plot racecar path
@@ -175,16 +181,17 @@ while not done:
             stateVector[0:4] = vehicleModel.compute_next_state_(stateVector)
             if(car_path.__len__() >= 500):
                 car_path.pop(0)
-            car_path.append([stateVector[0], stateVector[1], stateVector[2]])
+            if(math.sqrt((stateVector[0] - car_path[-1][0])**2 + (stateVector[1] - car_path[-1][1])**2) > 0.2):
+                car_path.append([stateVector[0], stateVector[1], stateVector[2]])
             
             surf = pygame.transform.rotate(image_surf, stateVector[3] * 180/math.pi)
             #offset position by 250 to set car on race_track if plottet
             screen.blit(surf, (stateVector[0]*10 +150, - stateVector[1] *10 +350))
             
             textsurface = myfont.render('Speed: {0:.3f} km/h' .format(stateVector[2]*3.6), False, (255, 255, 255))        
-            screen.blit(textsurface,(820,970))
+            screen.blit(textsurface,(810,970))
         textsurface = myfont.render('Reset Car: r', False, (255, 255, 255))        
-        screen.blit(textsurface,(020,970))        
+        screen.blit(textsurface,(20,970))        
         textsurface = myfont.render('Plot Racetrack: p', False, (255, 255, 255))        
         screen.blit(textsurface,(170,970))
         textsurface = myfont.render('Change Track: c', False, (255, 255, 255))        
@@ -192,7 +199,7 @@ while not done:
         textsurface = myfont.render('Activate MPC: m', False, (255, 255, 255))        
         screen.blit(textsurface,(570,970))       
         textsurface = myfont.render('Plot Car Path: l', False, (255, 255, 255))        
-        screen.blit(textsurface,(020,930)) 
+        screen.blit(textsurface,(20,930)) 
             
             
         #render new picture

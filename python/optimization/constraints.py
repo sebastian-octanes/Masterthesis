@@ -1,6 +1,5 @@
-from vehicle_model import VehicleModel
 import numpy as np
-import math
+
 
 class Constraints:
         
@@ -22,6 +21,15 @@ class Constraints:
         for i in range(0,N,1):
             current_State = x[i*6: (i+1)*6]
             ceq[i*4: (i+1)*4] = x[(i+1)*6: (i+1)*6 + 4] - self.vehicleModel.compute_next_state(current_State)		
+        #return an array of 0= Xnext_state - model(Xnow_state)	
+        return ceq
+    
+    def constraint_vehicle_model_(self, x):
+        N = x.size/6 -1
+        ceq = np.zeros(N*4)
+        for i in range(0,N,1):
+            current_State = x[i*6: (i+1)*6]
+            ceq[i*4: (i+1)*4] = x[(i+1)*6: (i+1)*6 + 4] - self.vehicleModel.compute_next_state_(current_State)		
         #return an array of 0= Xnext_state - model(Xnow_state)	
         return ceq
     
