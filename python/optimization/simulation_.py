@@ -40,7 +40,9 @@ class SimulationEnvironment():
         #Create object of clock used for timing within the program.
         self.clock = pygame.time.Clock()
         self.timer_key_select = pygame.time.get_ticks()
-                
+        self.computation_time = pygame.time.get_ticks()
+        self.simulation_time = pygame.time.get_ticks()
+        self.simulation_steps = 1
         self.complexTrack = False
         self.plotTrack = False
         #is the mpcActive?
@@ -92,7 +94,9 @@ class SimulationEnvironment():
         self.cons =({'type': 'eq', 'fun': self.constraints.constraint_fix_init_state}, 
                     {'type': 'eq', 'fun': self.constraints.constraint_vehicle_model},
                     {'type': 'ineq', 'fun': self.constraints.ineq_constraint_vehicle_model})    
-
+        self.computation_time = pygame.time.get_ticks()
+        self.simulation_time = pygame.time.get_ticks()
+        self.simulation_steps = 1
 
     def reset_car_position(self):
             self.X0[:6] = [0, 0, 0, math.pi/2, 0, 0]
@@ -154,8 +158,13 @@ class SimulationEnvironment():
                 speed =int( math.fabs(self.carPath[i][2] * 2 * 5))
                 if(speed > 255): speed = 255
                 self.screen.set_at((int(self.carPath[i][0]*10 +150), -int(self.carPath[i][1]*10) +350), (speed, 255-speed, 0))
-
-   
+    
+    def plot_predicted_path(self, x):
+        n = x.size/6   
+        for i in range (0, n, 1):
+                        
+            self.screen.set_at((int(x[i*6]*10 +150), -int(x[i*6 +1]*10) +350), (255,0,255))
+            
     def set_car_path(self):
         if(not self.mpcActive):
             if(self.carPath.__len__() >= 500):
@@ -166,6 +175,7 @@ class SimulationEnvironment():
             if(self.carPath.__len__() >= 500):
                 self.carPath.pop(0)
             self.carPath.append([self.X0[0], self.X0[1], self.X0[2]])            
+              
               
     def display_menu(self):
         textsurface = self.myfont.render('Reset Car: r', False, (255, 255, 255))        
@@ -179,10 +189,26 @@ class SimulationEnvironment():
         textsurface = self.myfont.render('Plot Car Path: l', False, (255, 255, 255))        
         self.screen.blit(textsurface,(810,970)) 
     
-    def display_simulation_info(self):
+    
+    def display_simulation_info(self, res):
+        self.computation_time = pygame.time.get_ticks() - self.computation_time
+        self.full_simulation_time = pygame.time.get_ticks() - self.simulation_time
         textsurface = self.myfont.render('Speed: {0:.3f} km/h' .format(self.X0[2]*3.6), False, (255, 255, 255))        
         self.screen.blit(textsurface,(020,930))
+        textsurface = self.myfont.render('Solver: feasible: ' + repr(res.success) .format(self.X0[2]*3.6), False, (255, 255, 255))        
+        self.screen.blit(textsurface,(020,900))
+        textsurface = self.myfont.render('Solver: iterations: ' + repr(res.nit) .format(self.X0[2]*3.6), False, (255, 255, 255))        
+        self.screen.blit(textsurface,(020,870))
+        textsurface = self.myfont.render('Solver: nfev: ' + repr(res.nfev) .format(self.X0[2]*3.6), False, (255, 255, 255))        
+        self.screen.blit(textsurface,(020,840))
+        textsurface = self.myfont.render('Solver: time to compute: ' + repr(self.computation_time) + "ms".format(self.X0[2]*3.6), False, (255, 255, 255))        
+        self.screen.blit(textsurface,(020,810))
+        textsurface = self.myfont.render('Solver: median time to compute: ' + repr(self.full_simulation_time / self.simulation_steps) + "ms".format(self.X0[2]*3.6), False, (255, 255, 255))        
+        self.screen.blit(textsurface,(020,780)) 
         
+        self.computation_time = pygame.time.get_ticks()
+        
+    
     def simulate(self):
         while not self.loopSimDone:
             self.handle_keystrokes()
@@ -211,12 +237,14 @@ class SimulationEnvironment():
                 #self.X0[6:] = res.x[12:]                
                 #set new init_state for constraint                
                 self.constraints.set_initial_state(self.X0[0:4])                
-                self.set_car_path()              
+                self.set_car_path()
+                self.plot_predicted_path(res.x)
                 car_pic = pygame.transform.rotate(self.surf, self.X0[3] * 180/math.pi)
-                #offset position by 250 to set car on race_track if plottet
-                #print "x_position: " + repr(self.X0[0]) + "  y_position: " + repr(self.X0[1])
-                self.screen.blit(car_pic, (self.X0[0]*10 +150, - self.X0[1] *10 +350))
-                self.display_simulation_info()
+   
+                #self.screen.blit(car_pic, (self.X0[0]*10 +150, - self.X0[1] *10 +350))
+                self.display_simulation_info(res)
+                #used for calculation of median value for solver
+                self.simulation_steps = self.simulation_steps + 1
                 
             self.display_menu()
             #render new picture
