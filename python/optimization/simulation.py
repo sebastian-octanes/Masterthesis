@@ -64,7 +64,7 @@ X0[2] = 3.0
 X0[3] = math.pi/2
 constraints = Constraints(X0[:4], vehicleModel)
 cons =({'type': 'eq', 'fun': constraints.constraint_fix_init_state}, 
-       {'type': 'eq', 'fun': constraints.constraint_vehicle_model})    
+       {'type': 'eq', 'fun': constraints.constraint_vehicle_model_})    
 
 
 # define state vector [x, y, v, orient, acceleration, steer_angle]
