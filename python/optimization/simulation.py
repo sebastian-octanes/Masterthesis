@@ -54,11 +54,12 @@ raceTrack = RaceTrack()
 
 #CostFunction for optimization
 costFunction = CostFunction()
-N = 5
+N = 3
 
 bnds = vehicleModel.get_bounds(N) 
 
 X0 = np.zeros(6*(N+1))
+X0[1] = 7.0
 X0[2] = 3.0
 X0[3] = math.pi/2
 constraints = Constraints(X0[:4], vehicleModel)
@@ -68,13 +69,15 @@ cons =({'type': 'eq', 'fun': constraints.constraint_fix_init_state},
 
 # define state vector [x, y, v, orient, acceleration, steer_angle]
 stateVector = np.zeros(6)
-stateVector[:] = [0,0,0,math.pi/2,0,0] 
+stateVector[:] = [0,7,0,math.pi/2,0,0] 
 
 done = False
 complexTrack = False
 plotTrack = False
 mpcActive = False
 plotCarPath = False
+block_k_key = False
+block_k_key_counter = 0
 car_path = []
 car_path.append([stateVector[0], stateVector[1], stateVector[2]])
 last = clock.get_time()
@@ -102,9 +105,12 @@ while not done:
             if(complexTrack):   raceTrack.complex_track()
             else: raceTrack.simple_track()
         if pressed[pygame.K_m]:
-            if(pygame.time.get_ticks() - timer_key_select >= 500):       
-                mpcActive = not mpcActive  
+            if(pygame.time.get_ticks() - timer_key_select >= 500 and (not block_k_key)):       
+                mpcActive = not mpcActive
+                if(mpcActive):
+                    block_k_key = True
                 X0 = np.zeros(6*(N+1))
+                X0[1] = 7.0                
                 X0[2] = 3.0
                 X0[3] = math.pi/2
                 timer_key_select = pygame.time.get_ticks()
@@ -115,15 +121,20 @@ while not done:
         #reset canvas
         screen.fill(black)
         
+        if(block_k_key_counter >= 2):
+            block_k_key = False
+            block_k_key_counter = 0
         
         if(mpcActive):
+            if(block_k_key):
+                block_k_key_counter = block_k_key_counter + 1
              #plot race_track
             if(plotTrack):
                 points = raceTrack.get_track_points()
                 bounds = raceTrack.get_track_bounds()
                 for i in range(0, points.__len__(), 1):
                     #offset position by 250 to set track more to the center of the screen 
-                    screen.set_at((int(points[i][0]*10 +150), -int(points[i][1]*10) +350), (125,125,125))
+                    #screen.set_at((int(points[i][0]*10 +150), -int(points[i][1]*10) +350), (125,125,125))
                     screen.set_at((int(bounds[i][0]*10 +150), -int(bounds[i][1]*10) +350), (0,125,125))
                     screen.set_at((int(bounds[i][2]*10 +150), -int(bounds[i][3]*10) +350), (0,125,125))
             #plot racecar path
@@ -141,8 +152,8 @@ while not done:
             #add car positioins to plot
             if(car_path.__len__() >= 500):
                 car_path.pop(0)
-            if(math.sqrt((stateVector[0] - car_path[-1][0])**2 + (stateVector[1] - car_path[-1][1])**2) > 0.2):
-                car_path.append([x_new[0], x_new[1], x_new[2]])
+            #if(math.sqrt((stateVector[0] - car_path[-1][0])**2 + (stateVector[1] - car_path[-1][1])**2) > 0.2):
+            car_path.append([x_new[0], x_new[1], x_new[2]])
             
             surf = pygame.transform.rotate(image_surf, x_new[3] * 180/math.pi)
             #offset position by 250 to set car on race_track if plottet
