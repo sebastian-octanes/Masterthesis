@@ -8,12 +8,6 @@ from cost_function import CostFunction
 from constraints import Constraints
 from scipy.optimize import minimize
 
-# Defines common colors
-black = (0, 0, 0)  # black
-white = (255, 255, 255)  # white
-# red: (255, 0, 0)
-# purple: (255, 0, 255)
-# light salmon: (255, 160, 122)
 
 # Initializes all pygame functionality.
 pygame.init()
@@ -119,7 +113,7 @@ while not done:
                 timer_key_select = pygame.time.get_ticks()
                 plotCarPath = not plotCarPath
         #reset canvas
-        screen.fill(black)
+        screen.fill((0,0,0))
         
         if(block_k_key_counter >= 2):
             block_k_key = False
@@ -188,6 +182,7 @@ while not done:
                     screen.set_at((int(car_path[i][0]*10 +150), -int(car_path[i][1]*10) +350), (speed, 255-speed, 0))
             #plot racecar        
             time = clock.get_time() - last
+            print time
             vehicleModel.set_dt(time/1000.0)
             stateVector[0:4] = vehicleModel.compute_next_state_(stateVector)
             if(car_path.__len__() >= 500):
