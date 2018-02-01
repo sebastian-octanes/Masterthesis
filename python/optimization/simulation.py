@@ -37,7 +37,7 @@ pygame.display.set_caption("Vehicle_Simulation")
 
 
 #load race_car image 
-image = pygame.image.load("/home/weller/Bilder/race_car.jpg").convert()
+image = pygame.image.load("/home/sebastian/Pictures/race_car.png").convert()
 image_surf = pygame.transform.scale(image, (20, 17))
 #image_surf = pygame.transform.rotate(image_surf, 90)
 surf = image_surf
