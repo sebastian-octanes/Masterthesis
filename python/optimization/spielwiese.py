@@ -11,10 +11,14 @@ track = RaceTrack()
 track.complex_track()
 track.plot_track()
 cost = CostFunction(track)
-vehicleModel = VehicleModel(0.1)
-
-opt = Optimization(track, cost, vehicleModel)
-opt.optimize(5,30)
-#opt.track.plot_track()
+cost.print_cost_func(2)
+#==============================================================================
+# 
+# vehicleModel = VehicleModel(0.1)
+# 
+# opt = Optimization(track, cost, vehicleModel)
+# opt.optimize(5,30)
+# #opt.track.plot_track()
+#==============================================================================
 
 
