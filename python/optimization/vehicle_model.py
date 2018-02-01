@@ -45,17 +45,18 @@ class VehicleModel:
         Xnext[2] = v + acc * self.dt
         if(Xnext[2] > self.max_speed): Xnext[2] = self.max_speed
         return Xnext
-        
+
     def compute_next_state_(self, current_state):
         x,y,v,orient,acc,steer = current_state
+        
         Xnext = np.zeros(4)
-        steer_max = (self.lf + self.lr) * self.max_lat_acc / v**2
-        if(steer > steer_max):
-            steer = steer_max
-        if(steer < -steer_max):
-            steer = -steer_max
         beta = np.arctan((self.lr/(self.lf +self.lr)) * math.tan(steer))
-#        max_beta =  np.arctan(1/2 * (self.lf + self.lr) * self.max_lat_acc / v**2)
+        max_beta =  np.arctan(1.0/2 * (self.lf + self.lr) * self.max_lat_acc / v**2)    
+        if(beta >= 0):
+            beta = min(beta, max_beta)
+        else:
+            beta = - min(-beta, max_beta)
+            
         Xnext[0] = x + v * self.dt * math.cos(orient + beta)
         Xnext[1] = y + v * self.dt * math.sin(orient + beta)
         Xnext[3] = orient + (v*self.dt/self.lr) * math.sin(beta)

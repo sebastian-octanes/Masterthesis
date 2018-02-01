@@ -90,7 +90,8 @@ class SimulationEnvironment():
         self.init_state_vector(N, [0, 0, 0, math.pi/2, 0, 0])
         self.constraints = Constraints(self.X0[:4], self.vehicleModel)
         self.cons =({'type': 'eq', 'fun': self.constraints.constraint_fix_init_state}, 
-                    {'type': 'eq', 'fun': self.constraints.constraint_vehicle_model})    
+                    {'type': 'eq', 'fun': self.constraints.constraint_vehicle_model},
+                    {'type': 'ineq', 'fun': self.constraints.ineq_constraint_vehicle_model})    
 
 
     def reset_car_position(self):
@@ -203,10 +204,10 @@ class SimulationEnvironment():
             else:
                 self.plot_race_track()
                 self.plot_car_path()
-                res = minimize(self.costFunction.cost_dist_track, self.X0, method ='SLSQP', bounds = self.bnds, constraints= self.cons)
+                res = minimize(self.costFunction.cost_dist_track_speed, self.X0, method ='SLSQP', bounds = self.bnds, constraints= self.cons)
                 #compute movement of car later on real hardware this is piped to the actuators 
-                self.X0[0:4] = self.vehicleModel.compute_next_state(res.x[0:6])
-                self.raceTrack.set_new_vehicle_positon(self.X0[0:2])
+                self.X0[0:4] = self.vehicleModel.compute_next_state_(res.x[0:6])
+                #self.raceTrack.set_new_vehicle_positon(self.X0[0:2])
                 #self.X0[6:] = res.x[12:]                
                 #set new init_state for constraint                
                 self.constraints.set_initial_state(self.X0[0:4])                
