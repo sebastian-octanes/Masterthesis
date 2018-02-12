@@ -60,7 +60,7 @@ class SimulationEnvironment():
         self.init_track()
         self.init_state_vector()
         self.mpc_key_counter = 0
-        self.init_mpc(4)
+        self.init_mpc(6)
    
     
     def init_vehicle(self, dt):
@@ -87,7 +87,7 @@ class SimulationEnvironment():
     def init_mpc(self, N):
         self.init_vehicle(0.1)        
         self.init_track()        
-        self.costFunction = CostFunction()
+        self.costFunction = CostFunction(self.raceTrack)
         self.bnds = self.vehicleModel.get_bounds(N)
         self.init_state_vector(N, [0, 0, 0, math.pi/2, 0, 0])
         self.constraints = Constraints(self.X0[:4], self.vehicleModel)
@@ -208,6 +208,26 @@ class SimulationEnvironment():
         
         self.computation_time = pygame.time.get_ticks()
         
+
+    def display_car_info(self, acc_, steer):
+        acc = acc_
+        print acc
+        rect = pygame.Rect(890,499,60, 2)
+        self.screen.fill((255,255,255), rect)
+        if(acc > 0):
+            #norm acceleration to 1            
+            tmp = acc / self.vehicleModel.get_max_acc()
+            size_max = 150
+            rect = pygame.Rect(900, 500 - int(size_max * tmp),40, int(size_max * tmp))
+            self.screen.fill((int(tmp*255), 255 - int(255*tmp) , 0), rect)
+        else:
+            #norm acceleration to 1            
+            tmp = - acc / self.vehicleModel.get_max_acc()
+            size_max = 150
+            rect = pygame.Rect(900,500 ,40, int(size_max * tmp))
+            self.screen.fill((int(tmp*255), 255 - int(255*tmp), 0), rect)
+            
+        
     
     def simulate(self):
         while not self.loopSimDone:
@@ -221,6 +241,7 @@ class SimulationEnvironment():
                 #plot racecar        
                 self.vehicleModel.set_dt(self.clock.get_time()/1000.0)
                 self.X0[0:4] = self.vehicleModel.compute_next_state_(self.X0[0:6])
+                self.display_car_info(self.X0[4], self.X0[5])
                 self.set_car_path()                
                 #rotate car picture                 
                 car_pic = pygame.transform.rotate(self.surf, self.X0[3] * 180/math.pi)
@@ -238,6 +259,7 @@ class SimulationEnvironment():
                 #set new init_state for constraint                
                 self.constraints.set_initial_state(self.X0[0:4])                
                 self.set_car_path()
+                self.display_car_info(res.x[4], res.x[5])
                 self.plot_predicted_path(res.x)
                 car_pic = pygame.transform.rotate(self.surf, self.X0[3] * 180/math.pi)
    

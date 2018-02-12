@@ -14,7 +14,9 @@ class Constraints:
         """constraints the first 4 values to not be changed as of initial state"""
         ceq = x[0:4] - self.initState
         return ceq
-
+    
+    
+    """always use this constraint in combination with the ineq_constraint_vehicle_model constraint as it limits the max steering angle possible depending on speed"""
     def constraint_vehicle_model(self, x):
         N = x.size/6 -1
         ceq = np.zeros(N*4)

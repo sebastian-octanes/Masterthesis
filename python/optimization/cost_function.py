@@ -1,11 +1,10 @@
-from race_track import RaceTrack
 import math
 import numpy as np
 from matplotlib import pyplot as plt
 
 class CostFunction:
     
-    def __init__(self, track_ = RaceTrack()):  
+    def __init__(self, track_):  
         self.track = track_
     
     def cost_func0(self, x):

@@ -23,84 +23,87 @@ class RaceTrack:
         self.lastVehiclePosition = -1
 
     def add_straight(self, direction, length = 10): #always add 10m
-        length = int(length) * 10
+        points_per_dmeter = 2
+        length = int(length) 
         if(direction == 0): #upwards
             last_point = self.track[-1]
-            for i in range(0, length, 1):
+            for i in range(0, (length * points_per_dmeter)/10 , 1):
                 new_x = last_point[0]
-                new_y = last_point[1] + 0.1
+                new_y = last_point[1] + 10.0/points_per_dmeter
                 self.track.append([new_x, new_y])
                 last_point = self.track[-1]
         if (direction == 1):  # right
             last_point = self.track[-1]
-            for i in range(0, length, 1):
-                new_point = [last_point[0] + 0.1, last_point[1]]
+            for i in range(0, (length*points_per_dmeter)/10 , 1):
+                new_point = [last_point[0] + 10.0/points_per_dmeter, last_point[1]]
                 self.track.append(new_point)
                 last_point = new_point
         if (direction == 2):  # downward
             last_point = self.track[-1]
-            for i in range(0, length, 1):
-                new_point = [last_point[0], last_point[1] - 0.1]
+            for i in range(0, (length*points_per_dmeter)/10 , 1):
+                new_point = [last_point[0], last_point[1] - 10.0/points_per_dmeter]
                 self.track.append(new_point)
                 last_point = new_point
         if (direction == 3):  # left
             last_point = self.track[-1]
-            for i in range(0, length, 1):
-                new_point = [last_point[0] - 0.1, last_point[1]]
+            for i in range(0, (length*points_per_dmeter)/10 , 1):
+                new_point = [last_point[0] - 10.0/points_per_dmeter, last_point[1]]
                 self.track.append(new_point)
                 last_point = new_point
 
     def add_right_turn(self, direction, radius):
+        length = 10
         if(direction == 0):
             last_point= self.track[-1]
-            for i in range(1,100,1):
-                new_x = last_point[0] + radius - radius*math.cos(math.pi*i/(2*100))
-                new_y = last_point[1] + radius*math.sin(math.pi*i/(2*100))
+            for i in range(1,length,1):
+                new_x = last_point[0] + radius - radius*math.cos(math.pi*i/(2*length))
+                new_y = last_point[1] + radius*math.sin(math.pi*i/(2*length))
                 self.track.append([new_x, new_y])
         if(direction == 1):
             last_point= self.track[-1]
-            for i in range(1,100,1):
-                new_x = last_point[0] + radius*math.sin(math.pi*i/(2*100))
-                new_y = last_point[1] - radius + radius*math.cos(math.pi*i/(2*100))
+            for i in range(1,length,1):
+                new_x = last_point[0] + radius*math.sin(math.pi*i/(2*length))
+                new_y = last_point[1] - radius + radius*math.cos(math.pi*i/(2*length))
                 self.track.append([new_x, new_y])
         if(direction == 2):
             last_point= self.track[-1]
-            for i in range(1,100,1):
-                new_x = last_point[0] - radius + radius*math.cos(math.pi*i/(2*100))
-                new_y = last_point[1] - radius*math.sin(math.pi*i/(2*100))
+            for i in range(1,length,1):
+                new_x = last_point[0] - radius + radius*math.cos(math.pi*i/(2*length))
+                new_y = last_point[1] - radius*math.sin(math.pi*i/(2*length))
                 self.track.append([new_x, new_y])
         if(direction == 3):
             last_point= self.track[-1]
-            for i in range(1,100,1):
-                new_x = last_point[0] - radius*math.sin(math.pi*i/(2*100))
-                new_y = last_point[1] + radius - radius*math.cos(math.pi*i/(2*100))
+            for i in range(1,length,1):
+                new_x = last_point[0] - radius*math.sin(math.pi*i/(2*length))
+                new_y = last_point[1] + radius - radius*math.cos(math.pi*i/(2*length))
                 self.track.append([new_x, new_y])
 
 
-    def add_left_turn(self, direction, radius):             
+    def add_left_turn(self, direction, radius):
+        length = 10             
         if(direction == 0):
             last_point = self.track[-1]
-            for i in range(1,100,1):
-                new_x = last_point[0] - radius + radius*math.cos(math.pi*i/(2*100))
-                new_y = last_point[1] + radius*math.sin(math.pi*i/(2*100))
+            for i in range(1,length,1):
+                new_x = last_point[0] - radius + radius*math.cos(math.pi*i/(2*length))
+                new_y = last_point[1] + radius*math.sin(math.pi*i/(2*length))
                 self.track.append([new_x, new_y])
         if(direction == 1):
             last_point = self.track[-1]
-            for i in range(1,100,1):
-                new_x = last_point[0] - radius*math.sin(math.pi*i/(2*100))
-                new_y = last_point[1] - radius + radius*math.cos(math.pi*i/(2*100))
+            for i in range(1,length,1):
+                new_x = last_point[0] - radius*math.sin(math.pi*i/(2*length))
+                new_y = last_point[1] - radius + radius*math.cos(math.pi*i/(2*length))
                 self.track.append([new_x, new_y])
         if(direction == 2):
             last_point= self.track[-1]
-            for i in range(1,100,1):
-                new_x = last_point[0] + radius - radius*math.cos(math.pi*i/(2*100))
-                new_y = last_point[1] - radius*math.sin(math.pi*i/(2*100))
+            for i in range(1,length,1):
+                new_x = last_point[0] + radius - radius*math.cos(math.pi*i/(2*length))
+                new_y = last_point[1] - radius*math.sin(math.pi*i/(2*length))
                 self.track.append([new_x, new_y])
         if(direction == 3):
             last_point= self.track[-1]
-            for i in range(1,100,1):
-                new_x = last_point[0] + radius*math.sin(math.pi*i/(2*100))
-                new_y = last_point[1] + radius - radius*math.cos(math.pi*i/(2*100))
+            for i in range(1,length,1):
+                new_x = last_point[0] + radius*math.sin(math.pi*i/(2*length))
+                new_y = last_point[1] + radius - radius*math.cos(math.pi*i/(2*length))
                 self.track.append([new_x, new_y])
 
     def simple_track(self):
