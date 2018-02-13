@@ -13,6 +13,7 @@ from cost_function import CostFunction
 from constraints import Constraints
 from scipy.optimize import minimize
 from scipy import interpolate
+from sympy.geometry import Line, Point, Circle, intersection
 
 class SimulationEnvironment():
         
@@ -60,16 +61,18 @@ class SimulationEnvironment():
         self.init_track()
         self.init_state_vector()
         self.mpc_key_counter = 0
-        self.init_mpc(6)
-   
+        self.init_mpc(4)
+        
+  
     
     def init_vehicle(self, dt):
         #load race_car image 
         raceCarImage = pygame.image.load("/home/weller/Bilder/race_car.jpg").convert()
-        self.surf = pygame.transform.scale(raceCarImage, (20, 17))
+        self.surf = pygame.transform.scale(raceCarImage, (20, 18))
+        self.surf_rect = self.surf.get_rect(center = (10,9))        
         self.vehicleModel = VehicleModel(dt)
     
-    
+
     def init_track(self):
         self.raceTrack = RaceTrack()
  
@@ -197,8 +200,6 @@ class SimulationEnvironment():
     def display_simulation_info(self, res):
         self.computation_time = pygame.time.get_ticks() - self.computation_time
         self.full_simulation_time = pygame.time.get_ticks() - self.simulation_time
-        textsurface = self.myfont.render('Speed: {0:.3f} km/h' .format(self.X0[2]*3.6), False, (255, 255, 255))        
-        self.screen.blit(textsurface,(020,930))
         textsurface = self.myfont.render('Solver: feasible: ' + repr(res.success) .format(self.X0[2]*3.6), False, (255, 255, 255))        
         self.screen.blit(textsurface,(020,900))
         textsurface = self.myfont.render('Solver: iterations: ' + repr(res.nit) .format(self.X0[2]*3.6), False, (255, 255, 255))        
@@ -214,6 +215,9 @@ class SimulationEnvironment():
         
 
     def display_car_info(self, acc_, steer):
+        textsurface = self.myfont.render('Speed: {0:.3f} km/h' .format(self.X0[2]*3.6), False, (255, 255, 255))        
+        self.screen.blit(textsurface,(020,930))
+ 
         acc = acc_
         rect = pygame.Rect(890,499,60, 2)
         self.screen.fill((255,255,255), rect)
@@ -233,15 +237,53 @@ class SimulationEnvironment():
             size_max = 150
             rect = pygame.Rect(900,500 ,40, int(size_max * tmp))
             self.screen.fill((int(tmp*255), 255 - int(255*tmp), 0), rect)
-            
+     
+       
+    def plot_track_bound_constraint(self, x):
+
+        arc = self.raceTrack.get_spline_arc_pos(x[0:2])
+        #left bound line
+        tck, u = self.raceTrack.get_spline_tck_bnds_left()
+        x,y = interpolate.splev(arc -0.014, tck ,der = 0)             
+        p1 = np.array([x, y])        
+        x,y = interpolate.splev(arc +0.014, tck ,der = 0)
+        p2 = np.array([x, y]) 
+        angle = np.arctan((p2[1] - p1[1])/(p2[0] - p1[0]))   
+        p3 = np.array([p1[0] + 5*np.cos(angle), p1[1] + 5 *np.sin(angle)])
+        p4 = np.array([p1[0] - 5*np.cos(angle), p1[1] - 5 *np.sin(angle)])
+        p4 = np.array([p4[0]*10 +150, -p4[1]*10 + 350])
+        p3 = np.array([p3[0]*10 +150, -p3[1]*10 + 350])
+        pygame.draw.line(self.screen, (255,0,0), p3 , p4, 2)
+
+        #right bound line
+        tck, u = self.raceTrack.get_spline_tck_bnds_right()
+        x,y = interpolate.splev(arc -0.004, tck ,der = 0)             
+        p1 = np.array([x, y])        
+        x,y = interpolate.splev(arc +0.004, tck ,der = 0)
+        p2 = np.array([x, y]) 
+        angle = np.arctan((p2[1] - p1[1])/(p2[0] - p1[0]))   
+        p3 = np.array([p1[0] + 5*np.cos(angle), p1[1] + 5 *np.sin(angle)])
+        p4 = np.array([p1[0] - 5*np.cos(angle), p1[1] - 5 *np.sin(angle)])
+        p4 = np.array([p4[0]*10 +150, -p4[1]*10 + 350])
+        p3 = np.array([p3[0]*10 +150, -p3[1]*10 + 350])
+        pygame.draw.line(self.screen, (255,0,0), p3 , p4, 2)
+
         
-    
+    def rotate(self, image, rect, angle):
+        """Rotate the image while keeping its center."""
+        # Rotate the original image without modifying it.
+        new_image = pygame.transform.rotate(image, angle)
+        # Get a new rect with the center of the old rect.
+        rect = new_image.get_rect(center=rect.center)
+        return new_image, rect    
+        
+        
     def simulate(self):
         while not self.loopSimDone:
             self.handle_keystrokes()
             #reset canvas
             self.screen.fill((0,0,0))
-            
+            rect = self.surf_rect
             if(not self.mpcActive):
                 self.plot_race_track()
                 self.plot_car_path()
@@ -251,10 +293,12 @@ class SimulationEnvironment():
                 self.display_car_info(self.X0[4], self.X0[5])
                 self.set_car_path()                
                 #rotate car picture                 
-                car_pic = pygame.transform.rotate(self.surf, self.X0[3] * 180/math.pi)
-                #offset position by 250 to set car on race_track if plottet
-                #print "x_position: " + repr(self.X0[0]) + "  y_position: " + repr(self.X0[1])
-                self.screen.blit(car_pic, (self.X0[0]*10 +150, - self.X0[1] *10 +350))
+                #car_pic = pygame.transform.rotate(self.surf, self.X0[3] * 180/math.pi)
+                pic, rect = self.rotate(self.surf, rect, self.X0[3] * 180/math.pi)
+                rect.center = [self.X0[0]*10 +150, - self.X0[1] *10 +350]
+                self.screen.blit(pic, rect)
+                
+
             else:
                 self.plot_race_track()
                 self.plot_car_path()
@@ -268,9 +312,7 @@ class SimulationEnvironment():
                 self.set_car_path()
                 self.display_car_info(res.x[4], res.x[5])
                 self.plot_predicted_path(res.x)
-                car_pic = pygame.transform.rotate(self.surf, self.X0[3] * 180/math.pi)
-   
-                #self.screen.blit(car_pic, (self.X0[0]*10 +150, - self.X0[1] *10 +350))
+                self.plot_track_bound_constraint(res.x)
                 self.display_simulation_info(res)
                 #used for calculation of median value for solver
                 self.simulation_steps = self.simulation_steps + 1
