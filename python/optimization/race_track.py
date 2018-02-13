@@ -10,114 +10,156 @@ This is a temporary script file.
 import numpy as np
 import math
 from matplotlib import pyplot as plt
-
+from scipy import interpolate
 
 
 class RaceTrack:
 
     def __init__(self):
         self.track = [[0, 0]]
-        self.track_bounds = [[0,0],[0,0]]
+        self.track_bounds = [[-2.5, 0, 2.5, 0]]
         self.track_width = 5
         self.simple_track()
         self.lastVehiclePosition = -1
 
-    def add_straight(self, direction, length = 10): #always add 10m
-        points_per_dmeter = 2
-        length = int(length) 
+    def add_straight(self, direction, length = 10.0): 
+        #always add 4 points per straight
         if(direction == 0): #upwards
             last_point = self.track[-1]
-            for i in range(0, (length * points_per_dmeter)/10 , 1):
-                new_x = last_point[0]
-                new_y = last_point[1] + 10.0/points_per_dmeter
-                self.track.append([new_x, new_y])
+            for i in range(1, 5, 1):
+                new_point = [last_point[0], last_point[1] + length/4.0]
+                self.track.append(new_point)
+                new_point_bnd_left = [last_point[0] - self.track_width/2.0, last_point[1] + length/4.0] 
+                new_point_bnd_right= [last_point[0] + self.track_width/2.0, last_point[1] + length/4.0] 
+                self.track_bounds.append([new_point_bnd_left[0], new_point_bnd_left[1], new_point_bnd_right[0], new_point_bnd_right[1]])
                 last_point = self.track[-1]
         if (direction == 1):  # right
             last_point = self.track[-1]
-            for i in range(0, (length*points_per_dmeter)/10 , 1):
-                new_point = [last_point[0] + 10.0/points_per_dmeter, last_point[1]]
+            for i in range(0, 4, 1):
+                new_point = [last_point[0] + length/4.0, last_point[1]]
                 self.track.append(new_point)
+                new_point_bnd_left = [last_point[0] + length/4.0, last_point[1] + self.track_width/2.0] 
+                new_point_bnd_right= [last_point[0] + length/4.0, last_point[1] - self.track_width/2.0] 
+                self.track_bounds.append([new_point_bnd_left[0], new_point_bnd_left[1], new_point_bnd_right[0], new_point_bnd_right[1]])
                 last_point = new_point
         if (direction == 2):  # downward
             last_point = self.track[-1]
-            for i in range(0, (length*points_per_dmeter)/10 , 1):
-                new_point = [last_point[0], last_point[1] - 10.0/points_per_dmeter]
+            for i in range(0, 4, 1):
+                new_point = [last_point[0], last_point[1] - length/4.0]
                 self.track.append(new_point)
+                new_point_bnd_left = [last_point[0] + self.track_width/2.0, last_point[1] - length/4.0] 
+                new_point_bnd_right= [last_point[0] - self.track_width/2.0, last_point[1] - length/4.0] 
+                self.track_bounds.append([new_point_bnd_left[0], new_point_bnd_left[1], new_point_bnd_right[0], new_point_bnd_right[1]])
                 last_point = new_point
         if (direction == 3):  # left
             last_point = self.track[-1]
-            for i in range(0, (length*points_per_dmeter)/10 , 1):
-                new_point = [last_point[0] - 10.0/points_per_dmeter, last_point[1]]
+            for i in range(0, 4, 1):
+                new_point = [last_point[0] - length/4.0, last_point[1]]
                 self.track.append(new_point)
+                new_point_bnd_left = [last_point[0] - length/4.0, last_point[1] - self.track_width/2.0] 
+                new_point_bnd_right= [last_point[0] - length/4.0, last_point[1] + self.track_width/2.0] 
+                self.track_bounds.append([new_point_bnd_left[0], new_point_bnd_left[1], new_point_bnd_right[0], new_point_bnd_right[1]])
                 last_point = new_point
 
     def add_right_turn(self, direction, radius):
-        length = 10
+        steps = np.arange(0.0, np.pi/2 + np.pi/8, np.pi/8)
+        radius_minus = radius - self.track_width/2.0
+        radius_plus = radius + self.track_width/2.0
         if(direction == 0):
             last_point= self.track[-1]
-            for i in range(1,length,1):
-                new_x = last_point[0] + radius - radius*math.cos(math.pi*i/(2*length))
-                new_y = last_point[1] + radius*math.sin(math.pi*i/(2*length))
+            for i in range(1,steps.__len__(),1):
+                new_x = last_point[0] + radius - radius*math.cos(steps[i])
+                new_y = last_point[1] + radius*math.sin(steps[i])
                 self.track.append([new_x, new_y])
+                new_point_bnd_left = [last_point[0] + radius - radius_plus * math.cos(steps[i]) , last_point[1] + radius_plus*math.sin(steps[i])] 
+                new_point_bnd_right= [last_point[0] + radius - radius_minus *math.cos(steps[i]) , last_point[1] + radius_minus*math.sin(steps[i])] 
+                self.track_bounds.append([new_point_bnd_left[0], new_point_bnd_left[1], new_point_bnd_right[0], new_point_bnd_right[1]])                        
         if(direction == 1):
             last_point= self.track[-1]
-            for i in range(1,length,1):
-                new_x = last_point[0] + radius*math.sin(math.pi*i/(2*length))
-                new_y = last_point[1] - radius + radius*math.cos(math.pi*i/(2*length))
+            for i in range(1,steps.__len__(),1):
+                new_x = last_point[0] + radius*math.sin(steps[i])
+                new_y = last_point[1] - radius + radius*math.cos(steps[i])
                 self.track.append([new_x, new_y])
+                new_point_bnd_left = [last_point[0] + radius_plus * math.sin(steps[i]) , last_point[1] -radius + radius_plus* math.cos(steps[i])] 
+                new_point_bnd_right= [last_point[0] + radius_minus *math.sin(steps[i]) , last_point[1] -radius + radius_minus*math.cos(steps[i])] 
+                self.track_bounds.append([new_point_bnd_left[0], new_point_bnd_left[1], new_point_bnd_right[0], new_point_bnd_right[1]])                
         if(direction == 2):
             last_point= self.track[-1]
-            for i in range(1,length,1):
-                new_x = last_point[0] - radius + radius*math.cos(math.pi*i/(2*length))
-                new_y = last_point[1] - radius*math.sin(math.pi*i/(2*length))
+            for i in range(1,steps.__len__(),1):
+                new_x = last_point[0] - radius + radius*math.cos(steps[i])
+                new_y = last_point[1] - radius*math.sin(steps[i])
                 self.track.append([new_x, new_y])
+                new_point_bnd_left = [last_point[0] - radius + radius_plus * math.cos(steps[i]) , last_point[1] - radius_plus*math.sin(steps[i])] 
+                new_point_bnd_right= [last_point[0] - radius + radius_minus *math.cos(steps[i]) , last_point[1] - radius_minus*math.sin(steps[i])] 
+                self.track_bounds.append([new_point_bnd_left[0], new_point_bnd_left[1], new_point_bnd_right[0], new_point_bnd_right[1]])                
         if(direction == 3):
             last_point= self.track[-1]
-            for i in range(1,length,1):
-                new_x = last_point[0] - radius*math.sin(math.pi*i/(2*length))
-                new_y = last_point[1] + radius - radius*math.cos(math.pi*i/(2*length))
+            for i in range(1,steps.__len__(),1):
+                new_x = last_point[0] - radius*math.sin(steps[i])
+                new_y = last_point[1] + radius - radius*math.cos(steps[i])
                 self.track.append([new_x, new_y])
+                new_point_bnd_left = [last_point[0] - radius_plus * math.sin(steps[i]) , last_point[1] + radius - radius_plus* math.cos(steps[i])] 
+                new_point_bnd_right= [last_point[0] - radius_minus *math.sin(steps[i]) , last_point[1] + radius - radius_minus*math.cos(steps[i])] 
+                self.track_bounds.append([new_point_bnd_left[0], new_point_bnd_left[1], new_point_bnd_right[0], new_point_bnd_right[1]])            
 
 
     def add_left_turn(self, direction, radius):
-        length = 10             
+        steps = np.arange(0.0, np.pi/2 + np.pi/8, np.pi/8)
+        radius_minus = radius - self.track_width/2.0
+        radius_plus = radius + self.track_width/2.0
         if(direction == 0):
             last_point = self.track[-1]
-            for i in range(1,length,1):
-                new_x = last_point[0] - radius + radius*math.cos(math.pi*i/(2*length))
-                new_y = last_point[1] + radius*math.sin(math.pi*i/(2*length))
+            for i in range(1,steps.__len__(),1):
+                new_x = last_point[0] - radius + radius*math.cos(steps[i])
+                new_y = last_point[1] + radius*math.sin(steps[i])
                 self.track.append([new_x, new_y])
+                new_point_bnd_left = [last_point[0] - radius + radius_minus*math.cos(steps[i]) , last_point[1] + radius_minus*math.sin(steps[i])] 
+                new_point_bnd_right= [last_point[0] - radius + radius_plus *math.cos(steps[i]) , last_point[1] + radius_plus *math.sin(steps[i])] 
+                self.track_bounds.append([new_point_bnd_left[0], new_point_bnd_left[1], new_point_bnd_right[0], new_point_bnd_right[1]])
         if(direction == 1):
             last_point = self.track[-1]
-            for i in range(1,length,1):
-                new_x = last_point[0] - radius*math.sin(math.pi*i/(2*length))
-                new_y = last_point[1] - radius + radius*math.cos(math.pi*i/(2*length))
+            for i in range(1,steps.__len__(),1):
+                new_x = last_point[0] - radius*math.sin(steps[i])
+                new_y = last_point[1] - radius + radius*math.cos(steps[i])
                 self.track.append([new_x, new_y])
+                new_point_bnd_left = [last_point[0] - radius_minus*math.sin(steps[i]) , last_point[1] - radius + radius_minus* math.cos(steps[i])] 
+                new_point_bnd_right= [last_point[0] - radius_plus *math.sin(steps[i]) , last_point[1] - radius + radius_plus *math.cos(steps[i])] 
+                self.track_bounds.append([new_point_bnd_left[0], new_point_bnd_left[1], new_point_bnd_right[0], new_point_bnd_right[1]])   
         if(direction == 2):
             last_point= self.track[-1]
-            for i in range(1,length,1):
-                new_x = last_point[0] + radius - radius*math.cos(math.pi*i/(2*length))
-                new_y = last_point[1] - radius*math.sin(math.pi*i/(2*length))
-                self.track.append([new_x, new_y])
+            for i in range(1,steps.__len__(),1):
+                new_x = last_point[0] + radius - radius*math.cos(steps[i])
+                new_y = last_point[1] - radius*math.sin(steps[i])
+                self.track.append([new_x, new_y])                
+                new_point_bnd_left = [last_point[0] + radius - radius_minus*math.cos(steps[i]) , last_point[1] - radius_minus*math.sin(steps[i])] 
+                new_point_bnd_right= [last_point[0] + radius - radius_plus *math.cos(steps[i]) , last_point[1] - radius_plus *math.sin(steps[i])] 
+                self.track_bounds.append([new_point_bnd_left[0], new_point_bnd_left[1], new_point_bnd_right[0], new_point_bnd_right[1]]) 
         if(direction == 3):
             last_point= self.track[-1]
-            for i in range(1,length,1):
-                new_x = last_point[0] + radius*math.sin(math.pi*i/(2*length))
-                new_y = last_point[1] + radius - radius*math.cos(math.pi*i/(2*length))
+            for i in range(1,steps.__len__(),1):
+                new_x = last_point[0] + radius*math.sin(steps[i])
+                new_y = last_point[1] + radius - radius*math.cos(steps[i])
                 self.track.append([new_x, new_y])
+                new_point_bnd_left = [last_point[0] + radius_minus *math.sin(steps[i]) , last_point[1] + radius - radius_minus*math.cos(steps[i])] 
+                new_point_bnd_right= [last_point[0] + radius_plus * math.sin(steps[i]) , last_point[1] + radius - radius_plus* math.cos(steps[i])] 
+                self.track_bounds.append([new_point_bnd_left[0], new_point_bnd_left[1], new_point_bnd_right[0], new_point_bnd_right[1]])        
 
     def simple_track(self):
         self.track = [[0, 0]]
+        self.track_bounds = [[-2.5, 0, 2.5, 0]]
         self.add_straight(0, 10)     
         self.add_right_turn(0, 10)
         self.add_right_turn(1, 10)
         self.add_straight(2, 10)
         self.add_right_turn(2, 10)
         self.add_right_turn(3, 10)
-        self.create_track_boundary()
+        self.create_spline_tck()
+        self.create_spline_tck_bnds_left()
+        self.create_spline_tck_bnds_right()
 
     def complex_track(self):
         self.track = [[0, 0]]
+        self.track_bounds = [[-2.5, 0, 2.5, 0]]
         self.add_straight(0)
         self.add_right_turn(0, 10)
         self.add_right_turn(1, 10)
@@ -132,7 +174,9 @@ class RaceTrack:
         self.add_straight(3)
         self.add_right_turn(3, 10)
         self.add_straight(0)
-        self.create_track_boundary()
+        self.create_spline_tck()
+        self.create_spline_tck_bnds_left()
+        self.create_spline_tck_bnds_right()
 
     def create_track_boundary(self):
         print "call to create_track_boundary"
@@ -149,16 +193,45 @@ class RaceTrack:
             self.track_bounds[i, :2] = np.array([b_l[0], b_l[1]])
             self.track_bounds[i, 2:] = np.array([b_r[0], b_r[1]])
 
-                        
+    def create_spline_tck(self):
+        tmp = np.array(self.track)
+        tmp = np.array([tmp[:,0], tmp[:, 1]])
+        self.tck = interpolate.splprep(tmp, s=0.1)      
+
+    def create_spline_tck_bnds_left(self):
+        tmp = np.array(self.track_bounds)
+        tmp = np.array([tmp[:,0], tmp[:, 1]])
+        self.tck_bnds_left = interpolate.splprep(tmp, s=0.1)                  
+    
+    def create_spline_tck_bnds_right(self):
+        tmp = np.array(self.track_bounds)
+        tmp = np.array([tmp[:,2], tmp[:, 3]])
+        self.tck_bnds_right = interpolate.splprep(tmp, s=0.1)                  
             
+
+    def get_spline_tck(self):
+        return self.tck
+        
+    def get_spline_tck_bnds_left(self):
+        return self.tck_bnds_left
+
+    def get_spline_tck_bnds_right(self):
+        return self.tck_bnds_right
+        
+        
     def plot_track(self):
         tmp = np.array(self.track)
         plt.plot(tmp[:,0], tmp[:,1])
-        #plt.plot(self.track_bounds[:,0], self.track_bounds[:,1])
         plt.show()
-    
+        
+    def plot_track_spline(self):
+        ti = np.linspace(0,1, 1000)
+        x = interpolate.splev(ti, self.tck[0], der=0)
+        plt.plot(x[0], x[1])
+        
     def plot_track_bounds(self): 
-        plt.plot(self.track_bounds[:,0], self.track_bounds[:,1])
+        tmp = np.array(self.track_bounds)        
+        plt.plot(tmp[:,0], tmp[:,1])
         plt.show()
 
     def print_track_bounds(self):

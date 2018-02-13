@@ -12,7 +12,7 @@ from race_track import RaceTrack
 from cost_function import CostFunction
 from constraints import Constraints
 from scipy.optimize import minimize
-
+from scipy import interpolate
 
 class SimulationEnvironment():
         
@@ -143,13 +143,17 @@ class SimulationEnvironment():
 
     def plot_race_track(self):
         if(self.plotTrack):
-            points = self.raceTrack.get_track_points()
-            bounds = self.raceTrack.get_track_bounds()
-            for i in range(0, points.__len__(), 1):
-                #offset position by 250 to set track more to the center of the screen 
-                #screen.set_at((int(points[i][0]*10 +150), -int(points[i][1]*10) +350), (125,125,125))                
-                self.screen.set_at((int(bounds[i][0]*10 +150), -int(bounds[i][1]*10) +350), (0,125,125))
-                self.screen.set_at((int(bounds[i][2]*10 +150), -int(bounds[i][3]*10) +350), (0,125,125))
+            tck_bounds_left = self.raceTrack.get_spline_tck_bnds_left()
+            tck_bounds_right = self.raceTrack.get_spline_tck_bnds_right()
+            if (self.raceTrack.get_track_points().__len__() > 50):
+                steps = np.arange(0, 1, 0.0001)
+            else:
+                steps = np.arange(0, 1, 0.001)                
+            bounds_left = interpolate.splev(steps, tck_bounds_left[0], der=0)
+            bounds_right = interpolate.splev(steps, tck_bounds_right[0], der=0)
+            for i in range(0, steps.__len__(), 1):              
+                self.screen.set_at((int(bounds_left[0][i]*10 +150), -int(bounds_left[1][i]*10) +350), (0,125,255))
+                self.screen.set_at((int(bounds_right[0][i]*10 +150), -int(bounds_right[1][i]*10) +350), (0,125,255))
 
 
     def plot_car_path(self):
@@ -205,14 +209,17 @@ class SimulationEnvironment():
         self.screen.blit(textsurface,(020,810))
         textsurface = self.myfont.render('Solver: median time to compute: ' + repr(self.full_simulation_time / self.simulation_steps) + "ms".format(self.X0[2]*3.6), False, (255, 255, 255))        
         self.screen.blit(textsurface,(020,780)) 
-        
+ 
         self.computation_time = pygame.time.get_ticks()
         
 
     def display_car_info(self, acc_, steer):
         acc = acc_
-        print acc
         rect = pygame.Rect(890,499,60, 2)
+        self.screen.fill((255,255,255), rect)
+        rect = pygame.Rect(890,649,60, 2)
+        self.screen.fill((255,255,255), rect)
+        rect = pygame.Rect(890,349,60, 2)
         self.screen.fill((255,255,255), rect)
         if(acc > 0):
             #norm acceleration to 1            

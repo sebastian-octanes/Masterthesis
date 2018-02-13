@@ -32,6 +32,7 @@ tmp = np.insert(tmp, 2, z, axis= 1)
 # X = np.array([x, y, z])
 # 
 #==============================================================================
+tmp = np.array(track)
 tmp = np.array([tmp[:,0], tmp[:, 1]])
 
 
