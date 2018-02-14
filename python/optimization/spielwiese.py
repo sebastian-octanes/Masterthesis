@@ -4,21 +4,45 @@ from scipy_advanced_bicycle import Optimization
 from vehicle_model import VehicleModel
 import numpy as np
 import math
+from scipy import interpolate
+from matplotlib import pyplot as plt
 
 
 
-track = RaceTrack()
-track.complex_track()
-track.plot_track()
-cost = CostFunction(track)
-cost.print_cost_func(2)
+
+
 #==============================================================================
 # 
-# vehicleModel = VehicleModel(0.1)
+# vehicleBoundPoints = np.empty([6,4, 2])
+# point = np.array([4, 5])
+# print point
+# vehicleBoundPoints[0][0] = point
+# print vehicleBoundPoints
 # 
-# opt = Optimization(track, cost, vehicleModel)
-# opt.optimize(5,30)
-# #opt.track.plot_track()
+# test = np.array([0,1,2,3,4,5,6,7,8,9])
+# print test[-2:]
+# 
+# 
+# 
+# track = RaceTrack()
+# 
+# tck, u = track.get_spline_tck()
+# ti = np.linspace(0,1, 400)
+# dxdt, dydt = interpolate.splev(ti, tck, der=1)
+# 
+# #track.plot_track_spline()
+# #plt.plot(dxdt, ti)
+# #plt.plot(dydt, ti)
+# #plt.plot(dxdt , ti)
+# #plt.show()
+# 
+# pos = (0.7, 25)
+# print track.distance_to_track_spline(pos)
+# 
 #==============================================================================
+p1 = (2, 5)
+p2 = (5, 2)
+x = (2, 2)
 
-
+d = (x[0]-p1[0]) * (p2[1] - p1[1]) - (x[1] - p1[1])*(p2[0]- p1[0])
+print d

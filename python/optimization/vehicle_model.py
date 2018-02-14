@@ -15,8 +15,6 @@ class VehicleModel:
     lb = 1.440    #width of car
     beta = 0.0    #slip angle
     gammaf = 0.0  #steering angle
-    t = 0.0    #time
-    Ftime = 20.0    #full simulation time
     A     = 2.5    #vehicle cross section
     FEngine = 4000   # 5000N for car
     mass    = 170   #kg
@@ -24,8 +22,8 @@ class VehicleModel:
     p       = 1.225  # air desity in kg/m^3
     A       = 2.0    #vehicle cross section
     Crr     = 0.014  #roll resistance coefficient
-    max_speed = 120/3.6 # 120km/h /3.6 = m/s
-    max_long_acc = 8.7   #m/s**2 longitudinal acceleration max
+    max_speed = 80/3.6 # 120km/h /3.6 = m/s
+    max_long_acc = 10   #m/s**2 longitudinal acceleration max
     max_long_dec = 10   #m/s**2 longitudinal deceleration max
     max_lat_acc = 20  # 2g lateral acceleration
     max_steering_angle = (30.0/180.0)*math.pi #
@@ -35,6 +33,7 @@ class VehicleModel:
     def __init__(self, dt_):
         self.dt = dt_
    
+    """ this compute_next_state function is used for the equality constraint as it does not limit the max_beta. max_beta will be limited with an inequality constraint"""
     def compute_next_state(self, current_state):
         x,y,v,orient,acc,steer = current_state
         Xnext = np.zeros(4)
@@ -45,7 +44,10 @@ class VehicleModel:
         Xnext[2] = v + acc * self.dt
         if(Xnext[2] > self.max_speed): Xnext[2] = self.max_speed
         return Xnext
-
+        
+        
+    """ use this function to compute the next state in the simulation environment only! here the max_beta will be limited in the function hence it is not usable for the mpc controller.
+        use compute_next_state for the mpc controller"""
     def compute_next_state_(self, current_state):
         x,y,v,orient,acc,steer = current_state
         
@@ -115,6 +117,8 @@ class VehicleModel:
     
     def set_dt(self, dt_):
         self.dt = dt_
+    def get_dt(self):
+        return self.dt
         
     def rotate(self, origin, point, angle):
         """
