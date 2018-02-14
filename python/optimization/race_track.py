@@ -120,6 +120,32 @@ class RaceTrack:
         self.arc_pos = indx/400.0
         return self.arc_pos
 
+    def get_bnd_left_spline_arc_pos(self, pos):
+        ti = np.linspace(0,1, 400)
+        x,y = interpolate.splev(ti, self.tck_bnds_left[0], der=0)
+        indx = 0
+        smallest = float("inf")       
+        for i in range (0, 400, 1):
+            dist = math.sqrt((x[i] - pos[0])**2 + (y[i] - pos[1])**2) 
+            if dist < smallest:
+                smallest = dist
+                indx = i
+        self.arc_pos = indx/400.0
+        return self.arc_pos
+
+    def get_bnd_right_spline_arc_pos(self, pos):
+        ti = np.linspace(0,1, 400)
+        x,y = interpolate.splev(ti, self.tck_bnds_right[0], der=0)
+        indx = 0
+        smallest = float("inf")       
+        for i in range (0, 400, 1):
+            dist = math.sqrt((x[i] - pos[0])**2 + (y[i] - pos[1])**2) 
+            if dist < smallest:
+                smallest = dist
+                indx = i
+        self.arc_pos = indx/400.0
+        return self.arc_pos
+
     def distance_to_track_spline_tracked(self, pos):
         arc = self.arc_pos 
         indx = 0

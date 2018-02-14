@@ -48,8 +48,8 @@ class CostFunction:
         cost = 0.0
         for i in range(0,n,1):
             pos = [x[i*6], x[i*6+1]]
-            cost = cost + self.track.distance_to_track(pos)
-            cost = cost + 0.4 - 0.4 * x[i*6 +2]/34.0 
+            #cost = cost + self.track.distance_to_track(pos)
+            cost = cost + 0.3 - 0.3 * x[i*6 +2]/34.0 
         return cost
     
     

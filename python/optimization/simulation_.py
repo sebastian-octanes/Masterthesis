@@ -60,7 +60,7 @@ class SimulationEnvironment():
         self.init_track()
         self.init_state_vector()
         self.mpc_key_counter = 0
-        self.init_mpc(6)
+        self.init_mpc(17)
         
   
     
@@ -93,15 +93,18 @@ class SimulationEnvironment():
         self.bnds = self.vehicleModel.get_bounds(N)
         self.init_state_vector(N, [0, 0, 0, math.pi/2, 0, 0])
         self.constraints = Constraints(self.X0[:4], self.vehicleModel, self.raceTrack)
+        self.constraints.ineq_constraint_vehicle_bounds_set_tangent_points(self.X0)
         self.cons =({'type': 'eq', 'fun': self.constraints.constraint_fix_init_state}, 
                     {'type': 'eq', 'fun': self.constraints.constraint_vehicle_model},
-                    {'type': 'ineq', 'fun': self.constraints.ineq_constraint_vehicle_model})    
+                    {'type': 'ineq', 'fun': self.constraints.ineq_constraint_vehicle_model},
+                    {'type': 'ineq', 'fun': self.constraints.ineq_constraint_vehicle_bounds})    
         self.computation_time = pygame.time.get_ticks()
         self.simulation_time = pygame.time.get_ticks()
         self.simulation_steps = 1
 
     def reset_car_position(self):
             self.X0[:6] = [0, 0, 0, math.pi/2, 0, 0]
+            self.X0[6:] = 0
             self.carPath = []
             self.carPath.append([self.X0[0], self.X0[1], self.X0[2]])
         
@@ -168,17 +171,16 @@ class SimulationEnvironment():
     def plot_predicted_path(self, x):
         n = x.size/6   
         for i in range (0, n, 1):
-                        
             self.screen.set_at((int(x[i*6]*10 +150), -int(x[i*6 +1]*10) +350), (255,0,255))
             
     def set_car_path(self):
         if(not self.mpcActive):
-            if(self.carPath.__len__() >= 500):
+            if(self.carPath.__len__() >= 1000):
                 self.carPath.pop(0)
             if(math.sqrt((self.X0[0] - self.carPath[-1][0])**2 + (self.X0[1] - self.carPath[-1][1])**2) > 0.2):
                 self.carPath.append([self.X0[0], self.X0[1], self.X0[2]])
         else:
-            if(self.carPath.__len__() >= 500):
+            if(self.carPath.__len__() >= 1000):
                 self.carPath.pop(0)
             self.carPath.append([self.X0[0], self.X0[1], self.X0[2]])            
               
@@ -236,36 +238,58 @@ class SimulationEnvironment():
             size_max = 150
             rect = pygame.Rect(900,500 ,40, int(size_max * tmp))
             self.screen.fill((int(tmp*255), 255 - int(255*tmp), 0), rect)
+            
+        rect = pygame.Rect(700,700,2, 50)
+        self.screen.fill((255,255,255), rect)
+        rect = pygame.Rect(800,700,2, 50)
+        self.screen.fill((255,255,255), rect)
+        rect = pygame.Rect(900,700,2, 50)
+        self.screen.fill((255,255,255), rect)
+        if(steer < 0):
+            #norm acceleration to 1            
+            tmp = - steer / self.vehicleModel.get_max_steer_angle()
+            size_max = 100
+            rect = pygame.Rect(800, 710 , int(size_max * tmp) ,30)
+            self.screen.fill((int(tmp*255), 255 - int(255*tmp) , 0), rect)
+        else:
+            #norm acceleration to 1            
+            tmp =  steer / self.vehicleModel.get_max_steer_angle()
+            size_max = 100
+            rect = pygame.Rect(800 - int(size_max * tmp), 710, int(size_max * tmp), 30)
+            self.screen.fill((int(tmp*255), 255 - int(255*tmp), 0), rect)
+            
      
        
-    def plot_track_bound_constraint(self, x):
-
-        arc = self.raceTrack.get_spline_arc_pos(x[0:2])
-        #left bound line
-        tck, u = self.raceTrack.get_spline_tck_bnds_left()
-        x,y = interpolate.splev(arc -0.004, tck ,der = 0)             
-        p1 = np.array([x, y])        
-        x,y = interpolate.splev(arc +0.004, tck ,der = 0)
-        p2 = np.array([x, y]) 
-        angle = np.arctan((p2[1] - p1[1])/(p2[0] - p1[0]))   
-        p3 = np.array([p1[0] + 5*np.cos(angle), p1[1] + 5 *np.sin(angle)])
-        p4 = np.array([p1[0] - 5*np.cos(angle), p1[1] - 5 *np.sin(angle)])
-        p4 = np.array([p4[0]*10 +150, -p4[1]*10 + 350])
-        p3 = np.array([p3[0]*10 +150, -p3[1]*10 + 350])
-        pygame.draw.line(self.screen, (255,0,0), p3 , p4, 2)
-
-        #right bound line
-        tck, u = self.raceTrack.get_spline_tck_bnds_right()
-        x,y = interpolate.splev(arc -0.004, tck ,der = 0)             
-        p1 = np.array([x, y])        
-        x,y = interpolate.splev(arc +0.004, tck ,der = 0)
-        p2 = np.array([x, y]) 
-        angle = np.arctan((p2[1] - p1[1])/(p2[0] - p1[0]))   
-        p3 = np.array([p1[0] + 5*np.cos(angle), p1[1] + 5 *np.sin(angle)])
-        p4 = np.array([p1[0] - 5*np.cos(angle), p1[1] - 5 *np.sin(angle)])
-        p4 = np.array([p4[0]*10 +150, -p4[1]*10 + 350])
-        p3 = np.array([p3[0]*10 +150, -p3[1]*10 + 350])
-        pygame.draw.line(self.screen, (255,0,0), p3 , p4, 2)
+    def plot_track_bound_constraint(self, X):
+        N = X.size/6
+        for i in range(0, N, 5):
+            arc = self.raceTrack.get_bnd_left_spline_arc_pos(X[i*6:i*6 + 2])
+            #left bound line
+            tck, u = self.raceTrack.get_spline_tck_bnds_left()
+            x,y = interpolate.splev(arc -0.004, tck ,der = 0)             
+            p1 = np.array([x, y])        
+            x,y = interpolate.splev(arc +0.004, tck ,der = 0)
+            p2 = np.array([x, y]) 
+            angle = np.arctan((p2[1] - p1[1])/(p2[0] - p1[0]))   
+            p3 = np.array([p1[0] + 7*np.cos(angle), p1[1] + 7 *np.sin(angle)])
+            p4 = np.array([p1[0] - 7*np.cos(angle), p1[1] - 7 *np.sin(angle)])
+            p4 = np.array([p4[0]*10 +150, -p4[1]*10 + 350])
+            p3 = np.array([p3[0]*10 +150, -p3[1]*10 + 350])
+            pygame.draw.line(self.screen, (255,0,0), p3 , p4, 1)
+    
+            #right bound line
+            arc = self.raceTrack.get_bnd_right_spline_arc_pos(X[i*6: i*6 + 2])
+            tck, u = self.raceTrack.get_spline_tck_bnds_right()
+            x,y = interpolate.splev(arc -0.004, tck ,der = 0)             
+            p1 = np.array([x, y])        
+            x,y = interpolate.splev(arc +0.004, tck ,der = 0)
+            p2 = np.array([x, y]) 
+            angle = np.arctan((p2[1] - p1[1])/(p2[0] - p1[0]))   
+            p3 = np.array([p1[0] + 7*np.cos(angle), p1[1] + 7 *np.sin(angle)])
+            p4 = np.array([p1[0] - 7*np.cos(angle), p1[1] - 7 *np.sin(angle)])
+            p4 = np.array([p4[0]*10 +150, -p4[1]*10 + 350])
+            p3 = np.array([p3[0]*10 +150, -p3[1]*10 + 350])
+            pygame.draw.line(self.screen, (255,0,0), p3 , p4, 1)
 
         
     def rotate(self, image, rect, angle):
@@ -306,10 +330,8 @@ class SimulationEnvironment():
                 self.X0[0:4] = self.vehicleModel.compute_next_state_(res.x[0:6])
                 #shift the state vector one step to the left and predict last step for constraint handling
                 self.X0[4:-6] = res.x[10:]
-                self.X0[-6:] = 0
                 self.X0[-6:-2] = self.vehicleModel.compute_next_state_(self.X0[-12:-6])
                 self.constraints.ineq_constraint_vehicle_bounds_set_tangent_points(self.X0)
-                self.constraints.ineq_constraint_vehicle_bounds(self.X0)
                 #print self.constraints.ineq_constraint_vehicle_bounds(self.X0)
                                                
                 #self.raceTrack.set_new_vehicle_positon(self.X0[0:2])
