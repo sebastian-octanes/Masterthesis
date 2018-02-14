@@ -60,7 +60,7 @@ class SimulationEnvironment():
         self.init_track()
         self.init_state_vector()
         self.mpc_key_counter = 0
-        self.init_mpc(17)
+        self.init_mpc(20)
         
   
     
@@ -70,6 +70,7 @@ class SimulationEnvironment():
         self.surf = pygame.transform.scale(raceCarImage, (20, 18))
         self.surf_rect = self.surf.get_rect(center = (10,9))        
         self.vehicleModel = VehicleModel(dt)
+
     
 
     def init_track(self):
@@ -87,11 +88,12 @@ class SimulationEnvironment():
        
         
     def init_mpc(self, N):
-        self.init_vehicle(0.1)        
+        #self.init_vehicle(0.1)        
         self.init_track()        
         self.costFunction = CostFunction(self.raceTrack)
         self.bnds = self.vehicleModel.get_bounds(N)
         self.init_state_vector(N, [0, 0, 0, math.pi/2, 0, 0])
+        print self.vehicleModel.get_dt()
         self.constraints = Constraints(self.X0[:4], self.vehicleModel, self.raceTrack)
         self.constraints.ineq_constraint_vehicle_bounds_set_tangent_points(self.X0)
         self.cons =({'type': 'eq', 'fun': self.constraints.constraint_fix_init_state}, 
@@ -129,6 +131,7 @@ class SimulationEnvironment():
                 else:                   self.raceTrack.simple_track()
             if pressed[pygame.K_m]:                
                 if(self.mpc_key_counter == 0):
+                    self.vehicleModel.set_dt(0.1)
                     self.mpc_key_counter = self.mpc_key_counter + 1
                     self.timer_key_select = pygame.time.get_ticks()                
                     self.mpcActive = not self.mpcActive
@@ -262,7 +265,7 @@ class SimulationEnvironment():
        
     def plot_track_bound_constraint(self, X):
         N = X.size/6
-        for i in range(0, N, 5):
+        for i in range(0, N, 3):
             arc = self.raceTrack.get_bnd_left_spline_arc_pos(X[i*6:i*6 + 2])
             #left bound line
             tck, u = self.raceTrack.get_spline_tck_bnds_left()
@@ -344,6 +347,10 @@ class SimulationEnvironment():
                 self.display_simulation_info(res)
                 #used for calculation of median value for solver
                 self.simulation_steps = self.simulation_steps + 1
+                #plot racecar
+                pic, rect = self.rotate(self.surf, rect, self.X0[3] * 180/math.pi)
+                rect.center = [self.X0[0]*10 +150, - self.X0[1] *10 +350]
+                self.screen.blit(pic, rect)
                 
             self.display_menu()
             #render new picture
