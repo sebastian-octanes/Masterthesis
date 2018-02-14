@@ -154,8 +154,7 @@ class RaceTrack:
             dist = math.sqrt((x[i] - pos[0])**2 + (y[i] - pos[1])**2) 
             if dist < smallest:
                 smallest = dist
-                indx = i
-                
+                indx = i             
                 
         x,y = interpolate.splev(indx/400.0 -0.001, self.tck[0] ,der = 0)             
         p1 = np.array([x, y])        

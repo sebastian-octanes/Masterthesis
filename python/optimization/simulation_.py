@@ -13,7 +13,6 @@ from cost_function import CostFunction
 from constraints import Constraints
 from scipy.optimize import minimize
 from scipy import interpolate
-from sympy.geometry import Line, Point, Circle, intersection
 
 class SimulationEnvironment():
         
@@ -61,7 +60,7 @@ class SimulationEnvironment():
         self.init_track()
         self.init_state_vector()
         self.mpc_key_counter = 0
-        self.init_mpc(4)
+        self.init_mpc(6)
         
   
     
@@ -93,7 +92,7 @@ class SimulationEnvironment():
         self.costFunction = CostFunction(self.raceTrack)
         self.bnds = self.vehicleModel.get_bounds(N)
         self.init_state_vector(N, [0, 0, 0, math.pi/2, 0, 0])
-        self.constraints = Constraints(self.X0[:4], self.vehicleModel)
+        self.constraints = Constraints(self.X0[:4], self.vehicleModel, self.raceTrack)
         self.cons =({'type': 'eq', 'fun': self.constraints.constraint_fix_init_state}, 
                     {'type': 'eq', 'fun': self.constraints.constraint_vehicle_model},
                     {'type': 'ineq', 'fun': self.constraints.ineq_constraint_vehicle_model})    
@@ -244,9 +243,9 @@ class SimulationEnvironment():
         arc = self.raceTrack.get_spline_arc_pos(x[0:2])
         #left bound line
         tck, u = self.raceTrack.get_spline_tck_bnds_left()
-        x,y = interpolate.splev(arc -0.014, tck ,der = 0)             
+        x,y = interpolate.splev(arc -0.004, tck ,der = 0)             
         p1 = np.array([x, y])        
-        x,y = interpolate.splev(arc +0.014, tck ,der = 0)
+        x,y = interpolate.splev(arc +0.004, tck ,der = 0)
         p2 = np.array([x, y]) 
         angle = np.arctan((p2[1] - p1[1])/(p2[0] - p1[0]))   
         p3 = np.array([p1[0] + 5*np.cos(angle), p1[1] + 5 *np.sin(angle)])
@@ -302,11 +301,18 @@ class SimulationEnvironment():
             else:
                 self.plot_race_track()
                 self.plot_car_path()
-                res = minimize(self.costFunction.cost_dist_track_speed, self.X0, method ='SLSQP', bounds = self.bnds, constraints= self.cons)
+                res = minimize(self.costFunction.cost_dist_track_speed, self.X0, method ='SLSQP', bounds = self.bnds, constraints= self.cons)               
                 #compute movement of car later on real hardware this is piped to the actuators 
                 self.X0[0:4] = self.vehicleModel.compute_next_state_(res.x[0:6])
+                #shift the state vector one step to the left and predict last step for constraint handling
+                self.X0[4:-6] = res.x[10:]
+                self.X0[-6:] = 0
+                self.X0[-6:-2] = self.vehicleModel.compute_next_state_(self.X0[-12:-6])
+                self.constraints.ineq_constraint_vehicle_bounds_set_tangent_points(self.X0)
+                self.constraints.ineq_constraint_vehicle_bounds(self.X0)
+                #print self.constraints.ineq_constraint_vehicle_bounds(self.X0)
+                                               
                 #self.raceTrack.set_new_vehicle_positon(self.X0[0:2])
-                #self.X0[6:] = res.x[12:]                
                 #set new init_state for constraint                
                 self.constraints.set_initial_state(self.X0[0:4])                
                 self.set_car_path()

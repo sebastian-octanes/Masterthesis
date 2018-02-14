@@ -1,11 +1,14 @@
 import numpy as np
+from scipy import interpolate
 
 
 class Constraints:
         
-    def __init__(self, initState_, vehicleModel_ ):
+    def __init__(self, initState_, vehicleModel_ , raceTrack_):
         self.vehicleModel = vehicleModel_
         self.initState = initState_
+        self.raceTrack = raceTrack_
+       
             
     def set_initial_state(self, initState_):
         self.initState = initState_
@@ -26,6 +29,7 @@ class Constraints:
         #return an array of 0= Xnext_state - model(Xnow_state)	
         return ceq
 
+    """ineq constraints always have to be positive"""    
     def ineq_constraint_vehicle_model(self, x):
         N = x.size/6 -1
         ineq = np.zeros(N*2)
@@ -35,5 +39,48 @@ class Constraints:
             ineq[i*2] = -beta + beta_max
             ineq[i*2 +1] = beta + beta_max
         return ineq
+    
         
+    
+    def ineq_constraint_vehicle_bounds_set_tangent_points(self, X0):
+        N = X0.size/6
+        self.vehicleBoundPoints = np.empty([N, 4, 2])
+        for i in range(0,N,1):
+            p1 = np.array([X0[6], X0[6*i +1]])
+            arc = self.raceTrack.get_spline_arc_pos(p1)
+            tck, u = self.raceTrack.get_spline_tck_bnds_left()
+            
+            #left bound           
+            x,y = interpolate.splev(arc -0.004, tck ,der = 0)             
+            p1 = np.array([x, y])        
+            x,y = interpolate.splev(arc +0.004, tck ,der = 0)
+            p2 = np.array([x, y]) 
+            self.vehicleBoundPoints[i][0] = p1            
+            self.vehicleBoundPoints[i][1] = p2            
+
+            #right bound
+            tck, u = self.raceTrack.get_spline_tck_bnds_right()
+            x,y = interpolate.splev(arc -0.004, tck ,der = 0)             
+            p1 = np.array([x, y])        
+            x,y = interpolate.splev(arc +0.004, tck ,der = 0)
+            p2 = np.array([x, y]) 
+            self.vehicleBoundPoints[i][2] = p1            
+            self.vehicleBoundPoints[i][3] = p2
+            
         
+    def ineq_constraint_vehicle_bounds(self, X):
+        N = X.size/6 
+        ineq = np.zeros(N*2)
+        for i in range(0,N -1,1):
+            x = np.array([ X[i*6], X[i*6 + 1]])
+            #left bound: if point is right of left bound d = positive
+            p1 = self.vehicleBoundPoints[i][0]            
+            p2 = self.vehicleBoundPoints[i][1]
+            #d = (x[0]-p1[0]) * (p2[1] - p1[1]) - (x[1] - p1[1])*(p2[0]- p1[0])
+            ineq[i*2] = (x[0]-p1[0]) * (p2[1] - p1[1]) - (x[1] - p1[1]) * (p2[0]- p1[0])            
+            #right bound: if point is left of right bound d = negative keep in mind that this is only true as long the points are kpet in the same order
+            p1 = self.vehicleBoundPoints[i][2]            
+            p2 = self.vehicleBoundPoints[i][3] 
+            ineq[i*2 +1] = -( (x[0]-p1[0]) * (p2[1] - p1[1]) - (x[1] - p1[1])*(p2[0]- p1[0]) )
+        return ineq
+      
