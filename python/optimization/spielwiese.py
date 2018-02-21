@@ -12,21 +12,34 @@ from matplotlib import pyplot as plt
 from casadi import *
 
 
+def cost_dist_(X):
+    N = 2
+    cost = 0
+    for i in range (0, N, 1):   
+        cost = cost +  x[0]**2 + x[1]**2
+    return cost
+
+#==============================================================================
+# def bnds(x):
+#     for i in range(0, N, 1):
+#         
+#==============================================================================
 
 
 
 opti = casadi.Opti()
-x = opti.variable(2)
+x = opti.variable(4)
 #const = lambda x : x[2] + (1-x[0])**2 - x[1]
 
 const = lambda x : x[0]+x[1]-10
-opti.subject_to(const(x) >= 2)
+opti.subject_to(const(x) == 2)
 
-opti.subject_to(x[0] >= 9)
+#opti.subject_to(x[0] >= 9)
+opti.subject_to(opti.bounded(0, x[0:4:2], 4))
 
 min_f = lambda x: x[0]**2 + x[1]**2
 #min_f = lambda x: x[0]**2 + 100*x[2]**2
-opti.minimize(min_f(x))
+opti.minimize(cost_dist_(x))
 opti.solver('ipopt')
 sol = opti.solve()
 print sol.value(x)
