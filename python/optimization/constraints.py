@@ -84,4 +84,24 @@ class Constraints:
             p2 = self.vehicleBoundPoints[i][3] 
             ineq[i*2 +1] = -( (x[0]-p1[0]) * (p2[1] - p1[1]) - (x[1] - p1[1])*(p2[0]- p1[0]) )
         return ineq
-      
+     
+     
+    def ineq_const_track_bounds_cassadi(self, x, opti):
+        N = x.size1()/6
+        p = opti.parameter(N,8)
+        for i in range(N):
+            p1 = p[2*N,0:2]
+            p2 = p[2*N +1, 2:4]
+            ineq = (x[0]-p1[0]) * (p2[1] - p1[1]) - (x[1] - p1[1]) * (p2[0]- p1[0])      
+            opti.subject(ineq >= 0)
+            p1 = p[2*N, 4:6]
+            p2 = p[2*N +1, 6:8]
+            ineq = (x[0]-p1[0]) * (p2[1] - p1[1]) - (x[1] - p1[1])*(p2[0]- p1[0])
+            opti.subject(ineq <= 0)
+    
+    def ineq_const_track_cassadi_update_p(self, x, opti):
+        N = x.size1()/6        
+        for i in range(N):
+            ar = [self.vehicleBoundPoints[i][0][0], self.vehicleBoundPoints[i][0][1], self.vehicleBoundPoints[i][1][0], self.vehicleBoundPoints[i][1][1],
+                  self.vehicleBoundPoints[i][2][0], self.vehicleBoundPoints[i][2][1], self.vehicleBoundPoints[i][3][0], self.vehicleBoundPoints[i][3][1]]
+            opti.set_value(p[i,:],ar)

@@ -7,6 +7,7 @@ Created on Thu Jan  4 16:48:35 2018
 
 import numpy as np
 import math
+from casadi import *
 
 class VehicleModel:
     
@@ -44,7 +45,15 @@ class VehicleModel:
         Xnext[2] = v + acc * self.dt
         if(Xnext[2] > self.max_speed): Xnext[2] = self.max_speed
         return Xnext
-        
+   
+    def vehicle_model_cassadi(self, x):
+        for k in range(N):
+            beta = np.arctan((self.lr/(self.lf +self.lr)) * tan(x[k * 6 + 5]))
+            x[(k+1)*6 + 0] = x[k*6 + 0] + x[k*6 +2] * dt * cos(x[k*6 + 3] + beta)
+            x[(k+1)*6 + 1] = x[k*6 + 1] + x[k*6 +2] * dt * sin(x[k*6 + 3] + beta)
+            x[(k+1)*6 + 2] = x[k*6 + 2] + x[k*6 +4] * dt 
+            x[(k+1)*6 + 3] = x[k*6 +3] + (x[k*6 +2]*dt/lr) * sin(beta)
+  
         
     """ use this function to compute the next state in the simulation environment only! here the max_beta will be limited in the function hence it is not usable for the mpc controller.
         use compute_next_state for the mpc controller"""
