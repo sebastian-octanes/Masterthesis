@@ -85,6 +85,10 @@ class VehicleModel:
                 (-self.max_steering_angle, self.max_steering_angle))*(N + 1)
         return bnds    
      
+    def set_bounds(self, x, opti):
+        opti.subject_to(opti.bounded(vmin, x[2::6], vmax))
+        opti.subject_to(opti.bounded(-9, x[4::6], 9))
+        opti.subject_to(opti.bounded(psimin, x[5::6], psimax))
    
     def get_max_steer_angle(self):
         return self.max_steering_angle

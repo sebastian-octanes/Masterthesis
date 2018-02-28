@@ -86,7 +86,7 @@ class Constraints:
         return ineq
      
      
-    def ineq_const_track_bounds_cassadi(self, x, opti):
+    def ineq_const_track_bounds_casadi(self, x, opti):
         N = x.size1()/6
         p = opti.parameter(N,8)
         for i in range(N):
@@ -99,7 +99,7 @@ class Constraints:
             ineq = (x[0]-p1[0]) * (p2[1] - p1[1]) - (x[1] - p1[1])*(p2[0]- p1[0])
             opti.subject(ineq <= 0)
     
-    def ineq_const_track_cassadi_update_p(self, x, opti):
+    def ineq_const_track_casadi_update_p(self, x, opti):
         N = x.size1()/6        
         for i in range(N):
             ar = [self.vehicleBoundPoints[i][0][0], self.vehicleBoundPoints[i][0][1], self.vehicleBoundPoints[i][1][0], self.vehicleBoundPoints[i][1][1],
