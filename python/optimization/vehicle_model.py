@@ -23,7 +23,7 @@ class VehicleModel:
     p       = 1.225  # air desity in kg/m^3
     A       = 2.0    #vehicle cross section
     Crr     = 0.014  #roll resistance coefficient
-    max_speed = 80/3.6 # 120km/h /3.6 = m/s
+    max_speed = 30/3.6 # 120km/h /3.6 = m/s
     max_long_acc = 10   #m/s**2 longitudinal acceleration max
     max_long_dec = 10   #m/s**2 longitudinal deceleration max
     max_lat_acc = 20  # 2g lateral acceleration
@@ -47,12 +47,13 @@ class VehicleModel:
         return Xnext
    
     def vehicle_model_cassadi(self, x):
-        for k in range(N):
-            beta = np.arctan((self.lr/(self.lf +self.lr)) * tan(x[k * 6 + 5]))
-            x[(k+1)*6 + 0] = x[k*6 + 0] + x[k*6 +2] * dt * cos(x[k*6 + 3] + beta)
-            x[(k+1)*6 + 1] = x[k*6 + 1] + x[k*6 +2] * dt * sin(x[k*6 + 3] + beta)
-            x[(k+1)*6 + 2] = x[k*6 + 2] + x[k*6 +4] * dt 
-            x[(k+1)*6 + 3] = x[k*6 +3] + (x[k*6 +2]*dt/lr) * sin(beta)
+        N = x.size1()/6
+        for k in range(N-1):
+            beta = arctan((self.lr/(self.lf +self.lr)) * tan(x[k * 6 + 5]))
+            x[(k+1)*6 + 0] = x[k*6 + 0] + x[k*6 +2] * self.dt * cos(x[k*6 + 3] + beta)
+            x[(k+1)*6 + 1] = x[k*6 + 1] + x[k*6 +2] * self.dt * sin(x[k*6 + 3] + beta)
+            x[(k+1)*6 + 2] = x[k*6 + 2] + x[k*6 +4] * self.dt 
+            x[(k+1)*6 + 3] = x[k*6 + 3] +(x[k*6 +2]*self.dt/self.lr) * sin(beta)
   
         
     """ use this function to compute the next state in the simulation environment only! here the max_beta will be limited in the function hence it is not usable for the mpc controller.
@@ -85,10 +86,10 @@ class VehicleModel:
                 (-self.max_steering_angle, self.max_steering_angle))*(N + 1)
         return bnds    
      
-    def set_bounds(self, x, opti):
-        opti.subject_to(opti.bounded(vmin, x[2::6], vmax))
-        opti.subject_to(opti.bounded(-9, x[4::6], 9))
-        opti.subject_to(opti.bounded(psimin, x[5::6], psimax))
+    def set_bounds_casadi(self, x, opti):
+        opti.subject_to(opti.bounded(0, x[2::6], self.max_speed))
+        opti.subject_to(opti.bounded(- self.max_long_dec, x[4::6], self.max_long_acc))
+        opti.subject_to(opti.bounded(-self.max_steering_angle, x[5::6], self.max_steering_angle))
    
     def get_max_steer_angle(self):
         return self.max_steering_angle

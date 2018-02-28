@@ -232,7 +232,7 @@ init_model_state = opti.parameter(4)
 init_m = [2.0, 1.0, 0.1, math.pi/2]
 opti.set_value(init_model_state, init_m)
 opti.subject_to(x[0:4] == init_model_state[0:4])
-opti.subject_to(x[4:6] == [0, 0])
+
 
 
 #==============================================================================
