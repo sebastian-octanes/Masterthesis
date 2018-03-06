@@ -11,52 +11,98 @@ from matplotlib import pyplot as plt
 
 from casadi import *
 
+# ---- vehicle model ----
+lf = 0.9 
+lr = 0.640  
+lb = 1.440    
+dt = 0.05
+max_lat_acc = 20
+vmax = 30 # m/s
+vmin = 0  # no driving backwards
+psimin = -(30.0/180)*math.pi #in rad
+psimax = (30.0/180)*math.pi #in rad
+
+
 
 def cost_dist_(X):
-    N = 2
     cost = 0
-    for i in range (0, N, 1):   
-        cost = cost +  x[0]**2 + x[1]**2
+    N = 1
+    for i in range(N):
+        cost = cost = cost + 0.3 - 0.3 * x[i*6 +2]/34.0 
     return cost
 
-#==============================================================================
-# def bnds(x):
-#     for i in range(0, N, 1):
-#         
-#==============================================================================
+N = 1
+
+#control
+u = MX.sym('u', 2*N)
+#States
+x = MX.sym("x", 4*N)
 
 
-
-opti = casadi.Opti()
-x = opti.variable(4)
-#const = lambda x : x[2] + (1-x[0])**2 - x[1]
-
-const = lambda x : x[0]+x[1]-10
-opti.subject_to(const(x) == 2)
-
-#opti.subject_to(x[0] >= 9)
-opti.subject_to(opti.bounded(0, x[0:4:2], 4))
-
-min_f = lambda x: x[0]**2 + x[1]**2
-#min_f = lambda x: x[0]**2 + 100*x[2]**2
-opti.minimize(cost_dist_(x))
-opti.solver('ipopt')
-sol = opti.solve()
-print sol.value(x)
-
-
+beta = arctan((lr/(lf +lr)) * tan(u[k * 2 + 1]))       
+x1 = x[k*4 + 0] + x[k*4 +2] * dt * cos(x[k*4 + 3] + beta)
+x2 = x[k*4 + 1] + x[k*4 +2] * dt * sin(x[k*4 + 3] + beta)
+x3 = x[k*4 + 2] + u[k*2] * dt 
+x4 = x[k*4 +3] + (x[k*4 +2]*dt/lr) * sin(beta)
+xdot = vertcat(x1,x2,x3,x4)
+  
+f = Function('f', [x,u],[xdot])
 
 #==============================================================================
-# x = SX.sym('x')
-# y = SX.sym('y')
-# z = SX.sym('z')
+# p = opti.parameter(2,4)
+# ar = [[0,1,3,4], [0,1,3,1]]
+# opti.set_value(p[0,:], ar[0])
+# opti.set_value(p[1,:], ar[1])
+# p1 = p[0,0:2]
+# p2 = p[0,2:4]
+# ineq1 = (x[0]-p1[0]) * (p2[1] - p1[1]) - (x[1] - p1[1]) * (p2[0]- p1[0])            
 # 
 # 
-# nlp = {'x': vertcat(x,y,z), 'f': x**2+100*z**2, 'g': z+(1-x)**2-y }
-# S=nlpsol('S', 'ipopt', nlp)
+#==============================================================================
+
+
+U = MX.sym("U", 2)
+X0 = MX([0,0,0,0])
+
+X = f(X0, U)
+
+J = 0.3 * X[i*4 +2]/34.0
+G = X[0:4]
+
+
+nlp = {'x':U, 'f':J, 'g': G}
+
+# Allocate an NLP solver
+#opts = {"ipopt.tol":1e-10, "ipopt.print_level": 3}
+opts = {}
+solver = nlpsol("solver", "ipopt", nlp, opts)
+
+
+
+# Bounds on u and initial condition
+lb = np.array([])
+ub = np.array([])
+for i in range(N):
+    lb = np.append(lb, np.array([-inf, -inf, vmin, -inf]))
+    ub = np.append(ub, np.array([inf, inf, vmax, inf]))
+
+arg = {}
+arg["lbx"] = [-9, psimin]
+arg["ubx"] = [9, psimax]
+
+# Bounds on g
+arg["lbg"] = lb
+arg["ubg"] = ub
+
+# Solve the problem
+res = solver(**arg)
+
+#==============================================================================
 # 
-# r = S(x0 = [0, 0.0, 0.75], lbg=0, ubg=0)
-# x_opt = r['x']
-# print('x_opt: ', x_opt)
+
+# arg["x0"] =   0.4
 # 
+# # Bounds on g
+# arg["lbg"] = [10,0,0]
+# arg["ubg"] = [10,0,2]
 #==============================================================================

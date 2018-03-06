@@ -120,11 +120,10 @@ X0[5] = 0.0
 #==============================================================================
 
 #==============================================================================
-# 
 # N = 10
-# 
+#  
 # opti = casadi.Opti()
-# # --- decision variables -----
+#  # --- decision variables -----
 # x = MX.sym("x", 4)
 # pos_x = x[0]
 # pos_y = x[1]
@@ -133,20 +132,20 @@ X0[5] = 0.0
 # u = MX.sym('u',2)
 # acc   = u[0]
 # steer = u[1]
-# 
+#  
 # # ---- vehicle model ----
 # lf = 0.9 
 # lr = 0.640  
 # lb = 1.440    
 # dt = 0.05
-# 
+#  
 # beta = np.arctan((lr/(lf +lr)) * tan(u[1]))
 # xdot = pos_x + v * dt * cos(orient + beta)
 # ydot = pos_y + v * dt * sin(orient + beta)
 # vdot = v + u[0] * dt
 # odot = orient + (v*dt/lr) * sin(beta)
 # vehic_dot = vertcat(xdot, ydot, vdot, odot)
-# 
+#  
 # f = Function('f', [x,u], [vehic_dot])
 # 
 # 
@@ -159,10 +158,10 @@ X0[5] = 0.0
 # for k in range(N):    
 #     X[k*4 : k*4 +4] = f(X[k*4:(k*4)+4], U[k*2 : k*2 + 2])
 #     J[0] = J[0] + sqrt(X[k*4]**2 + X[k*4 +1]**2)  
-#     
-# #J = mtimes(U.T,U) # u'*u in Matlab
+#  
+# J = mtimes(U.T,U) # u'*u in Matlab
 # G = X[0:2]     # x(1:2) in Matlab
-# 
+#  
 # nlp = {'x': U, 'f': J, 'g': G}
 # 
 # # Allocate an NLP solver
@@ -183,18 +182,15 @@ X0[5] = 0.0
 # 
 # res = solver(**arg)
 # print res['x']
-# 
-
-# 
-# 
-# 
+#  
 #==============================================================================
+
 
 # ---- bounds ----
 umin = [-9, -0.6] #-1g break performance and -0.6 rad 
 umax = [9, 0.6] #1g acceleration and 0.6 rad 
 vmax = 30 # m/s
-vmin = 0  # no driving backwards
+vmin = 0.01  # no driving backwards
 psimin = -(30.0/180)*math.pi #in rad
 psimax = (30.0/180)*math.pi #in rad
 
@@ -209,6 +205,9 @@ N = 10
 opti = Opti()
 
 all_var = opti.variable(6*(N+1) + N)
+p_tmp = opti.parameter()
+opti.set_value(p_tmp, 0.01)
+
 #x = opti.variable(6 * (N + 1))
 x = all_var[0:6*(N+1)]
 bet = all_var[6*(N+1):]
@@ -221,15 +220,18 @@ for k in range(N):
     x[(k+1)*6 + 2] = x[k*6 + 2] + x[k*6 +4] * dt 
     x[(k+1)*6 + 3] = x[k*6 +3] + (x[k*6 +2]*dt/lr) * sin(beta)
 
-
+#bet = arctan((lr/(lf +lr)) * tan(x[0 * 6 + 5])) + arctan((lf + lr) * max_lat_acc *0.25 / fmin(x[0*6 +2]**2, p_tmp))
+bet = 1 / x[0]
+#bet = arctan((lf + lr) * max_lat_acc / x[2] )
+print x[5]    
 #vehicle bounds
-#opti.subject_to(bet[0] >= 0.0)
+opti.subject_to(bet >= 0.0)
 opti.subject_to(opti.bounded(vmin, x[2::6], vmax))
 opti.subject_to(opti.bounded(-9, x[4::6], 9))
 opti.subject_to(opti.bounded(psimin, x[5::6], psimax))
 #initial state 
 init_model_state = opti.parameter(4)
-init_m = [2.0, 1.0, 0.1, math.pi/2]
+init_m = [2.0, 1.0, 10.0 , math.pi/2]
 opti.set_value(init_model_state, init_m)
 opti.subject_to(x[0:4] == init_model_state[0:4])
 
@@ -269,6 +271,7 @@ def cost_dist_(X):
  
 opti.minimize(cost_dist_(x))
 opti.solver("ipopt")
+
 sol = opti.solve()
 print sol.value(x)
 

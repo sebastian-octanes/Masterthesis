@@ -97,7 +97,7 @@ class Constraints:
             opti.subject_to(ineq >= 0)
             p1 = tangent_point_parameter[i, 4:6]
             p2 = tangent_point_parameter[i, 6:8]
-            ineq = (x[i*6]-p1[0]) * (p2[1] - p1[1]) - (x[i*6 + 1] - p1[1])*(p2[0]- p1[0])
+            ineq = ((x[i*6]-p1[0]) * (p2[1] - p1[1]) - (x[i*6 + 1] - p1[1])*(p2[0]- p1[0]))
             opti.subject_to(ineq <= 0)
     
     def ineq_const_track_casadi_update_p(self, x, opti, tangent_point_parameter):
