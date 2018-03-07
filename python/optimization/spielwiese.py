@@ -31,20 +31,19 @@ def cost_dist_(X):
         cost = cost = cost + 0.3 - 0.3 * x[i*6 +2]/34.0 
     return cost
 
-N = 2
+N = 30
 
 #control
 u = MX.sym('u', 2*N)
 #States
-x = MX.sym("x", 4*N)
+x = MX.sym("x", 4)
 
-
-ineq =[]
 
 beta = arctan((lr/(lf +lr)) * tan(u[1]))
 beta_max = arctan((lf + lr) * max_lat_acc *0.25 / x[2]**2)
 ineq1 = beta + beta_max
 ineq2 = -beta + beta_max        
+ineq = vertcat(ineq1, ineq2)
 x_tmp0 = x[0] + x[2] * dt * cos(x[3] + beta) 
 x_tmp1 = x[1] + x[2] * dt * sin(x[3] + beta)
 xdot = vertcat(x_tmp0, x_tmp1) 
@@ -53,24 +52,24 @@ xdot = vertcat(xdot, x_tmp2)
 x_tmp3 = x[3] + (x[2]*dt/lr) * sin(beta)
 xdot = vertcat(xdot, x_tmp3)
 
-
-x0 = xdot[0] 
-x1 = xdot[1] 
-x2 = xdot[2] 
-x3 = xdot[3] 
-ineq = vertcat(ineq, ineq1, ineq2)    
-beta = arctan((lr/(lf +lr)) * tan(u[1 * 2 + 1]))
-beta_max = arctan((lf + lr) * max_lat_acc *0.25 / x[k*6 +2]**2)
-ineq1 = beta + beta_max
-ineq2 = -beta + beta_max
-x_tmp = x0 + x2 * dt * cos(x3 + beta)
-xdot = vertcat(xdot, x_tmp)
-x_tmp = x1 + x2 * dt * sin(x3 + beta)
-xdot = vertcat(xdot, x_tmp)
-x_tmp = x2 + u[k * 2] * dt 
-xdot = vertcat(xdot, x_tmp)
-x_tmp = x3 + (x2*dt/lr) * sin(beta)     
-xdot = vertcat(xdot, x_tmp)    
+for i in range(N-1):
+    x0 = xdot[i*4] 
+    x1 = xdot[i*4 + 1] 
+    x2 = xdot[i*4 + 2] 
+    x3 = xdot[i*4 + 3] 
+    beta = arctan((lr/(lf +lr)) * tan(u[1 * 2 + 1]))
+    beta_max = arctan((lf + lr) * max_lat_acc *0.25 / x2**2)
+    ineq1 = beta + beta_max
+    ineq2 = -beta + beta_max
+    ineq = vertcat(ineq, ineq1, ineq2)
+    x_tmp = x0 + x2 * dt * cos(x3 + beta)
+    xdot = vertcat(xdot, x_tmp)
+    x_tmp = x1 + x2 * dt * sin(x3 + beta)
+    xdot = vertcat(xdot, x_tmp)
+    x_tmp = x2 + u[k * 2] * dt 
+    xdot = vertcat(xdot, x_tmp)
+    x_tmp = x3 + (x2*dt/lr) * sin(beta)     
+    xdot = vertcat(xdot, x_tmp)    
     
 
 #==============================================================================
@@ -98,7 +97,7 @@ xdot = vertcat(xdot, x_tmp)
 # #xdot = vertcat(x0,x1,x2,x3)
 # xdot = vertcat(x0,x1,x2,x3,x4,x5,x6,x7)
 #==============================================================================
-ineq = vertcat(ineq1, ineq2)      
+     
 f = Function('f', [x,u],[xdot, ineq])
 
 #==============================================================================
@@ -114,14 +113,14 @@ f = Function('f', [x,u],[xdot, ineq])
 #==============================================================================
 
 
-U = MX.sym("U", 4)
-X0 = MX([0,0,0.1,0, 0,0,0.1,0])
+U = MX.sym("U", (N)*2)
+X0 = MX([0,0,0.1,0,])
 
 X, INEQ = f(X0, U)
 X = vertcat(X, INEQ)
 
 J = 0.3 * X[0*4 +2]/34.0 + 0.3 * X[1*4 +2]/34.0
-G = X[0:10]
+G = X[0:N*6]
 
 
 nlp = {'x':U, 'f':J, 'g': G}
@@ -133,22 +132,25 @@ solver = nlpsol("solver", "ipopt", nlp, opts)
 
 
 # Bounds on u and initial condition
-lb = np.array([])
-ub = np.array([])
-for i in range(N):
-    lb = np.append(lb, np.array([-inf, -inf, vmin, -inf]))
-    ub = np.append(ub, np.array([inf, inf, vmax, inf]))
-lb = np.append(lb, [0,0])
-ub = np.append(ub, [inf, inf])
+lbg = np.array([])
+ubg = np.array([])
+lbx = np.array([])
+ubx = np.array([])
 
+for i in range(N):
+    lbg = np.append(lbg, np.array([-inf, -inf, vmin, -inf, 0, 0]))
+    ubg = np.append(ubg, np.array([inf, inf, vmax, inf, inf, inf]))
+    lbx = np.append(lbx, np.array([-9, psimin]))
+    ubx = np.append(ubx, np.array([ 9, psimax]))
+        
 
 arg = {}
-arg["lbx"] = [-9, psimin, -9, psimin]
-arg["ubx"] = [9, psimax, 9, psimin]
+arg["lbx"] = lbx
+arg["ubx"] = ubx
 
 # Bounds on g
-arg["lbg"] = lb
-arg["ubg"] = ub
+arg["lbg"] = lbg
+arg["ubg"] = ubg
 
 # Solve the problem
 res = solver(**arg)
