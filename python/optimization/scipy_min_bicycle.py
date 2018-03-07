@@ -205,27 +205,27 @@ N = 10
 opti = Opti()
 
 all_var = opti.variable(6*(N+1) + N)
-p_tmp = opti.parameter()
-opti.set_value(p_tmp, 0.01)
+#p_tmp = opti.parameter()
+#opti.set_value(p_tmp, 0.01)
 
 #x = opti.variable(6 * (N + 1))
 x = all_var[0:6*(N+1)]
-bet = all_var[6*(N+1):]
+#bet = all_var[6*(N+1):]
 #ineq = [N]
 for k in range(N):
     beta = arctan((lr/(lf +lr)) * tan(x[k * 6 + 5]))
-    bet[k] = beta + arctan((lf + lr) * max_lat_acc *0.25 / x[k*6 +2]**2)        
+    #bet[k] = beta + arctan((lf + lr) * max_lat_acc *0.25 / x[k*6 +2]**2)        
     x[(k+1)*6 + 0] = x[k*6 + 0] + x[k*6 +2] * dt * cos(x[k*6 + 3] + beta)
     x[(k+1)*6 + 1] = x[k*6 + 1] + x[k*6 +2] * dt * sin(x[k*6 + 3] + beta)
     x[(k+1)*6 + 2] = x[k*6 + 2] + x[k*6 +4] * dt 
     x[(k+1)*6 + 3] = x[k*6 +3] + (x[k*6 +2]*dt/lr) * sin(beta)
 
 #bet = arctan((lr/(lf +lr)) * tan(x[0 * 6 + 5])) + arctan((lf + lr) * max_lat_acc *0.25 / fmin(x[0*6 +2]**2, p_tmp))
-bet = 1 / x[0]
+#bet = 1 / x[2]
 #bet = arctan((lf + lr) * max_lat_acc / x[2] )
 #print x[5]    
 #vehicle bounds
-opti.subject_to(bet >= 0.0)
+#opti.subject_to(bet >= 0.0)
 opti.subject_to(opti.bounded(vmin, x[2::6], vmax))
 opti.subject_to(opti.bounded(-9, x[4::6], 9))
 opti.subject_to(opti.bounded(psimin, x[5::6], psimax))
@@ -234,7 +234,7 @@ init_model_state = opti.parameter(4)
 init_m = [2.0, 1.0, 0.1 , math.pi/2, 0,0]
 opti.set_value(init_model_state, init_m[0:4])
 opti.subject_to(x[0:4] == init_model_state[0:4])
-
+opti.set_initial(x[2], 0.1)
 
 #==============================================================================
 # #tangential points constraint
