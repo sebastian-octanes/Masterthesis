@@ -38,15 +38,17 @@ u = MX.sym('u', 2*N)
 #States
 x = MX.sym("x", 4*N)
 
-
-beta = arctan((lr/(lf +lr)) * tan(u[k * 2 + 1]))       
-x1 = x[k*4 + 0] + x[k*4 +2] * dt * cos(x[k*4 + 3] + beta)
-x2 = x[k*4 + 1] + x[k*4 +2] * dt * sin(x[k*4 + 3] + beta)
-x3 = x[k*4 + 2] + u[k*2] * dt 
-x4 = x[k*4 +3] + (x[k*4 +2]*dt/lr) * sin(beta)
+for k in range(N):
+    beta = arctan((lr/(lf +lr)) * tan(u[k * 2 + 1]))
+    beta_max = arctan((lf + lr) * max_lat_acc *0.25 / x[k*6 +2]**2)
+    ineq = beta + beta_max        
+    x1 = x[k*4 + 0] + x[k*4 +2] * dt * cos(x[k*4 + 3] + beta)
+    x2 = x[k*4 + 1] + x[k*4 +2] * dt * sin(x[k*4 + 3] + beta)
+    x3 = x[k*4 + 2] + u[k*2] * dt 
+    x4 = x[k*4 +3] + (x[k*4 +2]*dt/lr) * sin(beta)
 xdot = vertcat(x1,x2,x3,x4)
-  
-f = Function('f', [x,u],[xdot])
+      
+f = Function('f', [x,u],[xdot, ineq])
 
 #==============================================================================
 # p = opti.parameter(2,4)
@@ -62,12 +64,13 @@ f = Function('f', [x,u],[xdot])
 
 
 U = MX.sym("U", 2)
-X0 = MX([0,0,0,0])
+X0 = MX([0,0,0.1,0])
 
-X = f(X0, U)
+X, INEQ = f(X0, U)
+X = vertcat(X, INEQ)
 
-J = 0.3 * X[i*4 +2]/34.0
-G = X[0:4]
+J = 0.3 * X[0*4 +2]/34.0
+G = X[0:5]
 
 
 nlp = {'x':U, 'f':J, 'g': G}
@@ -85,6 +88,9 @@ ub = np.array([])
 for i in range(N):
     lb = np.append(lb, np.array([-inf, -inf, vmin, -inf]))
     ub = np.append(ub, np.array([inf, inf, vmax, inf]))
+lb = np.append(lb, 0)
+ub = np.append(ub, inf)
+
 
 arg = {}
 arg["lbx"] = [-9, psimin]
