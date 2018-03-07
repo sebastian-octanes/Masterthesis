@@ -223,7 +223,7 @@ for k in range(N):
 #bet = arctan((lr/(lf +lr)) * tan(x[0 * 6 + 5])) + arctan((lf + lr) * max_lat_acc *0.25 / fmin(x[0*6 +2]**2, p_tmp))
 bet = 1 / x[0]
 #bet = arctan((lf + lr) * max_lat_acc / x[2] )
-print x[5]    
+#print x[5]    
 #vehicle bounds
 opti.subject_to(bet >= 0.0)
 opti.subject_to(opti.bounded(vmin, x[2::6], vmax))
@@ -231,10 +231,9 @@ opti.subject_to(opti.bounded(-9, x[4::6], 9))
 opti.subject_to(opti.bounded(psimin, x[5::6], psimax))
 #initial state 
 init_model_state = opti.parameter(4)
-init_m = [2.0, 1.0, 10.0 , math.pi/2]
-opti.set_value(init_model_state, init_m)
+init_m = [2.0, 1.0, 0.1 , math.pi/2, 0,0]
+opti.set_value(init_model_state, init_m[0:4])
 opti.subject_to(x[0:4] == init_model_state[0:4])
-
 
 
 #==============================================================================
