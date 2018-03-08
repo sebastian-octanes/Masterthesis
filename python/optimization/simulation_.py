@@ -60,7 +60,7 @@ class SimulationEnvironment():
         self.init_track()
         self.init_state_vector()
         self.mpc_key_counter = 0
-        self.init_mpc(20)
+        self.init_mpc(30)
         
   
     
@@ -99,7 +99,8 @@ class SimulationEnvironment():
         self.cons =({'type': 'eq', 'fun': self.constraints.constraint_fix_init_state}, 
                     {'type': 'eq', 'fun': self.constraints.constraint_vehicle_model},
                     {'type': 'ineq', 'fun': self.constraints.ineq_constraint_vehicle_model},
-                    {'type': 'ineq', 'fun': self.constraints.ineq_constraint_vehicle_bounds})    
+                    {'type': 'ineq', 'fun': self.constraints.ineq_constraint_vehicle_bounds})
+        self.jac = self.costFunction.cost_dist_track_speed_jac()
         self.computation_time = pygame.time.get_ticks()
         self.simulation_time = pygame.time.get_ticks()
         self.simulation_steps = 1
@@ -328,7 +329,7 @@ class SimulationEnvironment():
             else:
                 self.plot_race_track()
                 self.plot_car_path()
-                res = minimize(self.costFunction.cost_dist_track_speed, self.X0, method ='SLSQP', bounds = self.bnds, constraints= self.cons)               
+                res = minimize(self.costFunction.cost_dist_track_speed, self.X0, method ='SLSQP',  bounds = self.bnds, constraints= self.cons, options={'ftol': 1e-4, 'disp':False})               
                 #compute movement of car later on real hardware this is piped to the actuators 
                 self.X0[0:4] = self.vehicleModel.compute_next_state_(res.x[0:6])
                 #shift the state vector one step to the left and predict last step for constraint handling

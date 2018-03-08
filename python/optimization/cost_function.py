@@ -1,6 +1,8 @@
 import math
 import numpy as np
 from matplotlib import pyplot as plt
+from ad import gh
+from casadi import *
 
 class CostFunction:
     
@@ -47,11 +49,26 @@ class CostFunction:
         n = x.size/6
         cost = 0.0
         for i in range(0,n,1):
-            pos = [x[i*6], x[i*6+1]]
-            #cost = cost + self.track.distance_to_track(pos)
+            cost = cost + 0.3 - 0.3 * x[i*6 +2]/34.0 
+        return cost
+        
+    def cost_dist_track_speed_casadi(self, x):
+        n = x.size1()/6
+        cost = 0.0
+        for i in range(0,n,1):
             cost = cost + 0.3 - 0.3 * x[i*6 +2]/34.0 
         return cost
     
+    def cost_dist_track_speed_jac(self):
+        def cost_dist_track_speed(x):
+            n = x.size/6
+            cost = 0.0
+            for i in range(0,n,1):
+                cost = cost + 0.3 - 0.3 * x[i*6 +2]/34.0 
+            return cost
+        
+        gradient, hessian = gh(cost_dist_track_speed)
+        return gradient  
     
     def cost_dist_origin(self, X):
         """Take the vehicle position and compute the distance to the origin"""
@@ -60,6 +77,7 @@ class CostFunction:
         for i in range(0,N,1):
             cost = cost + math.sqrt(X[i*6]**2 + X[i*6 +1]**2)
         return cost
+
 
 
     def print_cost_func(self, function):

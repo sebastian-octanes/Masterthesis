@@ -1,17 +1,11 @@
-from race_track import RaceTrack
-from cost_function import CostFunction
-from scipy_advanced_bicycle import Optimization
-from vehicle_model import VehicleModel
-import numpy as np
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Mar  6 14:28:28 2018
+
+@author: weller
+"""
 import math
-from scipy import interpolate
-from matplotlib import pyplot as plt
-
-
-
 from casadi import *
-
-# ---- vehicle model ----
 lf = 0.9 
 lr = 0.640  
 lb = 1.440    
@@ -23,7 +17,7 @@ psimin = -(30.0/180)*math.pi #in rad
 psimax = (30.0/180)*math.pi #in rad
 
 
-N = 30
+N = 35
 
 #control
 u = MX.sym('u', 2*N)
@@ -73,8 +67,9 @@ f = Function('f', [x,u],[xdot, ineq])
 
 U = MX.sym("U", (N)*2)
 X0 = MX([0,0,0.1,0])
+#X0 = MX.sym("h", 4)
 
-X, INEQ = f(X0,U)
+X, INEQ = f(X0, U)
 X = vertcat(X, INEQ)
 
 J =  1/X[2]
@@ -85,7 +80,7 @@ parameter = [0,1,3,4]
 
 p1 = parameter[0:2]
 p2 = parameter[2:4]
-ineq1 = (X[0]-p1[0]) * (p2[1] - p1[1]) - (X[1] - p1[1]) * (p2[0]- p1[0])            
+ineq1 = (X0[0]-p1[0]) * (p2[1] - p1[1]) - (X0[1] - p1[1]) * (p2[0]- p1[0])            
 
 X = vertcat(X, ineq1)
 
@@ -131,5 +126,7 @@ arg["ubg"] = ubg
 
 # Solve the problem
 res = solver(**arg)
+
+
 print(res["x"])
 

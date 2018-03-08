@@ -84,4 +84,25 @@ class Constraints:
             p2 = self.vehicleBoundPoints[i][3] 
             ineq[i*2 +1] = -( (x[0]-p1[0]) * (p2[1] - p1[1]) - (x[1] - p1[1])*(p2[0]- p1[0]) )
         return ineq
-      
+     
+     
+    def ineq_const_track_bounds_casadi(self, x, opti, tangent_point_parameter):
+        N = x.size1()/6    
+        for i in range(0,N -1,1):
+        
+            p1 = tangent_point_parameter[i, 0:2]
+            p2 = tangent_point_parameter[i, 2:4]
+            ineq = (x[i*6]-p1[0]) * (p2[1] - p1[1]) - (x[i*6 +1] - p1[1]) * (p2[0]- p1[0]) 
+            print "worked"
+            opti.subject_to(ineq >= 0)
+            p1 = tangent_point_parameter[i, 4:6]
+            p2 = tangent_point_parameter[i, 6:8]
+            ineq = ((x[i*6]-p1[0]) * (p2[1] - p1[1]) - (x[i*6 + 1] - p1[1])*(p2[0]- p1[0]))
+            opti.subject_to(ineq <= 0)
+    
+    def ineq_const_track_casadi_update_p(self, x, opti, tangent_point_parameter):
+        N = x.size1()/6 
+        for i in range(0,N -1,1):
+            ar = [self.vehicleBoundPoints[i][0][0], self.vehicleBoundPoints[i][0][1], self.vehicleBoundPoints[i][1][0], self.vehicleBoundPoints[i][1][1],
+                  self.vehicleBoundPoints[i][2][0], self.vehicleBoundPoints[i][2][1], self.vehicleBoundPoints[i][3][0], self.vehicleBoundPoints[i][3][1]]
+            opti.set_value(tangent_point_parameter[i,:],ar)
