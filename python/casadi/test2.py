@@ -9,7 +9,7 @@ from casadi import *
 from numpy import *
 
 dt = 0.01
-N = 5
+N = 40
 lf = 0.9 
 lr = 0.640  
 lb = 1.440    
@@ -36,9 +36,6 @@ for i in range (N):
     G = vertcat(G, x[(i+1)*6 +3] - (x[i*6 +3] + x[(i)*6 +2] * dt /lr * sin(beta)))
     #G = vertcat(G, ineq1, ineq2)
  
-print G
-print "\n x: ", x
-
 
 J = 1/x[2]
 for i in range(N):
@@ -48,7 +45,7 @@ for i in range(N):
 nlp = {'x':x, 'f':J, 'g': G}
 
 # Allocate an NLP solver
-opts = {"ipopt.tol":1e-10, "ipopt.print_level": 10}
+opts = {"ipopt.tol":1e-10, "ipopt.print_level": 2}
 solver = nlpsol("solver", "ipopt", nlp, opts)
 
 
@@ -78,15 +75,38 @@ arg["ubg"] = ubg
 arg["x0" ] = x0
 
 res = solver(**arg)
-print res["x"]
+#print res["x"]
 
 
-tmp = np.arange(res["x"].size()[0])
-for i in range(res["x"].size()[0]):
-    if(i%6 == 0):
-        print "\n"
-    print res["x"][i]
+for i in range(res["x"].size()[0] - 6):
+    x0[i] = res["x"][i+6] 
 
+for i in range(6):
+    x0[-i] = res["x"][-i]
+    
+x = res["x"][-6:-2]
+lbg[0] = x[0]
+lbg[1] = x[1]
+lbg[2] = x[2]
+lbg[3] = x[3]
+ubg[0] = x[0]
+ubg[1] = x[1]
+ubg[2] = x[2]
+ubg[3] = x[3]
+
+
+res = solver(**arg)
+#print res["x"]
+
+#==============================================================================
+# 
+# tmp = np.arange(res["x"].size()[0])
+# for i in range(res["x"].size()[0]):
+#     if(i%6 == 0):
+#         print "\n"
+#     print res["x"][i]
+# 
+#==============================================================================
     
     
     
