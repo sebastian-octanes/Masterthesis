@@ -1,6 +1,8 @@
 import numpy as np
 from scipy import interpolate
 
+from casadi import *
+from numpy import *
 
 class Constraints:
         
@@ -106,3 +108,31 @@ class Constraints:
             ar = [self.vehicleBoundPoints[i][0][0], self.vehicleBoundPoints[i][0][1], self.vehicleBoundPoints[i][1][0], self.vehicleBoundPoints[i][1][1],
                   self.vehicleBoundPoints[i][2][0], self.vehicleBoundPoints[i][2][1], self.vehicleBoundPoints[i][3][0], self.vehicleBoundPoints[i][3][1]]
             opti.set_value(tangent_point_parameter[i,:],ar)
+            
+            
+    def ineq_const_track_bounds_casadi_(self, x, G, N):
+        ineq = vertcat()
+        for i in range(N):
+            p1 = self.vehicleBoundPoints[i][0]
+            p2 = self.vehicleBoundPoints[i][1]
+            ineq1 = (x[i*6]-p1[0]) * (p2[1] - p1[1]) - (x[i*6 + 1] - p1[1]) * (p2[0]- p1[0])            
+            p1 = self.vehicleBoundPoints[i][2] 
+            p2 = self.vehicleBoundPoints[i][3]
+            ineq2 =((x[i*6]-p1[0]) * (p2[1] - p1[1]) - (x[i*6 + 1] - p1[1]) * (p2[0]- p1[0])) * -1
+            ineq = vertcat(ineq, ineq1, ineq2)
+        G = vertcat(G, ineq)
+        return G
+        
+    def ineq_const_track_casadi_update_points(self, x, G, N):
+
+        for i in range(N):
+            p1 = self.vehicleBoundPoints[i][0]
+            p2 = self.vehicleBoundPoints[i][1]
+            G[4 + N*4 + i*2] = (x[i*6]-p1[0]) * (p2[1] - p1[1]) - (x[i*6 + 1] - p1[1]) * (p2[0]- p1[0])            
+            p1 = self.vehicleBoundPoints[i][2] 
+            p2 = self.vehicleBoundPoints[i][3]
+            G[4 + N*4 + i*2 + 1] =((x[i*6]-p1[0]) * (p2[1] - p1[1]) - (x[i*6 + 1] - p1[1]) * (p2[0]- p1[0])) * -1
+        
+        
+        
+        

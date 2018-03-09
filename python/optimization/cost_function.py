@@ -58,7 +58,14 @@ class CostFunction:
         for i in range(0,n,1):
             cost = cost + 0.3 - 0.3 * x[i*6 +2]/34.0 
         return cost
-    
+        
+    def cost_dist_track_speed_casadi_(self, x, N):
+        print "this i N in the cost_dist ... ", N        
+        J = 1/x[2]
+        for i in range(N):
+            J = J + 1/x[(i+1)* 6 + 2]
+        return J
+        
     def cost_dist_track_speed_jac(self):
         def cost_dist_track_speed(x):
             n = x.size/6
