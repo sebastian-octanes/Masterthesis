@@ -115,9 +115,17 @@ class Constraints:
         for i in range(N):
             p1 = self.vehicleBoundPoints[i][0]
             p2 = self.vehicleBoundPoints[i][1]
+            #p1 = np.array([-2.5, 0])
+            #p2 = np.array([0, 5])
+            #print "p1: ", p1
+            #print "p2: ", p2
             ineq1 = (x[i*6]-p1[0]) * (p2[1] - p1[1]) - (x[i*6 + 1] - p1[1]) * (p2[0]- p1[0])            
             p1 = self.vehicleBoundPoints[i][2] 
             p2 = self.vehicleBoundPoints[i][3]
+            #p1 = np.array([2.5, 0])
+            #p2 = np.array([5, 5])
+            #print "p3: ", p1
+            #print "p4: ", p2 
             ineq2 =((x[i*6]-p1[0]) * (p2[1] - p1[1]) - (x[i*6 + 1] - p1[1]) * (p2[0]- p1[0])) * -1
             ineq = vertcat(ineq, ineq1, ineq2)
         G = vertcat(G, ineq)
@@ -128,11 +136,19 @@ class Constraints:
         for i in range(N):
             p1 = self.vehicleBoundPoints[i][0]
             p2 = self.vehicleBoundPoints[i][1]
+            print "p1: ", p1
+            print "p2: ", p2
+            p1 = np.array([-2.5, 0])
+            p2 = np.array([0, 5])
+            print "G[before]: ",G[4 + N*4 + i*2]
             G[4 + N*4 + i*2] = (x[i*6]-p1[0]) * (p2[1] - p1[1]) - (x[i*6 + 1] - p1[1]) * (p2[0]- p1[0])            
+            print "G[after]: ", G[4 + N*4 + i*2]            
             p1 = self.vehicleBoundPoints[i][2] 
             p2 = self.vehicleBoundPoints[i][3]
+            p1 = np.array([2.5, 0])
+            p2 = np.array([5, 5])
             G[4 + N*4 + i*2 + 1] =((x[i*6]-p1[0]) * (p2[1] - p1[1]) - (x[i*6 + 1] - p1[1]) * (p2[0]- p1[0])) * -1
-        
+        return G
         
         
         

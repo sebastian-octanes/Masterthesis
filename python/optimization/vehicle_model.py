@@ -23,7 +23,7 @@ class VehicleModel:
     p       = 1.225  # air desity in kg/m^3
     A       = 2.0    #vehicle cross section
     Crr     = 0.014  #roll resistance coefficient
-    max_speed = 20/3.6 # 120km/h /3.6 = m/s
+    max_speed = 60/3.6 # 120km/h /3.6 = m/s
     max_long_acc = 10   #m/s**2 longitudinal acceleration max
     max_long_dec = 10   #m/s**2 longitudinal deceleration max
     max_lat_acc = 20  # 2g lateral acceleration
@@ -66,7 +66,7 @@ class VehicleModel:
             G = vertcat(G, x[(i+1)*6 +1] - (x[i*6 +1] + x[(i)*6 +2] * self.dt * sin(x[i*6 +3] + beta)))
             G = vertcat(G, x[(i+1)*6 +2] - (x[i*6 +2] + x[(i)*6 +4] * self.dt))
             G = vertcat(G, x[(i+1)*6 +3] - (x[i*6 +3] + x[(i)*6 +2] * self.dt /self.lr * sin(beta)))
-            #G = vertcat(G, ineq1, ineq2)
+            G = vertcat(G, ineq1, ineq2)
         return G
 
         
