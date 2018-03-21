@@ -1,78 +1,175 @@
 using SFML
+include("raceCourse.jl")
+include("vehiclemodel.jl")
+using VehicleModel.CarPose, VehicleModel.CarState, VehicleModel
+using RaceCourse
 
+mutable struct KeyControls
+    up::Int
+    down::Int
+    left::Int
+    right::Int
+    reset::Int
+end
 
-global acceleration = 0;
-left = 0;
-right = 0;
-reset = 0;
-global x_position = 0;
-global y_position = 0;
-
-
-function createcarsprite()
+function createcarsprite(carScaleX, carScaleY)
     texture = Texture("/home/weller/Master/Julia/race_car.jpg")
     set_smooth(texture, true)
-    global carsprite = Sprite()
-    set_texture(carsprite, texture)
-    scale(carsprite, Vector2f(0.1, 0.1))
-    return carsprite
+    carSizeX = 2 #meter
+    carSizeY = 1.5 #meter
+
+    rect = RectangleShape()
+    set_texture(rect, texture)
+    set_position(rect, Vector2f(500,250))
+    set_size(rect, Vector2f(carScaleX * carSizeX,carScaleY * carSizeY))
+    set_origin(rect, Vector2f(carSizeX/2, carSizeY/2))
+    #rotate(rect, -90)
+    return rect
 end
 
-function rotatecar(sprite, degree)
-    rotate(carsprite, degree)
+function createRaceCourse(scaleX, scaleY, radius, offsetX, offsetY)
+    circle = CircleShape()
+    set_radius(circle, radius*scaleX)
+    set_fillcolor(circle, SFML.white)
+    set_position(circle, Vector2f(offsetX*scaleX + 15*scaleX, offsetY*scaleY))
+    set_origin(circle, Vector2f(radius*scaleX, radius*scaleX))
+    set_outline_thickness(circle, 2)
+    set_outlinecolor(circle, SFML.red)
+    return circle
 end
 
-function setpositioncar(sprite, pos)
-    set_position(carsprite, pos)
+function createTangent(carPose, itpTrack, itpOutBound, itpInBound, scaleX, scaleY, offsetX, offsetY, window)
+
+    i = RaceCourse.getSplinePosition(itpTrack, carPose.x, carPose.y)
+    x =  RaceCourse.computeGradientPoints(itpOutBound, i)
+    alpha = RaceCourse.computeGradientAngle(itpOutBound, i)
+    line = RectangleShape()
+    set_size(line, Vector2f(100, 3))
+    set_outline_thickness(line, 2)
+    rotate(line, - alpha *180/pi)
+    set_fillcolor(line, SFML.green)
+    set_origin(line, Vector2f(50, 1.5))
+    off = Vector2f(offsetX * scaleX + x[1] * scaleX , offsetY * scaleY - x[2] * scaleY )
+    set_position(line, off)
+    draw(window, line)
+
+    x =  RaceCourse.computeGradientPoints(itpInBound, i)
+    alpha = RaceCourse.computeGradientAngle(itpInBound, i)
+    line = RectangleShape()
+    set_size(line, Vector2f(100, 3))
+    set_outline_thickness(line, 2)
+    rotate(line, - alpha *180/pi)
+    set_fillcolor(line, SFML.green)
+    set_origin(line, Vector2f(50, 1.5))
+    off = Vector2f(offsetX * scaleX + x[1] * scaleX , offsetY * scaleY - x[2] * scaleY )
+    set_position(line, off)
+    draw(window, line)
+
+end
+
+
+function setpositioncar(carsprite, carPose, scaleX, scaleY, offsetX, offsetY)
+    set_position(carsprite, Vector2f(scaleX * carPose.x + offsetX*scaleX, (- scaleY *carPose.y + offsetY*scaleY)))
+    rotate(carsprite, -(carPose.yaw )*180/pi)
 end
 
 function checkkeys()
+    keyControls = KeyControls(0,0,0,0,0)
     if is_key_pressed(KeyCode.UP)
-        global acceleration = 1
+        keyControls.up = 1
     elseif is_key_pressed(KeyCode.DOWN)
-        global acceleration = -1
+        keyControls.down = 1
     end
     if is_key_pressed(KeyCode.LEFT)
-        global left = 1
+        keyControls.left = 1
     elseif is_key_pressed(KeyCode.RIGHT)
-        global right = 1
+        keyControls.right = 1
     end
     if is_key_pressed(KeyCode.R)
-        global reset = 1
+        keyControls.reset = 1
     end
+    return keyControls
 end
 
-function updatevehicleposition()
-    println("called updatevehiclepos", acceleration)
-    println("vehicle pose", x_position)
-    if acceleration == 1
-        global x_position = x_position + 1
-        global acceleration = 0
+function updatevehicleposition(keyControls, carPose)
+    x = carPose.x
+    if keyControls.up == 1
+        x = carPose.x + 1
     end
-
-    carpose = Vector2f(x_position, y_position)
-    setpositioncar(carsprite, carpose)
+    if keyControls.down == 1
+        x = carPose.x - 1
+    end
+    VehicleModel.CarPose(x,0,0,0)
 end
 
-window = RenderWindow("test",800,600)
-set_framerate_limit(window, 60)
+function mapKeyToCarControl(keys, carPose)
+    acc = 0
+    steer = 0
+    if keys.up == 1
+        acc = VehicleModel.max_long_acc
+    elseif keys.down == 1
+        acc = - VehicleModel.max_long_dec
+    end
+    if keys.left == 1
+        steer = VehicleModel.max_steering_angle
+    elseif keys.right == 1
+        steer = - VehicleModel.max_steering_angle
+    end
+    if keys.reset == 1
+        carPose = CarPose(0,0,0,pi/2)
+    end
+    carPose, VehicleModel.CarControls(acc, steer)
+end
+
+
+windowSizeX = 1000
+windowSizeY = 500
+windowSizeMeterX = 100
+windowSizeMeterY = 50
+scaleX = windowSizeX/windowSizeMeterX
+scaleY = windowSizeY/windowSizeMeterY
+
+positionOffsetMeterX = 50
+positionOffsetMeterY = 25
+
+radius = 15
+
+
+keys = KeyControls(0,0,0,0,0)
+carPose = VehicleModel.CarPose(0,0,0,pi/2)
+itpTrack, itpOutBound, itpInBound = RaceCourse.buildRaceTrack(15, 4, 15, 0)
+
+
 
 event = Event()
-
-carsprite = createcarsprite()
-carposition = Vector2f(0.0, 0.0)
-setpositioncar(carsprite, carposition)
-
+window = RenderWindow("test", windowSizeX, windowSizeY)
+set_framerate_limit(window, 30)
+clock = Clock()
 while isopen(window)
+    dt = get_elapsed_time(clock)
+    restart(clock)
     while pollevent(window, event)
         if get_type(event) == EventType.CLOSED
             close(window)
         end
     end
-    checkkeys()
-    updatevehicleposition()
+    keys = checkkeys()
+    carPose, carControls = mapKeyToCarControl(keys, carPose)
+    carPose = VehicleModel.computeTimeStep(carPose, carControls, as_seconds(dt))
 
-    clear(window, SFML.white)
-    draw(window, carsprite)
+
+    #draw car and raceCource
+
+    carSprite = createcarsprite(scaleX, scaleY)
+    setpositioncar(carSprite, carPose, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY)
+    trackOut = createRaceCourse(scaleX, scaleY, radius +2, positionOffsetMeterX, positionOffsetMeterY)
+    track = createRaceCourse(scaleX, scaleY, radius, positionOffsetMeterX, positionOffsetMeterY)
+    trackIn = createRaceCourse(scaleX, scaleY, radius -2, positionOffsetMeterX, positionOffsetMeterY)
+    draw(window, trackOut)
+    draw(window, track)
+    draw(window, trackIn)
+    draw(window, carSprite)
+    createTangent(carPose, itpTrack, itpOutBound, itpInBound, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window)
     display(window)
+    clear(window, SFML.white)
 end

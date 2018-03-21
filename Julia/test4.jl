@@ -6,10 +6,13 @@ using Ipopt
 #using KNITRO
 #using Mosek
 
-N = 50
+include("vehiclemodel.jl")
+using VehicleModel
+
+N = 10
 dt = 0.1
-lr = 1
-lf = 1.5
+lr = VehicleModel.lr
+lf = VehicleModel.lf
 max_acc = 9
 m = Model(solver = IpoptSolver())
 
@@ -71,12 +74,14 @@ prin_x = []
 prin_y = []
 
 
-for i in 1:100
+for i in 1:10
      solve(m)
      println("x = ", getvalue(x))
      res = getvalue(x)
      push!(prin_x, res[1])
      push!(prin_y, res[2])
+     setvalue(y[1] , 2 - i/10)
+     println("new x start value", y[1])
      JuMP.setRHS(startPosX, res[7])
      JuMP.setRHS(startPosY, res[8])
      JuMP.setRHS(startPosV, res[9])

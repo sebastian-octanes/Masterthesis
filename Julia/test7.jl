@@ -1,10 +1,7 @@
+
 using JuMP
-using Clp
-using PyPlot
 using Ipopt
-#using NLopt
-#using KNITRO
-#using Mosek
+
 
 N = 5
 dt = 0.1

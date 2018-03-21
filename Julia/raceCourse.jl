@@ -9,6 +9,18 @@ function computeGradientPoints(itpBound, evalPoint)
  x2, y2  = itpBound[evalPoint - 0.01,1], itpBound[evalPoint - 0.01,2]
  return [x1, y1, x2, y2]
 end
+function computeGradientPoints_(itpOutBound, itpInBound ,evalPoint, N)
+    tangentPoints = []
+    for i in 1:N
+        x1, y1  = itpOutBound[evalPoint[i] - 0.01,1], itpOutBound[evalPoint[i] - 0.01,2]
+        x2, y2  = itpOutBound[evalPoint[i] + 0.01,1], itpOutBound[evalPoint[i] + 0.01,2]
+        tangentPoints = vcat(tangentPoints, x1, y1, x2, y2)
+        x1, y1  = itpInBound[evalPoint[i] - 0.01,1], itpInBound[evalPoint[i] - 0.01,2]
+        x2, y2  = itpInBound[evalPoint[i] + 0.01,1], itpInBound[evalPoint[i] + 0.01,2]
+        tangentPoints = vcat(tangentPoints, x1, y1, x2, y2)
+    end
+    return tangentPoints
+end
 
 function computeGradientAngle(itpBound, evalPoint)
  x1, y1  = itpBound[evalPoint - 0.01,1], itpBound[evalPoint - 0.01,2]
@@ -32,8 +44,28 @@ function getSplinePosition(itpBound, x, y)
  return indx
 end
 
-function buildRaceTrack(radius, trackWidth, OriginX, OriginY)
+function getSplinePositions(itpBound, stateVector, N)
+    ret=[]
+    for j in 1:N
+        x = stateVector[(j*6) + 1]
+        y = stateVector[(j*6) + 2]
+        t = 0:0.001:1
+        smallest = 1000
+        indx = 0
+        for i = 0:0.001:1
+            x1, y1  = itpBound[i,1], itpBound[i,2]
+            dist = sqrt((x1-x)^2 + (y - y1)^2)
+            if dist < smallest
+                smallest = dist
+                indx = i
+            end
+        end
+        ret = vcat(ret, indx)
+    end
+    return ret
+end
 
+function buildRaceTrack(radius, trackWidth, OriginX, OriginY)
 
  t = 0:.1:1
  x = (radius + trackWidth/2) * sin.(2π*t) + OriginX
@@ -48,9 +80,9 @@ function buildRaceTrack(radius, trackWidth, OriginX, OriginY)
  y = radius * cos.(2π*t) + OriginY
  aTrack = hcat(x,y)
 
- itpTrack = scale(interpolate(aTrack, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
- itpOutBound = scale(interpolate(aOutBound, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
- itpInBound = scale(interpolate(aInBound, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
+ global itpTrack = scale(interpolate(aTrack, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
+ global itpOutBound = scale(interpolate(aOutBound, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
+ global itpInBound = scale(interpolate(aInBound, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
  return itpTrack, itpOutBound, itpInBound
 end
 
