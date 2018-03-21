@@ -3,8 +3,8 @@ module MPC
 using JuMP
 using Ipopt
 
-include("vehiclemodel.jl")
-using VehicleModel
+include("VehicleModel.jl")
+#using VehicleModel
 
 #using Clp
 #using NLopt

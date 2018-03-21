@@ -1,0 +1,4 @@
+could not load library \"libsfml-graphics\"\nlibGLEW.so.1.10
+sudo ln -s /usr/lib/x86_64-linux-gnu/libGLEW.so.1.13 /usr/lib/x86_64-linux-gnu/libGLEW.so.1.10
+
+including or using modules only possible is file has same name as module and in file ~/.juliarc.jl  "push!(LOAD_PATH, "/home/sebastian/../Julia/")" is added

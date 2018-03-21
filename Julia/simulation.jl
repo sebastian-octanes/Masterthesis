@@ -1,8 +1,8 @@
 using SFML
-include("raceCourse.jl")
-include("vehiclemodel.jl")
-using VehicleModel.CarPose, VehicleModel.CarState, VehicleModel
-using RaceCourse
+include("RaceCourse.jl")
+include("VehicleModel.jl")
+#using VehicleModel.CarPose, VehicleModel.CarState, VehicleModel
+#using RaceCourse
 
 mutable struct KeyControls
     up::Int
@@ -13,7 +13,7 @@ mutable struct KeyControls
 end
 
 function createcarsprite(carScaleX, carScaleY)
-    texture = Texture("/home/weller/Master/Julia/race_car.jpg")
+    texture = Texture("race_car.jpg")
     set_smooth(texture, true)
     carSizeX = 2 #meter
     carSizeY = 1.5 #meter
@@ -116,7 +116,7 @@ function mapKeyToCarControl(keys, carPose)
         steer = - VehicleModel.max_steering_angle
     end
     if keys.reset == 1
-        carPose = CarPose(0,0,0,pi/2)
+        carPose = VehicleModel.CarPose(0,0,0,pi/2)
     end
     carPose, VehicleModel.CarControls(acc, steer)
 end
