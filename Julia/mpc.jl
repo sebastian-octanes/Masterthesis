@@ -11,9 +11,9 @@ using VehicleModel
 #using KNITRO
 #using Mosek
 
-function initMPC(N_, dt, startPose, tangentPoints)
+function initMPC(N_, dt, startPose, tangentPoints, printLevel)
 
-     global m = Model(solver = IpoptSolver())
+     global m = Model(solver = IpoptSolver(print_level = printLevel))
      global N = N_
      lbx = []
      ubx = []
@@ -93,7 +93,6 @@ end
 function solveMPC()
      solve(m)
      res = getvalue(x)
-     println(res)
      return res
 end
 

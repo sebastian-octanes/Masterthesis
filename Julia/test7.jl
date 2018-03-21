@@ -8,7 +8,7 @@ dt = 0.1
 lr = 1
 lf = 1.5
 max_acc = 9
-m = Model(solver = IpoptSolver())
+m = Model(solver = IpoptSolver(print_level = 0))
 
 lbx = []
 ubx = []

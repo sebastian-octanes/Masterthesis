@@ -4,9 +4,10 @@ include("raceCourse.jl")
 using VehicleModel
 using MPC
 using RaceCourse
+using PyPlot
 
-N = 5
-dt = 0.01
+N = 100
+dt = 0.1
 startPose = VehicleModel.CarPose(0,0,0.01,pi/2)
 stateVector = []
 itpTrack, itpOutBound, itpInBound = buildRaceTrack(15, 4, 15, 0)
@@ -17,15 +18,21 @@ end
 
 evalPoints = RaceCourse.getSplinePositions(itpTrack, stateVector, N)
 tangentPoints = RaceCourse.computeGradientPoints_(itpOutBound, itpInBound, evalPoints, N)
-m = MPC.initMPC(N, dt, startPose, tangentPoints)
-#println(m)
-for i in 1:10
+m = MPC.initMPC(N, dt, startPose, tangentPoints,3)
+#print stuff
+prin_x = []
+prin_y = []
+
+for i in 1:20
     res = MPC.solveMPC()
+    push!(prin_x, res[1])
+    push!(prin_y, res[2])
     MPC.updateStartPoint(res)
     evalPoints = RaceCourse.getSplinePositions(itpTrack, res, N)
     #println(evalPoints)
     tangentPoints = RaceCourse.computeGradientPoints_(itpOutBound, itpInBound, evalPoints, N)
-    println(tangentPoints)
     MPC.updateTangentPoints(tangentPoints)
-    #println(MPC.m)
+    #println(res)
 end
+
+plot(prin_x, prin_y)
