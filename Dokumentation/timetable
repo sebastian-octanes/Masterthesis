@@ -1,0 +1,26 @@
+timetable:
+
+Simulation und MPC kombinieren und testen
+Zeitmessung hinzufügen
+Fahrzeugmodelle (3 stück?) Bicylce, Bicycle with Tire?, Aerosimulation
+
+
+
+
+topics for thesis:
+
+Intro (formula student driverless? )
+MPC
+Julia
+Vehicle Models
+
+Abhängigkeit Updaterate, Geschwindigkeit, Stabilität
+Abhängigkeit Fahrzeugmodell, Updaterate
+Abhängigkeit Fahrzeugmodell, Geschwindigkeit 
+Testen verschiedener Optimierer in Julia? 
+
+
+Fragen zu klären:
+wie komplex muss der Rennkurs sein? 
+
+
