@@ -17,8 +17,9 @@ Vehicle Models
 Abhängigkeit Updaterate, Geschwindigkeit, Stabilität
 Abhängigkeit Fahrzeugmodell, Updaterate
 Abhängigkeit Fahrzeugmodell, Geschwindigkeit 
+Vergleich von Kostenfunktionen
 Testen verschiedener Optimierer in Julia? 
-
+Testen von MPC vs optimaler Trajektorie !
 
 Fragen zu klären:
 wie komplex muss der Rennkurs sein? 

@@ -39,6 +39,22 @@ function createRaceCourse(scaleX, scaleY, radius, offsetX, offsetY)
     return circle
 end
 
+function createPredictionPoints(res, scaleX, scaleY, offsetX, offsetY, window, N)
+    println("res[1]", res[1])
+    circle = CircleShape()
+    set_radius(circle, 2)
+    set_fillcolor(circle, SFML.blue)
+    set_origin(circle, Vector2f(1, 1))
+    #set_outlinecolor(circle, SFML.red)
+    #set_outline_thickness(circle, 2)
+    for i in 1:N-1
+        x = res[i*6 + 1]
+        y = - res[i*6 + 2]
+        set_position(circle, Vector2f(offsetX*scaleX + x*scaleX, offsetY*scaleY + y*scaleY))
+        draw(window, circle)
+    end
+end
+
 function createTangent(carPose, itpTrack, itpOutBound, itpInBound, scaleX, scaleY, offsetX, offsetY, window)
 
     i = RaceCourse.getSplinePosition(itpTrack, carPose.x, carPose.y)
@@ -134,7 +150,7 @@ keys = KeyControls(0,0,0,0,0)
 carPose = VehicleModel.CarPose(0,0,0,pi/2)
 itpTrack, itpOutBound, itpInBound = RaceCourse.buildRaceTrack(15, 4, 15, 0)
 
-N = 50
+N = 45
 
 dt = 0.05
 initMpcSolver(N, dt, itpTrack, itpOutBound, itpInBound)
@@ -152,7 +168,7 @@ while isopen(window)
     end
     keys = checkkeys()
 
-    time = @time res = MPC.solveMPC()
+    res = MPC.solveMPC()
     res = mapKeyToCarControl(keys, res, N)
     MPC.updateStartPoint(res)
     evalPoints = RaceCourse.getSplinePositions(itpTrack, res, N)
@@ -173,6 +189,7 @@ while isopen(window)
         carPose = VehicleModel.CarPose(res[6*i + 1], res[6*i + 2], res[6*i + 3], res[6*i + 4])
         createTangent(carPose, itpTrack, itpOutBound, itpInBound, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window)
     end
+    createPredictionPoints(res, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window, N)
     draw(window, carSprite)
     display(window)
     clear(window, SFML.white)
