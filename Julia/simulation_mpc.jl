@@ -1,6 +1,7 @@
 using SFML
 include("RaceCourse.jl")
 include("VehicleModel.jl")
+include("MPC.jl")
 #using VehicleModel.CarPose, VehicleModel.CarState, VehicleModel
 #using RaceCourse
 
@@ -44,8 +45,8 @@ function createTangent(carPose, itpTrack, itpOutBound, itpInBound, scaleX, scale
     x =  RaceCourse.computeGradientPoints(itpOutBound, i)
     alpha = RaceCourse.computeGradientAngle(itpOutBound, i)
     line = RectangleShape()
-    set_size(line, Vector2f(100, 3))
-    set_outline_thickness(line, 2)
+    set_size(line, Vector2f(100, 1))
+    set_outline_thickness(line, 1)
     rotate(line, - alpha *180/pi)
     set_fillcolor(line, SFML.green)
     set_origin(line, Vector2f(50, 1.5))
@@ -56,8 +57,8 @@ function createTangent(carPose, itpTrack, itpOutBound, itpInBound, scaleX, scale
     x =  RaceCourse.computeGradientPoints(itpInBound, i)
     alpha = RaceCourse.computeGradientAngle(itpInBound, i)
     line = RectangleShape()
-    set_size(line, Vector2f(100, 3))
-    set_outline_thickness(line, 2)
+    set_size(line, Vector2f(100, 1))
+    set_outline_thickness(line, 1)
     rotate(line, - alpha *180/pi)
     set_fillcolor(line, SFML.green)
     set_origin(line, Vector2f(50, 1.5))
@@ -92,13 +93,29 @@ function checkkeys()
 end
 
 
-function mapKeyToCarControl(keys, carPose)
+function mapKeyToCarControl(keys, res, N)
     if keys.reset == 1
-        carPose = VehicleModel.CarPose(0,0,0,pi/2)
+        for i in 1:N
+            res[6*i + 1] = 0; res[6*i + 2] = 0; res[6*i + 3] = 0.01; res[6*i + 4] = pi/2
+        end
     end
-    carPose, VehicleModel.CarControls(acc, steer)
+    res
 end
 
+
+function initMpcSolver(N, dt, itpTrack, itpOutBound, itpInBound)
+    startPose = VehicleModel.CarPose(0,0,0.01,pi/2)
+    stateVector = []
+    #global itpTrack, itpOutBound, itpInBound = RaceCourse.buildRaceTrack(15, 4, 15, 0)
+    start_=[startPose.x, startPose.y, startPose.v, startPose.yaw, 0, 0]
+    for i in 0:N
+        stateVector = vcat(stateVector, start_) #add initial guess to vector
+    end
+    evalPoints = RaceCourse.getSplinePositions(itpTrack, stateVector, N)
+    tangentPoints = RaceCourse.computeGradientPoints_(itpOutBound, itpInBound, evalPoints, N)
+    m = MPC.initMPC(N, dt, startPose, tangentPoints, 0)
+    return m
+end
 
 windowSizeX = 1000
 windowSizeY = 500
@@ -117,12 +134,13 @@ keys = KeyControls(0,0,0,0,0)
 carPose = VehicleModel.CarPose(0,0,0,pi/2)
 itpTrack, itpOutBound, itpInBound = RaceCourse.buildRaceTrack(15, 4, 15, 0)
 
+N = 50
 
-
+dt = 0.05
+initMpcSolver(N, dt, itpTrack, itpOutBound, itpInBound)
 event = Event()
 window = RenderWindow("test", windowSizeX, windowSizeY)
-set_framerate_limit(window, 30)
-initMPC()
+set_framerate_limit(window, convert(Int64, 1 / dt))
 clock = Clock()
 while isopen(window)
     dt = get_elapsed_time(clock)
@@ -133,9 +151,14 @@ while isopen(window)
         end
     end
     keys = checkkeys()
-    carPose, carControls = mapKeyToCarControl(keys, carPose)
-    carPose = VehicleModel.computeTimeStep(carPose, carControls, as_seconds(dt))
 
+    time = @time res = MPC.solveMPC()
+    res = mapKeyToCarControl(keys, res, N)
+    MPC.updateStartPoint(res)
+    evalPoints = RaceCourse.getSplinePositions(itpTrack, res, N)
+    tangentPoints = RaceCourse.computeGradientPoints_(itpOutBound, itpInBound, evalPoints, N)
+    MPC.updateTangentPoints(tangentPoints)
+    carPose = VehicleModel.CarPose(res[1], res[2], res[3], res[4])
 
     #draw car and raceCource
     carSprite = createcarsprite(scaleX, scaleY)
@@ -144,10 +167,13 @@ while isopen(window)
     track = createRaceCourse(scaleX, scaleY, radius, positionOffsetMeterX, positionOffsetMeterY)
     trackIn = createRaceCourse(scaleX, scaleY, radius -2, positionOffsetMeterX, positionOffsetMeterY)
     draw(window, trackOut)
-    draw(window, track)
+    #draw(window, track)
     draw(window, trackIn)
+    for i in 1:3:N
+        carPose = VehicleModel.CarPose(res[6*i + 1], res[6*i + 2], res[6*i + 3], res[6*i + 4])
+        createTangent(carPose, itpTrack, itpOutBound, itpInBound, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window)
+    end
     draw(window, carSprite)
-    createTangent(carPose, itpTrack, itpOutBound, itpInBound, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window)
     display(window)
     clear(window, SFML.white)
 end
