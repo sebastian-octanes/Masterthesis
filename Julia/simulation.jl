@@ -38,6 +38,39 @@ function createRaceCourse(scaleX, scaleY, radius, offsetX, offsetY)
     return circle
 end
 
+function createRaceCourse2(scaleX, scaleY, offsetX, offsetY, itpTrack, itpLeftBound, itpRightBound, window)
+    shape = ConvexShape()
+    shapeLeft = ConvexShape()
+    shapeRight = ConvexShape()
+
+    N = 400
+    set_pointcount(shape, N)
+    set_outline_thickness(shape, 2)
+    set_outlinecolor(shape, SFML.red)
+    set_pointcount(shapeLeft, N)
+    set_outline_thickness(shapeLeft, 1)
+    set_outlinecolor(shapeLeft, SFML.black)
+    set_pointcount(shapeRight, N)
+    set_outline_thickness(shapeRight, 1)
+    set_outlinecolor(shapeRight, SFML.black)
+
+    for i in 0:(N-1)
+        x = itpTrack[1/N * i, 1]
+        y = itpTrack[1/N * i, 2]
+        set_point(shape, i, Vector2f(offsetX*scaleX + x*scaleX , offsetY*scaleY - scaleY *y))
+        x = itpLeftBound[1/N * i, 1]
+        y = itpLeftBound[1/N * i, 2]
+        set_point(shapeLeft, i, Vector2f(offsetX*scaleX + x*scaleX , offsetY*scaleY - scaleY *y))
+        x = itpRightBound[1/N * i, 1]
+        y = itpRightBound[1/N * i, 2]
+        set_point(shapeRight, i, Vector2f(offsetX*scaleX + x*scaleX , offsetY*scaleY - scaleY *y))
+        #set_points
+    end
+    draw(window, shapeLeft)
+    draw(window, shape)
+    draw(window, shapeRight)
+end
+
 function createTangent(carPose, itpTrack, itpOutBound, itpInBound, scaleX, scaleY, offsetX, offsetY, window)
 
     i = RaceCourse.getSplinePosition(itpTrack, carPose.x, carPose.y)
@@ -137,7 +170,8 @@ radius = 15
 
 keys = KeyControls(0,0,0,0,0)
 carPose = VehicleModel.CarPose(0,0,0,pi/2)
-itpTrack, itpOutBound, itpInBound = RaceCourse.buildRaceTrack(15, 4, 15, 0)
+#itpTrack, itpOutBound, itpInBound = RaceCourse.buildRaceTrack(15, 4, 15, 0)
+itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack2(4)
 
 
 
@@ -165,11 +199,12 @@ while isopen(window)
     trackOut = createRaceCourse(scaleX, scaleY, radius +2, positionOffsetMeterX, positionOffsetMeterY)
     track = createRaceCourse(scaleX, scaleY, radius, positionOffsetMeterX, positionOffsetMeterY)
     trackIn = createRaceCourse(scaleX, scaleY, radius -2, positionOffsetMeterX, positionOffsetMeterY)
-    draw(window, trackOut)
-    draw(window, track)
-    draw(window, trackIn)
+    #draw(window, trackOut)
+    #draw(window, track)
+    #draw(window, trackIn)
+    createRaceCourse2(scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, itpTrack, itpLeftBound, itpRightBound, window)
     draw(window, carSprite)
-    createTangent(carPose, itpTrack, itpOutBound, itpInBound, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window)
+    createTangent(carPose, itpTrack, itpLeftBound, itpRightBound, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window)
     display(window)
     clear(window, SFML.white)
 end

@@ -9,14 +9,14 @@ function computeGradientPoints(itpBound, evalPoint)
     x2, y2  = itpBound[evalPoint - 0.01,1], itpBound[evalPoint - 0.01,2]
     return [x1, y1, x2, y2]
 end
-function computeGradientPoints_(itpOutBound, itpInBound ,evalPoint, N)
+function computeGradientPoints_(itpLeftBound, itpRightBound ,evalPoint, N)
     tangentPoints = []
     for i in 1:N
-        x1, y1  = itpOutBound[evalPoint[i] - 0.01,1], itpOutBound[evalPoint[i] - 0.01,2]
-        x2, y2  = itpOutBound[evalPoint[i] + 0.01,1], itpOutBound[evalPoint[i] + 0.01,2]
+        x1, y1  = itpLeftBound[evalPoint[i] - 0.01,1], itpLeftBound[evalPoint[i] - 0.01,2]
+        x2, y2  = itpLeftBound[evalPoint[i] + 0.01,1], itpLeftBound[evalPoint[i] + 0.01,2]
         tangentPoints = vcat(tangentPoints, x1, y1, x2, y2)
-        x1, y1  = itpInBound[evalPoint[i] - 0.01,1], itpInBound[evalPoint[i] - 0.01,2]
-        x2, y2  = itpInBound[evalPoint[i] + 0.01,1], itpInBound[evalPoint[i] + 0.01,2]
+        x1, y1  = itpRightBound[evalPoint[i] - 0.01,1], itpRightBound[evalPoint[i] - 0.01,2]
+        x2, y2  = itpRightBound[evalPoint[i] + 0.01,1], itpRightBound[evalPoint[i] + 0.01,2]
         tangentPoints = vcat(tangentPoints, x1, y1, x2, y2)
     end
     return tangentPoints
@@ -30,10 +30,10 @@ function computeGradientAngle(itpBound, evalPoint)
 end
 
 function getSplinePosition(itpBound, x, y)
-     t = 0:0.001:1
+     #t = 0:0.0005:1
      smallest = 1000
      indx = 0
-         for i = 0:0.001:1
+         for i = 0:0.0005:1
              x1, y1  = itpBound[i,1], itpBound[i,2]
              dist = sqrt((x1-x)^2 + (y - y1)^2)
              if dist < smallest
@@ -88,7 +88,7 @@ function buildRaceTrack(radius, trackWidth, OriginX, OriginY)
      return itpTrack, itpOutBound, itpInBound
 end
 
-function buildRaceTrack2(trackWidth, OriginX, OriginY)
+function buildRaceTrack2(trackWidth)
 
     track = zeros(Float64,1,2)
     leftBound = zeros(Float64,1,2)
@@ -107,14 +107,14 @@ function buildRaceTrack2(trackWidth, OriginX, OriginY)
     track, leftBound, rightBound = RaceCourse.addRightTurn(2, 4, trackWidth, track, leftBound, rightBound)
     track, leftBound, rightBound = RaceCourse.addLeftTurn(1, 4, trackWidth, track, leftBound, rightBound)
     track, leftBound, rightBound = RaceCourse.addStraight(2, 7, trackWidth, track, leftBound, rightBound)
-    track, leftBound, rightBound = RaceCourse.addRightTurn(2, 2, trackWidth, track, leftBound, rightBound)
-    track, leftBound, rightBound = RaceCourse.addRightTurn(3, 2, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addRightTurn(2, 3, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addRightTurn(3, 3, trackWidth, track, leftBound, rightBound)
     track, leftBound, rightBound = RaceCourse.addLeftTurn(0, 3, trackWidth, track, leftBound, rightBound)
-    track, leftBound, rightBound = RaceCourse.addStraight(3, 8, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addStraight(3, 6, trackWidth, track, leftBound, rightBound)
     track, leftBound, rightBound = RaceCourse.addLeftTurn(1, 5, trackWidth, track, leftBound, rightBound)
     track, leftBound, rightBound = RaceCourse.addRightTurn(2, 5, trackWidth, track, leftBound, rightBound)
     track, leftBound, rightBound = RaceCourse.addRightTurn(3, 4, trackWidth, track, leftBound, rightBound)
-    track, leftBound, rightBound = RaceCourse.addStraight(0, 5.5, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addStraight(0, 6, trackWidth, track, leftBound, rightBound)
 
     x = length(track)/2
     step = 1/x
@@ -301,7 +301,7 @@ function plotRaceTrack(itpTrack, leftBound, rightBound)
     plot(xsO, ysO, label="spline")
     plot(xsI, ysI, label="spline")
 end
-    export buildRaceTrack, computeGradientPoints, computeGradientAngle, getSplinePosition, addStraight, addRightTurn, plotRaceTrack
+    export buildRaceTrack, computeGradientPoints, computeGradientAngle, getSplinePosition, addStraight, addRightTurn, plotRaceTrack, buildRaceTrack2
 end
 
 #=

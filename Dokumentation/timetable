@@ -18,6 +18,7 @@ Abhängigkeit Updaterate, Geschwindigkeit, Stabilität
 Abhängigkeit Fahrzeugmodell, Updaterate
 Abhängigkeit Fahrzeugmodell, Geschwindigkeit 
 Vergleich von Kostenfunktionen
+Wie wurde letzter Tangentialpunk berechnet? (lenkwinkel und beschleunigung 0 ?)
 Testen verschiedener Optimierer in Julia? 
 Testen von MPC vs optimaler Trajektorie !
 

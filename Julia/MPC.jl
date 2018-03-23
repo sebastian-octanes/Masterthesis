@@ -1,7 +1,8 @@
 module MPC
-
+#using Mosek
 using JuMP
 using Ipopt
+#using KNITRO
 
 include("VehicleModel.jl")
 #using VehicleModel
@@ -14,6 +15,8 @@ include("VehicleModel.jl")
 function initMPC(N_, dt, startPose, tangentPoints, printLevel)
 
      global m = Model(solver = IpoptSolver(print_level = printLevel))
+     #global m = Model(solver = MosekSolver())
+
      global N = N_
      lbx = []
      ubx = []
@@ -65,16 +68,21 @@ function initMPC(N_, dt, startPose, tangentPoints, printLevel)
      global startPosYaw = @constraint(m, startPosYaw, x[4] == startPose.yaw)
 
      #objective
+     obj = 0
+     for i in 1:N
+          obj = obj + x[i*6 + 3]
+     end
      @NLobjective(m, Max, x[N*6 + 3])
+     #@NLobjective(m, Max, obj)
      return m
 end
 
 function updateStartPoint(res)
      #enforce starting point
-     JuMP.setRHS(startPosX, res[7])
-     JuMP.setRHS(startPosY, res[8])
-     JuMP.setRHS(startPosV, res[9])
-     JuMP.setRHS(startPosYaw, res[10])
+     JuMP.setRHS(startPosX, res[1])
+     JuMP.setRHS(startPosY, res[2])
+     JuMP.setRHS(startPosV, res[3])
+     JuMP.setRHS(startPosYaw, res[4])
 end
 
 function updateTangentPoints(tangetPoints)
