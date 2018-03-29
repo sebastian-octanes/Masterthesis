@@ -51,7 +51,7 @@ class SimulationEnvironment():
         self.plotCarPath = False
         #is loop done? should always be False till termination
         self.loopSimDone = False
-        self.X0 = np.zeros(6)
+        self.X0 = np.zeros(8)
         #init car_path
         self.carPath = []
         self.carPath.append([self.X0[0], self.X0[1], self.X0[2]])
@@ -60,7 +60,7 @@ class SimulationEnvironment():
         self.init_track()
         self.init_state_vector()
         self.mpc_key_counter = 0
-        self.init_mpc(20)
+        #self.init_mpc(20)
         
   
     
@@ -77,14 +77,16 @@ class SimulationEnvironment():
         self.raceTrack = RaceTrack()
  
        
-    def init_state_vector(self, N = 1, X = [0, 0, 0, math.pi/2, 0, 0]):
-        self.X0 = np.zeros(6*(N+1))       
+    def init_state_vector(self, N = 1, X = [0, 0, 0.1, math.pi/2, 0, 0, 0, 0]):
+        self.X0 = np.zeros(8*(N+1))       
         self.X0[0] = X[0]
         self.X0[1] = X[1]
         self.X0[2] = X[2]
         self.X0[3] = X[3]
         self.X0[4] = X[4]
         self.X0[5] = X[5]
+        self.X0[6] = X[6]
+        self.X0[7] = X[7]
        
         
     def init_mpc(self, N):
@@ -106,8 +108,8 @@ class SimulationEnvironment():
         self.simulation_steps = 1
 
     def reset_car_position(self):
-            self.X0[:6] = [0, 0, 0, math.pi/2, 0, 0]
-            self.X0[6:] = 0
+            self.X0[:8] = [0, 0, 0.1, math.pi/2, 0, 0, 0, 0]
+            self.X0[8:] = 0
             self.carPath = []
             self.carPath.append([self.X0[0], self.X0[1], self.X0[2]])
         
@@ -142,12 +144,12 @@ class SimulationEnvironment():
                 self.plotCarPath = not self.plotCarPath
 
         if(not self.mpcActive):
-            self.X0[4] = 0
-            self.X0[5] = 0
-            if pressed[pygame.K_UP]: self.X0[4] = self.vehicleModel.get_max_acc() 
-            if pressed[pygame.K_DOWN]: self.X0[4] = - self.vehicleModel.get_max_dec()
-            if pressed[pygame.K_LEFT]: self.X0[5] = self.vehicleModel.get_max_steer_angle()
-            if pressed[pygame.K_RIGHT]: self.X0[5] = - self.vehicleModel.get_max_steer_angle()
+            self.X0[6] = 0
+            self.X0[7] = 0
+            if pressed[pygame.K_UP]: self.X0[6] = self.vehicleModel.get_max_acc() 
+            if pressed[pygame.K_DOWN]: self.X0[6] = - self.vehicleModel.get_max_dec()
+            if pressed[pygame.K_LEFT]: self.X0[7] = self.vehicleModel.get_max_steer_angle()
+            if pressed[pygame.K_RIGHT]: self.X0[7] = - self.vehicleModel.get_max_steer_angle()
 
 
     def plot_race_track(self):
@@ -316,8 +318,8 @@ class SimulationEnvironment():
                 self.plot_car_path()
                 #plot racecar        
                 self.vehicleModel.set_dt(self.clock.get_time()/1000.0)
-                self.X0[0:4] = self.vehicleModel.compute_next_state_(self.X0[0:6])
-                self.display_car_info(self.X0[4], self.X0[5])
+                self.X0[0:6] = self.vehicleModel.compute_next_state_long(self.X0[0:8])
+                self.display_car_info(self.X0[6], self.X0[7])
                 self.set_car_path()                
                 #rotate car picture                 
                 #car_pic = pygame.transform.rotate(self.surf, self.X0[3] * 180/math.pi)

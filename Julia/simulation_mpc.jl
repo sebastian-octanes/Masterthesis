@@ -211,7 +211,7 @@ carPose = VehicleModel.CarPose(0,0,0.1,pi/2)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(15, 4, 15, 0)
 itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack2(trackWidth)
 
-N = 40
+N = 10
 printLevel = 0
 dt = 0.05
 initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel)
@@ -237,7 +237,7 @@ while isopen(window)
     end
     keys = checkkeys()
 
-    res = MPC.solveMPC()
+    @time res = MPC.solveMPC()
     res = mapKeyToCarControl(keys, res, N)
     stateVector = VehicleModel.createNewStateVector(res, dt, N)
     MPC.updateStartPoint(stateVector)

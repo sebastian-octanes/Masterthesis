@@ -3,16 +3,17 @@ module VehicleModel
 lf = 0.9    # distance tire to COG
 lr = 0.640
 lb = 1.440    #width of car
-beta = 0.0    #slip angle
-gammaf = 0.0  #steering angle
-A     = 2.5    #vehicle cross section
+beta    = 0.0    #slip angle
+gammaf  = 0.0  #steering angle
+A       = 2.5    #vehicle cross section
 FEngine = 4000   # 5000N for car
 mass    = 170   #kg
 Cd      = 0.5   #drag coefficient
 p       = 1.225  # air desity in kg/m^3
 A       = 2.0    #vehicle cross section
 Crr     = 0.014  #roll resistance coefficient
-max_speed = 60/3.6 # 120km/h /3.6 = m/s
+rad     = 0.2    #radius of tires in m
+max_speed = 40/3.6 # 120km/h /3.6 = m/s
 max_long_acc = 10   #m/s**2 longitudinal acceleration max
 max_long_dec = 10   #m/s**2 longitudinal deceleration max
 max_lat_acc = 20  # 2g lateral acceleration
@@ -67,6 +68,9 @@ function computeTimeStep(carPose, carControl, dt)
     carPose = CarPose(x_1, y_1, v_1, yaw_1)
     return carPose
 end
+
+
+function computeTimeStep
 
 export CarState, computeTimeStep, CarPose, CarControls, max_steering_angle, max_long_acc, max_long_dec, createNewStateVector
 

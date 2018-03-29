@@ -4,6 +4,7 @@ Simulation und MPC kombinieren und testen
 Zeitmessung hinzufügen
 Fahrzeugmodelle (3 stück?) Bicylce, Bicycle with Tire?, Aerosimulation
 
+Soft constraint für mpc testen
 
 
 
@@ -14,6 +15,8 @@ MPC
 Julia
 Vehicle Models
 
+Simulationsumgebung mit komplexeren Modellen, regler einfach lassen schauen wann instabil
+Beide Modelle in Simulationsumgebung laufen lassen und differenz betrachten
 Abhängigkeit Updaterate, Geschwindigkeit, Stabilität
 Abhängigkeit Fahrzeugmodell, Updaterate
 Abhängigkeit Fahrzeugmodell, Geschwindigkeit 
