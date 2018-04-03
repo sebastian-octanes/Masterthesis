@@ -2,8 +2,8 @@ using SFML
 include("RaceCourse.jl")
 include("VehicleModel.jl")
 include("MPC.jl")
-#include("CircularBuffer.jl")
-using CircBuffer
+include("circular_buffer.jl")
+#using CircBuffer
 #using VehicleModel.CarPose, VehicleModel.CarState, VehicleModel
 #using RaceCourse
 
@@ -223,14 +223,16 @@ carPose = VehicleModel.CarPose(0,0,0.1,pi/2)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(15, 4, 15, 0)
 itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack2(trackWidth)
 
-N = 80
+N = 50
 printLevel = 0
 dt = 0.05
 initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel)
 event = Event()
 window = RenderWindow("test", windowSizeX, windowSizeY)
 #create CircularBuffer for tracking Vehicle Path
-carPathBuffer = CircBuffer.CircularBuffer{VehicleModel.CarState}(400)
+#carPathBuffer = CircBuffer.CircularBuffer{VehicleModel.CarState}(400)
+carPathBuffer = CircularBuffer{VehicleModel.CarState}(400)
+
 #create Sprites
 RaceTrackLeftSprite, RaceTrackRightSprite = createRaceCourse2(scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, itpTrack, itpLeftBound, itpRightBound, window)
 
