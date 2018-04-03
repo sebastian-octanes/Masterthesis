@@ -70,11 +70,21 @@ class VehicleModel:
 	#Fxl   = torque / r
 	Fxl   = self.m * acc   
 	x_d = x_d + self.dt * ((Fxl - Rxf - Rxr -Faero)/self.m) 
-	print("y_d * Psi_d", y_d*psi_d)
+	#print("y_d * Psi_d", y_d*psi_d)
 
 	#lat
 	theta_f = (y_d + self.lf * psi_d)/ x_d
 	theta_r = (y_d - self.lr * psi_d)/ x_d
+#	if(theta_f > 2.0):
+#		theta_f = 2.0
+#	if(theta_f < -2.0):
+#		theta_f = -2.0
+#	if(theta_r > 2.0):
+#		theta_r = 2.0
+#	if(theta_r < -2.0):
+#		theta_r = -2.0
+
+	print("theta_r", theta_r)
 	Fyf  = 2 * self.Cf * ( phi - theta_f)
 	Fyr  = 2 * self.Cr * (-theta_r)
 	y_d  = y_d + self.dt * ((Fyf + Fyr)/self.m - x_d * psi_d)

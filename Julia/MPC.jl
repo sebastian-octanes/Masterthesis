@@ -68,12 +68,8 @@ function initMPC(N_, dt, startPose, tangentPoints, printLevel)
      global startPosYaw = @constraint(m, startPosYaw, x[4] == startPose.yaw)
 
      #objective
-     obj = 0
-     for i in 1:N
-          obj = obj + x[i*6 + 3]
-     end
-     @NLobjective(m, Max, x[N*6 + 3])
-     #@NLobjective(m, Max, obj)
+     #@NLobjective(m, Max, x[N*6 + 3])
+     @NLobjective(m, Max, sum(x[i*6 + 3] for i in 1:N))
      return m
 end
 

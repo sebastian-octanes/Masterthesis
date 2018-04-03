@@ -144,6 +144,16 @@ function createTangent(carPose, itpTrack, itpLeftBound, itpRightBound, scaleX, s
 
 end
 
+function displayCarData(res, window)
+    #text = TextRegular()
+    text = RenderText()
+    speed = res[3] *3.61
+    set_string(text, "speed $(speed) km/h")
+    set_color(text, SFML.red)
+    set_charactersize(text, 25)
+    set_position(text, Vector2f(50,450))
+    draw(window, text)
+end
 
 function setpositioncar(carsprite, carPose, scaleX, scaleY, offsetX, offsetY)
     set_position(carsprite, Vector2f(scaleX * carPose.x + offsetX*scaleX, (- scaleY *carPose.y + offsetY*scaleY)))
@@ -211,7 +221,7 @@ carPose = VehicleModel.CarPose(0,0,0.1,pi/2)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(15, 4, 15, 0)
 itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack2(trackWidth)
 
-N = 10
+N = 45
 printLevel = 0
 dt = 0.05
 initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel)
@@ -223,6 +233,8 @@ carPathBuffer = CircBuffer.CircularBuffer{VehicleModel.CarState}(400)
 RaceTrackLeftSprite, RaceTrackRightSprite = createRaceCourse2(scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, itpTrack, itpLeftBound, itpRightBound, window)
 
 set_framerate_limit(window, convert(Int64, 1 / dt))
+#set_framerate_limit(window, 5)
+
 clock = Clock()
 #lapTimeActive needed for timer
 lapTimeActive = false
@@ -274,6 +286,8 @@ while isopen(window)
     #draw predicted movement of car
     createPredictionPoints(stateVector, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window, N)
     draw(window, carSprite)
+    #draw car info
+    displayCarData(res, window)
     display(window)
     clear(window, SFML.white)
 end
