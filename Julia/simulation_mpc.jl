@@ -199,7 +199,9 @@ function initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel)
     end
     evalPoints = RaceCourse.getSplinePositions(itpTrack, stateVector, N)
     tangentPoints = RaceCourse.computeGradientPoints_(itpLeftBound, itpRightBound, evalPoints, N)
-    m = MPC.initMPC(N, dt, startPose, tangentPoints, printLevel)
+    midTrackPoints = RaceCourse.getMidTrackPoints(itpTrack,evalPoints, N)
+    println(midTrackPoints)
+    m = MPC.initMPC(N, dt, startPose, tangentPoints, midTrackPoints, printLevel)
     return m
 end
 
@@ -221,7 +223,7 @@ carPose = VehicleModel.CarPose(0,0,0.1,pi/2)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(15, 4, 15, 0)
 itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack2(trackWidth)
 
-N = 45
+N = 80
 printLevel = 0
 dt = 0.05
 initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel)
@@ -255,14 +257,16 @@ while isopen(window)
     MPC.updateStartPoint(stateVector)
     evalPoints = RaceCourse.getSplinePositions(itpTrack, stateVector, N)
     tangentPoints = RaceCourse.computeGradientPoints_(itpLeftBound, itpRightBound, evalPoints, N)
+    midTrackPoints = RaceCourse.getMidTrackPoints(itpTrack, evalPoints, N)
     MPC.updateTangentPoints(tangentPoints)
+    MPC.updateMidTrackPoints(midTrackPoints)
     carPose = VehicleModel.CarPose(stateVector[1], stateVector[2], stateVector[3], stateVector[4])
     #timer
     steps = steps + 1
     if abs(carPose.x) > 5
         lapTimeActive = true
     end
-    if abs(carPose.x) < trackWidth/2 && abs(carPose.y) < 0.1 && lapTimeActive
+    if abs(carPose.x) < trackWidth/2 && abs(carPose.y) < 0.4 && lapTimeActive
         println("lap_time_steps:", steps * dt)
         restart(clock)
         steps = 0
@@ -277,7 +281,7 @@ while isopen(window)
     setpositioncar(carSprite, carPose, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY)
     drawRaceCourse2(window, RaceTrackLeftSprite, RaceTrackRightSprite)
     # draw tangents for future points
-    for i in 1:3:N
+    for i in 1:6:N
         carPose = VehicleModel.CarPose(stateVector[6*i + 1], stateVector[6*i + 2], stateVector[6*i + 3], stateVector[6*i + 4])
         createTangent(carPose, itpTrack, itpLeftBound, itpRightBound, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window)
     end

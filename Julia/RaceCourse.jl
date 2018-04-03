@@ -22,6 +22,14 @@ function computeGradientPoints_(itpLeftBound, itpRightBound ,evalPoint, N)
     return tangentPoints
 end
 
+function getMidTrackPoints(itpTrack, evalPoints, N)
+    midTrackPoints = []
+    for i in 1:N
+        x1, y1 = itpTrack[evalPoints[i],1], itpTrack[evalPoints[i],2]
+        midTrackPoints = vcat(midTrackPoints, x1, y1)
+    end
+    return midTrackPoints
+end
 function computeGradientAngle(itpBound, evalPoint)
      x1, y1  = itpBound[evalPoint - 0.01,1], itpBound[evalPoint - 0.01,2]
      x2, y2  = itpBound[evalPoint + 0.01,1], itpBound[evalPoint + 0.01,2]

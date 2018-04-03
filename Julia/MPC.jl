@@ -12,7 +12,7 @@ include("VehicleModel.jl")
 #using KNITRO
 #using Mosek
 
-function initMPC(N_, dt, startPose, tangentPoints, printLevel)
+function initMPC(N_, dt, startPose, tangentPoints, midTrackPoints, printLevel)
 
      global m = Model(solver = IpoptSolver(print_level = printLevel))
      #global m = Model(solver = MosekSolver())
@@ -21,7 +21,7 @@ function initMPC(N_, dt, startPose, tangentPoints, printLevel)
      lbx = []
      ubx = []
      start = []
-
+     trackWidth = 4
      lbx_ = [-Inf, -Inf,                   0.01, -Inf, -VehicleModel.max_long_dec, -VehicleModel.max_steering_angle]
      ubx_ = [ Inf,  Inf, VehicleModel.max_speed,  Inf,  VehicleModel.max_long_acc,  VehicleModel.max_steering_angle]
      start_=[startPose.x, startPose.y, startPose.v, startPose.yaw, 0, 0]
@@ -59,7 +59,12 @@ function initMPC(N_, dt, startPose, tangentPoints, printLevel)
           @NLconstraint(m, (x[(i+1)*6 + 1]-p3[1]) * (p4[2] - p3[2]) - (x[(i+1)*6 + 2] - p3[2]) * (p4[1]- p3[1]) <= 0)
      end
 
-
+     #add more or less soft constraint to keep the car inside the racecourse even if tangents arent enough. keep it as general as possible!
+     global z = @NLparameter(m, z[i = 1:N*2] == midTrackPoints[i])
+     for i in 0:N-1
+          p1 = [z[i*2 + 1], z[i*2 + 2]]
+          @NLconstraint(m, sqrt((x[(i+1)*6 + 1] - p1[1])^2 +  (x[(i+1)*6 + 2] - p1[2])^2) <= trackWidth*1.0)
+     end
 
      #enforce starting point
      global startPosX = @constraint(m, startPosX, x[1] == startPose.x)
@@ -94,13 +99,21 @@ function updateTangentPoints(tangetPoints)
      end
      return m, y
 end
+
+function updateMidTrackPoints(midTrackPoints)
+     for i in 0:N-1
+          setvalue(z[i*2 + 1] , midTrackPoints[i*2 + 1])
+          setvalue(z[i*2 + 2] , midTrackPoints[i*2 + 2])
+     end
+     return m, y
+end
 function solveMPC()
      solve(m)
      res = getvalue(x)
      return res
 end
 
-export solveMPC, updateTangetPoints, updateStartPoint, initMPC
+export solveMPC, updateTangetPoints, updateStartPoint, initMPC, updateMidTrackPoints
 end
 
 #=
