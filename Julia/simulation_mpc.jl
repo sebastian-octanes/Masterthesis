@@ -200,8 +200,9 @@ function initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel)
     evalPoints = RaceCourse.getSplinePositions(itpTrack, stateVector, N)
     tangentPoints = RaceCourse.computeGradientPoints_(itpLeftBound, itpRightBound, evalPoints, N)
     midTrackPoints = RaceCourse.getMidTrackPoints(itpTrack,evalPoints, N)
+    trackPoints = RaceCourse.getTrackPoints(itpTrack, itpLeftBound, itpRightBound, evalPoints, N)
     println(midTrackPoints)
-    m = MPC.initMPC(N, dt, startPose, tangentPoints, midTrackPoints, printLevel)
+    m = MPC.initMPC(N, dt, startPose, tangentPoints, midTrackPoints, trackPoints, printLevel)
     return m
 end
 
@@ -260,8 +261,10 @@ while isopen(window)
     evalPoints = RaceCourse.getSplinePositions(itpTrack, stateVector, N)
     tangentPoints = RaceCourse.computeGradientPoints_(itpLeftBound, itpRightBound, evalPoints, N)
     midTrackPoints = RaceCourse.getMidTrackPoints(itpTrack, evalPoints, N)
+    trackPoints = RaceCourse.getTrackPoints(itpTrack, itpLeftBound, itpRightBound, evalPoints, N)
     MPC.updateTangentPoints(tangentPoints)
     MPC.updateMidTrackPoints(midTrackPoints)
+    #MPC.updateTrackPoints(trackPoints)
     carPose = VehicleModel.CarPose(stateVector[1], stateVector[2], stateVector[3], stateVector[4])
     #timer
     steps = steps + 1

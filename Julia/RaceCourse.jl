@@ -22,6 +22,18 @@ function computeGradientPoints_(itpLeftBound, itpRightBound ,evalPoint, N)
     return tangentPoints
 end
 
+function getTrackPoints(itpTrack, itpLeftBound, itpRightBound, evalPoints, N)
+    trackPoints = []
+    for i in 1:N
+        x0, y0 = itpTrack[evalPoints[i],1], itpTrack[evalPoints[i],2]
+        x1, y1 = itpLeftBound[evalPoints[i],1], itpLeftBound[evalPoints[i],2]
+        x2, y2 = itpRightBound[evalPoints[i],1], itpRightBound[evalPoints[i],2]
+        trackPoints = vcat(trackPoints, x0, y0, x1, y1, x2, y2)
+    end
+    return trackPoints
+end
+
+
 function getMidTrackPoints(itpTrack, evalPoints, N)
     midTrackPoints = []
     for i in 1:N
@@ -309,7 +321,7 @@ function plotRaceTrack(itpTrack, leftBound, rightBound)
     plot(xsO, ysO, label="spline")
     plot(xsI, ysI, label="spline")
 end
-    export buildRaceTrack, computeGradientPoints, computeGradientAngle, getSplinePosition, addStraight, addRightTurn, plotRaceTrack, buildRaceTrack2
+    export buildRaceTrack, computeGradientPoints, getTrackPoints, computeGradientAngle, getSplinePosition, addStraight, addRightTurn, plotRaceTrack, buildRaceTrack2
 end
 
 #=

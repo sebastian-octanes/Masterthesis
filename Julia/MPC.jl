@@ -12,7 +12,7 @@ include("VehicleModel.jl")
 #using KNITRO
 #using Mosek
 
-function initMPC(N_, dt, startPose, tangentPoints, midTrackPoints, printLevel)
+function initMPC(N_, dt, startPose, tangentPoints, midTrackPoints, trackPoints, printLevel)
 
      global m = Model(solver = IpoptSolver(print_level = printLevel))
      #global m = Model(solver = MosekSolver())
@@ -58,6 +58,23 @@ function initMPC(N_, dt, startPose, tangentPoints, midTrackPoints, printLevel)
           @NLconstraint(m, (x[(i+1)*6 + 1]-p1[1]) * (p2[2] - p1[2]) - (x[(i+1)*6 + 2] - p1[2]) * (p2[1]- p1[1]) >= 0)
           @NLconstraint(m, (x[(i+1)*6 + 1]-p3[1]) * (p4[2] - p3[2]) - (x[(i+1)*6 + 2] - p3[2]) * (p4[1]- p3[1]) <= 0)
      end
+#=
+     global y = @NLparameter(m, y[i=1:N*6] == trackPoints[i])
+     for i in 0:N-1
+          x0 = [y[i*8 + 1], y[i*8 + 2]]
+          x1 = [y[i*8 + 3], y[i*8 + 4]]
+          x2 = [y[i*8 + 5], y[i*8 + 6]]
+          b1 = [x1[1] - x0[1], x1[2] - x0[2]]
+          b1 = [x2[1] - x0[1], x2[2] - x0[2]]
+          a = [x[(i+1)*6 + 1] - x0[1], x[(i+1)*6 + 2] - x0[2]]
+          ab1 = a[1]*b1[1] + a[2]*b1[2]
+          ab2 = a[1]*b2[1] + a[2]*b2[2]
+          B1 = sqrt(b1[1]^2 + b1[2]^2)
+          B2 = sqrt(b2[1]^2 + b2[2]^2)
+          @NLconstraint(m, ab1/B1 <= trackWidth/2)
+          @NLconstraint(m, ab2/B2 <= trackWidth/2)
+     end
+=#
 
      #add more or less soft constraint to keep the car inside the racecourse even if tangents arent enough. keep it as general as possible!
      global z = @NLparameter(m, z[i = 1:N*2] == midTrackPoints[i])
@@ -100,6 +117,18 @@ function updateTangentPoints(tangetPoints)
      return m, y
 end
 
+function updateTrackPoints(trackPoints)
+     for i in 0:N-1
+          setvalue(y[i*6 + 1] , trackPoints[i*6 + 1])
+          setvalue(y[i*6 + 2] , trackPoints[i*6 + 2])
+          setvalue(y[i*6 + 3] , trackPoints[i*6 + 3])
+          setvalue(y[i*6 + 4] , trackPoints[i*6 + 4])
+          setvalue(y[i*6 + 5] , trackPoints[i*6 + 5])
+          setvalue(y[i*6 + 6] , trackPoints[i*6 + 6])
+     end
+     return m, y
+end
+
 function updateMidTrackPoints(midTrackPoints)
      for i in 0:N-1
           setvalue(z[i*2 + 1] , midTrackPoints[i*2 + 1])
@@ -113,7 +142,7 @@ function solveMPC()
      return res
 end
 
-export solveMPC, updateTangetPoints, updateStartPoint, initMPC, updateMidTrackPoints
+export solveMPC, updateTangetPoints, updateStartPoint, initMPC, updateMidTrackPoints, updateTrackPoints
 end
 
 #=
