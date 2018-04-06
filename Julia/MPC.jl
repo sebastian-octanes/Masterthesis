@@ -14,7 +14,7 @@ include("VehicleModel.jl")
 
 function initMPC(N_, dt, startPose, tangentPoints, midTrackPoints, trackPoints, printLevel)
 
-     global m = Model(solver = IpoptSolver(print_level = printLevel))
+     global m = Model(solver = IpoptSolver(print_level = printLevel, max_iter=5000))
      #global m = Model(solver = MosekSolver())
 
      global N = N_
@@ -49,7 +49,7 @@ function initMPC(N_, dt, startPose, tangentPoints, midTrackPoints, trackPoints, 
      end
 
      global y = @NLparameter(m, y[i=1:N*4*2] == tangentPoints[i])
-     for i in 0:N-1
+     #=for i in 0:N-1
           p1 = [y[i*8 + 1], y[i*8 + 2]]
           p2 = [y[i*8 + 3], y[i*8 + 4]]
           p3 = [y[i*8 + 5], y[i*8 + 6]]
@@ -58,31 +58,37 @@ function initMPC(N_, dt, startPose, tangentPoints, midTrackPoints, trackPoints, 
           @NLconstraint(m, (x[(i+1)*6 + 1]-p1[1]) * (p2[2] - p1[2]) - (x[(i+1)*6 + 2] - p1[2]) * (p2[1]- p1[1]) >= 0)
           @NLconstraint(m, (x[(i+1)*6 + 1]-p3[1]) * (p4[2] - p3[2]) - (x[(i+1)*6 + 2] - p3[2]) * (p4[1]- p3[1]) <= 0)
      end
+     =#
+
+     global t = @NLparameter(m, t[i=1:N*6] == trackPoints[i])
 #=
-     global y = @NLparameter(m, y[i=1:N*6] == trackPoints[i])
      for i in 0:N-1
-          x0 = [y[i*8 + 1], y[i*8 + 2]]
-          x1 = [y[i*8 + 3], y[i*8 + 4]]
-          x2 = [y[i*8 + 5], y[i*8 + 6]]
-          b1 = [x1[1] - x0[1], x1[2] - x0[2]]
-          b1 = [x2[1] - x0[1], x2[2] - x0[2]]
-          a = [x[(i+1)*6 + 1] - x0[1], x[(i+1)*6 + 2] - x0[2]]
-          ab1 = a[1]*b1[1] + a[2]*b1[2]
-          ab2 = a[1]*b2[1] + a[2]*b2[2]
-          B1 = sqrt(b1[1]^2 + b1[2]^2)
-          B2 = sqrt(b2[1]^2 + b2[2]^2)
+          x0 = [t[i*6 + 1], t[i*6 + 2]]
+          x1 = [t[i*6 + 3], t[i*6 + 4]]
+          x2 = [t[i*6 + 5], t[i*6 + 6]]
+
+          @NLexpression(m, ax, x[(i+1)*6 + 1] - x0[1])
+          @NLexpression(m, ay, x[(i+1)*6 + 2] - x0[2])
+          @NLexpression(m, ab1, ax*(x1[1] - x0[1])+ ay*(x1[2] - x0[2]))
+          @NLexpression(m, B1, sqrt((x1[1] - x0[1])^2 + (x1[2] - x0[2])^2))
           @NLconstraint(m, ab1/B1 <= trackWidth/2)
+
+          @NLexpression(m, ax, x[(i+1)*6 + 1] - x0[1])
+          @NLexpression(m, ay, x[(i+1)*6 + 2] - x0[2])
+          @NLexpression(m, ab2, ax*(x2[1] - x0[1])+ ay*(x2[2] - x0[2]))
+          @NLexpression(m, B2, sqrt((x2[1] - x0[1])^2 + (x2[2] - x0[2])^2))
           @NLconstraint(m, ab2/B2 <= trackWidth/2)
      end
 =#
 
      #add more or less soft constraint to keep the car inside the racecourse even if tangents arent enough. keep it as general as possible!
      global z = @NLparameter(m, z[i = 1:N*2] == midTrackPoints[i])
+#=
      for i in 0:N-1
           p1 = [z[i*2 + 1], z[i*2 + 2]]
           @NLconstraint(m, sqrt((x[(i+1)*6 + 1] - p1[1])^2 +  (x[(i+1)*6 + 2] - p1[2])^2) <= trackWidth*1.0)
      end
-
+=#
      #enforce starting point
      global startPosX = @constraint(m, startPosX, x[1] == startPose.x)
      global startPosY = @constraint(m, startPosY, x[2] == startPose.y)
@@ -91,7 +97,32 @@ function initMPC(N_, dt, startPose, tangentPoints, midTrackPoints, trackPoints, 
 
      #objective
      #@NLobjective(m, Max, x[N*6 + 3])
-     @NLobjective(m, Max, sum(x[i*6 + 3] for i in 1:N))
+
+
+     alpha = 1
+     k1 = -trackWidth/2
+     k2 = trackWidth/2
+     alpha2 = 2/ (8*(trackWidth/2)^7)
+     dist_val1(xX, xY, x0X, x0Y, x1X, x1Y) =  ((xX - x0X)*(x1X - x0X) + (xY - x0Y)*(x1Y - x0Y)) / sqrt((x1X - x0X)^2 + (x1Y - x0Y)^2)
+     #efunc1(xX, xY, x0X, x0Y, x1X, x1Y) = exp(alpha*(k1 + dist_val1(xX, xY, x0X, x0Y, x1X, x1Y)) + exp(-alpha*(k2 + dist_val1(xX, xY, x0X, x0Y, x1X, x1Y))))
+     #efunc1(xX, xY, x0X, x0Y, x1X, x1Y) = abs(alpha/(k1 - dist_val1(xX, xY, x0X, x0Y, x1X, x1Y)) + (alpha/(k2 - dist_val1(xX, xY, x0X, x0Y, x1X, x1Y))))
+     efunc1(xX, xY, x0X, x0Y, x1X, x1Y) = alpha2 * dist_val1(xX, xY, x0X, x0Y, x1X, x1Y)^8
+
+     dist_val2(xX, xY, x0X, x0Y, x2X, x2Y) =  ((xX - x0X)*(x2X - x0X) + (xY - x0Y)*(x2Y - x0Y)) / sqrt((x2X - x0X)^2 + (x2Y - x0Y)^2)
+     efunc2(xX, xY, x0X, x0Y, x2X, x2Y) = exp(alpha*(k1 + dist_val2(xX, xY, x0X, x0Y, x2X, x2Y)) + exp(-alpha*(k2 + dist_val2(xX, xY, x0X, x0Y, x2X, x2Y))))
+     #efunc2(xX, xY, x0X, x0Y, x2X, x2Y) = abs(alpha/(k1 - dist_val2(xX, xY, x0X, x0Y, x2X, x2Y)) + (alpha/(k2 - dist_val2(xX, xY, x0X, x0Y, x2X, x2Y))))
+
+     JuMP.register(m, :dist_val1, 6, dist_val1, autodiff=true)
+     JuMP.register(m, :efunc1, 6, efunc1, autodiff=true)
+     JuMP.register(m, :dist_val2, 6, dist_val2, autodiff=true)
+     JuMP.register(m, :efunc2, 6, efunc2, autodiff=true)
+     @NLexpression(m, sum_1, sum(efunc1(x[(i+1)*6 + 1], x[(i+1)*6 + 2], t[i*6 + 1], t[i*6 + 2], t[i*6 + 3], t[i*6 + 4]) for i in 0:N-1))
+     @NLexpression(m, sum_2, sum(efunc2(x[(i+1)*6 + 1], x[(i+1)*6 + 2], t[i*6 + 1], t[i*6 + 2], t[i*6 + 5], t[i*6 + 6]) for i in 0:N-1))
+
+     @NLexpression(m, sum_3, sum(1/x[i*6 + 3] for i in 1:N))
+     @NLobjective(m, Min, sum_1 + sum_3)
+     #@NLobjective(m, Max, sum(x[i*6 + 3] for i in 1:N))
+
      return m
 end
 
@@ -119,14 +150,14 @@ end
 
 function updateTrackPoints(trackPoints)
      for i in 0:N-1
-          setvalue(y[i*6 + 1] , trackPoints[i*6 + 1])
-          setvalue(y[i*6 + 2] , trackPoints[i*6 + 2])
-          setvalue(y[i*6 + 3] , trackPoints[i*6 + 3])
-          setvalue(y[i*6 + 4] , trackPoints[i*6 + 4])
-          setvalue(y[i*6 + 5] , trackPoints[i*6 + 5])
-          setvalue(y[i*6 + 6] , trackPoints[i*6 + 6])
+          setvalue(t[i*6 + 1] , trackPoints[i*6 + 1])
+          setvalue(t[i*6 + 2] , trackPoints[i*6 + 2])
+          setvalue(t[i*6 + 3] , trackPoints[i*6 + 3])
+          setvalue(t[i*6 + 4] , trackPoints[i*6 + 4])
+          setvalue(t[i*6 + 5] , trackPoints[i*6 + 5])
+          setvalue(t[i*6 + 6] , trackPoints[i*6 + 6])
      end
-     return m, y
+     return m, t
 end
 
 function updateMidTrackPoints(midTrackPoints)

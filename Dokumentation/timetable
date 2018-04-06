@@ -24,6 +24,7 @@ Vergleich von Kostenfunktionen
 Wie wurde letzter Tangentialpunk berechnet? (lenkwinkel und beschleunigung 0 ?)
 Testen verschiedener Optimierer in Julia? 
 Testen von MPC vs optimaler Trajektorie !
+Speed von Hard vs Soft constraints für die Streckenbegrenzung
 
 Fragen zu klären:
 wie komplex muss der Rennkurs sein? 

@@ -224,7 +224,7 @@ carPose = VehicleModel.CarPose(0,0,0.1,pi/2)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(15, 4, 15, 0)
 itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack2(trackWidth)
 
-N = 50
+N = 20
 printLevel = 0
 dt = 0.05
 initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel)
@@ -264,7 +264,7 @@ while isopen(window)
     trackPoints = RaceCourse.getTrackPoints(itpTrack, itpLeftBound, itpRightBound, evalPoints, N)
     MPC.updateTangentPoints(tangentPoints)
     MPC.updateMidTrackPoints(midTrackPoints)
-    #MPC.updateTrackPoints(trackPoints)
+    MPC.updateTrackPoints(trackPoints)
     carPose = VehicleModel.CarPose(stateVector[1], stateVector[2], stateVector[3], stateVector[4])
     #timer
     steps = steps + 1
