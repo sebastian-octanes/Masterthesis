@@ -35,6 +35,19 @@ class VehicleModel:
     max_lat_acc = 20  # 2g lateral acceleration
     max_steering_angle = (30.0/180.0)*math.pi #
     max_acceleration_time = 4.0 #seconds
+
+#tire model
+    Df   = 3000 #N
+    Db   = 3274 #N
+    xmf  = 0.25 #0.6 * math.pi/180 #Degrees
+    xmb  = 21.3 * math.pi/180#Degrees
+    betaf= 17645#rad
+    betab= 1.34 #rad
+    #yaf  = 2952 #N
+    #yab  = 3291 #N
+    yaf  = 2000 #N
+    yab  = 2791 #N
+
  
     
     def __init__(self, dt_):
@@ -73,8 +86,8 @@ class VehicleModel:
 	#print("y_d * Psi_d", y_d*psi_d)
 
 	#lat
-	theta_f = (y_d + self.lf * psi_d)/ x_d
-	theta_r = (y_d - self.lr * psi_d)/ x_d
+	theta_f = math.arctan((y_d + self.lf * psi_d)/ x_d)
+	theta_r = math.arctan((y_d - self.lr * psi_d)/ x_d)
 #	if(theta_f > 2.0):
 #		theta_f = 2.0
 #	if(theta_f < -2.0):
@@ -85,8 +98,10 @@ class VehicleModel:
 #		theta_r = -2.0
 
 	print("theta_r", theta_r)
-	Fyf  = 2 * self.Cf * ( phi - theta_f)
-	Fyr  = 2 * self.Cr * (-theta_r)
+	#Fyf  = 2 * self.Cf * ( phi - theta_f)
+	Fyf = self.pacejka_tire_model_f(phi - theta_f)	
+	#Fyr  = 2 * self.Cr * (-theta_r)
+	Fyr = self.pacejka_tire_model_b(-theta_r)
 	y_d  = y_d + self.dt * ((Fyf + Fyr)/self.m - x_d * psi_d)
 
 	psi_d = psi_d + self.dt * (self.lf*Fyf - self.lr*Fyr)/self.I
@@ -94,6 +109,7 @@ class VehicleModel:
 	psi = psi + self.dt * psi_d
 	X = X + self.dt * (x_d * cos(psi) - y_d *sin(psi))
 	Y = Y + self.dt * (x_d * sin(psi) + y_d *cos(psi))
+	
 	Xnext = np.zeros(6)
 	Xnext[0] = X
 	Xnext[1] = Y
@@ -102,7 +118,39 @@ class VehicleModel:
 	Xnext[4] = y_d
 	Xnext[5] = psi_d
 	#print("Xnext", Xnext)
-	return Xnext        
+	return Xnext
+
+
+
+    def pacejka_tire_model_f(self, slip_angle):
+	D = self.Df	
+	C = 1 + (1 - (2.0/math.pi))* np.arcsin(self.yaf/D)
+	B = math.tan(self.betaf)/C*D
+	E = (B * self.xmf - math.tan(math.pi/2.0*C))/(B*self.xmf - math.atan(B*self.xmf))
+	y = D*sin(C*atan(B*slip_angle - E*(B*slip_angle -math.atan(B*slip_angle))))
+	return y 
+    
+    def pacejka_tire_model_f_(self, slip_angle):
+	D = self.Df	
+	C =  1.6
+	B = math.tan(self.betaf)/(C*D)
+	#y = D * math.sin(C * math.atan(B * slip_angle))	
+	E = (B * self.xmf - math.tan(math.pi/2.0*C))/(B*self.xmf - math.atan(B*self.xmf))
+	print("C: ", C)
+	print("B: ", B)
+	print("E: ", E)
+
+	y = D*sin(C*atan(B*slip_angle - E*(B*slip_angle -atan(B*slip_angle))))
+	return y  
+
+    def pacejka_tire_model_b(self, slip_angle):
+	D = self.Db	
+	C = 1 + (1 - (2/math.pi))* np.arcsin(self.yab/D)
+	B = math.tan(self.betab)/C*D
+	E = (B * self.xmb - math.tan(math.pi/2*C))/(B*self.xmb - math.atan(B*self.xmb))
+	y = D*sin(C*atan(B*slip_angle - E*(B*slip_angle -math.atan(B*slip_angle))))
+	return y    
+  
 
     """ use this function to compute the next state in the simulation environment only! here the max_beta will be limited in the function hence it is not usable for the mpc controller.
         use compute_next_state for the mpc controller"""
