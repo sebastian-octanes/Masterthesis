@@ -66,7 +66,7 @@ class SimulationEnvironment():
     
     def init_vehicle(self, dt):
         #load race_car image 
-        raceCarImage = pygame.image.load("/home/weller/Bilder/race_car.jpg").convert()
+        raceCarImage = pygame.image.load("race_car.png").convert()
         self.surf = pygame.transform.scale(raceCarImage, (20, 18))
         self.surf_rect = self.surf.get_rect(center = (10,9))        
         self.vehicleModel = VehicleModel(dt)

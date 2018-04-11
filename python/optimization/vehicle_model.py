@@ -45,8 +45,8 @@ class VehicleModel:
     xmb  = 0.37 #rad
     betaf = math.pi/2.0 - 0.00001#rad
     betab= math.pi/2.0 - 0.00001#rad
-    yaf  = 2952 #N
-    yab  = 3291 #N
+    yaf  = 2952.0 #N
+    yab  = 3291.0 #N
  
 
 
@@ -157,10 +157,10 @@ class VehicleModel:
         print("theta_r", theta_r)
 	print("theta_f", theta_f)
 	#Fyf  = 2 * self.Cf * ( phi - theta_f)
-	Ffy = self.pacejka_tire_model_f_complex(phi - theta_f)
+	Ffy = self.pacejka_tire_model(phi - theta_f, front = True)
 	#print("Fyf", Fyf)
 	#Fyr  = 2 * self.Cr * (-theta_r)
-	Fry = self.pacejka_tire_model_b(- theta_r)
+	Fry = self.pacejka_tire_model(- theta_r, front = False)
 	#print("Fyr", Fyr)
 	x_d = x_d + self.dt * (Frx - Ffy*sin(phi) + self.m*y_d*psi_d)*(1.0/self.m)  	
 	y_d = y_d + self.dt * (Fry + Ffy*cos(phi) - self.m*x_d*psi_d)*(1.0/self.m)
@@ -171,8 +171,6 @@ class VehicleModel:
 	X = X + self.dt * (x_d * cos(psi) - y_d *sin(psi))
 	Y = Y + self.dt * (x_d * sin(psi) + y_d *cos(psi))
 	
-	#print("x_d", x_d)	
-	#print("y_d", y_d)
 	Xnext = np.zeros(6)
 	Xnext[0] = X
 	Xnext[1] = Y
@@ -180,43 +178,73 @@ class VehicleModel:
 	Xnext[3] = psi
 	Xnext[4] = y_d
 	Xnext[5] = psi_d
-	#print("Xnext", Xnext)
 	return Xnext
 
 
-    def pacejka_tire_model_f_simple(self, slip_angle):
+    def pacejka_tire_model_linear(self, slip_angle, front):
 	#linear model	
-	#dont forget that CBE have to be computed just once and then not again
-	D = self.Df
-	C = 1 + (1 - (2.0/math.pi))* np.arcsin(self.yaf/D)
-	B = math.tan(self.betaf)/(C*D)
-	y = B * C * D * slip_angle
+	if(front == True):
+		D = self.Df
+		xm = self.xmf
+	else:
+		D = self.Db
+		xm = self.xmb
+	C = D/xm
+	y = C * slip_angle
 	return y
 
-    def pacejka_tire_model_f(self, slip_angle):
+    def pacejka_tire_model(self, slip_angle, front):
 	#dont forget that CBE have to be computed just once and then not again
-	D = self.Df
-	C = 1 + (1 - (2.0/math.pi))* np.arcsin(self.yaf/D)
-	B = math.tan(self.betaf)/(C*D)
+	if(front == True):
+		D = self.Df
+		ya = self.yaf
+		beta = self.betaf
+	else:
+		D = self.Db
+		ya = self.yab
+		beta = self.betab
+	C = 1 + (1 - (2.0/math.pi))* np.arcsin(ya/D)
+	B = math.tan(beta)/(C*D)
 	y = D*sin(C*atan(B*slip_angle))	
 	return y
 
 
-    def pacejka_tire_model_f_complex(self, slip_angle):
-	D = self.Df
-	C = 1 + (1 - (2.0/math.pi))* np.arcsin(self.yaf/D)
-	B = math.tan(self.betaf)/(C*D)
-	E = (B * self.xmf - math.tan(math.pi/(2.0*C)))/(B*self.xmf - math.atan(B*self.xmf))
+    def pacejka_tire_model_complex(self, slip_angle, front):
+	#very good approximation of our vehicle
+	if(front == True):
+		D = self.Df
+		ya = self.yaf
+		beta = self.betaf
+		xm = self.xmf
+	else:
+		D = self.Db
+		ya = self.yab
+		beta = self.betab
+		xm = self.xmb
+	C = 1 + (1 - (2.0/math.pi))* np.arcsin(ya/D)
+	B = math.tan(beta)/(C*D)
+	E = (B * xm - math.tan(math.pi/(2.0*C)))/(B*xm - math.atan(B*xm))
 	y = D*sin(C*atan(B*slip_angle - E*(B*slip_angle -atan(B*slip_angle))))
 	return y
 
-    def pacejka_tire_model_b(self, slip_angle):
-	D = self.Db
-	C =  1 + (1 - 2.0/math.pi)* np.arcsin(self.yaf/D)	
-	B = math.tan(self.betaf)/(C*D)
-	E = (B * self.xmf - math.tan(math.pi/(2.0*C)))/(B*self.xmf - math.atan(B*self.xmf))
+    def pacejka_tire_model_very_complex(self, slip_angle, front):
+	#includes aero calculation
+	if(front == True):
+		D = self.Df
+		ya = self.yaf
+		beta = self.betaf
+		xm = self.xmf
+	else:
+		D = self.Db
+		ya = self.yab
+		beta = self.betab
+		xm = self.xmb
+	C = 1 + (1 - (2.0/math.pi))* np.arcsin(ya/D)
+	B = math.tan(beta)/(C*D)
+	E = (B * xmf - math.tan(math.pi/(2.0*C)))/(B*xm - math.atan(B*xm))
 	y = D*sin(C*atan(B*slip_angle - E*(B*slip_angle -atan(B*slip_angle))))
 	return y
+
 
 
     """ use this function to compute the next state in the simulation environment only! here the max_beta will be limited in the function hence it is not usable for the mpc controller.

@@ -1,7 +1,7 @@
 import math
 import numpy as np
 from matplotlib import pyplot as plt
-from ad import gh
+#from ad import gh
 from casadi import *
 
 class CostFunction:
