@@ -1,24 +1,39 @@
 module VehicleModel
 
-lf = 0.9    # distance tire to COG
-lr = 0.640
-lb = 1.440    #width of car
-beta    = 0.0    #slip angle
-gammaf  = 0.0  #steering angle
-A       = 2.5    #vehicle cross section
-FEngine = 4000   # 5000N for car
-mass    = 170   #kg
-Cd      = 0.5   #drag coefficient
-p       = 1.225  # air desity in kg/m^3
-A       = 2.0    #vehicle cross section
+#vehicle geometry
+lf  = 1.09    # distance tire to COG
+lr  = 0.9
+lb  = 1.99    #width of car
+Af  = 2.25
+rad = 0.2    #radius of tires in m
+mass= 600   #kg
+
+
+#values for longitudinal computation
+P_Engine= 50000  #Watt
+Cd      = 1.083   #drag coefficient
+rho     = 1.225  # air desity in kg/m^3
 Crr     = 0.014  #roll resistance coefficient
-rad     = 0.2    #radius of tires in m
+mu	    = 0.0027   #roll resistance
+
+#values to limit car_parameters for mpc
 max_speed = 43/3.6 # 120km/h /3.6 = m/s
 max_long_acc = 10   #m/s**2 longitudinal acceleration max
 max_long_dec = 10   #m/s**2 longitudinal deceleration max
 max_lat_acc = 20  # 2g lateral acceleration
 max_steering_angle = (30.0/180.0)*pi #
-max_acceleration_time = 4.0 #seconds
+
+
+#tire model
+Df   = 2984.0 #N
+Db   = 3274.0 #N
+xmf  = 0.25 #rad
+xmb  = 0.37 #rad
+betaf = pi/2.0 - 0.00001#rad
+betab = pi/2.0 - 0.00001#rad
+yaf  = 2952.0 #N
+yab  = 3270.0 #N #ya has to be smaller than D
+
 
 struct CarPose
     x::Float64
@@ -69,18 +84,10 @@ function computeTimeStep(carPose, carControl, dt)
     return carPose
 end
 
+function vehicleModel_1(carPose, carControl, dt):
+end
+
 
 export CarState, computeTimeStep, CarPose, CarControls, max_steering_angle, max_long_acc, max_long_dec, createNewStateVector
 
 end
-
-#=
-using VehicleModel
-
-carState = VehicleModel.CarState(0,0,0.1,pi,0,0,0.1)
-carPose = VehicleModel.CarPose(0,0,0,0)
-carControl = VehicleModel.CarControls(1, 0)
-carPose = VehicleModel.computeTimeStep(carPose, carControl, 0.1)
-pose = VehicleModel.computeTimeStep(carPose, carControl, 0.1)
-println(pose)
-=#

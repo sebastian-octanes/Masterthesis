@@ -49,7 +49,7 @@ function initMPC(N_, dt, startPose, tangentPoints, midTrackPoints, trackPoints, 
      end
 
      global y = @NLparameter(m, y[i=1:N*4*2] == tangentPoints[i])
-     #=for i in 0:N-1
+     for i in 0:N-1
           p1 = [y[i*8 + 1], y[i*8 + 2]]
           p2 = [y[i*8 + 3], y[i*8 + 4]]
           p3 = [y[i*8 + 5], y[i*8 + 6]]
@@ -58,7 +58,7 @@ function initMPC(N_, dt, startPose, tangentPoints, midTrackPoints, trackPoints, 
           @NLconstraint(m, (x[(i+1)*6 + 1]-p1[1]) * (p2[2] - p1[2]) - (x[(i+1)*6 + 2] - p1[2]) * (p2[1]- p1[1]) >= 0)
           @NLconstraint(m, (x[(i+1)*6 + 1]-p3[1]) * (p4[2] - p3[2]) - (x[(i+1)*6 + 2] - p3[2]) * (p4[1]- p3[1]) <= 0)
      end
-     =#
+
 
      global t = @NLparameter(m, t[i=1:N*6] == trackPoints[i])
 #=
@@ -83,12 +83,12 @@ function initMPC(N_, dt, startPose, tangentPoints, midTrackPoints, trackPoints, 
 
      #add more or less soft constraint to keep the car inside the racecourse even if tangents arent enough. keep it as general as possible!
      global z = @NLparameter(m, z[i = 1:N*2] == midTrackPoints[i])
-#=
+
      for i in 0:N-1
           p1 = [z[i*2 + 1], z[i*2 + 2]]
-          @NLconstraint(m, sqrt((x[(i+1)*6 + 1] - p1[1])^2 +  (x[(i+1)*6 + 2] - p1[2])^2) <= trackWidth*1.0)
+          @NLconstraint(m, sqrt((x[(i+1)*6 + 1] - p1[1])^2 +  (x[(i+1)*6 + 2] - p1[2])^2) <= trackWidth*0.8)
      end
-=#
+
      #enforce starting point
      global startPosX = @constraint(m, startPosX, x[1] == startPose.x)
      global startPosY = @constraint(m, startPosY, x[2] == startPose.y)
@@ -96,8 +96,8 @@ function initMPC(N_, dt, startPose, tangentPoints, midTrackPoints, trackPoints, 
      global startPosYaw = @constraint(m, startPosYaw, x[4] == startPose.yaw)
 
      #objective
-     #@NLobjective(m, Max, x[N*6 + 3])
 
+#=
 
      alpha = 1
      k1 = -trackWidth/2
@@ -121,7 +121,8 @@ function initMPC(N_, dt, startPose, tangentPoints, midTrackPoints, trackPoints, 
 
      @NLexpression(m, sum_3, sum(1/x[i*6 + 3] for i in 1:N))
      @NLobjective(m, Min, sum_1 + sum_3)
-     #@NLobjective(m, Max, sum(x[i*6 + 3] for i in 1:N))
+=#
+     @NLobjective(m, Max, sum(x[i*6 + 3] for i in 1:N))
 
      return m
 end

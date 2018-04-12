@@ -107,15 +107,50 @@ function createPredictionPoints(res, scaleX, scaleY, offsetX, offsetY, window, N
     set_origin(circle, Vector2f(1, 1))
     #set_outlinecolor(circle, SFML.red)
     #set_outline_thickness(circle, 2)
-    for i in 1:N-1
+    for i in 1:6:N-1
         x = res[i*6 + 1]
         y = - res[i*6 + 2]
         set_position(circle, Vector2f(offsetX*scaleX + x*scaleX, offsetY*scaleY + y*scaleY))
         draw(window, circle)
     end
+    x = res[(N-1)*6 + 1]
+    y = - res[(N-1)*6 + 2]
+    set_position(circle, Vector2f(offsetX*scaleX + x*scaleX, offsetY*scaleY + y*scaleY))
+    set_fillcolor(circle, SFML.red)
+    draw(window, circle)
 end
 
-function createTangent(carPose, itpTrack, itpLeftBound, itpRightBound, scaleX, scaleY, offsetX, offsetY, window)
+function createTangent(stateVector, itpTrack, itpLeftBound, itpRightBound, scaleX, scaleY, offsetX, offsetY, window)
+    for j in 1:6:N
+        carPose = VehicleModel.CarPose(stateVector[6*j + 1], stateVector[6*j + 2], stateVector[6*j + 3], stateVector[6*j + 4])
+
+        i = RaceCourse.getSplinePosition(itpTrack, carPose.x, carPose.y)
+        x =  RaceCourse.computeGradientPoints(itpLeftBound, i)
+        alpha = RaceCourse.computeGradientAngle(itpLeftBound, i)
+        line = RectangleShape()
+        set_size(line, Vector2f(100, 1))
+        set_outline_thickness(line, 1)
+        rotate(line, - alpha *180/pi)
+        set_fillcolor(line, SFML.green)
+        set_origin(line, Vector2f(50, 1.5))
+        off = Vector2f(offsetX * scaleX + x[1] * scaleX , offsetY * scaleY - x[2] * scaleY )
+        set_position(line, off)
+        draw(window, line)
+
+        x =  RaceCourse.computeGradientPoints(itpRightBound, i)
+        alpha = RaceCourse.computeGradientAngle(itpRightBound, i)
+        line = RectangleShape()
+        set_size(line, Vector2f(100, 1))
+        set_outline_thickness(line, 1)
+        rotate(line, - alpha *180/pi)
+        set_fillcolor(line, SFML.green)
+        set_origin(line, Vector2f(50, 1.5))
+        off = Vector2f(offsetX * scaleX + x[1] * scaleX , offsetY * scaleY - x[2] * scaleY )
+        set_position(line, off)
+        draw(window, line)
+
+    end
+    carPose = VehicleModel.CarPose(stateVector[6*(N-1) + 1], stateVector[6*(N-1) + 2], stateVector[6*(N-1) + 3], stateVector[6*(N-1) + 4])
 
     i = RaceCourse.getSplinePosition(itpTrack, carPose.x, carPose.y)
     x =  RaceCourse.computeGradientPoints(itpLeftBound, i)
@@ -124,7 +159,7 @@ function createTangent(carPose, itpTrack, itpLeftBound, itpRightBound, scaleX, s
     set_size(line, Vector2f(100, 1))
     set_outline_thickness(line, 1)
     rotate(line, - alpha *180/pi)
-    set_fillcolor(line, SFML.green)
+    set_fillcolor(line, SFML.cyan)
     set_origin(line, Vector2f(50, 1.5))
     off = Vector2f(offsetX * scaleX + x[1] * scaleX , offsetY * scaleY - x[2] * scaleY )
     set_position(line, off)
@@ -136,7 +171,7 @@ function createTangent(carPose, itpTrack, itpLeftBound, itpRightBound, scaleX, s
     set_size(line, Vector2f(100, 1))
     set_outline_thickness(line, 1)
     rotate(line, - alpha *180/pi)
-    set_fillcolor(line, SFML.green)
+    set_fillcolor(line, SFML.cyan)
     set_origin(line, Vector2f(50, 1.5))
     off = Vector2f(offsetX * scaleX + x[1] * scaleX , offsetY * scaleY - x[2] * scaleY )
     set_position(line, off)
@@ -224,7 +259,7 @@ carPose = VehicleModel.CarPose(0,0,0.1,pi/2)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(15, 4, 15, 0)
 itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack2(trackWidth)
 
-N = 20
+N = 50
 printLevel = 0
 dt = 0.05
 initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel)
@@ -238,7 +273,7 @@ carPathBuffer = CircularBuffer{VehicleModel.CarState}(400)
 RaceTrackLeftSprite, RaceTrackRightSprite = createRaceCourse2(scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, itpTrack, itpLeftBound, itpRightBound, window)
 
 set_framerate_limit(window, convert(Int64, 1 / dt))
-#set_framerate_limit(window, 5)
+#set_framerate_limit(window, 2)
 
 clock = Clock()
 #lapTimeActive needed for timer
@@ -286,10 +321,7 @@ while isopen(window)
     setpositioncar(carSprite, carPose, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY)
     drawRaceCourse2(window, RaceTrackLeftSprite, RaceTrackRightSprite)
     # draw tangents for future points
-    for i in 1:6:N
-        carPose = VehicleModel.CarPose(stateVector[6*i + 1], stateVector[6*i + 2], stateVector[6*i + 3], stateVector[6*i + 4])
-        createTangent(carPose, itpTrack, itpLeftBound, itpRightBound, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window)
-    end
+    createTangent(stateVector, itpTrack, itpLeftBound, itpRightBound, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window)
     #draw carPathBuffer
     createCarPathPoint(carPathBuffer, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window)
     #draw predicted movement of car
