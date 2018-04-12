@@ -20,52 +20,63 @@ max_lat_acc = 20  # 2g lateral acceleration
 max_steering_angle = (30.0/180.0)*pi #
 max_acceleration_time = 4.0 #seconds
 
+
 struct CarPose
     x::Float64
     y::Float64
-    v::Float64
-    yaw::Float64
+    x_d::Float64
+    psi::Float64
+    y_d::Float64
+    psi_d::Float64
 end
+
 struct CarControls
-    acc::Float64
+    throttle::Float64
     steer::Float64
 end
+
 struct CarState
     x::Float64
     y::Float64
-    v::Float64
-    yaw::Float64
-    acc::Float64
+    x_d::Float64
+    psi::Float64
+    y_d::Float64
+    psi_d::Float64
+    throttle::Float64
     steer::Float64
 
 end
 # get last state and calculate next state for it + shift the whole vector to create the new stateVector
 function createNewStateVector(sV, dt, N) # sV für stateVector
-    carPose = CarPose(sV[end-5], sV[end-4], sV[end-3], sV[end-2])
+    carPose = CarPose(sV[end-7], sV[end-6], sV[end-5], sV[end-4], sV[end-3], sV[end-2])
     carControl = CarControls(sV[end-1], sV[end])
     carPose = computeTimeStep(carPose, carControl, dt)
-    sV = circshift(sV, -6)
-    sV[end-2] = carPose.yaw
-    sV[end-3] = carPose.v
-    sV[end-4] = carPose.y
-    sV[end-5] = carPose.x
+    sV = circshift(sV, -8)
+    sV[end-2] = carPose.psi_d
+    sV[end-3] = carPose.y_d
+    sV[end-4] = carPose.psi
+    sV[end-5] = carPose.x_d
+    sV[end-6] = carPose.y
+    sV[end-7] = carPose.x
     return sV
 end
 
 function computeTimeStep(carPose, carControl, dt)
     beta = atan((lr/(lf + lr)) * tan(carControl.steer))
-    max_beta =  atan(1.0/2 * (lf + lr) * max_lat_acc / carPose.v^2)
+    max_beta =  atan(1.0/2 * (lf + lr) * max_lat_acc / carPose.x_d^2)
     if (beta >= 0)
         beta = min(beta, max_beta)
     else
         beta = - min(-beta, max_beta)
     end
-    x_1 = carPose.x + carPose.v * dt * cos(carPose.yaw + beta)
-    y_1 = carPose.y + carPose.v * dt * sin(carPose.yaw + beta)
-    yaw_1 = carPose.yaw + (carPose.v * dt/lr) * sin(beta)
-    v_1 = carPose.v + carControl.acc * dt
-    v_1 = (v_1 > max_speed) ?  max_speed : v_1
-    carPose = CarPose(x_1, y_1, v_1, yaw_1)
+    x = carPose.x + carPose.x_d * dt * cos(carPose.psi + beta)
+    y = carPose.y + carPose.x_d * dt * sin(carPose.psi + beta)
+    psi = carPose.psi + (carPose.x_d * dt/lr) * sin(beta)
+    x_d = carPose.x_d + carControl.throttle * dt
+    x_d = (x_d > max_speed) ?  max_speed : x_d
+    y_d = 0
+    psi_d = 0
+    carPose = CarPose(x, y, x_d, psi, y_d, psi_d)
     return carPose
 end
 

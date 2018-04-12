@@ -22,16 +22,16 @@ function initMPC(N_, dt, startPose, tangentPoints, midTrackPoints, trackPoints, 
      ubx = []
      start = []
      trackWidth = 4
-     lbx_ = [-Inf, -Inf,                   0.01, -Inf, -VehicleModel.max_long_dec, -VehicleModel.max_steering_angle]
-     ubx_ = [ Inf,  Inf, VehicleModel.max_speed,  Inf,  VehicleModel.max_long_acc,  VehicleModel.max_steering_angle]
-     start_=[startPose.x, startPose.y, startPose.v, startPose.yaw, 0, 0]
+     lbx_ = [-Inf, -Inf,                   0.01, -Inf, -Inf, -Inf,  -VehicleModel.max_long_dec, -VehicleModel.max_steering_angle]
+     ubx_ = [ Inf,  Inf, VehicleModel.max_speed,  Inf,  Inf,  Inf,   VehicleModel.max_long_acc,  VehicleModel.max_steering_angle]
+     start_=[startPose.x, startPose.y, startPose.x_d, startPose.psi, 0, 0, 0, 0]
      for i in 0:N
           lbx = vcat(lbx, lbx_) #add lower bounds to vector
           ubx = vcat(ubx, ubx_) #add upper bounds to vector
           start = vcat(start, start_) #add initial guess to vector
      end
 
-     global x = @variable(m, lbx[i] <= x[i = 1:(N+1)*6] <= ubx[i], start = start[i]) #set bounds and initial guess and create x-vector
+     global x = @variable(m, lbx[i] <= x[i = 1:(N+1)*8] <= ubx[i], start = start[i]) #set bounds and initial guess and create x-vector
 
      lf = VehicleModel.lf
      lr = VehicleModel.lr
@@ -39,26 +39,26 @@ function initMPC(N_, dt, startPose, tangentPoints, midTrackPoints, trackPoints, 
      #create vehicle model constraints
      for i in 0: N-1
           @NLconstraints(m, begin
-               x[(i + 1)*6 + 1] - (x[i * 6 + 1] + x[6*i + 3]*dt*cos(x[i*6 + 4] + atan(lr/(lf + lr) * tan(x[i*6 + 6])))) == 0
-               x[(i + 1)*6 + 2] - (x[i * 6 + 2] + x[6*i + 3]*dt*sin(x[i*6 + 4] + atan(lr/(lf + lr) * tan(x[i*6 + 6])))) == 0
-               x[(i + 1)*6 + 3] - (x[i * 6 + 3] + x[6*i + 5]*dt) == 0
-               x[(i + 1)*6 + 4] - (x[i * 6 + 4] + x[6*i + 3]*dt / lr*sin(atan(lr/(lf + lr) * tan(x[i*6 + 6])))) == 0
-               atan(0.5 * (lf + lr) * VehicleModel.max_long_acc / x[i*6 + 3]^2) - atan(lr/(lf + lf) * tan(x[i*6 + 6])) >= 0  #max_beta - beta
-               atan(0.5 * (lf + lr) * VehicleModel.max_long_acc / x[i*6 + 3]^2) + atan(lr/(lf + lf) * tan(x[i*6 + 6])) >= 0  #max_beta + beta
+               x[(i + 1)*8 + 1] - (x[i * 8 + 1] + x[8*i + 3]*dt*cos(x[i*8 + 4] + atan(lr/(lf + lr) * tan(x[i*8 + 8])))) == 0
+               x[(i + 1)*8 + 2] - (x[i * 8 + 2] + x[8*i + 3]*dt*sin(x[i*8 + 4] + atan(lr/(lf + lr) * tan(x[i*8 + 8])))) == 0
+               x[(i + 1)*8 + 3] - (x[i * 8 + 3] + x[8*i + 7]*dt) == 0
+               x[(i + 1)*8 + 4] - (x[i * 8 + 4] + x[8*i + 3]*dt / lr*sin(atan(lr/(lf + lr) * tan(x[i*8 + 8])))) == 0
+               atan(0.5 * (lf + lr) * VehicleModel.max_long_acc / x[i*8 + 3]^2) - atan(lr/(lf + lf) * tan(x[i*8 + 8])) >= 0  #max_beta - beta
+               atan(0.5 * (lf + lr) * VehicleModel.max_long_acc / x[i*8 + 3]^2) + atan(lr/(lf + lf) * tan(x[i*8 + 8])) >= 0  #max_beta + beta
           end)
      end
 
      global y = @NLparameter(m, y[i=1:N*4*2] == tangentPoints[i])
-     #=for i in 0:N-1
+     for i in 0:N-1
           p1 = [y[i*8 + 1], y[i*8 + 2]]
           p2 = [y[i*8 + 3], y[i*8 + 4]]
           p3 = [y[i*8 + 5], y[i*8 + 6]]
           p4 = [y[i*8 + 7], y[i*8 + 8]]
 
-          @NLconstraint(m, (x[(i+1)*6 + 1]-p1[1]) * (p2[2] - p1[2]) - (x[(i+1)*6 + 2] - p1[2]) * (p2[1]- p1[1]) >= 0)
-          @NLconstraint(m, (x[(i+1)*6 + 1]-p3[1]) * (p4[2] - p3[2]) - (x[(i+1)*6 + 2] - p3[2]) * (p4[1]- p3[1]) <= 0)
+          @NLconstraint(m, (x[(i+1)*8 + 1]-p1[1]) * (p2[2] - p1[2]) - (x[(i+1)*8 + 2] - p1[2]) * (p2[1]- p1[1]) >= 0)
+          @NLconstraint(m, (x[(i+1)*8 + 1]-p3[1]) * (p4[2] - p3[2]) - (x[(i+1)*8 + 2] - p3[2]) * (p4[1]- p3[1]) <= 0)
      end
-     =#
+
 
      global t = @NLparameter(m, t[i=1:N*6] == trackPoints[i])
 #=
@@ -86,18 +86,19 @@ function initMPC(N_, dt, startPose, tangentPoints, midTrackPoints, trackPoints, 
 #=
      for i in 0:N-1
           p1 = [z[i*2 + 1], z[i*2 + 2]]
-          @NLconstraint(m, sqrt((x[(i+1)*6 + 1] - p1[1])^2 +  (x[(i+1)*6 + 2] - p1[2])^2) <= trackWidth*1.0)
+          @NLconstraint(m, sqrt((x[(i+1)*8 + 1] - p1[1])^2 +  (x[(i+1)*8 + 2] - p1[2])^2) <= trackWidth*1.0)
      end
+
 =#
      #enforce starting point
      global startPosX = @constraint(m, startPosX, x[1] == startPose.x)
      global startPosY = @constraint(m, startPosY, x[2] == startPose.y)
-     global startPosV = @constraint(m, startPosV, x[3] == startPose.v)
-     global startPosYaw = @constraint(m, startPosYaw, x[4] == startPose.yaw)
+     global startPosX_d = @constraint(m, startPosX_d, x[3] == startPose.x_d)
+     global startPosPsi = @constraint(m, startPosPsi, x[4] == startPose.psi)
 
      #objective
      #@NLobjective(m, Max, x[N*6 + 3])
-
+#=
 
      alpha = 1
      k1 = -trackWidth/2
@@ -119,9 +120,10 @@ function initMPC(N_, dt, startPose, tangentPoints, midTrackPoints, trackPoints, 
      @NLexpression(m, sum_1, sum(efunc1(x[(i+1)*6 + 1], x[(i+1)*6 + 2], t[i*6 + 1], t[i*6 + 2], t[i*6 + 3], t[i*6 + 4]) for i in 0:N-1))
      @NLexpression(m, sum_2, sum(efunc2(x[(i+1)*6 + 1], x[(i+1)*6 + 2], t[i*6 + 1], t[i*6 + 2], t[i*6 + 5], t[i*6 + 6]) for i in 0:N-1))
 
-     @NLexpression(m, sum_3, sum(1/x[i*6 + 3] for i in 1:N))
+     @NLexpression(m, sum_3, sum(1/x[i*8 + 3] for i in 1:N))
      @NLobjective(m, Min, sum_1 + sum_3)
-     #@NLobjective(m, Max, sum(x[i*6 + 3] for i in 1:N))
+=#
+     @NLobjective(m, Max, sum(x[i*8 + 3] for i in 1:N))
 
      return m
 end
@@ -130,8 +132,8 @@ function updateStartPoint(res)
      #enforce starting point
      JuMP.setRHS(startPosX, res[1])
      JuMP.setRHS(startPosY, res[2])
-     JuMP.setRHS(startPosV, res[3])
-     JuMP.setRHS(startPosYaw, res[4])
+     JuMP.setRHS(startPosX_d, res[3])
+     JuMP.setRHS(startPosPsi, res[4])
 end
 
 function updateTangentPoints(tangetPoints)
