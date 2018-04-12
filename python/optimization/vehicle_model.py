@@ -44,9 +44,9 @@ class VehicleModel:
     xmf  = 0.25 #rad
     xmb  = 0.37 #rad
     betaf = math.pi/2.0 - 0.00001#rad
-    betab= math.pi/2.0 - 0.00001#rad
+    betab = math.pi/2.0 - 0.00001#rad
     yaf  = 2952.0 #N
-    yab  = 3291.0 #N
+    yab  = 3270.0 #N #ya has to be smaller than D
  
 
 
@@ -154,14 +154,10 @@ class VehicleModel:
 	#lat
 	theta_f = math.atan((y_d + self.lf * psi_d)/ x_d)
 	theta_r = math.atan((y_d - self.lr * psi_d)/ x_d)
-        print("theta_r", theta_r)
-	print("theta_f", theta_f)
-	#Fyf  = 2 * self.Cf * ( phi - theta_f)
-	Ffy = self.pacejka_tire_model(phi - theta_f, front = True)
-	#print("Fyf", Fyf)
-	#Fyr  = 2 * self.Cr * (-theta_r)
-	Fry = self.pacejka_tire_model(- theta_r, front = False)
-	#print("Fyr", Fyr)
+
+	Ffy = self.pacejka_tire_model_complex(phi - theta_f, front = True)
+	Fry = self.pacejka_tire_model_complex(- theta_r, front = False)
+
 	x_d = x_d + self.dt * (Frx - Ffy*sin(phi) + self.m*y_d*psi_d)*(1.0/self.m)  	
 	y_d = y_d + self.dt * (Fry + Ffy*cos(phi) - self.m*x_d*psi_d)*(1.0/self.m)
 
@@ -221,6 +217,7 @@ class VehicleModel:
 		ya = self.yab
 		beta = self.betab
 		xm = self.xmb
+	print(ya/D)
 	C = 1 + (1 - (2.0/math.pi))* np.arcsin(ya/D)
 	B = math.tan(beta)/(C*D)
 	E = (B * xm - math.tan(math.pi/(2.0*C)))/(B*xm - math.atan(B*xm))
