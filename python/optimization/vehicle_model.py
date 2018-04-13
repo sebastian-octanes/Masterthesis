@@ -142,10 +142,10 @@ class VehicleModel:
 	power = self.P_engine * acc/10.0
 	Fxl   = power * 1000/fabs(x_d)
 
+	if(acc < 0):
+		Fxl = self.F_long_max * acc/10.0
 	if(Fxl > self.F_long_max):
 		Fxl = self.F_long_max
-	if(Fxl < -self.F_long_max):
-		Fxl = -self.F_long_max
 	if(x_d >= 0):
 		Frx = Fxl - Rxf - Rxr -Faero
 	elif(x_d < 0):

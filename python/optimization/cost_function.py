@@ -10,8 +10,9 @@ class CostFunction:
         self.track = track_
     
     def cost_func0(self, x):
-        alpha = 2/(8*(self.track.track_width/8.0)**7)
-        return alpha *(x)**8
+        #alpha = 2/(8*(self.track.track_width/8.0)**7)
+	alpha = 100        
+	return alpha *(x)**2
     
     def cost_func1(self, x):
         alpha = 100

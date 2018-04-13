@@ -8,17 +8,20 @@ using PyPlot
 
 N = 100
 dt = 0.1
-startPose = VehicleModel.CarPose(0,0,0.01,pi/2)
+startPose = VehicleModel.CarPose(0,0,0.01,pi/2,0 ,0 )
 stateVector = []
 itpTrack, itpOutBound, itpInBound = RaceCourse.buildRaceTrack(15, 4, 15, 0)
-start_=[startPose.x, startPose.y, startPose.v, startPose.yaw, 0, 0]
+start_=[startPose.x, startPose.y, startPose.x_d, startPose.psi, 0, 0, 0, 0]
 for i in 0:N
     stateVector = vcat(stateVector, start_) #add initial guess to vector
 end
 
 evalPoints = RaceCourse.getSplinePositions(itpTrack, stateVector, N)
 tangentPoints = RaceCourse.computeGradientPoints_(itpOutBound, itpInBound, evalPoints, N)
-m = MPC.initMPC(N, dt, startPose, tangentPoints,3)
+midTrackPoints = RaceCourse.getMidTrackPoints(itpTrack, evalPoints, N)
+trackPoints = RaceCourse.getTrackPoints(itpTrack, itpLeftBound, itpRightBound, evalPoints, N)
+m = MPC.initMPC(N, dt, startPose, tangentPoints, midTrackPoints, trackPoints,  3)
+
 #print stuff
 prin_x = []
 prin_y = []

@@ -67,8 +67,8 @@ end
 function getSplinePositions(itpBound, stateVector, N)
     ret=[]
     for j in 1:N
-        x = stateVector[(j*6) + 1]
-        y = stateVector[(j*6) + 2]
+        x = stateVector[(j*8) + 1]
+        y = stateVector[(j*8) + 2]
         t = 0:0.001:1
         smallest = 1000
         indx = 0
@@ -323,53 +323,3 @@ function plotRaceTrack(itpTrack, leftBound, rightBound)
 end
     export buildRaceTrack, computeGradientPoints, getTrackPoints, computeGradientAngle, getSplinePosition, addStraight, addRightTurn, plotRaceTrack, buildRaceTrack2
 end
-
-#=
-using RaceCourse
-using PyPlot
-
-itpTrack, itpOutBound, itpInBound = buildRaceTrack(100, 50)
-plotRaceTrack(itpTrack, itpOutBound, itpInBound)
-x = computeGradientPoints(itpTrack, 0.1)
-alpha = computeGradientAngle(itpTrack, 0.1)
-println(alpha)
-pos = getSplinePosition(itpTrack, 100, 10)
-println(pos)
-plot(x[1:2:4], x[2:2:4])
-=#
-
-
-
-
-
-
-
-        #=
-                if (direction == 1):  # right
-                    last_point = self.track[-1]
-                    for i in range(0, 4, 1):
-                        new_point = [last_point[0] + length/4.0, last_point[1]]
-                        self.track.append(new_point)
-                        new_point_bnd_left = [last_point[0] + length/4.0, last_point[1] + self.track_width/2.0]
-                        new_point_bnd_right= [last_point[0] + length/4.0, last_point[1] - self.track_width/2.0]
-                        self.track_bounds.append([new_point_bnd_left[0], new_point_bnd_left[1], new_point_bnd_right[0], new_point_bnd_right[1]])
-                        last_point = new_point
-                if (direction == 2):  # downward
-                    last_point = self.track[-1]
-                    for i in range(0, 4, 1):
-                        new_point = [last_point[0], last_point[1] - length/4.0]
-                        self.track.append(new_point)
-                        new_point_bnd_left = [last_point[0] + self.track_width/2.0, last_point[1] - length/4.0]
-                        new_point_bnd_right= [last_point[0] - self.track_width/2.0, last_point[1] - length/4.0]
-                        self.track_bounds.append([new_point_bnd_left[0], new_point_bnd_left[1], new_point_bnd_right[0], new_point_bnd_right[1]])
-                        last_point = new_point
-                if (direction == 3):  # left
-                    last_point = self.track[-1]
-                    for i in range(0, 4, 1):
-                        new_point = [last_point[0] - length/4.0, last_point[1]]
-                        self.track.append(new_point)
-                        new_point_bnd_left = [last_point[0] - length/4.0, last_point[1] - self.track_width/2.0]
-                        new_point_bnd_right= [last_point[0] - length/4.0, last_point[1] + self.track_width/2.0]
-                        self.track_bounds.append([new_point_bnd_left[0], new_point_bnd_left[1], new_point_bnd_right[0], new_point_bnd_right[1]])
-                        last_point = new_point
-                        =#
