@@ -215,7 +215,7 @@ end
 
 
 function mapKeyToCarControl(keys, res, N)
-
+#=
     if keys.up == 1
          res[ 7] = 10
     elseif keys.down == 1
@@ -232,12 +232,12 @@ function mapKeyToCarControl(keys, res, N)
         res[8] = 0
     end
 
+    =#
     if keys.reset == 1
         for i in 1:N
             res[8*i + 1] = 0; res[8*i + 2] = 0; res[8*i + 3] = 0.01; res[8*i + 4] = pi/2
         end
     end
-
 
     res
 end
@@ -278,7 +278,7 @@ carPose = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
 itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack2(trackWidth)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(trackWidth)
 
-N = 2
+N = 60
 printLevel = 0
 dt = 0.05
 initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel)
@@ -298,7 +298,7 @@ clock = Clock()
 #lapTimeActive needed for timer
 lapTimeActive = false
 steps = 0
-stateVector = [0,0,0.01,pi/2,0,0,0,0, 0,0,0.01,pi/2,0,0,0,0, 0,0,0.01,pi/2,0,0,0,0]
+realCarStateVector = VehicleModel.CarPose(0,0,0.01,pi/2,0,0)
 while isopen(window)
     #dt = get_elapsed_time(clock)
     restart(clock)
@@ -310,16 +310,17 @@ while isopen(window)
     keys = checkkeys()
 
     #@time res = MPC.solveMPC()
-    #res = MPC.solveMPC()
-    #res = mapKeyToCarControl(keys, res, N)
-    stateVector = mapKeyToCarControl(keys, stateVector, N)
+    res = MPC.solveMPC()
+    res = mapKeyToCarControl(keys, res, N)
+    #stateVector = mapKeyToCarControl(keys, stateVector, N)
 
-    print("\n", stateVector[1:8])
     #predict last point and compute next state with vehicle model
-    #stateVector = VehicleModel.createNewStateVector(res, dt, N)
-    stateVector = VehicleModel.createNewStateVector(stateVector, dt, N)
+    realCarStateVector = VehicleModel.computeRealCarStep(realCarStateVector, res, dt)
+    stateVector = VehicleModel.createNewStateVector(res, realCarStateVector, dt, N)
+    print("\n\nrealCarStateVector",realCarStateVector)
+    print("\nstateVector", stateVector[1:8])
+    MPC.updateStartPointFromPose(realCarStateVector)
 
-    MPC.updateStartPoint(stateVector)
     evalPoints = RaceCourse.getSplinePositions(itpTrack, stateVector, N)
     tangentPoints = RaceCourse.computeGradientPoints_(itpLeftBound, itpRightBound, evalPoints, N)
     midTrackPoints = RaceCourse.getMidTrackPoints(itpTrack, evalPoints, N)
@@ -355,7 +356,7 @@ while isopen(window)
     createPredictionPoints(stateVector, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window, N)
     draw(window, carSprite)
     #draw car info
-    #displayCarData(res, window)
+    displayCarData(res, window)
     display(window)
     clear(window, SFML.white)
 end

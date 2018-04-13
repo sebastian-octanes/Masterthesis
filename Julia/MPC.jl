@@ -36,7 +36,7 @@ function initMPC(N_, dt, startPose, tangentPoints, midTrackPoints, trackPoints, 
      lf = VehicleModel.lf
      lr = VehicleModel.lr
 
-#=
+
      #create vehicle model constraints
      for i in 0: N-1
           @NLconstraints(m, begin
@@ -51,7 +51,7 @@ function initMPC(N_, dt, startPose, tangentPoints, midTrackPoints, trackPoints, 
 
 
 
-=#
+#=
      #create vehicle model constraints
      for i in 0: N-1
 
@@ -92,7 +92,7 @@ function initMPC(N_, dt, startPose, tangentPoints, midTrackPoints, trackPoints, 
 
           end)
      end
-
+=#
 #=
      #create vehicle model constraints
      for i in 0: N-1
@@ -198,6 +198,8 @@ function initMPC(N_, dt, startPose, tangentPoints, midTrackPoints, trackPoints, 
      global startPosY = @constraint(m, startPosY, x[2] == startPose.y)
      global startPosX_d = @constraint(m, startPosX_d, x[3] == startPose.x_d)
      global startPosPsi = @constraint(m, startPosPsi, x[4] == startPose.psi)
+     #global startPosY_d = @constraint(m, startPosY_d, x[5] == startPose.y_d)
+     #global startPosPsi_d = @constraint(m, startPosPsi_d, x[6] == startPose.psi_d)
 
      #objective
 #=
@@ -232,13 +234,17 @@ function initMPC(N_, dt, startPose, tangentPoints, midTrackPoints, trackPoints, 
      return m
 end
 
-function updateStartPoint(res)
+
+function updateStartPointFromPose(carPose)
      #enforce starting point
-     JuMP.setRHS(startPosX, res[1])
-     JuMP.setRHS(startPosY, res[2])
-     JuMP.setRHS(startPosX_d, res[3])
-     JuMP.setRHS(startPosPsi, res[4])
+     JuMP.setRHS(startPosX, carPose.x)
+     JuMP.setRHS(startPosY, carPose.y)
+     JuMP.setRHS(startPosX_d, carPose.x_d)
+     JuMP.setRHS(startPosPsi, carPose.psi)
+     #JuMP.setRHS(startPosY_d, carPose.y_d)
+     #JuMP.setRHS(startPosPsi_d, carPose.psi_d)
 end
+
 
 function updateTangentPoints(tangetPoints)
      for i in 0:N-1
@@ -283,5 +289,5 @@ function solveMPC()
      return res
 end
 
-export solveMPC, updateTangetPoints, updateStartPoint, initMPC, updateMidTrackPoints, updateTrackPoints
+export solveMPC, updateStartPointFromPose, updateTangetPoints, updateStartPoint, initMPC, updateMidTrackPoints, updateTrackPoints
 end

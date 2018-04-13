@@ -19,7 +19,7 @@ g       = 9.81   #earth gravity
 F_long_max = 4000   # 3000N for car
 
 #values to limit car_parameters for mpc
-max_speed = 50/3.6 # 120km/h /3.6 = m/s
+max_speed = 20/3.6 # 120km/h /3.6 = m/s
 max_long_acc = 10   #m/s**2 longitudinal acceleration max
 max_long_dec = 10   #m/s**2 longitudinal deceleration max
 max_lat_acc = 20  # 2g lateral acceleration
@@ -64,19 +64,11 @@ struct CarState
 
 end
 # get last state and calculate next state for it + shift the whole vector to create the new stateVector
-function createNewStateVector(sV, dt, N) # sV für stateVector
+function createNewStateVector(sV, realCarStateVector, dt, N) # sV für stateVector
     carPose = CarPose(sV[end-7], sV[end-6], sV[end-5], sV[end-4], sV[end-3], sV[end-2])
     carControl = CarControls(sV[end-1], sV[end])
-    carPoseStart = CarPose(sV[1], sV[2], sV[3], sV[4], sV[5], sV[6])
-    carControlStart = CarControls(sV[7], sV[8])
-    #carPose = computeTimeStep(carPose, carControl, dt)
-    carPoseStartNew = non_linear_model_enhanced_lat(carPoseStart, carControlStart, dt)
-    carPose = non_linear_model_enhanced_lat(carPose, carControl, dt)
-    #print(" carPoseStart:  ", carPoseStart)
-    #print(" carControlStart: ", carControlStart)
-    #print(" carPoseStart:  ", carPoseStart)
 
-    #print(" carPoseStartNew:  ", carPoseStartNew)
+    carPose = linear_bycicle_model(carPose, carControl, dt)
 
     sV = circshift(sV, -8)
     sV[end-2] = carPose.psi_d
@@ -86,18 +78,17 @@ function createNewStateVector(sV, dt, N) # sV für stateVector
     sV[end-6] = carPose.y
     sV[end-7] = carPose.x
 
-    sV[6] = carPoseStartNew.psi_d
-    sV[5] = carPoseStartNew.y_d
-    sV[4] = carPoseStartNew.psi
-    sV[3] = carPoseStartNew.x_d
-    sV[2] = carPoseStartNew.y
-    sV[1] = carPoseStartNew.x
     return sV
 end
 
+function computeRealCarStep(carPose, res,  dt)
+        carControls = CarControls(res[7], res[8])
+        cP = non_linear_model_base(carPose, carControls, dt)
+    return cP
+end
 
-function computeTimeStep(carPose, carControl, dt)
 
+function linear_bycicle_model(carPose, carControl, dt)
     beta = atan((lr/(lf + lr)) * tan(carControl.phi))
     max_beta =  atan(1.0/2 * (lf + lr) * max_lat_acc / carPose.x_d^2)
     if (beta >= 0)
@@ -117,8 +108,8 @@ function computeTimeStep(carPose, carControl, dt)
     return carPose
 end
 
-function non_linear_model_base(carPose, carControl, dt)
 
+function non_linear_model_base(carPose, carControl, dt)
     slip_angle_f = carControl.phi- atan((carPose.y_d + lf * carPose.psi_d)/ carPose.x_d)
     slip_angle_b =    - atan((carPose.y_d - lf * carPose.psi_d)/ carPose.x_d)
 
@@ -136,12 +127,15 @@ function non_linear_model_base(carPose, carControl, dt)
     if(xd_new < 0.1)
         xd_new = 0.1
     end
+    if(xd_new >= max_speed)
+        xd_new = max_speed -0.001
+    end
     carPoseNew = CarPose(x_new, y_new, xd_new, psi_new, yd_new, psid_new)
     return carPoseNew
 end
 
-function non_linear_model_enhanced_long(carPose, carControl, dt)
 
+function non_linear_model_enhanced_long(carPose, carControl, dt)
     slip_angle_f = carControl.phi- atan((carPose.y_d + lf * carPose.psi_d)/ carPose.x_d)
     slip_angle_b =    - atan((carPose.y_d - lf * carPose.psi_d)/ carPose.x_d)
 
@@ -173,8 +167,8 @@ function non_linear_model_enhanced_long(carPose, carControl, dt)
     return carPoseNew
 end
 
-function non_linear_model_enhanced_lat(carPose, carControl, dt)
 
+function non_linear_model_enhanced_lat(carPose, carControl, dt)
     slip_angle_f = carControl.phi- atan((carPose.y_d + lf * carPose.psi_d)/ carPose.x_d)
     slip_angle_b =    - atan((carPose.y_d - lf * carPose.psi_d)/ carPose.x_d)
 
@@ -250,6 +244,6 @@ end
 end
 
 
-export CarState, simulateRealCarForNextStep, computeTimeStep, CarPose, CarControls, max_steering_angle, max_long_acc, max_long_dec, createNewStateVector
+export CarState, computeRealCarStep, simulateRealCarForNextStep, computeTimeStep, CarPose, CarControls, max_steering_angle, max_long_acc, max_long_dec, createNewStateVector
 
 end
