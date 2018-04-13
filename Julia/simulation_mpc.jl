@@ -278,7 +278,7 @@ carPose = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
 itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack2(trackWidth)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(trackWidth)
 
-N = 60
+N = 8
 printLevel = 0
 dt = 0.05
 initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel)
@@ -312,12 +312,13 @@ while isopen(window)
     #@time res = MPC.solveMPC()
     res = MPC.solveMPC()
     res = mapKeyToCarControl(keys, res, N)
+    print("\n\nres", res[1:8])
     #stateVector = mapKeyToCarControl(keys, stateVector, N)
 
     #predict last point and compute next state with vehicle model
     realCarStateVector = VehicleModel.computeRealCarStep(realCarStateVector, res, dt)
     stateVector = VehicleModel.createNewStateVector(res, realCarStateVector, dt, N)
-    print("\n\nrealCarStateVector",realCarStateVector)
+    print("\nrealCarStateVector",realCarStateVector)
     print("\nstateVector", stateVector[1:8])
     MPC.updateStartPointFromPose(realCarStateVector)
 
@@ -354,7 +355,7 @@ while isopen(window)
     createCarPathPoint(carPathBuffer, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window)
     #draw predicted movement of car
     createPredictionPoints(stateVector, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window, N)
-    draw(window, carSprite)
+    #draw(window, carSprite)
     #draw car info
     displayCarData(res, window)
     display(window)

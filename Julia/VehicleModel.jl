@@ -19,7 +19,7 @@ g       = 9.81   #earth gravity
 F_long_max = 4000   # 3000N for car
 
 #values to limit car_parameters for mpc
-max_speed = 20/3.6 # 120km/h /3.6 = m/s
+max_speed = 10/3.6 # 120km/h /3.6 = m/s
 max_long_acc = 10   #m/s**2 longitudinal acceleration max
 max_long_dec = 10   #m/s**2 longitudinal deceleration max
 max_lat_acc = 20  # 2g lateral acceleration
@@ -111,7 +111,7 @@ end
 
 function non_linear_model_base(carPose, carControl, dt)
     slip_angle_f = carControl.phi- atan((carPose.y_d + lf * carPose.psi_d)/ carPose.x_d)
-    slip_angle_b =    - atan((carPose.y_d - lf * carPose.psi_d)/ carPose.x_d)
+    slip_angle_b =               - atan((carPose.y_d - lf * carPose.psi_d)/ carPose.x_d)
 
     Fbx = VehicleModel.F_long_max * carControl.throttle/10.0
     Ffy = Df * slip_angle_f / xmf
@@ -163,6 +163,9 @@ function non_linear_model_enhanced_long(carPose, carControl, dt)
     if(xd_new < 0.1)
         xd_new = 0.1
     end
+    if(xd_new >= max_speed)
+        xd_new = max_speed -0.001
+    end
     carPoseNew = CarPose(x_new, y_new, xd_new, psi_new, yd_new, psid_new)
     return carPoseNew
 end
@@ -174,8 +177,8 @@ function non_linear_model_enhanced_lat(carPose, carControl, dt)
 
     Fbx = VehicleModel.F_long_max * carControl.throttle/10.0
     #enhanced base model from here
-    Ffy = pacejka_tire_model_complex(slip_angle_f, true)
-    Fby = pacejka_tire_model_complex(slip_angle_b, false)
+    Ffy = pacejka_tire_model(slip_angle_f, true)
+    Fby = pacejka_tire_model(slip_angle_b, false)
     #base model from here again
     x_new = carPose.x + dt * (carPose.x_d * cos(carPose.psi) - carPose.y_d *sin(carPose.psi))
     y_new = carPose.y + dt * (carPose.x_d * sin(carPose.psi) + carPose.y_d *cos(carPose.psi))
@@ -186,6 +189,9 @@ function non_linear_model_enhanced_lat(carPose, carControl, dt)
 
     if(xd_new < 0.1)
         xd_new = 0.1
+    end
+    if(xd_new >= max_speed)
+        xd_new = max_speed -0.001
     end
     carPoseNew = CarPose(x_new, y_new, xd_new, psi_new, yd_new, psid_new)
     return carPoseNew

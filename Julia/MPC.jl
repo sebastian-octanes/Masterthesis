@@ -36,7 +36,7 @@ function initMPC(N_, dt, startPose, tangentPoints, midTrackPoints, trackPoints, 
      lf = VehicleModel.lf
      lr = VehicleModel.lr
 
-
+#=
      #create vehicle model constraints
      for i in 0: N-1
           @NLconstraints(m, begin
@@ -48,51 +48,39 @@ function initMPC(N_, dt, startPose, tangentPoints, midTrackPoints, trackPoints, 
                atan(0.5 * (lf + lr) * VehicleModel.max_long_acc / x[i*8 + 3]^2) + atan(lr/(lf + lf) * tan(x[i*8 + 8])) >= 0  #max_beta + beta
           end)
      end
+=#
 
 
 
-#=
      #create vehicle model constraints
      for i in 0: N-1
 
-          @NLexpression(m, Fbx, VehicleModel.F_long_max * x[8*i + 7]/10.0)
           #expression for tire model
-          #slip_angle_f = phi- atan((y_d + lf * psi_d)/ x_d))
-          @NLexpression(m, slip_angle_f, x[i * 8 + 7] - atan((x[i * 8 + 5]+ VehicleModel.lf * x[i * 8 + 6]) / x[i * 8 + 3]))
-          #slip_angle_b = - atan((y_d - lf * psi_d)/ x_d)
+          @NLexpression(m, slip_angle_f, x[i * 8 + 8] - atan((x[i * 8 + 5]+ VehicleModel.lf * x[i * 8 + 6]) / x[i * 8 + 3]))
           @NLexpression(m, slip_angle_b,              - atan((x[i * 8 + 5]- VehicleModel.lf * x[i * 8 + 6]) / x[i * 8 + 3]))
-          #linear tire model
+
+          @NLexpression(m, Fbx, VehicleModel.F_long_max * x[8*i + 7]/10.0)
           @NLexpression(m, Ffy, VehicleModel.Df * slip_angle_f / VehicleModel.xmf )
           @NLexpression(m, Fby, VehicleModel.Db * slip_angle_b / VehicleModel.xmb )
 
           @NLconstraints(m, begin
 
-               #x[(i + 1)*8 + 1] - (x[i * 8 + 1] + x[8*i + 3]*dt*cos(x[i*8 + 4] + atan(lr/(lf + lr) * tan(x[i*8 + 8])))) == 0
+
                x[(i + 1)*8 + 1] - (x[i * 8 + 1] + dt * (x[8*i + 3]*cos(x[i*8 + 4]) - x[8*i + 5] * sin(x[8*i + 4]))) == 0
-               #x[(i + 1)*8 + 2] - (x[i * 8 + 2] + x[8*i + 3]*dt*sin(x[i*8 + 4] + atan(lr/(lf + lr) * tan(x[i*8 + 8])))) == 0
+
                x[(i + 1)*8 + 2] - (x[i * 8 + 2] + dt * (x[8*i + 3]*sin(x[i*8 + 4]) + x[8*i + 5] * cos(x[8*i + 4]))) == 0
 
-
-               #
                x[(i + 1)*8 + 3] - (x[i * 8 + 3] + dt * (Fbx - Ffy * sin(x[i * 8 + 8]) + VehicleModel.mass * x[i * 8 + 5] * x[i * 8 + 6]) * (1.0/VehicleModel.mass)) == 0
-               #x[(i + 1)*8 + 3] - (x[i * 8 + 3] + x[8*i + 7]*dt) == 0
 
-               #x[(i + 1)*8 + 4] - (x[i * 8 + 4] + x[8*i + 3]*dt / lr*sin(atan(lr/(lf + lr) * tan(x[i*8 + 8])))) == 0
-               #atan(0.5 * (lf + lr) * VehicleModel.max_long_acc / x[i*8 + 3]^2) - atan(lr/(lf + lf) * tan(x[i*8 + 8])) >= 0  #max_beta - beta
-               #atan(0.5 * (lf + lr) * VehicleModel.max_long_acc / x[i*8 + 3]^2) + atan(lr/(lf + lf) * tan(x[i*8 + 8])) >= 0  #max_beta + beta
+               x[(i + 1)*8 + 4] - (x[i * 8 + 4] + dt*(x[8*i + 6])) == 0
 
-               #y_d
                x[(i + 1)*8 + 5] - (x[i*8 + 5] + dt * (Fby + Ffy * cos(x[8*i + 8]) - VehicleModel.mass * x[8*i + 3] * x[8*i + 6])* (1.0/VehicleModel.mass)) == 0
 
-
-               #psi_d
                x[(i + 1)*8 + 6] - (x[i*8 + 6] + dt * (VehicleModel.lf * Ffy * cos(x[i*8 + 8]) - VehicleModel.lr * Fby)/VehicleModel.I) == 0
-               #psi
-               x[(i + 1)*8 + 4] - (x[i * 8 + 4] + dt*(x[8*i + 6])) == 0
 
           end)
      end
-=#
+
 #=
      #create vehicle model constraints
      for i in 0: N-1
@@ -198,8 +186,8 @@ function initMPC(N_, dt, startPose, tangentPoints, midTrackPoints, trackPoints, 
      global startPosY = @constraint(m, startPosY, x[2] == startPose.y)
      global startPosX_d = @constraint(m, startPosX_d, x[3] == startPose.x_d)
      global startPosPsi = @constraint(m, startPosPsi, x[4] == startPose.psi)
-     #global startPosY_d = @constraint(m, startPosY_d, x[5] == startPose.y_d)
-     #global startPosPsi_d = @constraint(m, startPosPsi_d, x[6] == startPose.psi_d)
+     global startPosY_d = @constraint(m, startPosY_d, x[5] == startPose.y_d)
+     global startPosPsi_d = @constraint(m, startPosPsi_d, x[6] == startPose.psi_d)
 
      #objective
 #=
@@ -241,8 +229,8 @@ function updateStartPointFromPose(carPose)
      JuMP.setRHS(startPosY, carPose.y)
      JuMP.setRHS(startPosX_d, carPose.x_d)
      JuMP.setRHS(startPosPsi, carPose.psi)
-     #JuMP.setRHS(startPosY_d, carPose.y_d)
-     #JuMP.setRHS(startPosPsi_d, carPose.psi_d)
+     JuMP.setRHS(startPosY_d, carPose.y_d)
+     JuMP.setRHS(startPosPsi_d, carPose.psi_d)
 end
 
 
