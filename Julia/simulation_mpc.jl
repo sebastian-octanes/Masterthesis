@@ -247,23 +247,19 @@ end
 function initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel)
     startPose = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
     stateVector = []
-    #global itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(15, 4, 15, 0)
     start_=[startPose.x, startPose.y, startPose.x_d, startPose.psi, 0, 0, 0, 0]
     for i in 0:N
         stateVector = vcat(stateVector, start_) #add initial guess to vector
     end
     evalPoints = RaceCourse.getSplinePositions(itpTrack, stateVector, N)
-    tangentPoints = RaceCourse.computeGradientPoints_(itpLeftBound, itpRightBound, evalPoints, N)
-    midTrackPoints = RaceCourse.getMidTrackPoints(itpTrack,evalPoints, N)
     trackPoints = RaceCourse.getTrackPoints(itpTrack, itpLeftBound, itpRightBound, evalPoints, N)
-    m = MPC.initMPC(N, dt, startPose, tangentPoints, midTrackPoints, trackPoints, printLevel)
 
     mpc_struct = MPCStruct(N, 0, 0, 0, 0)
     mpc_struct = init_MPC(mpc_struct, N, dt, startPose, printLevel)
     mpc_struct = define_constraint_linear_bycicle(mpc_struct)
     mpc_struct = define_constraint_start_pose(mpc_struct, startPose)
     mpc_struct = define_constraint_tangents(mpc_struct, trackPoints)
-    #mpc_struct = define_constraint_max_search_dist(mpc_struct, trackPoints)
+    mpc_struct = define_constraint_max_search_dist(mpc_struct, trackPoints)
     mpc_struct = define_objective(mpc_struct)
 
     print_mpc(mpc_struct)
@@ -289,21 +285,20 @@ carPose = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
 itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack2(trackWidth)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(trackWidth)
 
-N = 50
-printLevel = 3
+N = 60
+printLevel = 0
 dt = 0.05
 mpc_struct = initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel)
 event = Event()
 window = RenderWindow("test", windowSizeX, windowSizeY)
 #create CircularBuffer for tracking Vehicle Path
-#carPathBuffer = CircBuffer.CircularBuffer{VehicleModel.CarState}(400)
 carPathBuffer = CircularBuffer{VehicleModel.CarState}(400)
 
 #create Sprites
 RaceTrackLeftSprite, RaceTrackRightSprite = createRaceCourse2(scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, itpTrack, itpLeftBound, itpRightBound, window)
 
-#qset_framerate_limit(window, convert(Int64, 1 / dt))
-set_framerate_limit(window, 2)
+set_framerate_limit(window, convert(Int64, 1 / dt))
+#set_framerate_limit(window, 2)
 
 clock = Clock()
 #lapTimeActive needed for timer
@@ -319,11 +314,10 @@ while isopen(window)
         end
     end
     keys = checkkeys()
+    res = solve_MPC(mpc_struct)
 
-    @time res = MPC.solveMPC()
-    #res = MPC.solveMPC()
     res = mapKeyToCarControl(keys, res, N)
-    print("\n\nres", res[1:8])
+    #print("\n\nres", res[1:8])
     #stateVector = mapKeyToCarControl(keys, stateVector, N)
 
     #predict last point and compute next state with vehicle model
@@ -331,15 +325,10 @@ while isopen(window)
     stateVector = VehicleModel.createNewStateVector(res, realCarStateVector, dt, N)
     #print("\nrealCarStateVector",realCarStateVector)
     #print("\nstateVector", stateVector[1:8])
-    MPC.updateStartPointFromPose(realCarStateVector)
-
+    update_start_point_from_pose(mpc_struct, realCarStateVector)
     evalPoints = RaceCourse.getSplinePositions(itpTrack, stateVector, N)
-    tangentPoints = RaceCourse.computeGradientPoints_(itpLeftBound, itpRightBound, evalPoints, N)
-    midTrackPoints = RaceCourse.getMidTrackPoints(itpTrack, evalPoints, N)
     trackPoints = RaceCourse.getTrackPoints(itpTrack, itpLeftBound, itpRightBound, evalPoints, N)
-    #MPC.updateTangentPoints(tangentPoints)
-    MPC.updateMidTrackPoints(midTrackPoints)
-    MPC.updateTrackPoints(trackPoints)
+    update_track_points(mpc_struct, trackPoints)
 
     carPose = VehicleModel.CarPose(stateVector[1], stateVector[2], stateVector[3], stateVector[4], stateVector[5], stateVector[6])
     #timer

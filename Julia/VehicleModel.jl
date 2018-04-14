@@ -19,7 +19,7 @@ g       = 9.81   #earth gravity
 F_long_max = 4000   # 3000N for car
 
 #values to limit car_parameters for mpc
-max_speed = 50/3.6 # 120km/h /3.6 = m/s
+max_speed = 60/3.6 # 120km/h /3.6 = m/s
 max_long_acc = 10   #m/s**2 longitudinal acceleration max
 max_long_dec = 10   #m/s**2 longitudinal deceleration max
 max_lat_acc = 20  # 2g lateral acceleration

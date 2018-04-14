@@ -82,7 +82,7 @@ function define_constraint_start_pose(mpc_struct, startPose)
     return mpc_struct
 end
 
-function updateStartPointFromPose(mpc_struct, carPose)
+function update_start_point_from_pose(mpc_struct, carPose)
      startPos = mpc_struct.startPose
      #enforce starting point
      JuMP.setRHS(startPos[1], carPose.x)
@@ -120,7 +120,7 @@ function define_constraint_tangents(mpc_struct, trackPoints)
      return mpc_struct
 end
 
-function updateTrackPoints(mpc_struct, trackPoints)
+function update_track_points(mpc_struct, trackPoints)
      #x0 = [t[i*6 + 1], t[i*6 + 2]] /midpoint
      #x1 = [t[i*6 + 3], t[i*6 + 4]] / left bound
      #x2 = [t[i*6 + 5], t[i*6 + 6]] / right bound
@@ -156,7 +156,7 @@ function define_constraint_max_search_dist(mpc_struct, trackPoints)
      for i in 0:N-1
           p1 = [t[i*6 + 1], t[i*6 + 2]]
           #p1 = [z[i*2 + 1], z[i*2 + 2]]
-          @NLconstraint(m, sqrt((x[(i+1)*8 + 1] - p1[1])^2 +  (x[(i+1)*8 + 2] - p1[2])^2) <= trackWidth*0.5)
+          @NLconstraint(m, sqrt((x[(i+1)*8 + 1] - p1[1])^2 +  (x[(i+1)*8 + 2] - p1[2])^2) <= trackWidth*1)
      end
      return mpc_struct
 end
@@ -174,4 +174,11 @@ end
 
 function print_mpc(mpc_struct)
     print(mpc_struct.m)
+end
+
+function solve_MPC(mpc_struct)
+     m = mpc_struct.m
+     solve(m)
+     res = getvalue(mpc_struct.x)
+     return res
 end
