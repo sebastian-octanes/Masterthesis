@@ -3,6 +3,7 @@ include("RaceCourse.jl")
 include("VehicleModel.jl")
 include("MPC.jl")
 include("circular_buffer.jl")
+include("smallMPC.jl")
 #using CircBuffer
 #using VehicleModel.CarPose, VehicleModel.CarState, VehicleModel
 #using RaceCourse
@@ -256,7 +257,17 @@ function initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel)
     midTrackPoints = RaceCourse.getMidTrackPoints(itpTrack,evalPoints, N)
     trackPoints = RaceCourse.getTrackPoints(itpTrack, itpLeftBound, itpRightBound, evalPoints, N)
     m = MPC.initMPC(N, dt, startPose, tangentPoints, midTrackPoints, trackPoints, printLevel)
-    return m
+
+    mpc_struct = MPCStruct(N, 0, 0, 0, 0)
+    mpc_struct = init_MPC(mpc_struct, N, dt, startPose, printLevel)
+    mpc_struct = define_constraint_linear_bycicle(mpc_struct)
+    mpc_struct = define_constraint_start_pose(mpc_struct, startPose)
+    mpc_struct = define_constraint_tangents(mpc_struct, trackPoints)
+    #mpc_struct = define_constraint_max_search_dist(mpc_struct, trackPoints)
+    mpc_struct = define_objective(mpc_struct)
+
+    print_mpc(mpc_struct)
+    return mpc_struct
 end
 
 windowSizeX = 1000
@@ -278,10 +289,10 @@ carPose = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
 itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack2(trackWidth)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(trackWidth)
 
-N = 8
-printLevel = 0
+N = 50
+printLevel = 3
 dt = 0.05
-initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel)
+mpc_struct = initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel)
 event = Event()
 window = RenderWindow("test", windowSizeX, windowSizeY)
 #create CircularBuffer for tracking Vehicle Path
@@ -291,8 +302,8 @@ carPathBuffer = CircularBuffer{VehicleModel.CarState}(400)
 #create Sprites
 RaceTrackLeftSprite, RaceTrackRightSprite = createRaceCourse2(scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, itpTrack, itpLeftBound, itpRightBound, window)
 
-#set_framerate_limit(window, convert(Int64, 1 / dt))
-set_framerate_limit(window, 20)
+#qset_framerate_limit(window, convert(Int64, 1 / dt))
+set_framerate_limit(window, 2)
 
 clock = Clock()
 #lapTimeActive needed for timer
@@ -309,8 +320,8 @@ while isopen(window)
     end
     keys = checkkeys()
 
-    #@time res = MPC.solveMPC()
-    res = MPC.solveMPC()
+    @time res = MPC.solveMPC()
+    #res = MPC.solveMPC()
     res = mapKeyToCarControl(keys, res, N)
     print("\n\nres", res[1:8])
     #stateVector = mapKeyToCarControl(keys, stateVector, N)
@@ -318,15 +329,15 @@ while isopen(window)
     #predict last point and compute next state with vehicle model
     realCarStateVector = VehicleModel.computeRealCarStep(realCarStateVector, res, dt)
     stateVector = VehicleModel.createNewStateVector(res, realCarStateVector, dt, N)
-    print("\nrealCarStateVector",realCarStateVector)
-    print("\nstateVector", stateVector[1:8])
+    #print("\nrealCarStateVector",realCarStateVector)
+    #print("\nstateVector", stateVector[1:8])
     MPC.updateStartPointFromPose(realCarStateVector)
 
     evalPoints = RaceCourse.getSplinePositions(itpTrack, stateVector, N)
     tangentPoints = RaceCourse.computeGradientPoints_(itpLeftBound, itpRightBound, evalPoints, N)
     midTrackPoints = RaceCourse.getMidTrackPoints(itpTrack, evalPoints, N)
     trackPoints = RaceCourse.getTrackPoints(itpTrack, itpLeftBound, itpRightBound, evalPoints, N)
-    MPC.updateTangentPoints(tangentPoints)
+    #MPC.updateTangentPoints(tangentPoints)
     MPC.updateMidTrackPoints(midTrackPoints)
     MPC.updateTrackPoints(trackPoints)
 
@@ -355,7 +366,7 @@ while isopen(window)
     createCarPathPoint(carPathBuffer, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window)
     #draw predicted movement of car
     createPredictionPoints(stateVector, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window, N)
-    #draw(window, carSprite)
+    draw(window, carSprite)
     #draw car info
     displayCarData(res, window)
     display(window)

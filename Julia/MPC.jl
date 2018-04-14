@@ -17,14 +17,13 @@ function initMPC(N_, dt, startPose, tangentPoints, midTrackPoints, trackPoints, 
      global m = Model(solver = IpoptSolver(print_level = printLevel, max_iter=5000))
      global N = N_
 
-
      lbx = []
      ubx = []
      start = []
      trackWidth = 4
      lbx_ = [-Inf, -Inf,                   0.01, -Inf, -Inf, -Inf,  -VehicleModel.max_long_dec, -VehicleModel.max_steering_angle]
      ubx_ = [ Inf,  Inf, VehicleModel.max_speed,  Inf,  Inf,  Inf,   VehicleModel.max_long_acc,  VehicleModel.max_steering_angle]
-     start_=[startPose.x, startPose.y, startPose.x_d, startPose.psi, 0, 0, 0, 0]
+     start_=[startPose.x, startPose.y, startPose.x_d, startPose.psi, startPose.y_d, startPose.psi_d, 0, 0]
      for i in 0:N
           lbx = vcat(lbx, lbx_) #add lower bounds to vector
           ubx = vcat(ubx, ubx_) #add upper bounds to vector
@@ -36,7 +35,7 @@ function initMPC(N_, dt, startPose, tangentPoints, midTrackPoints, trackPoints, 
      lf = VehicleModel.lf
      lr = VehicleModel.lr
 
-#=
+
      #create vehicle model constraints
      for i in 0: N-1
           @NLconstraints(m, begin
@@ -48,16 +47,16 @@ function initMPC(N_, dt, startPose, tangentPoints, midTrackPoints, trackPoints, 
                atan(0.5 * (lf + lr) * VehicleModel.max_long_acc / x[i*8 + 3]^2) + atan(lr/(lf + lf) * tan(x[i*8 + 8])) >= 0  #max_beta + beta
           end)
      end
-=#
 
 
 
+#=
      #create vehicle model constraints
      for i in 0: N-1
 
           #expression for tire model
-          @NLexpression(m, slip_angle_f, x[i * 8 + 8] - atan((x[i * 8 + 5]+ VehicleModel.lf * x[i * 8 + 6]) / x[i * 8 + 3]))
-          @NLexpression(m, slip_angle_b,              - atan((x[i * 8 + 5]- VehicleModel.lf * x[i * 8 + 6]) / x[i * 8 + 3]))
+          @NLexpression(m, slip_angle_f, x[i * 8 + 8] - atan((x[i * 8 + 5] + VehicleModel.lf * x[i * 8 + 6]) / x[i * 8 + 3]))
+          @NLexpression(m, slip_angle_b,              - atan((x[i * 8 + 5] - VehicleModel.lf * x[i * 8 + 6]) / x[i * 8 + 3]))
 
           @NLexpression(m, Fbx, VehicleModel.F_long_max * x[8*i + 7]/10.0)
           @NLexpression(m, Ffy, VehicleModel.Df * slip_angle_f / VehicleModel.xmf )
@@ -80,7 +79,7 @@ function initMPC(N_, dt, startPose, tangentPoints, midTrackPoints, trackPoints, 
 
           end)
      end
-
+=#
 #=
      #create vehicle model constraints
      for i in 0: N-1
@@ -137,8 +136,8 @@ function initMPC(N_, dt, startPose, tangentPoints, midTrackPoints, trackPoints, 
 
 =#
 
-     global y = @NLparameter(m, y[i=1:N*4*2] == tangentPoints[i])
      #=
+     global y = @NLparameter(m, y[i=1:N*4*2] == tangentPoints[i])
      for i in 0:N-1
           p1 = [y[i*8 + 1], y[i*8 + 2]]
           p2 = [y[i*8 + 3], y[i*8 + 4]]
@@ -217,6 +216,8 @@ function initMPC(N_, dt, startPose, tangentPoints, midTrackPoints, trackPoints, 
      @NLobjective(m, Min, sum_1 + sum_3)
 
 =#
+     #global g = @NLparameter(m,  == goalPoint)
+
      @NLobjective(m, Max, sum(x[i*8 + 3] for i in 1:N))
 
      return m
@@ -233,7 +234,7 @@ function updateStartPointFromPose(carPose)
      JuMP.setRHS(startPosPsi_d, carPose.psi_d)
 end
 
-
+#=
 function updateTangentPoints(tangetPoints)
      for i in 0:N-1
           setvalue(y[i*8 + 1] , tangetPoints[i*8 + 1])
@@ -247,6 +248,7 @@ function updateTangentPoints(tangetPoints)
      end
      return m, y
 end
+=#
 
 function updateTrackPoints(trackPoints)
      #x0 = [t[i*6 + 1], t[i*6 + 2]] /midpoint
@@ -269,7 +271,7 @@ function updateMidTrackPoints(midTrackPoints)
           setvalue(z[i*2 + 1] , midTrackPoints[i*2 + 1])
           setvalue(z[i*2 + 2] , midTrackPoints[i*2 + 2])
      end
-     return m, y
+     return m
 end
 function solveMPC()
      solve(m)
