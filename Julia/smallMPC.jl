@@ -10,7 +10,7 @@ mutable struct MPCStruct
     #constraint parameter
     startPose  #startpose
     t     #tangential points and midtrackPoints
-    #z     #search radius constraint prevents from jumping
+    z     #point ahead of search vector to minimize distance to it
 end
 
 
@@ -32,6 +32,11 @@ function init_MPC(mpc_struct, N_, dt, startPose, printLevel)
      end
 
      x = @variable(m, lbx[i] <= x[i = 1:(N+1)*8] <= ubx[i], start = start[i]) #set bounds and initial guess and create x-vector
+     #defined in init to make change of objective functions possible without changing mpc_struct
+     #call setforwardPoint before using the objective function
+     forwardDummy =[0,0]
+     z = @NLparameter(m, z[i=1:2] == forwardDummy[i])
+     mpc_struct.z = z
 
      mpc_struct.m = m
      mpc_struct.x = x
@@ -57,6 +62,38 @@ function define_constraint_linear_bycicle(mpc_struct)
               atan(0.5 * (lf + lr) * VehicleModel.max_long_acc / x[i*8 + 3]^2) + atan(lr/(lf + lf) * tan(x[i*8 + 8])) >= 0  #max_beta + beta
          end)
     end
+    return mpc_struct
+end
+
+
+function define_constraint_nonlinear_bycicle(mpc_struct)
+    x = mpc_struct.x
+    m = mpc_struct.m
+    N = mpc_struct.N
+
+    lf = VehicleModel.lf
+    lr = VehicleModel.lr
+    #create vehicle model constraints
+    for i in 0: N-1
+
+         #expression for tire model
+         @NLexpression(m, slip_angle_f, x[i * 8 + 8] - atan((x[i * 8 + 5] + VehicleModel.lf * x[i * 8 + 6]) / x[i * 8 + 3]))
+         @NLexpression(m, slip_angle_b,              - atan((x[i * 8 + 5] - VehicleModel.lf * x[i * 8 + 6]) / x[i * 8 + 3]))
+
+         @NLexpression(m, Fbx, VehicleModel.F_long_max * x[8*i + 7]/10.0)
+         @NLexpression(m, Ffy, VehicleModel.Df * slip_angle_f / VehicleModel.xmf )
+         @NLexpression(m, Fby, VehicleModel.Db * slip_angle_b / VehicleModel.xmb )
+
+         @NLconstraints(m, begin
+              x[(i + 1)*8 + 1] - (x[i * 8 + 1] + dt * (x[8*i + 3]*cos(x[i*8 + 4]) - x[8*i + 5] * sin(x[8*i + 4]))) == 0
+              x[(i + 1)*8 + 2] - (x[i * 8 + 2] + dt * (x[8*i + 3]*sin(x[i*8 + 4]) + x[8*i + 5] * cos(x[8*i + 4]))) == 0
+              x[(i + 1)*8 + 3] - (x[i * 8 + 3] + dt * (Fbx - Ffy * sin(x[i * 8 + 8]) + VehicleModel.mass * x[i * 8 + 5] * x[i * 8 + 6]) * (1.0/VehicleModel.mass)) == 0
+              x[(i + 1)*8 + 4] - (x[i * 8 + 4] + dt*(x[8*i + 6])) == 0
+              x[(i + 1)*8 + 5] - (x[i*8 + 5] + dt * (Fby + Ffy * cos(x[8*i + 8]) - VehicleModel.mass * x[8*i + 3] * x[8*i + 6])* (1.0/VehicleModel.mass)) == 0
+              x[(i + 1)*8 + 6] - (x[i*8 + 6] + dt * (VehicleModel.lf * Ffy * cos(x[i*8 + 8]) - VehicleModel.lr * Fby)/VehicleModel.I) == 0
+         end)
+    end
+
     return mpc_struct
 end
 
@@ -145,30 +182,54 @@ function define_constraint_max_search_dist(mpc_struct, trackPoints)
      t = mpc_struct.t
      N = mpc_struct.N
      trackWidth = 4
-#=
-     midTrackPoints = []
-     for i in 1:(N-1)
-          midTrackPoints = vcat(midTrackPoints, trackPoints[i*6 +1])
-          midTrackPoints = vcat(midTrackPoints, trackPoints[i*6 +2])
-     end
-     z = @NLparameter(m, z[i = 1:N*2] == midTrackPoints[i])
-=#
+
      for i in 0:N-1
           p1 = [t[i*6 + 1], t[i*6 + 2]]
-          #p1 = [z[i*2 + 1], z[i*2 + 2]]
           @NLconstraint(m, sqrt((x[(i+1)*8 + 1] - p1[1])^2 +  (x[(i+1)*8 + 2] - p1[2])^2) <= trackWidth*1)
      end
      return mpc_struct
 end
 
 
+function define_objective_minimize_dist(mpc_struct)
+    m = mpc_struct.m
+    x = mpc_struct.x
+    N = mpc_struct.N
+    z = mpc_struct.z
+    #z defined in init so to change objective functions without changing the mpc_struct possible
+    @NLobjective(m, Min, sqrt((x[N*8+1]-z[1])^2 + (x[N*8 +2]-z[2])^2))
+    return mpc_struct
+end
 
+function update_track_forward_point(mpc_struct, point)
+     z = mpc_struct.z
+     setvalue(z[1], point[1])
+     setvalue(z[2], point[2])
+     return mpc_struct
+end
+
+function define_objective_middle(mpc_struct)
+    m = mpc_struct.m
+    x = mpc_struct.x
+    N = mpc_struct.N
+    t = mpc_struct.t
+
+    dist(x_p, y_p, x_m, y_m) = ((x_p - x_m)^2 + (y_p - y_m)^2)^(1/2.0)
+    JuMP.register(m, :dist, 4, dist, autodiff=true)
+
+    #@NLexpression(m, dist, sum(dist(x[(i+1)*8 + 1], x[(i+1)*8 + 1], t[i*6 + 1], t[i*6 + 2]) for i in 0:N-1))
+    @NLexpression(m, dist, sum(sqrt((x[(i+1)*8 + 1] - t[i*6 + 1])^2 +  (x[(i+1)*8 + 1] - t[i*6 + 2])^2) for i in 0:N-1))
+
+    @NLexpression(m, sum_speed, sum(1.0/x[i*8 + 3] for i in 1:N))
+    @NLobjective(m, Min, dist )
+    return mpc_struct
+end
 
 function define_objective(mpc_struct)
     m = mpc_struct.m
     x = mpc_struct.x
     N = mpc_struct.N
-    @NLobjective(m, Max, sum(x[i*8 + 3] for i in 1:N))
+    @NLobjective(m, Min, sum(1/x[i*8 + 3] for i in 1:N))
     return mpc_struct
 end
 

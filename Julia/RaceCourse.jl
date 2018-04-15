@@ -33,6 +33,10 @@ function getTrackPoints(itpTrack, itpLeftBound, itpRightBound, evalPoints, N)
     return trackPoints
 end
 
+function getForwardTrackPoint(itpTrack, evalPoints, N)
+    x1, y1 = itpTrack[evalPoints[N] + 0.05, 1], itpTrack[evalPoints[N] + 0.05, 2]
+    return [x1, y1]
+end
 
 function getMidTrackPoints(itpTrack, evalPoints, N)
     midTrackPoints = []
@@ -102,9 +106,9 @@ function buildRaceTrack(radius, trackWidth, OriginX, OriginY)
      y = radius * cos.(2π*t) + OriginY
      aTrack = hcat(x,y)
 
-     global itpTrack = scale(interpolate(aTrack, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
-     global itpOutBound = scale(interpolate(aOutBound, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
-     global itpInBound = scale(interpolate(aInBound, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
+     itpTrack = scale(interpolate(aTrack, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
+     itpOutBound = scale(interpolate(aOutBound, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
+     itpInBound = scale(interpolate(aInBound, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
      return itpTrack, itpOutBound, itpInBound
 end
 
@@ -135,6 +139,41 @@ function buildRaceTrack2(trackWidth)
     track, leftBound, rightBound = RaceCourse.addRightTurn(2, 5, trackWidth, track, leftBound, rightBound)
     track, leftBound, rightBound = RaceCourse.addRightTurn(3, 4, trackWidth, track, leftBound, rightBound)
     track, leftBound, rightBound = RaceCourse.addStraight(0, 6, trackWidth, track, leftBound, rightBound)
+
+    x = length(track)/2
+    step = 1/x
+    t = 0:step:(1- step)
+
+    itpTrack = scale(interpolate(track, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
+    itpLeftBound = scale(interpolate(leftBound, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
+    itpRightBound = scale(interpolate(rightBound, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
+    return itpTrack, itpLeftBound, itpRightBound
+end
+
+
+function buildRaceTrack3(trackWidth)
+
+    track = zeros(Float64,1,2)
+    leftBound = zeros(Float64,1,2)
+    rightBound = zeros(Float64,1,2)
+    leftBound[1,1] = - trackWidth/2
+    rightBound[1,1] = + trackWidth/2
+
+    track, leftBound, rightBound = RaceCourse.addStraight(0, 15, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addRightTurn(0, 7, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addRightTurn(1, 7, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addLeftTurn(2, 7, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addStraight(1, 20, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addRightTurn(1, 7, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addRightTurn(2, 4, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addLeftTurn(1, 4, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addStraight(2, 7, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addRightTurn(2, 3, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addStraight(3, 20, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addRightTurn(3, 5, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addLeftTurn(0, 5, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addStraight(3, 2.7, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addRightTurn(3, 4, trackWidth, track, leftBound, rightBound)
 
     x = length(track)/2
     step = 1/x

@@ -313,6 +313,7 @@ clock = Clock()
 lapTimeActive = false
 steps = 0
 realCarStateVector = VehicleModel.CarPose(0,0,0.01,pi/2,0,0)
+trackVehicleControls = []
 while isopen(window)
     #dt = get_elapsed_time(clock)
     restart(clock)
@@ -329,6 +330,7 @@ while isopen(window)
 
     #predict last point and compute next state with vehicle model
     realCarStateVector = VehicleModel.computeRealCarStep(realCarStateVector, res, dt)
+    trackVehicleControls = vcat(trackVehicleControls, res[7], res[8])
     stateVector = VehicleModel.createNewStateVector(res, realCarStateVector, dt, N)
     update_start_point_from_pose(mpc_struct, realCarStateVector)
     evalPoints = RaceCourse.getSplinePositions(itpTrack, stateVector, N)
@@ -348,6 +350,7 @@ while isopen(window)
         restart(clock)
         steps = 0
         lapTimeActive = false
+        break
     end
     #add position to carPathBuffer
     push!(carPathBuffer, VehicleModel.CarState(stateVector[1], stateVector[2], stateVector[3], stateVector[4], stateVector[5], stateVector[6], stateVector[7], stateVector[8]))
@@ -368,3 +371,26 @@ while isopen(window)
     display(window)
     clear(window, SFML.white)
 end
+
+stateVectorStart = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
+stateVectorLinear = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
+stateVectorNonLinear_Base = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
+stateVectorNonLinear_Enhanced_Long = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
+stateVectorNonLinear_Enhanced_Lat_Lin = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
+stateVectorNonLinear_Enhanced_Lat_Pacj = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
+stateVectorNonLinear_Enhanced_Lat_Pacj_Complx = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
+
+
+size = length(trackVehicleControls)
+for i in 1:2:size
+    throttle = trackVehicleControls[i]
+    phi = trackVehicleControls[i + 1]
+    carControl = VehicleModel.CarControls(throttle, phi)
+
+    stateVectorLinear =  VehicleModel.linear_bycicle_model(stateVectorLinear, carControl, dt)
+    stateVectorNonLinear_Base =  VehicleModel.non_linear_model_base(stateVectorNonLinear_Base, carControl, dt)
+
+
+end
+
+print(stateVectorLinear)
