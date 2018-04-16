@@ -34,7 +34,7 @@ function getTrackPoints(itpTrack, itpLeftBound, itpRightBound, evalPoints, N)
 end
 
 function getForwardTrackPoint(itpTrack, evalPoints, N)
-    x1, y1 = itpTrack[evalPoints[N] + 0.05, 1], itpTrack[evalPoints[N] + 0.05, 2]
+    x1, y1 = itpTrack[evalPoints[N] + 0.01, 1], itpTrack[evalPoints[N] + 0.01, 2]
     return [x1, y1]
 end
 
