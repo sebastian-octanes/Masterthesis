@@ -239,7 +239,7 @@ end
 
 function solve_MPC(mpc_struct)
      m = mpc_struct.m
-     solve(m)
+     status = solve(m)
      res = getvalue(mpc_struct.x)
-     return res
+     return res, status
 end

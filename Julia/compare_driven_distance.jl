@@ -288,120 +288,98 @@ carPose = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
 
 #define which racecourse should be used
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(15, 4, 15, 0)
-#itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack2(trackWidth)
-itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack3(trackWidth)
+itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack2(trackWidth)
+#itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack3(trackWidth)
 
-N = 50
-printLevel = 0
-dt = 0.05
-mpc_struct = initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel)
+n = 10
 event = Event()
 window = RenderWindow("test", windowSizeX, windowSizeY)
-#create CircularBuffer for tracking Vehicle Path
-carPathBuffer = CircularBuffer{VehicleModel.CarState}(400)
+dt = 0.05
+N = 10
+spline_pos =[]
+for i in 1:50
+    N = n + i*5
+    printLevel = 0
+    mpc_struct = initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel)
 
-#create Sprites
-RaceTrackLeftSprite, RaceTrackRightSprite = createRaceCourse2(scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, itpTrack, itpLeftBound, itpRightBound, window)
+        #create CircularBuffer for tracking Vehicle Path
+    carPathBuffer = CircularBuffer{VehicleModel.CarState}(400)
 
-set_framerate_limit(window, convert(Int64, 1 / dt))
-#set_framerate_limit(window, 2)
+    #create Sprites
+    RaceTrackLeftSprite, RaceTrackRightSprite = createRaceCourse2(scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, itpTrack, itpLeftBound, itpRightBound, window)
 
-clock = Clock()
-#lapTimeActive needed for timer
-lapTimeActive = false
-steps = 0
-realCarStateVector = VehicleModel.CarPose(0,0,0.01,pi/2,0,0)
-trackVehicleControls = []
-while isopen(window)
-    #dt = get_elapsed_time(clock)
-    restart(clock)
-    while pollevent(window, event)
-        if get_type(event) == EventType.CLOSED
-            close(window)
-        end
-    end
-    keys = checkkeys()
-    res, status = solve_MPC(mpc_struct)
-    res = mapKeyToCarControl(keys, res, N)
-    #print("\n\nres", res[1:8])
-    #stateVector = mapKeyToCarControl(keys, stateVector, N)
+    set_framerate_limit(window, convert(Int64, 1 / dt))
+    #set_framerate_limit(window, 2)
 
-    #predict last point and compute next state with vehicle model
-    realCarStateVector = VehicleModel.computeRealCarStep(realCarStateVector, res, dt)
-    trackVehicleControls = vcat(trackVehicleControls, res[7], res[8])
-    stateVector = VehicleModel.createNewStateVector(res, realCarStateVector, dt, N)
-    update_start_point_from_pose(mpc_struct, realCarStateVector)
-    evalPoints = RaceCourse.getSplinePositions(itpTrack, stateVector, N)
-    trackPoints = RaceCourse.getTrackPoints(itpTrack, itpLeftBound, itpRightBound, evalPoints, N)
-    forwardPoint = RaceCourse.getForwardTrackPoint(itpTrack, evalPoints, N)
-    update_track_forward_point(mpc_struct, forwardPoint)
-    update_track_points(mpc_struct, trackPoints)
+    clock = Clock()
+    #lapTimeActive needed for timer
+    lapTimeActive = false
+    steps = 0
+    realCarStateVector = VehicleModel.CarPose(0,0,0.01,pi/2,0,0)
+    trackVehicleControls = []
 
-    carPose = VehicleModel.CarPose(stateVector[1], stateVector[2], stateVector[3], stateVector[4], stateVector[5], stateVector[6])
-    #timer
-    steps = steps + 1
-    if abs(carPose.x) > 5
-        lapTimeActive = true
-    end
-    if abs(carPose.x) < trackWidth/2 && abs(carPose.y) < 0.2 && lapTimeActive
-        println("lap_time_steps:", steps * dt)
+    steps = 0
+
+    while isopen(window)
+        #dt = get_elapsed_time(clock)
         restart(clock)
-        steps = 0
-        lapTimeActive = false
-        break
+        while pollevent(window, event)
+            if get_type(event) == EventType.CLOSED
+                close(window)
+            end
+        end
+        keys = checkkeys()
+        res, status =  solve_MPC(mpc_struct)
+        #calc_time = vcat(calc_time, res[2])
+        #print(typeof(status))
+        if(status == :Infeasible)
+            spline_pos = vcat(spline_pos, 0)
+            break
+        end
+        res = mapKeyToCarControl(keys, res, N)
+        #print("\n\nres", res[1:8])
+        #stateVector = mapKeyToCarControl(keys, stateVector, N)
+
+        #predict last point and compute next state with vehicle model
+        realCarStateVector = VehicleModel.computeRealCarStep(realCarStateVector, res, dt)
+        trackVehicleControls = vcat(trackVehicleControls, res[7], res[8])
+        stateVector = VehicleModel.createNewStateVector(res, realCarStateVector, dt, N)
+        update_start_point_from_pose(mpc_struct, realCarStateVector)
+        evalPoints = RaceCourse.getSplinePositions(itpTrack, stateVector, N)
+        trackPoints = RaceCourse.getTrackPoints(itpTrack, itpLeftBound, itpRightBound, evalPoints, N)
+        forwardPoint = RaceCourse.getForwardTrackPoint(itpTrack, evalPoints, N)
+        update_track_forward_point(mpc_struct, forwardPoint)
+        update_track_points(mpc_struct, trackPoints)
+
+        carPose = VehicleModel.CarPose(stateVector[1], stateVector[2], stateVector[3], stateVector[4], stateVector[5], stateVector[6])
+        #timer
+        steps = steps + 1
+
+        if(steps >= 250)
+            spline_pos = vcat(spline_pos, evalPoints[1])
+            break
+        end
+        #add position to carPathBuffer
+        push!(carPathBuffer, VehicleModel.CarState(stateVector[1], stateVector[2], stateVector[3], stateVector[4], stateVector[5], stateVector[6], stateVector[7], stateVector[8]))
+
+        #draw car and raceCource
+        carSprite = createcarsprite(scaleX, scaleY)
+        setpositioncar(carSprite, carPose, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY)
+        drawRaceCourse2(window, RaceTrackLeftSprite, RaceTrackRightSprite)
+        # draw tangents for future points
+        createTangent(stateVector, itpTrack, itpLeftBound, itpRightBound, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window)
+        #draw carPathBuffer
+        createCarPathPoint(carPathBuffer, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window)
+        #draw predicted movement of car
+        createPredictionPoints(stateVector, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window, N)
+        draw(window, carSprite)
+        #draw car info
+        displayCarData(res, window)
+        display(window)
+        clear(window, SFML.white)
     end
-    #add position to carPathBuffer
-    push!(carPathBuffer, VehicleModel.CarState(stateVector[1], stateVector[2], stateVector[3], stateVector[4], stateVector[5], stateVector[6], stateVector[7], stateVector[8]))
 
-    #draw car and raceCource
-    carSprite = createcarsprite(scaleX, scaleY)
-    setpositioncar(carSprite, carPose, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY)
-    drawRaceCourse2(window, RaceTrackLeftSprite, RaceTrackRightSprite)
-    # draw tangents for future points
-    createTangent(stateVector, itpTrack, itpLeftBound, itpRightBound, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window)
-    #draw carPathBuffer
-    createCarPathPoint(carPathBuffer, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window)
-    #draw predicted movement of car
-    createPredictionPoints(stateVector, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window, N)
-    draw(window, carSprite)
-    #draw car info
-    displayCarData(res, window)
-    display(window)
-    clear(window, SFML.white)
-end
-
-stateVectorStart = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
-stateVectorLinear = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
-
-stateVectorNonLinear_Base = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
-stateVectorNonLinear_Enhanced_Long = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
-stateVectorNonLinear_Enhanced_Long_Cmplx = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
-
-stateVectorNonLinear_Enhanced_Lat = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
-stateVectorNonLinear_Enhanced_Lat_Cmplx = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
-
-
-size = length(trackVehicleControls)
-for i in 1:2:size
-    throttle = trackVehicleControls[i]
-    phi = trackVehicleControls[i + 1]
-    carControl = VehicleModel.CarControls(throttle, phi)
-
-    stateVectorLinear =  VehicleModel.linear_bycicle_model(stateVectorLinear, carControl, dt)
-
-    stateVectorNonLinear_Base =  VehicleModel.non_linear_model_base(stateVectorNonLinear_Base, carControl, dt)
-    stateVectorNonLinear_Enhanced_Long =  VehicleModel.non_linear_model_enhanced_long(stateVectorNonLinear_Enhanced_Long, carControl, dt)
-    stateVectorNonLinear_Enhanced_Long_Cmplx =  VehicleModel.non_linear_model_enhanced_long_cmplx(stateVectorNonLinear_Enhanced_Long_Cmplx, carControl, dt)
-
-    stateVectorNonLinear_Enhanced_Lat =  VehicleModel.non_linear_model_enhanced_lat(stateVectorNonLinear_Enhanced_Lat, carControl, dt)
-    stateVectorNonLinear_Enhanced_Lat_Cmplx =  VehicleModel.non_linear_model_enhanced_lat_cmplx(stateVectorNonLinear_Enhanced_Lat_Cmplx, carControl, dt)
-
+    print("spline_pos", spline_pos)
+    #print("average :  $(average_time/steps)")
 
 end
-
-print("\nstateVectorLinear", stateVectorLinear)
-print("\nstateVectorNonLinear_Base", stateVectorNonLinear_Base)
-print("\nstateVectorNonLinear_Enhanced_Long", stateVectorNonLinear_Enhanced_Long)
-print("\nstateVectorNonLinear_Enhanced_Long_Cmplx", stateVectorNonLinear_Enhanced_Long_Cmplx)
-print("\nstateVectorNonLinear_Enhanced_Lat", stateVectorNonLinear_Enhanced_Lat)
-print("\nstateVectorNonLinear_Enhanced_Lat_Cmplx", stateVectorNonLinear_Enhanced_Lat_Cmplx)

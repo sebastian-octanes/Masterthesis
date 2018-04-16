@@ -16,7 +16,7 @@ rho     = 1.225  # air desity in kg/m^3
 Crr     = 0.014  #roll resistance coefficient
 mu	    = 0.0027   #roll resistance
 g       = 9.81   #earth gravity
-F_long_max = 4000   # 3000N for car
+F_long_max = 3000   # 3000N for car
 
 #values to limit car_parameters for mpc
 max_speed = 60/3.6 # 120km/h /3.6 = m/s
@@ -134,7 +134,7 @@ function non_linear_model_base(carPose, carControl, dt)
     return carPoseNew
 end
 
-
+#this model incorporates aerodynamic drag and friction*
 function non_linear_model_enhanced_long(carPose, carControl, dt)
     slip_angle_f = carControl.phi- atan((carPose.y_d + lf * carPose.psi_d)/ carPose.x_d)
     slip_angle_b =    - atan((carPose.y_d - lf * carPose.psi_d)/ carPose.x_d)
@@ -147,6 +147,51 @@ function non_linear_model_enhanced_long(carPose, carControl, dt)
 	Rxr   = mu * Fzr
     Fbx = VehicleModel.F_long_max * carControl.throttle/10.0
 
+    #base model from here
+    Ffy = Df * slip_angle_f / xmf
+    Fby = Db * slip_angle_b / xmb
+
+    x_new = carPose.x + dt * (carPose.x_d * cos(carPose.psi) - carPose.y_d *sin(carPose.psi))
+    y_new = carPose.y + dt * (carPose.x_d * sin(carPose.psi) + carPose.y_d *cos(carPose.psi))
+    #this part is enhanced compared to base model
+    xd_new = carPose.x_d + dt * (Fbx -Rxf -Rxr -Faero -Ffy * sin(carControl.phi) + mass * carPose.y_d * carPose.psi_d)*(1.0/mass)
+    #base from here
+    psi_new = carPose.psi + dt * carPose.psi_d
+    yd_new = carPose.y_d + dt * (Fby + Ffy * cos(carControl.phi) - mass * carPose.x_d * carPose.psi_d)*(1.0 / mass)
+    psid_new = carPose.psi_d + dt * (lf*Ffy*cos(carControl.phi) - lr*Fby)/I
+
+    if(xd_new < 0.1)
+        xd_new = 0.1
+    end
+    if(xd_new >= max_speed)
+        xd_new = max_speed -0.001
+    end
+    carPoseNew = CarPose(x_new, y_new, xd_new, psi_new, yd_new, psid_new)
+    return carPoseNew
+end
+
+#this model enhances the standard "enhanced_long" model by incorporating the power in kw of the vehicle
+#slowing the acceleration capability of the car with increasing speed
+function non_linear_model_enhanced_long_cmplx(carPose, carControl, dt)
+    slip_angle_f = carControl.phi- atan((carPose.y_d + lf * carPose.psi_d)/ carPose.x_d)
+    slip_angle_b =    - atan((carPose.y_d - lf * carPose.psi_d)/ carPose.x_d)
+
+    #this part is enhanced compared to base model
+    Faero = 1/2.0 * rho * Cd * Af * carPose.x_d^2
+	Fzf   = mass*g*lf / (lf + lr)
+	Fzr   = mass*g*lr / (lf + lr)
+	Rxf   = mu * Fzf
+	Rxr   = mu * Fzr
+    #as car can only accelerate forward or break in simulation that decreases complexity for the if case
+    if(carControl.throttle > 0)
+        power = P_Engine * carControl.throttle/10.0
+        Fbx   = power /abs(carPose.x_d)
+        if(Fbx > VehicleModel.F_long_max)
+            Fbx = VehicleModel.F_long_max
+        end
+    else
+        Fbx = VehicleModel.F_long_max * carControl.throttle/10.0
+    end
     #base model from here
     Ffy = Df * slip_angle_f / xmf
     Fby = Db * slip_angle_b / xmb
@@ -196,6 +241,34 @@ function non_linear_model_enhanced_lat(carPose, carControl, dt)
     carPoseNew = CarPose(x_new, y_new, xd_new, psi_new, yd_new, psid_new)
     return carPoseNew
 end
+
+function non_linear_model_enhanced_lat_cmplx(carPose, carControl, dt)
+    slip_angle_f = carControl.phi- atan((carPose.y_d + lf * carPose.psi_d)/ carPose.x_d)
+    slip_angle_b =    - atan((carPose.y_d - lf * carPose.psi_d)/ carPose.x_d)
+
+    Fbx = VehicleModel.F_long_max * carControl.throttle/10.0
+    #enhanced base model from here
+    Ffy = pacejka_tire_model_complex(slip_angle_f, true)
+    Fby = pacejka_tire_model_complex(slip_angle_b, false)
+    #base model from here again
+    x_new = carPose.x + dt * (carPose.x_d * cos(carPose.psi) - carPose.y_d *sin(carPose.psi))
+    y_new = carPose.y + dt * (carPose.x_d * sin(carPose.psi) + carPose.y_d *cos(carPose.psi))
+    xd_new = carPose.x_d + dt * (Fbx - Ffy * sin(carControl.phi) + mass * carPose.y_d * carPose.psi_d)*(1.0/mass)
+    psi_new = carPose.psi + dt * carPose.psi_d
+    yd_new = carPose.y_d + dt * (Fby + Ffy * cos(carControl.phi) - mass * carPose.x_d * carPose.psi_d)*(1.0 / mass)
+    psid_new = carPose.psi_d + dt * (lf*Ffy*cos(carControl.phi) - lr*Fby)/I
+
+    if(xd_new < 0.1)
+        xd_new = 0.1
+    end
+    if(xd_new >= max_speed)
+        xd_new = max_speed -0.001
+    end
+    carPoseNew = CarPose(x_new, y_new, xd_new, psi_new, yd_new, psid_new)
+    return carPoseNew
+end
+
+
 
 function pacejka_tire_model_linear( slip_angle, front)
     #linear model

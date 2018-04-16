@@ -267,8 +267,6 @@ function initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel)
     #mpc_struct = define_objective_minimize_dist(mpc_struct)
     mpc_struct = update_track_forward_point(mpc_struct, forwardPoint)
 
-
-    print_mpc(mpc_struct)
     return mpc_struct
 end
 
@@ -293,7 +291,7 @@ carPose = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack2(trackWidth)
 itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack3(trackWidth)
 
-N = 40
+N = 100
 printLevel = 0
 dt = 0.05
 mpc_struct = initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel)
@@ -322,7 +320,7 @@ while isopen(window)
         end
     end
     keys = checkkeys()
-    res = solve_MPC(mpc_struct)
+    res, status = solve_MPC(mpc_struct)
     res = mapKeyToCarControl(keys, res, N)
     #print("\n\nres", res[1:8])
     #stateVector = mapKeyToCarControl(keys, stateVector, N)
