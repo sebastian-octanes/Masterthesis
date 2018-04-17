@@ -19,7 +19,7 @@ g       = 9.81   #earth gravity
 F_long_max = 3000   # 3000N for car
 
 #values to limit car_parameters for mpc
-max_speed = 20/3.6 # 120km/h /3.6 = m/s
+max_speed = 40/3.6 # 120km/h /3.6 = m/s
 max_long_acc = 10   #m/s**2 longitudinal acceleration max
 max_long_dec = 10   #m/s**2 longitudinal deceleration max
 max_lat_acc = 20  # 2g lateral acceleration
@@ -81,7 +81,13 @@ function createNewStateVector(sV, realCarStateVector, dt, N) # sV für stateVect
     return sV
 end
 
-function computeRealCarStep(carPose, res,  dt)
+function computeCarStepNonLinear(carPose, res,  dt)
+        carControls = CarControls(res[7], res[8])
+        cP = non_linear_model_enhanced_lat(carPose, carControls, dt)
+    return cP
+end
+
+function computeCarStepLinearModel(carPose, res,  dt)
         carControls = CarControls(res[7], res[8])
         cP = linear_bycicle_model(carPose, carControls, dt)
     return cP
@@ -96,10 +102,12 @@ function linear_bycicle_model(carPose, carControl, dt)
     else
         beta = - min(-beta, max_beta)
     end
+    Fbx = VehicleModel.F_long_max * carControl.throttle/10.0
     x = carPose.x + carPose.x_d * dt * cos(carPose.psi + beta)
     y = carPose.y + carPose.x_d * dt * sin(carPose.psi + beta)
     psi = carPose.psi + (carPose.x_d * dt/lr) * sin(beta)
-    x_d = carPose.x_d + carControl.throttle * dt
+    #x_d = carPose.x_d + carControl.throttle * dt
+    x_d = carPose.x_d + dt * (Fbx)*(1.0/mass)
 
     x_d = (x_d > max_speed) ?  max_speed : x_d
     y_d = 0

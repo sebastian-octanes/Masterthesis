@@ -216,24 +216,6 @@ end
 
 
 function mapKeyToCarControl(keys, res, N)
-#=
-    if keys.up == 1
-         res[ 7] = 10
-    elseif keys.down == 1
-        res[ 7] = -10
-    else
-        res[7] = 0
-    end
-
-    if keys.right == 1
-         res[ 8] = -VehicleModel.max_steering_angle
-    elseif keys.left == 1
-         res[ 8] = VehicleModel.max_steering_angle
-    else
-        res[8] = 0
-    end
-
-    =#
     if keys.reset == 1
         for i in 1:N
             res[8*i + 1] = 0; res[8*i + 2] = 0; res[8*i + 3] = 0.01; res[8*i + 4] = pi/2
@@ -288,8 +270,8 @@ carPose = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
 
 #define which racecourse should be used
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(15, 4, 15, 0)
-itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack2(trackWidth)
-#itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack3(trackWidth)
+#itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack2(trackWidth)
+itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack3(trackWidth)
 
 n = 10
 event = Event()
@@ -298,7 +280,7 @@ dt = 0.05
 N = 10
 spline_pos =[]
 for i in 1:50
-    N = n + i*5
+    N = n + i
     printLevel = 0
     mpc_struct = initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel)
 
@@ -330,18 +312,15 @@ for i in 1:50
         end
         keys = checkkeys()
         res, status =  solve_MPC(mpc_struct)
-        #calc_time = vcat(calc_time, res[2])
-        #print(typeof(status))
+
         if(status == :Infeasible)
             spline_pos = vcat(spline_pos, 0)
             break
         end
         res = mapKeyToCarControl(keys, res, N)
-        #print("\n\nres", res[1:8])
-        #stateVector = mapKeyToCarControl(keys, stateVector, N)
 
         #predict last point and compute next state with vehicle model
-        realCarStateVector = VehicleModel.computeRealCarStep(realCarStateVector, res, dt)
+        realCarStateVector = VehicleModel.computeCarStepNonLinear(realCarStateVector, res, dt)
         trackVehicleControls = vcat(trackVehicleControls, res[7], res[8])
         stateVector = VehicleModel.createNewStateVector(res, realCarStateVector, dt, N)
         update_start_point_from_pose(mpc_struct, realCarStateVector)

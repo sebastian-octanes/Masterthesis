@@ -78,25 +78,13 @@ function drawRaceCourse2(window, shapeLeft, shapeRight)
     #draw(window, shape)
     draw(window, shapeRight)
 end
-function createCarPathPoint(carPathBuffer, scaleX, scaleY, offsetX, offsetY, window)
+function createCarPathPoint(carPathBuffer, scaleX, scaleY, offsetX, offsetY, window, color)
     circle = CircleShape()
     set_radius(circle, 1)
     set_origin(circle, Vector2f(1, 1))
     for i in 1:length(carPathBuffer)
         carState = carPathBuffer[i]
-        if carState.throttle > 0
-            green = round(Int16, 25 * carState.throttle * 1.8)
-            if green > 255
-                green = 255
-            end
-            set_fillcolor(circle, Color(0, green , 0 ))
-        else
-            red =  round(Int16, 25 *-carState.throttle * 1.8)
-            if red > 255
-                red = 255
-            end
-            set_fillcolor(circle, Color( red, 0 , 0))
-        end
+        set_fillcolor(circle, color)
         set_position(circle, Vector2f(offsetX*scaleX + carState.x*scaleX, offsetY*scaleY - carState.y*scaleY))
         draw(window, circle)
     end
@@ -298,7 +286,8 @@ mpc_struct = initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLe
 event = Event()
 window = RenderWindow("test", windowSizeX, windowSizeY)
 #create CircularBuffer for tracking Vehicle Path
-carPathBuffer = CircularBuffer{VehicleModel.CarState}(400)
+carPathBuffer = CircularBuffer{VehicleModel.CarState}(1000)
+carPathBufferNonLinear = CircularBuffer{VehicleModel.CarState}(1000)
 
 #create Sprites
 RaceTrackLeftSprite, RaceTrackRightSprite = createRaceCourse2(scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, itpTrack, itpLeftBound, itpRightBound, window)
@@ -311,6 +300,8 @@ clock = Clock()
 lapTimeActive = false
 steps = 0
 realCarStateVector = VehicleModel.CarPose(0,0,0.01,pi/2,0,0)
+stateVectorNonLinear = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
+
 trackVehicleControls = []
 while isopen(window)
     #dt = get_elapsed_time(clock)
@@ -327,7 +318,7 @@ while isopen(window)
     #stateVector = mapKeyToCarControl(keys, stateVector, N)
 
     #predict last point and compute next state with vehicle model
-    realCarStateVector = VehicleModel.computeRealCarStep(realCarStateVector, res, dt)
+    realCarStateVector = VehicleModel.computeCarStepLinearModel(realCarStateVector, res, dt)
     trackVehicleControls = vcat(trackVehicleControls, res[7], res[8])
     stateVector = VehicleModel.createNewStateVector(res, realCarStateVector, dt, N)
     update_start_point_from_pose(mpc_struct, realCarStateVector)
@@ -338,6 +329,7 @@ while isopen(window)
     update_track_points(mpc_struct, trackPoints)
 
     carPose = VehicleModel.CarPose(stateVector[1], stateVector[2], stateVector[3], stateVector[4], stateVector[5], stateVector[6])
+    stateVectorNonLinear = VehicleModel.computeCarStepNonLinear(stateVectorNonLinear, res, dt)
     #timer
     steps = steps + 1
     if abs(carPose.x) > 5
@@ -352,15 +344,17 @@ while isopen(window)
     end
     #add position to carPathBuffer
     push!(carPathBuffer, VehicleModel.CarState(stateVector[1], stateVector[2], stateVector[3], stateVector[4], stateVector[5], stateVector[6], stateVector[7], stateVector[8]))
+    push!(carPathBufferNonLinear, VehicleModel.CarState(stateVectorNonLinear.x, stateVectorNonLinear.y, stateVectorNonLinear.x_d, stateVectorNonLinear.psi, stateVectorNonLinear.y_d, stateVectorNonLinear.psi_d, stateVector[7], stateVector[8]))
 
     #draw car and raceCource
     carSprite = createcarsprite(scaleX, scaleY)
-    setpositioncar(carSprite, carPose, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY)
+    setpositioncar(carSprite, stateVectorNonLinear, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY)
     drawRaceCourse2(window, RaceTrackLeftSprite, RaceTrackRightSprite)
     # draw tangents for future points
     createTangent(stateVector, itpTrack, itpLeftBound, itpRightBound, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window)
     #draw carPathBuffer
-    createCarPathPoint(carPathBuffer, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window)
+    createCarPathPoint(carPathBuffer, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window, SFML.green)
+    createCarPathPoint(carPathBufferNonLinear, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window, SFML.red)
     #draw predicted movement of car
     createPredictionPoints(stateVector, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window, N)
     draw(window, carSprite)

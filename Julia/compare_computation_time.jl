@@ -1,4 +1,5 @@
 using SFML
+using PyPlot
 include("RaceCourse.jl")
 include("VehicleModel.jl")
 include("MPC.jl")
@@ -296,8 +297,10 @@ event = Event()
 window = RenderWindow("test", windowSizeX, windowSizeY)
 dt = 0.05
 N = 0
-for i in 1:6
-    N = n + i*2
+mean = []
+t = 10
+for i in 1:t
+    N = n + i
     printLevel = 0
 
     mpc_struct = initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel)
@@ -329,16 +332,14 @@ for i in 1:6
             end
         end
         keys = checkkeys()
-        #res = @timed solve_MPC(mpc_struct)
-        res = @benchmark solve_MPC(mpc_struct)
+        tic()
+        res, status = @time solve_MPC(mpc_struct)
+        time = toc()
 
-        res, status = res[1]
-        time = res[2]
-        print("time", time)
         calc_time = vcat(calc_time, time)
         res = mapKeyToCarControl(keys, res, N)
 
-        realCarStateVector = VehicleModel.computeRealCarStep(realCarStateVector, res, dt)
+        realCarStateVector = VehicleModel.computeCarStepNonLinear(realCarStateVector, res, dt)
         trackVehicleControls = vcat(trackVehicleControls, res[7], res[8])
         stateVector = VehicleModel.createNewStateVector(res, realCarStateVector, dt, N)
         update_start_point_from_pose(mpc_struct, realCarStateVector)
@@ -352,7 +353,7 @@ for i in 1:6
         #timer
         steps = steps + 1
 
-        if(steps >= 500)
+        if(steps >= 100)
             break
         end
         #add position to carPathBuffer
@@ -374,10 +375,23 @@ for i in 1:6
         display(window)
         clear(window, SFML.white)
     end
-    mean = sum(calc_time)
-    print("mean")
-    mean = mean/steps
-    print("\naverage computation time for $(N) prediction steps:  $(mean)")
+    tmp = sum(calc_time)
+    tmp = tmp/steps
+    mean = vcat(mean, tmp)
+    print("\naverage computation time for $(N) prediction steps:  $(tmp)")
     #print("average :  $(average_time/steps)")
-
 end
+
+x = linspace(10, 10 + t -1, t)
+areas = 10*ones(t)
+print("\nmean", mean)
+print("type", typeof(mean[1]))
+#plot(x, mean)
+scatter(x,mean,s=areas,alpha=1.0)
+xlabel("Prediction Steps")
+ylabel("Computation Time in s")
+title("Computation Time to Prediction Horizon")
+ax = gca()
+xticks(x)
+#print(x)
+#print(mean)
