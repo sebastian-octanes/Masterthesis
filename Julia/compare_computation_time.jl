@@ -217,24 +217,7 @@ end
 
 
 function mapKeyToCarControl(keys, res, N)
-#=
-    if keys.up == 1
-         res[ 7] = 10
-    elseif keys.down == 1
-        res[ 7] = -10
-    else
-        res[7] = 0
-    end
 
-    if keys.right == 1
-         res[ 8] = -VehicleModel.max_steering_angle
-    elseif keys.left == 1
-         res[ 8] = VehicleModel.max_steering_angle
-    else
-        res[8] = 0
-    end
-
-    =#
     if keys.reset == 1
         for i in 1:N
             res[8*i + 1] = 0; res[8*i + 2] = 0; res[8*i + 3] = 0.01; res[8*i + 4] = pi/2
@@ -257,7 +240,7 @@ function initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel)
     forwardPoint = RaceCourse.getForwardTrackPoint(itpTrack, evalPoints, N)
 
     mpc_struct = MPCStruct(N, 0, 0, 0, 0, 0)
-    mpc_struct = init_MPC(mpc_struct, N, dt, startPose, printLevel)
+    mpc_struct = init_MPC(mpc_struct, N, dt, startPose, printLevel, VehicleModel.max_speed)
     #mpc_struct = define_constraint_nonlinear_bycicle(mpc_struct)
     mpc_struct = define_constraint_linear_bycicle(mpc_struct)
     mpc_struct = define_constraint_start_pose(mpc_struct, startPose)
@@ -298,7 +281,8 @@ window = RenderWindow("test", windowSizeX, windowSizeY)
 dt = 0.05
 N = 0
 mean = []
-t = 10
+t = 50
+
 for i in 1:t
     N = n + i
     printLevel = 0
@@ -353,7 +337,7 @@ for i in 1:t
         #timer
         steps = steps + 1
 
-        if(steps >= 100)
+        if(steps >= 50)
             break
         end
         #add position to carPathBuffer
@@ -388,10 +372,12 @@ print("\nmean", mean)
 print("type", typeof(mean[1]))
 #plot(x, mean)
 scatter(x,mean,s=areas,alpha=1.0)
+grid()
 xlabel("Prediction Steps")
 ylabel("Computation Time in s")
 title("Computation Time to Prediction Horizon")
 ax = gca()
-xticks(x)
+#x = linspace(10, 10 + t/2 -1, t/2)
+#xticks(x)
 #print(x)
 #print(mean)

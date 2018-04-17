@@ -1,4 +1,5 @@
 using SFML
+using PyPlot
 include("RaceCourse.jl")
 include("VehicleModel.jl")
 include("MPC.jl")
@@ -238,7 +239,7 @@ function initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel)
     forwardPoint = RaceCourse.getForwardTrackPoint(itpTrack, evalPoints, N)
 
     mpc_struct = MPCStruct(N, 0, 0, 0, 0, 0)
-    mpc_struct = init_MPC(mpc_struct, N, dt, startPose, printLevel)
+    mpc_struct = init_MPC(mpc_struct, N, dt, startPose, printLevel, VehicleModel.max_speed)
     #mpc_struct = define_constraint_nonlinear_bycicle(mpc_struct)
     mpc_struct = define_constraint_linear_bycicle(mpc_struct)
     mpc_struct = define_constraint_start_pose(mpc_struct, startPose)
@@ -279,7 +280,8 @@ window = RenderWindow("test", windowSizeX, windowSizeY)
 dt = 0.05
 N = 10
 spline_pos =[]
-for i in 1:50
+t = 50
+for i in 1:t
     N = n + i
     printLevel = 0
     mpc_struct = initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel)
@@ -320,7 +322,7 @@ for i in 1:50
         res = mapKeyToCarControl(keys, res, N)
 
         #predict last point and compute next state with vehicle model
-        realCarStateVector = VehicleModel.computeCarStepNonLinear(realCarStateVector, res, dt)
+        realCarStateVector = VehicleModel.computeCarStepLinearModel(realCarStateVector, res, dt)
         trackVehicleControls = vcat(trackVehicleControls, res[7], res[8])
         stateVector = VehicleModel.createNewStateVector(res, realCarStateVector, dt, N)
         update_start_point_from_pose(mpc_struct, realCarStateVector)
@@ -358,7 +360,17 @@ for i in 1:50
         clear(window, SFML.white)
     end
 
-    print("spline_pos", spline_pos)
-    #print("average :  $(average_time/steps)")
-
 end
+
+print("spline_pos", spline_pos)
+
+x = linspace(10, 10 + t -1, t)
+areas = 10*ones(t)
+scatter(x,spline_pos,s=areas,alpha=1.0)
+grid()
+xlabel("Prediction Steps")
+ylabel("Distance Traveled")
+title("Distance Traveled depending on Prediction Horizon")
+ax = gca()
+
+#print("average :  $(average_time/steps)")

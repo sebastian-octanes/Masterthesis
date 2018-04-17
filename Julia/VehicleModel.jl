@@ -19,7 +19,7 @@ g       = 9.81   #earth gravity
 F_long_max = 3000   # 3000N for car
 
 #values to limit car_parameters for mpc
-max_speed = 40/3.6 # 120km/h /3.6 = m/s
+max_speed = 30/3.6 # 120km/h /3.6 = m/s
 max_long_acc = 10   #m/s**2 longitudinal acceleration max
 max_long_dec = 10   #m/s**2 longitudinal deceleration max
 max_lat_acc = 20  # 2g lateral acceleration
@@ -63,6 +63,8 @@ struct CarState
     phi::Float64
 
 end
+
+
 # get last state and calculate next state for it + shift the whole vector to create the new stateVector
 function createNewStateVector(sV, realCarStateVector, dt, N) # sV für stateVector
     carPose = CarPose(sV[end-7], sV[end-6], sV[end-5], sV[end-4], sV[end-3], sV[end-2])

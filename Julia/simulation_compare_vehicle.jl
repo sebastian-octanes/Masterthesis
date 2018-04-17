@@ -1,4 +1,5 @@
 using SFML
+using PyPlot
 include("RaceCourse.jl")
 include("VehicleModel.jl")
 include("MPC.jl")
@@ -244,7 +245,7 @@ function initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel)
     forwardPoint = RaceCourse.getForwardTrackPoint(itpTrack, evalPoints, N)
 
     mpc_struct = MPCStruct(N, 0, 0, 0, 0, 0)
-    mpc_struct = init_MPC(mpc_struct, N, dt, startPose, printLevel)
+    mpc_struct = init_MPC(mpc_struct, N, dt, startPose, printLevel, VehicleModel.max_speed)
     #mpc_struct = define_constraint_nonlinear_bycicle(mpc_struct)
     mpc_struct = define_constraint_linear_bycicle(mpc_struct)
     mpc_struct = define_constraint_start_pose(mpc_struct, startPose)
@@ -319,7 +320,8 @@ while isopen(window)
 
     #predict last point and compute next state with vehicle model
     realCarStateVector = VehicleModel.computeCarStepLinearModel(realCarStateVector, res, dt)
-    trackVehicleControls = vcat(trackVehicleControls, res[7], res[8])
+
+    trackVehicleControls = vcat(trackVehicleControls, VehicleModel.CarControls(res[7], res[8]))
     stateVector = VehicleModel.createNewStateVector(res, realCarStateVector, dt, N)
     update_start_point_from_pose(mpc_struct, realCarStateVector)
     evalPoints = RaceCourse.getSplinePositions(itpTrack, stateVector, N)
@@ -376,10 +378,17 @@ stateVectorNonLinear_Enhanced_Lat_Cmplx = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 
 
 
 size = length(trackVehicleControls)
-for i in 1:2:size
-    throttle = trackVehicleControls[i]
-    phi = trackVehicleControls[i + 1]
-    carControl = VehicleModel.CarControls(throttle, phi)
+dist_lin = []
+dist_base = []
+dist_long = []
+dist_long_cmplx = []
+dist_lat = []
+
+for i in 1:size
+    carControl = trackVehicleControls[i]
+    #throttle = trackVehicleControls[i]
+    #phi = trackVehicleControls[i + 1]
+    #carControl = VehicleModel.CarControls(throttle, phi)
 
     stateVectorLinear =  VehicleModel.linear_bycicle_model(stateVectorLinear, carControl, dt)
 
@@ -390,12 +399,37 @@ for i in 1:2:size
     stateVectorNonLinear_Enhanced_Lat =  VehicleModel.non_linear_model_enhanced_lat(stateVectorNonLinear_Enhanced_Lat, carControl, dt)
     stateVectorNonLinear_Enhanced_Lat_Cmplx =  VehicleModel.non_linear_model_enhanced_lat_cmplx(stateVectorNonLinear_Enhanced_Lat_Cmplx, carControl, dt)
 
+    dist_tmp = sqrt((stateVectorNonLinear_Enhanced_Lat_Cmplx.x - stateVectorLinear.x)^2 + (stateVectorNonLinear_Enhanced_Lat_Cmplx.y - stateVectorLinear.y)^2)
+    dist_lin = vcat(dist_lin, dist_tmp)
+
+    dist_tmp = sqrt((stateVectorNonLinear_Enhanced_Lat_Cmplx.x - stateVectorNonLinear_Base.x)^2 + (stateVectorNonLinear_Enhanced_Lat_Cmplx.y - stateVectorNonLinear_Base.y)^2)
+    dist_base = vcat(dist_base, dist_tmp)
+
+    dist_tmp = sqrt((stateVectorNonLinear_Enhanced_Lat_Cmplx.x - stateVectorNonLinear_Enhanced_Long.x)^2 + (stateVectorNonLinear_Enhanced_Lat_Cmplx.y - stateVectorNonLinear_Enhanced_Long.y)^2)
+    dist_long = vcat(dist_long, dist_tmp)
+
+    dist_tmp = sqrt((stateVectorNonLinear_Enhanced_Lat_Cmplx.x - stateVectorNonLinear_Enhanced_Long_Cmplx.x)^2 + (stateVectorNonLinear_Enhanced_Lat_Cmplx.y - stateVectorNonLinear_Enhanced_Long_Cmplx.y)^2)
+    dist_long_cmplx = vcat(dist_long_cmplx, dist_tmp)
+
+    dist_tmp = sqrt((stateVectorNonLinear_Enhanced_Lat_Cmplx.x - stateVectorNonLinear_Enhanced_Lat.x)^2 + (stateVectorNonLinear_Enhanced_Lat_Cmplx.y - stateVectorNonLinear_Enhanced_Lat.y)^2)
+    dist_lat = vcat(dist_lat, dist_tmp)
 
 end
+x = linspace(0, 1, size)
+plot(x, dist_lin, linewidth=1.0, linestyle="--", label=L"dist_lin$")
+plot(x, dist_base, linewidth=1.0, linestyle="--", label=L"dist_base$")
+plot(x, dist_long, linewidth=1.0, linestyle="--", label=L"dist_long$")
+plot(x, dist_long_cmplx, linewidth=1.0, linestyle="--", label=L"dist_long_cmplx$")
+plot(x, dist_lat, linewidth=1.0, linestyle="--", label=L"dist_lat$")
+ax = gca()
+ax[:legend](loc="upper left")
+xlabel("Distance on Track")
+ylabel("Difference to Most Accurate Model")
+title("Difference Basic to Complex Model")
 
-print("\nstateVectorLinear", stateVectorLinear)
-print("\nstateVectorNonLinear_Base", stateVectorNonLinear_Base)
-print("\nstateVectorNonLinear_Enhanced_Long", stateVectorNonLinear_Enhanced_Long)
-print("\nstateVectorNonLinear_Enhanced_Long_Cmplx", stateVectorNonLinear_Enhanced_Long_Cmplx)
-print("\nstateVectorNonLinear_Enhanced_Lat", stateVectorNonLinear_Enhanced_Lat)
-print("\nstateVectorNonLinear_Enhanced_Lat_Cmplx", stateVectorNonLinear_Enhanced_Lat_Cmplx)
+#print("\nstateVectorLinear", stateVectorLinear)
+#print("\nstateVectorNonLinear_Base", stateVectorNonLinear_Base)
+#print("\nstateVectorNonLinear_Enhanced_Long", stateVectorNonLinear_Enhanced_Long)
+#print("\nstateVectorNonLinear_Enhanced_Long_Cmplx", stateVectorNonLinear_Enhanced_Long_Cmplx)
+#print("\nstateVectorNonLinear_Enhanced_Lat", stateVectorNonLinear_Enhanced_Lat)
+#print("\nstateVectorNonLinear_Enhanced_Lat_Cmplx", stateVectorNonLinear_Enhanced_Lat_Cmplx)

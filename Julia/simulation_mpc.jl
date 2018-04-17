@@ -256,7 +256,7 @@ function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, 
     print("last TrackPoint", trackPoints)
     print("\nforwardPoint", forwardPoint)
     mpc_struct = MPCStruct(N, 0, 0, 0, 0, 0)
-    mpc_struct = init_MPC(mpc_struct, N, dt, startPose, printLevel)
+    mpc_struct = init_MPC(mpc_struct, N, dt, startPose, printLevel, VehicleModel.max_speed)
     #mpc_struct = define_constraint_nonlinear_bycicle(mpc_struct)
     mpc_struct = define_constraint_linear_bycicle(mpc_struct)
     mpc_struct = define_constraint_start_pose(mpc_struct, startPose)
