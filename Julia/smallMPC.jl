@@ -15,7 +15,7 @@ end
 
 
 function init_MPC(mpc_struct, N_, dt, startPose, printLevel, max_speed)
-     m = Model(solver = IpoptSolver(tol=1e-1, print_level = printLevel, max_iter=50))
+     m = Model(solver = IpoptSolver(tol=1e-1, print_level = printLevel, max_iter= 200))
      N = N_
 
      lbx = []
@@ -222,7 +222,7 @@ function define_objective_middle(mpc_struct)
     #@NLexpression(m, dist, sum(dist(x[(i+1)*8 + 1], x[(i+1)*8 + 1], t[i*6 + 1], t[i*6 + 2]) for i in 0:N-1))
     @NLexpression(m, dist, sum(sqrt((x[(i+1)*8 + 1] - t[i*6 + 1])^2 +  (x[(i+1)*8 + 2] - t[i*6 + 2])^2) for i in 0:5:N-1))
 
-    @NLexpression(m, sum_speed, sum(15/x[i*8 + 3] for i in 1:N))
+    @NLexpression(m, sum_speed, sum(1/x[i*8 + 3] for i in 1:N))
     @NLobjective(m, Min, sum_speed + dist)
     return mpc_struct
 end
