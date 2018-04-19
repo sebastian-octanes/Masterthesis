@@ -253,6 +253,49 @@ function buildRaceTrack4(trackWidth)
     itpRightBound = scale(interpolate(rightBound, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
     return itpTrack, itpLeftBound, itpRightBound
 end
+function buildRaceTrackCircle(trackWidth)
+
+    track = zeros(Float64,1,2)
+    leftBound = zeros(Float64,1,2)
+    rightBound = zeros(Float64,1,2)
+    leftBound[1,1] = - trackWidth/2
+    rightBound[1,1] = + trackWidth/2
+
+
+    track, leftBound, rightBound = RaceCourse.addRightTurn(0, 7, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addRightTurn(1, 7, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addRightTurn(2, 7, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addRightTurn(3, 7, trackWidth, track, leftBound, rightBound)
+
+    x = length(track)/2
+    step = 1/x
+    t = 0:step:(1- step)
+
+    itpTrack = scale(interpolate(track, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
+    itpLeftBound = scale(interpolate(leftBound, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
+    itpRightBound = scale(interpolate(rightBound, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
+    return itpTrack, itpLeftBound, itpRightBound
+end
+
+function buildRaceTrackStraight(trackWidth)
+
+    track = zeros(Float64,1,2)
+    leftBound = zeros(Float64,1,2)
+    rightBound = zeros(Float64,1,2)
+    leftBound[1,1] = - trackWidth/2
+    rightBound[1,1] = + trackWidth/2
+
+
+    track, leftBound, rightBound = RaceCourse.addStraight(0, 100, trackWidth, track, leftBound, rightBound)
+    x = length(track)/2
+    step = 1/x
+    t = 0:step:(1- step)
+
+    itpTrack = scale(interpolate(track, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
+    itpLeftBound = scale(interpolate(leftBound, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
+    itpRightBound = scale(interpolate(rightBound, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
+    return itpTrack, itpLeftBound, itpRightBound
+end
 
 function addRightTurn(direction, radius, trackWidth, track, leftBound, rightBound)
     radius_minus = radius - trackWidth/2.0

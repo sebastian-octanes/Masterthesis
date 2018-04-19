@@ -15,14 +15,14 @@ end
 
 
 function init_MPC(mpc_struct, N_, dt, startPose, printLevel, max_speed)
-     m = Model(solver = IpoptSolver(tol=1e-1, print_level = printLevel, max_iter= 50))
+     m = Model(solver = IpoptSolver(tol=1e-1, print_level = printLevel, max_iter= 5000))
      N = N_
 
      lbx = []
      ubx = []
      start = []
      trackWidth = 4
-     lbx_ = [-Inf, -Inf,                   0.01, -Inf, -Inf, -Inf,  -VehicleModel.max_long_dec, -VehicleModel.max_steering_angle]
+     lbx_ = [-Inf, -Inf,      0.01, -Inf, -Inf, -Inf,  -VehicleModel.max_long_dec, -VehicleModel.max_steering_angle]
      ubx_ = [ Inf,  Inf, max_speed,  Inf,  Inf,  Inf,   VehicleModel.max_long_acc,  VehicleModel.max_steering_angle]
      start_=[startPose.x, startPose.y, startPose.x_d, startPose.psi, startPose.y_d, startPose.psi_d, 0, 0]
      for i in 0:N
@@ -199,7 +199,9 @@ function define_objective_minimize_dist(mpc_struct)
     N = mpc_struct.N
     z = mpc_struct.z
     #z defined in init so to change objective functions without changing the mpc_struct possible
-    @NLobjective(m, Min, sqrt((x[N*8+1]-z[1])^2 + (x[N*8 +2]-z[2])^2))
+    #@NLobjective(m, Min, sqrt((x[(N-1)*8 + 1]-0)^2 + (x[(N-1)*8 + 2]-10)^2))
+    @NLobjective(m, Min, sqrt((x[(N-1)*8 + 1]- z[1])^2 + (x[(N-1)*8 + 2]-z[2])^2))
+
     return mpc_struct
 end
 
