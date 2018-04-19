@@ -15,7 +15,7 @@ end
 
 
 function init_MPC(mpc_struct, N_, dt, startPose, printLevel, max_speed)
-     m = Model(solver = IpoptSolver(tol=1e-1, print_level = printLevel, max_iter= 200))
+     m = Model(solver = IpoptSolver(tol=1e-1, print_level = printLevel, max_iter= 50))
      N = N_
 
      lbx = []

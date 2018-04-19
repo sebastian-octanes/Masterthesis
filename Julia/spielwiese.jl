@@ -8,8 +8,8 @@ using Distributions
 #print_mpc(mpc_struct)
 #solve_mpc(mpc_struct)
 
-start_ = 0.05
-end_ = 0.3
+start_ = 2
+end_ = 7
 steps_ = 6
 
 spline_pos =[]
