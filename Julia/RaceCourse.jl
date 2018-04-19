@@ -34,7 +34,7 @@ function getTrackPoints(itpTrack, itpLeftBound, itpRightBound, evalPoints, N)
 end
 
 function getForwardTrackPoint(itpTrack, evalPoints, N)
-    x1, y1 = itpTrack[evalPoints[N] + 0.01, 1], itpTrack[evalPoints[N] + 0.01, 2]
+    x1, y1 = itpTrack[evalPoints[N] + 0.02, 1], itpTrack[evalPoints[N] + 0.02, 2]
     return [x1, y1]
 end
 
@@ -285,8 +285,12 @@ function buildRaceTrackStraight(trackWidth)
     leftBound[1,1] = - trackWidth/2
     rightBound[1,1] = + trackWidth/2
 
-
-    track, leftBound, rightBound = RaceCourse.addStraight(0, 100, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addRightTurn(0, 7, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addRightTurn(1, 7, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addStraight(2, 15, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addRightTurn(2, 7, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addRightTurn(3, 7, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addStraight(0, 10, trackWidth, track, leftBound, rightBound)
     x = length(track)/2
     step = 1/x
     t = 0:step:(1- step)
@@ -294,6 +298,7 @@ function buildRaceTrackStraight(trackWidth)
     itpTrack = scale(interpolate(track, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
     itpLeftBound = scale(interpolate(leftBound, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
     itpRightBound = scale(interpolate(rightBound, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
+
     return itpTrack, itpLeftBound, itpRightBound
 end
 

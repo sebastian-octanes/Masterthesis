@@ -262,9 +262,9 @@ function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, 
     mpc_struct = define_constraint_start_pose(mpc_struct, startPose)
     mpc_struct = define_constraint_tangents(mpc_struct, trackPoints)
     mpc_struct = define_constraint_max_search_dist(mpc_struct, trackPoints)
-    mpc_struct = define_objective(mpc_struct)
+    #mpc_struct = define_objective(mpc_struct)
     #mpc_struct = define_objective_middle(mpc_struct)
-    #mpc_struct = define_objective_minimize_dist(mpc_struct)
+    mpc_struct = define_objective_minimize_dist(mpc_struct)
     mpc_struct = update_track_forward_point(mpc_struct, forwardPoint)
 
     return mpc_struct
@@ -288,16 +288,16 @@ startPose = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
 
 #define which racecourse should be used
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(15, 4, 15, 0)
-#itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack2(trackWidth)
+itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack2(trackWidth)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack3(trackWidth)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack4(trackWidth)
-itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrackCircle(trackWidth)
+#itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrackCircle(trackWidth)
 
 
-N = 50
+N = 40
 printLevel = 0
 dt = 0.05
-max_speed = 15
+max_speed = 5
 mpc_struct = initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed)
 event = Event()
 window = RenderWindow("test", windowSizeX, windowSizeY)
@@ -330,7 +330,9 @@ while isopen(window)
     #stateVector = mapKeyToCarControl(keys, stateVector, N)
 
     #predict last point and compute next state with vehicle model
-    realCarStateVector = VehicleModel.computeCarStepLinearModel(realCarStateVector, res, dt)
+    realCarStateVector = VehicleModel.computeCarStepNonLinear(realCarStateVector, res, dt)
+    #realCarStateVector = VehicleModel.computeCarStepLinearModel(realCarStateVector, res, dt)
+
     stateVector = VehicleModel.createNewStateVector(res, realCarStateVector, dt, N)
     update_start_point_from_pose(mpc_struct, realCarStateVector)
     evalPoints = RaceCourse.getSplinePositions(itpTrack, stateVector, N)

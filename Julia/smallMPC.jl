@@ -15,14 +15,14 @@ end
 
 
 function init_MPC(mpc_struct, N_, dt, startPose, printLevel, max_speed)
-     m = Model(solver = IpoptSolver(tol=1e-1, print_level = printLevel, max_iter= 5000))
+     m = Model(solver = IpoptSolver(tol=1e-1, print_level = printLevel, max_iter= 100))
      N = N_
 
      lbx = []
      ubx = []
      start = []
      trackWidth = 4
-     lbx_ = [-Inf, -Inf,      0.01, -Inf, -Inf, -Inf,  -VehicleModel.max_long_dec, -VehicleModel.max_steering_angle]
+     lbx_ = [-Inf, -Inf, VehicleModel.min_speed, -Inf, -Inf, -Inf,  -VehicleModel.max_long_dec, -VehicleModel.max_steering_angle]
      ubx_ = [ Inf,  Inf, max_speed,  Inf,  Inf,  Inf,   VehicleModel.max_long_acc,  VehicleModel.max_steering_angle]
      start_=[startPose.x, startPose.y, startPose.x_d, startPose.psi, startPose.y_d, startPose.psi_d, 0, 0]
      for i in 0:N
@@ -37,6 +37,10 @@ function init_MPC(mpc_struct, N_, dt, startPose, printLevel, max_speed)
      forwardDummy =[0,0]
      z = @NLparameter(m, z[i=1:2] == forwardDummy[i])
      mpc_struct.z = z
+     trackPoints= ones(N*6)
+     #define t here to be able to use softconstraints later
+     t = @NLparameter(m, t[i=1:N*6] == trackPoints[i])
+     mpc_struct.t = t
 
      mpc_struct.m = m
      mpc_struct.x = x
@@ -99,7 +103,8 @@ function define_constraint_nonlinear_bycicle(mpc_struct)
     return mpc_struct
 end
 
-
+#enforces the vehicle position in the first time step t0
+#without the mpc can move the x,y,v values to whatever point that min/maximizes the cost function
 function define_constraint_start_pose(mpc_struct, startPose)
     m = mpc_struct.m
     x = mpc_struct.x
@@ -121,6 +126,8 @@ function define_constraint_start_pose(mpc_struct, startPose)
     return mpc_struct
 end
 
+#updates the new position of the car in the mpc
+#has to be called after every optimization step!
 function update_start_point_from_pose(mpc_struct, carPose)
      startPos = mpc_struct.startPose
      #enforce starting point
@@ -133,11 +140,15 @@ function update_start_point_from_pose(mpc_struct, carPose)
      return mpc_struct
 end
 
+#tangential constraint that keeps the vehicle on the track, was later replaced with a vector projection
+#didn't increase the performance but is more flexible in the long run
 function define_constraint_tangents(mpc_struct, trackPoints)
      x = mpc_struct.x
      m = mpc_struct.m
      N = mpc_struct.N
-     t = @NLparameter(m, t[i=1:N*6] == trackPoints[i])
+     #t = @NLparameter(m, t[i=1:N*6] == trackPoints[i])
+     t = mpc_struct.t
+
      for i in 0:N-1
           x0 = [t[i*6 + 1], t[i*6 + 2]]
           x1 = [t[i*6 + 3], t[i*6 + 4]]
@@ -159,6 +170,9 @@ function define_constraint_tangents(mpc_struct, trackPoints)
      return mpc_struct
 end
 
+
+#this functions updates the midpoint, left and right bounds for every prediction step of the mpc
+#is needed for the hard and softconstraints
 function update_track_points(mpc_struct, trackPoints)
      #x0 = [t[i*6 + 1], t[i*6 + 2]] /midpoint
      #x1 = [t[i*6 + 3], t[i*6 + 4]] / left bound
@@ -193,42 +207,7 @@ function define_constraint_max_search_dist(mpc_struct, trackPoints)
 end
 
 
-function define_objective_minimize_dist(mpc_struct)
-    m = mpc_struct.m
-    x = mpc_struct.x
-    N = mpc_struct.N
-    z = mpc_struct.z
-    #z defined in init so to change objective functions without changing the mpc_struct possible
-    #@NLobjective(m, Min, sqrt((x[(N-1)*8 + 1]-0)^2 + (x[(N-1)*8 + 2]-10)^2))
-    @NLobjective(m, Min, sqrt((x[(N-1)*8 + 1]- z[1])^2 + (x[(N-1)*8 + 2]-z[2])^2))
-
-    return mpc_struct
-end
-
-function update_track_forward_point(mpc_struct, point)
-     z = mpc_struct.z
-     setvalue(z[1], point[1])
-     setvalue(z[2], point[2])
-     return mpc_struct
-end
-
-function define_objective_middle(mpc_struct)
-    m = mpc_struct.m
-    x = mpc_struct.x
-    N = mpc_struct.N
-    t = mpc_struct.t
-
-    #dist(x_p, y_p, x_m, y_m) = ((x_p - x_m)^2 + (y_p - y_m)^2)^(1/2.0)
-    #JuMP.register(m, :dist, 4, dist, autodiff=true)
-
-    #@NLexpression(m, dist, sum(dist(x[(i+1)*8 + 1], x[(i+1)*8 + 1], t[i*6 + 1], t[i*6 + 2]) for i in 0:N-1))
-    @NLexpression(m, dist, sum(sqrt((x[(i+1)*8 + 1] - t[i*6 + 1])^2 +  (x[(i+1)*8 + 2] - t[i*6 + 2])^2) for i in 0:5:N-1))
-
-    @NLexpression(m, sum_speed, sum(1/x[i*8 + 3] for i in 1:N))
-    @NLobjective(m, Min, sum_speed + dist)
-    return mpc_struct
-end
-
+#maximes the speed in every prediction point. Very good performing but more or less useless
 function define_objective(mpc_struct)
     m = mpc_struct.m
     x = mpc_struct.x
@@ -237,10 +216,83 @@ function define_objective(mpc_struct)
     return mpc_struct
 end
 
+#minimzes the distance from the last prediction point to the forward point that is updatet after every optimization step
+#this constraint can be used without the tangential constraint but gets very unstable with speed higher than 3-4m/s even with the same vehicle model as in the simulation environment
+function define_objective_minimize_dist(mpc_struct)
+    m = mpc_struct.m
+    x = mpc_struct.x
+    N = mpc_struct.N
+    z = mpc_struct.z
+    #z defined in init to make changes to objective functions without changing the mpc_struct possible
+    #@NLobjective(m, Min, sqrt((x[(N-1)*8 + 1]-0)^2 + (x[(N-1)*8 + 2]-10)^2))
+    @NLobjective(m, Min, sqrt((x[(N-1)*8 + 1]- z[1])^2 + (x[(N-1)*8 + 2]-z[2])^2))
+
+    return mpc_struct
+end
+
+#adds a softconstraint to the minimize dist function that tries to keep the distance to the middle of the track minimal
+#doesn't have a good performance but functions
+function define_objective_minimize_dist_soft_const(mpc_struct)
+    m = mpc_struct.m
+    x = mpc_struct.x
+    N = mpc_struct.N
+    z = mpc_struct.z
+    t = mpc_struct.t
+    #z defined in init so to change objective functions without changing the mpc_struct possible
+    #@NLobjective(m, Min, sqrt((x[(N-1)*8 + 1]-0)^2 + (x[(N-1)*8 + 2]-10)^2))
+    @NLexpression(m, min_dist, sqrt((x[(N-1)*8 + 1]- z[1])^2 + (x[(N-1)*8 + 2]-z[2])^2))
+
+    dist(xX, xY, x0X, x0Y, x1X, x1Y) =  ((xX - x0X)*(x1X - x0X) + (xY - x0Y)*(x1Y - x0Y)) / sqrt((x1X - x0X)^2 + (x1Y - x0Y)^2)
+    JuMP.register(m, :dist, 6, dist, autodiff=true)
+    @NLexpression(m, soft_constraint, sum(abs(dist(x[(i+1)*8 + 1], x[(i+1)*8 + 2], t[i*6 + 1], t[i*6 + 2], t[i*6 + 3], t[i*6 + 4])) for i in 2:5:N))
+
+    @NLobjective(m, Min, min_dist + soft_constraint)
+    return mpc_struct
+end
+
+
+#changes the softconstraint to a softconstraint that has low cost as long as car stays on the track
+function define_objective_minimize_dist_soft_const_ext(mpc_struct)
+    m = mpc_struct.m
+    x = mpc_struct.x
+    N = mpc_struct.N
+    z = mpc_struct.z
+    t = mpc_struct.t
+    #z defined in init so to change objective functions without changing the mpc_struct possible
+    #@NLobjective(m, Min, sqrt((x[(N-1)*8 + 1]-0)^2 + (x[(N-1)*8 + 2]-10)^2))
+    @NLexpression(m, min_dist, sqrt((x[(N-1)*8 + 1]- z[1])^2 + (x[(N-1)*8 + 2]-z[2])^2))
+
+
+    alpha = 120
+    k1 = -trackWidth/0.5
+    k2 = -trackWidth/0.5
+    alpha2 = 2/ (8*(trackWidth/4)^7)
+    dist(xX, xY, x0X, x0Y, x1X, x1Y) =  abs((xX - x0X)*(x1X - x0X) + (xY - x0Y)*(x1Y - x0Y)) / sqrt((x1X - x0X)^2 + (x1Y - x0Y)^2)
+    #cost(xX, xY, x0X, x0Y, x1X, x1Y) = alpha2 * dist_val1(xX, xY, x0X, x0Y, x1X, x1Y)^2
+    cost(xX, xY, x0X, x0Y, x1X, x1Y) = exp(alpha*(k1 + dist(xX, xY, x0X, x0Y, x1X, x1Y)))
+
+    JuMP.register(m, :dist, 6, dist, autodiff=true)
+    JuMP.register(m, :cost, 6, cost, autodiff=true)
+    @NLexpression(m, soft_constraint, sum(cost(x[(i+1)*8 + 1], x[(i+1)*8 + 2], t[i*6 + 1], t[i*6 + 2], t[i*6 + 3], t[i*6 + 4]) for i in 2:5:N))
+
+    @NLobjective(m, Min, min_dist + soft_constraint)
+    return mpc_struct
+end
+
+#this function is used to update the point the minimize_dist cost function minimizes the distance to
+function update_track_forward_point(mpc_struct, point)
+     z = mpc_struct.z
+     setvalue(z[1], point[1])
+     setvalue(z[2], point[2])
+     return mpc_struct
+end
+
+#prints the mpc configuration (who would have though...)
 function print_mpc(mpc_struct)
     print(mpc_struct.m)
 end
 
+#here happens all the magic
 function solve_MPC(mpc_struct)
      m = mpc_struct.m
      status = solve(m)
