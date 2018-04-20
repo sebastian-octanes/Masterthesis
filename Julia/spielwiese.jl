@@ -8,12 +8,12 @@ using Distributions
 #print_mpc(mpc_struct)
 #solve_mpc(mpc_struct)
 
-start_ = 2
-end_ = 7
-steps_ = 6
-
+start_ = 0.01
+end_ = 0.21
+steps_ = 5
 spline_pos =[]
 lin = linspace(start_,end_,steps_)
+lin = [0.05, 0.01, 0.05, 0.06]
 print(lin)
 for i in lin
     spline_pos = vcat(spline_pos, i)

@@ -277,7 +277,7 @@ function buildRaceTrackCircle(trackWidth)
     return itpTrack, itpLeftBound, itpRightBound
 end
 
-function buildRaceTrackStraight(trackWidth)
+function buildRaceTrackTub(trackWidth)
 
     track = zeros(Float64,1,2)
     leftBound = zeros(Float64,1,2)
@@ -291,6 +291,28 @@ function buildRaceTrackStraight(trackWidth)
     track, leftBound, rightBound = RaceCourse.addRightTurn(2, 7, trackWidth, track, leftBound, rightBound)
     track, leftBound, rightBound = RaceCourse.addRightTurn(3, 7, trackWidth, track, leftBound, rightBound)
     track, leftBound, rightBound = RaceCourse.addStraight(0, 10, trackWidth, track, leftBound, rightBound)
+    x = length(track)/2
+    step = 1/x
+    t = 0:step:(1- step)
+
+    itpTrack = scale(interpolate(track, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
+    itpLeftBound = scale(interpolate(leftBound, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
+    itpRightBound = scale(interpolate(rightBound, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
+
+    return itpTrack, itpLeftBound, itpRightBound
+end
+
+function buildRaceTrackStraight(trackWidth)
+
+    track = zeros(Float64,1,2)
+    leftBound = zeros(Float64,1,2)
+    rightBound = zeros(Float64,1,2)
+    leftBound[1,1] = - trackWidth/2
+    rightBound[1,1] = + trackWidth/2
+
+
+    track, leftBound, rightBound = RaceCourse.addStraight(0, 100, trackWidth, track, leftBound, rightBound)
+
     x = length(track)/2
     step = 1/x
     t = 0:step:(1- step)

@@ -20,7 +20,7 @@ F_long_max = 3000   # 3000N for car
 
 #values to limit car_parameters for mpc
 min_speed = 0.001
-max_speed = 80/3.6 # 120km/h /3.6 = m/s
+max_speed = 100/3.6 # 120km/h /3.6 = m/s
 max_long_acc = 10   #m/s**2 longitudinal acceleration max
 max_long_dec = 10   #m/s**2 longitudinal deceleration max
 max_lat_acc = 20  # 2g lateral acceleration

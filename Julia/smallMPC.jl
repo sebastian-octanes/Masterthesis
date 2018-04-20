@@ -15,7 +15,7 @@ end
 
 
 function init_MPC(mpc_struct, N_, dt, startPose, printLevel, max_speed)
-     m = Model(solver = IpoptSolver(tol=1e-1, print_level = printLevel, max_iter= 100))
+     m = Model(solver = IpoptSolver(tol=1e-1, print_level = printLevel, max_iter= 500))
      N = N_
 
      lbx = []
@@ -23,7 +23,7 @@ function init_MPC(mpc_struct, N_, dt, startPose, printLevel, max_speed)
      start = []
      trackWidth = 4
      lbx_ = [-Inf, -Inf, VehicleModel.min_speed, -Inf, -Inf, -Inf,  -VehicleModel.max_long_dec, -VehicleModel.max_steering_angle]
-     ubx_ = [ Inf,  Inf, max_speed,  Inf,  Inf,  Inf,   VehicleModel.max_long_acc,  VehicleModel.max_steering_angle]
+     ubx_ = [ Inf,  Inf, max_speed,               Inf,  Inf,  Inf,   VehicleModel.max_long_acc,  VehicleModel.max_steering_angle]
      start_=[startPose.x, startPose.y, startPose.x_d, startPose.psi, startPose.y_d, startPose.psi_d, 0, 0]
      for i in 0:N
           lbx = vcat(lbx, lbx_) #add lower bounds to vector
@@ -77,8 +77,6 @@ function define_constraint_nonlinear_bycicle(mpc_struct)
     m = mpc_struct.m
     N = mpc_struct.N
 
-    lf = VehicleModel.lf
-    lr = VehicleModel.lr
     #create vehicle model constraints
     for i in 0: N-1
 
@@ -95,8 +93,8 @@ function define_constraint_nonlinear_bycicle(mpc_struct)
               x[(i + 1)*8 + 2] - (x[i * 8 + 2] + dt * (x[8*i + 3]*sin(x[i*8 + 4]) + x[8*i + 5] * cos(x[8*i + 4]))) == 0
               x[(i + 1)*8 + 3] - (x[i * 8 + 3] + dt * (Fbx - Ffy * sin(x[i * 8 + 8]) + VehicleModel.mass * x[i * 8 + 5] * x[i * 8 + 6]) * (1.0/VehicleModel.mass))== 0
               x[(i + 1)*8 + 4] - (x[i * 8 + 4] + dt * (x[8*i + 6])) == 0
-              x[(i + 1)*8 + 5] - (x[i*8 + 5] + dt * (Fby + Ffy * cos(x[8*i + 8]) - VehicleModel.mass * x[8*i + 3] * x[8*i + 6])* (1.0/VehicleModel.mass)) == 0
-              x[(i + 1)*8 + 6] - (x[i*8 + 6] + dt * (VehicleModel.lf * Ffy * cos(x[i*8 + 8]) - VehicleModel.lr * Fby)/VehicleModel.I) == 0
+              x[(i + 1)*8 + 5] - (x[i * 8 + 5] + dt * (Fby + Ffy * cos(x[8*i + 8]) - VehicleModel.mass * x[8*i + 3] * x[8*i + 6])* (1.0/VehicleModel.mass)) == 0
+              x[(i + 1)*8 + 6] - (x[i * 8 + 6] + dt * (VehicleModel.lf * Ffy * cos(x[i*8 + 8]) - VehicleModel.lr * Fby)/VehicleModel.I) == 0
          end)
     end
 
@@ -232,7 +230,7 @@ end
 
 #adds a softconstraint to the minimize dist function that tries to keep the distance to the middle of the track minimal
 #doesn't have a good performance but functions
-function define_objective_minimize_dist_soft_const(mpc_struct)
+function define_objective_minimize_dist_soft_const(mpc_struct, a = 6, b = 1)
     m = mpc_struct.m
     x = mpc_struct.x
     N = mpc_struct.N
@@ -246,12 +244,15 @@ function define_objective_minimize_dist_soft_const(mpc_struct)
     JuMP.register(m, :dist, 6, dist, autodiff=true)
     @NLexpression(m, soft_constraint, sum(abs(dist(x[(i+1)*8 + 1], x[(i+1)*8 + 2], t[i*6 + 1], t[i*6 + 2], t[i*6 + 3], t[i*6 + 4])) for i in 2:5:N))
 
-    @NLobjective(m, Min, min_dist + soft_constraint)
+    #set a and b according how strongly you want to follow you point ahead of you and how important it is to stay in the middle of the road
+    #at a=6 it pretty much hits the track boundary
+    @NLobjective(m, Min, a* min_dist + b*soft_constraint)
     return mpc_struct
 end
 
 
 #changes the softconstraint to a softconstraint that has low cost as long as car stays on the track
+#for now it is not working very good
 function define_objective_minimize_dist_soft_const_ext(mpc_struct)
     m = mpc_struct.m
     x = mpc_struct.x
@@ -263,9 +264,10 @@ function define_objective_minimize_dist_soft_const_ext(mpc_struct)
     @NLexpression(m, min_dist, sqrt((x[(N-1)*8 + 1]- z[1])^2 + (x[(N-1)*8 + 2]-z[2])^2))
 
 
-    alpha = 120
-    k1 = -trackWidth/0.5
-    k2 = -trackWidth/0.5
+    alpha = 10
+
+    k1 = trackWidth/0.5
+    k2 = trackWidth/0.5
     alpha2 = 2/ (8*(trackWidth/4)^7)
     dist(xX, xY, x0X, x0Y, x1X, x1Y) =  abs((xX - x0X)*(x1X - x0X) + (xY - x0Y)*(x1Y - x0Y)) / sqrt((x1X - x0X)^2 + (x1Y - x0Y)^2)
     #cost(xX, xY, x0X, x0Y, x1X, x1Y) = alpha2 * dist_val1(xX, xY, x0X, x0Y, x1X, x1Y)^2
@@ -275,7 +277,9 @@ function define_objective_minimize_dist_soft_const_ext(mpc_struct)
     JuMP.register(m, :cost, 6, cost, autodiff=true)
     @NLexpression(m, soft_constraint, sum(cost(x[(i+1)*8 + 1], x[(i+1)*8 + 2], t[i*6 + 1], t[i*6 + 2], t[i*6 + 3], t[i*6 + 4]) for i in 2:5:N))
 
-    @NLobjective(m, Min, min_dist + soft_constraint)
+    a= 10
+    b = 1
+    @NLobjective(m, Min, a*min_dist + b*soft_constraint)
     return mpc_struct
 end
 
