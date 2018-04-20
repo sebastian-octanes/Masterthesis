@@ -264,7 +264,9 @@ function buildRaceTrackCircle(trackWidth)
 
     track, leftBound, rightBound = RaceCourse.addRightTurn(0, 7, trackWidth, track, leftBound, rightBound)
     track, leftBound, rightBound = RaceCourse.addRightTurn(1, 7, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addStraight(2, 0.3, trackWidth, track, leftBound, rightBound)
     track, leftBound, rightBound = RaceCourse.addRightTurn(2, 7, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addStraight(3, 0.3, trackWidth, track, leftBound, rightBound)
     track, leftBound, rightBound = RaceCourse.addRightTurn(3, 7, trackWidth, track, leftBound, rightBound)
 
     x = length(track)/2
@@ -307,11 +309,11 @@ function buildRaceTrackStraight(trackWidth)
     track = zeros(Float64,1,2)
     leftBound = zeros(Float64,1,2)
     rightBound = zeros(Float64,1,2)
-    leftBound[1,1] = - trackWidth/2
-    rightBound[1,1] = + trackWidth/2
+    leftBound[1,2] = + trackWidth/2
+    rightBound[1,2] = - trackWidth/2
 
 
-    track, leftBound, rightBound = RaceCourse.addStraight(0, 100, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addStraight(1, 150, trackWidth, track, leftBound, rightBound)
 
     x = length(track)/2
     step = 1/x

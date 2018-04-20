@@ -85,8 +85,8 @@ function define_constraint_nonlinear_bycicle(mpc_struct)
          @NLexpression(m, slip_angle_b,              - atan((x[i * 8 + 5] - VehicleModel.lf * x[i * 8 + 6]) / x[i * 8 + 3]))
 
          @NLexpression(m, Fbx, VehicleModel.F_long_max * x[8*i + 7]/10.0)
-         @NLexpression(m, Ffy, VehicleModel.Df * slip_angle_f / VehicleModel.xmf )
-         @NLexpression(m, Fby, VehicleModel.Db * slip_angle_b / VehicleModel.xmb )
+         @NLexpression(m, Ffy, VehicleModel.Cf * slip_angle_f)
+         @NLexpression(m, Fby, VehicleModel.Cb * slip_angle_b)
 
          @NLconstraints(m, begin
               x[(i + 1)*8 + 1] - (x[i * 8 + 1] + dt * (x[8*i + 3]*cos(x[i*8 + 4]) - x[8*i + 5] * sin(x[8*i + 4]))) == 0
@@ -95,6 +95,11 @@ function define_constraint_nonlinear_bycicle(mpc_struct)
               x[(i + 1)*8 + 4] - (x[i * 8 + 4] + dt * (x[8*i + 6])) == 0
               x[(i + 1)*8 + 5] - (x[i * 8 + 5] + dt * (Fby + Ffy * cos(x[8*i + 8]) - VehicleModel.mass * x[8*i + 3] * x[8*i + 6])* (1.0/VehicleModel.mass)) == 0
               x[(i + 1)*8 + 6] - (x[i * 8 + 6] + dt * (VehicleModel.lf * Ffy * cos(x[i*8 + 8]) - VehicleModel.lr * Fby)/VehicleModel.I) == 0
+              #Fby + 3000 >= 0
+              #Fby - 3000 <= 0
+              #Ffy + 3000 >= 0
+              #Ffy - 3000 <= 0
+
          end)
     end
 

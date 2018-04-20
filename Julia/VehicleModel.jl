@@ -6,21 +6,24 @@ lr  = 0.9
 lb  = 1.99    #width of car
 Af  = 2.25
 rad = 0.2    #radius of tires in m
-mass= 600   #kg
+#mass= 600   #kg
+mass = 220  #car + driver
 I  = 1000    # kgm²
 
 #values for longitudinal computation
-P_Engine= 40000  #Watt
+P_Engine= 40500  #Watt
 Cd      = 1.083   #drag coefficient
 rho     = 1.225  # air desity in kg/m^3
 Crr     = 0.014  #roll resistance coefficient
+Cf      = 70000  #N/rad
+Cb      = 70000  #N/rad
 mu	    = 0.0027   #roll resistance
 g       = 9.81   #earth gravity
 F_long_max = 3000   # 3000N for car
 
 #values to limit car_parameters for mpc
 min_speed = 0.001
-max_speed = 100/3.6 # 120km/h /3.6 = m/s
+max_speed = 120/3.6 # 120km/h /3.6 = m/s
 max_long_acc = 10   #m/s**2 longitudinal acceleration max
 max_long_dec = 10   #m/s**2 longitudinal deceleration max
 max_lat_acc = 20  # 2g lateral acceleration
@@ -37,6 +40,9 @@ betab = pi/2.0 - 0.00001#rad
 yaf  = 2952.0 #N
 yab  = 3270.0 #N #ya has to be smaller than D
 
+
+#skidpad time 7.15
+#acceleration time 4.5 (75m)
 
 
 struct CarPose
@@ -86,7 +92,7 @@ end
 
 function computeCarStepNonLinear(carPose, res,  dt)
         carControls = CarControls(res[7], res[8])
-        cP = non_linear_model_base(carPose, carControls, dt)
+        cP = non_linear_model_enhanced_long_cmplx(carPose, carControls, dt)
     return cP
 end
 
@@ -125,8 +131,8 @@ function non_linear_model_base(carPose, carControl, dt)
     slip_angle_b =               - atan((carPose.y_d - lf * carPose.psi_d)/ carPose.x_d)
 
     Fbx = VehicleModel.F_long_max * carControl.throttle/10.0
-    Ffy = Df * slip_angle_f / xmf
-    Fby = Db * slip_angle_b / xmb
+    Ffy = pacejka_tire_model_linear(slip_angle_f, true)
+    Fby = pacejka_tire_model_linear(slip_angle_b, false)
 
     x_new = carPose.x + dt * (carPose.x_d * cos(carPose.psi) - carPose.y_d *sin(carPose.psi))
     y_new = carPose.y + dt * (carPose.x_d * sin(carPose.psi) + carPose.y_d *cos(carPose.psi))
@@ -229,7 +235,7 @@ end
 
 function non_linear_model_enhanced_lat(carPose, carControl, dt)
     slip_angle_f = carControl.phi- atan((carPose.y_d + lf * carPose.psi_d)/ carPose.x_d)
-    slip_angle_b =    - atan((carPose.y_d - lf * carPose.psi_d)/ carPose.x_d)
+    slip_angle_b =               - atan((carPose.y_d - lf * carPose.psi_d)/ carPose.x_d)
 
     Fbx = VehicleModel.F_long_max * carControl.throttle/10.0
     #enhanced base model from here
@@ -281,17 +287,24 @@ end
 
 
 
-function pacejka_tire_model_linear( slip_angle, front)
+function pacejka_tire_model_linear(slip_angle, front)
     #linear model
     if(front == true)
         D = Df
         xm = xmf
+        C = Cf
     else
         D = Db
         xm = xmb
+        C = Cb
     end
-    C = D/xm
+    #C = D/xm
     y = C * slip_angle
+    if(y > 3000)
+        y= 3000
+    elseif(y < -3000)
+        y = -3000
+    end
     return y
 end
 

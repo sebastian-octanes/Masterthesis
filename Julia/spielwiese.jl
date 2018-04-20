@@ -12,8 +12,9 @@ start_ = 0.01
 end_ = 0.21
 steps_ = 5
 spline_pos =[]
-lin = linspace(start_,end_,steps_)
-lin = [0.05, 0.01, 0.05, 0.06]
+#lin = linspace(start_,end_,steps_)
+lin = linspace(-1, 1, 101)
+#lin = [0.05, 0.01, 0.05, 0.06]
 print(lin)
 for i in lin
     spline_pos = vcat(spline_pos, i)

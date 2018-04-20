@@ -293,12 +293,13 @@ startPose = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack3(trackWidth)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack4(trackWidth)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrackCircle(trackWidth)
-itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrackStraight(trackWidth)
+#itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrackStraight(trackWidth)
+itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrackTub(trackWidth)
 
 N = 20
 printLevel = 0
 dt = 0.05
-max_speed = 5
+max_speed = 2
 mpc_struct = initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed)
 event = Event()
 window = RenderWindow("test", windowSizeX, windowSizeY)
@@ -309,7 +310,7 @@ carPathBuffer = CircularBuffer{VehicleModel.CarState}(400)
 RaceTrackLeftSprite, RaceTrackRightSprite = createRaceCourse2(scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, itpTrack, itpLeftBound, itpRightBound, window)
 
 #set_framerate_limit(window, convert(Int64, 1 / dt))
-set_framerate_limit(window, 2)
+set_framerate_limit(window, 20)
 
 clock = Clock()
 #lapTimeActive needed for timer
@@ -336,8 +337,8 @@ while isopen(window)
     #stateVector = mapKeyToCarControl(keys, stateVector, N)
 
     #predict last point and compute next state with vehicle model
-    realCarStateVector = VehicleModel.computeCarStepNonLinear(realCarStateVector, res, dt)
-    #realCarStateVector = VehicleModel.computeCarStepLinearModel(realCarStateVector, res, dt)
+    #realCarStateVector = VehicleModel.computeCarStepNonLinear(realCarStateVector, res, dt)
+    realCarStateVector = VehicleModel.computeCarStepLinearModel(realCarStateVector, res, dt)
     #print("\n\nres", res[1:8])
     #print("\nSteer Angle: $(res[8])   Throttle:  $(res[7])")
     print("\npsi: $(realCarStateVector.psi)    y_d:  $(realCarStateVector.y_d)   psi_d: $(realCarStateVector.psi_d)\n")
