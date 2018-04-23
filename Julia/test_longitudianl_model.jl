@@ -295,10 +295,11 @@ startPose = VehicleModel.CarPose(0,0,0.1,0, 0, 0)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrackCircle(trackWidth)
 itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrackStraight(trackWidth)
 
-N = 40
+N = 10
 printLevel = 0
 dt = 0.05
-max_speed = 100
+max_speed = 140
+
 mpc_struct = initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed)
 event = Event()
 window = RenderWindow("test", windowSizeX, windowSizeY)
@@ -315,7 +316,8 @@ clock = Clock()
 #lapTimeActive needed for timer
 lapTimeActive = false
 steps = 0
-x_dist = 0
+speed = 0
+throttle_control = []
 realCarStateVector = VehicleModel.CarPose(0,0,0.01,0,0,0)
 while isopen(window)
     #dt = get_elapsed_time(clock)
@@ -330,7 +332,8 @@ while isopen(window)
     res, status = solve_MPC(mpc_struct)
     res = mapKeyToCarControl(keys, res, N)
 
-    realCarStateVector = VehicleModel.computeCarStepNonLinear(realCarStateVector, res, dt)
+    #realCarStateVector = VehicleModel.computeCarStepKinModel(realCarStateVector, res, dt)
+    realCarStateVector = VehicleModel.computeCarStepDynModel(realCarStateVector, res, dt)
 
     stateVector = VehicleModel.createNewStateVector(res, realCarStateVector, dt, N)
     update_start_point_from_pose(mpc_struct, realCarStateVector)
@@ -342,20 +345,13 @@ while isopen(window)
 
     #timer
     steps = steps + 1
-    print("\nspeed:", realCarStateVector.x_d)
-    if abs(realCarStateVector.x_d) > 100/3.6
-        x_dist = realCarStateVector.x
+    throttle_control = vcat(throttle_control, res[7])
+    if realCarStateVector.x > 75
+        speed = realCarStateVector.x_d
         break
     end
     #if abs(realCarStateVector.x) < trackWidth/2 && abs(realCarStateVector.y) < 0.4 && lapTimeActive
-    if(steps > 50 && RaceCourse.computeDistToTrackStartX(itpTrack, itpLeftBound, realCarStateVector) < trackWidth/2.0)
-        if(RaceCourse.computeDistToTrackStartY(realCarStateVector) < 2 && realCarStateVector.y > 0.0)
-            println("\nlap_time_steps:", steps * dt)
-            restart(clock)
-            steps = 0
-            lapTimeActive = false
-        end
-    end
+
     #add position to carPathBuffer
     push!(carPathBuffer, VehicleModel.CarState(stateVector[1], stateVector[2], stateVector[3], stateVector[4], stateVector[5], stateVector[6], stateVector[7], stateVector[8]))
 
@@ -376,7 +372,9 @@ while isopen(window)
     clear(window, SFML.white)
 end
 
-print("\ndist sim: ", x_dist)
+#max speed after 75m of acceleration are about 118km/h and 4.5s
+print("\throttle_control", throttle_control)
+print("\nspeed sim: ", speed)
 print("\ntime sim: ", dt*steps)
-print("\ndist real :", 75)
+print("\nspeed real :", 32.7)
 print("\ntime real :", 4.3)

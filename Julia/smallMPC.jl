@@ -22,8 +22,8 @@ function init_MPC(mpc_struct, N_, dt, startPose, printLevel, max_speed)
      ubx = []
      start = []
      trackWidth = 4
-     lbx_ = [-Inf, -Inf, VehicleModel.min_speed, -Inf, -Inf, -Inf,  -VehicleModel.max_long_dec, -VehicleModel.max_steering_angle]
-     ubx_ = [ Inf,  Inf, max_speed,               Inf,  Inf,  Inf,   VehicleModel.max_long_acc,  VehicleModel.max_steering_angle]
+     lbx_ = [-Inf, -Inf, VehicleModel.min_speed, -Inf, -Inf, -Inf,  -VehicleModel.min_throttle, -VehicleModel.max_steering_angle]
+     ubx_ = [ Inf,  Inf, max_speed,               Inf,  Inf,  Inf,   VehicleModel.max_throttle,  VehicleModel.max_steering_angle]
      start_=[startPose.x, startPose.y, startPose.x_d, startPose.psi, startPose.y_d, startPose.psi_d, 0, 0]
      for i in 0:N
           lbx = vcat(lbx, lbx_) #add lower bounds to vector

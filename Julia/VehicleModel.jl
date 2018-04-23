@@ -24,8 +24,10 @@ F_long_max = 3000   # 3000N for car
 #values to limit car_parameters for mpc
 min_speed = 0.001
 max_speed = 120/3.6 # 120km/h /3.6 = m/s
-max_long_acc = 10   #m/s**2 longitudinal acceleration max
+max_long_acc = 7.2   #m/s**2 longitudinal acceleration max
+max_throttle = 10   #used for the mpc
 max_long_dec = 10   #m/s**2 longitudinal deceleration max
+min_throttle = 10   #used for the mpc minus is added in the mpc
 max_lat_acc = 20  # 2g lateral acceleration
 max_steering_angle = (30.0/180.0)*pi #
 
@@ -77,7 +79,7 @@ function createNewStateVector(sV, realCarStateVector, dt, N) # sV für stateVect
     carPose = CarPose(sV[end-7], sV[end-6], sV[end-5], sV[end-4], sV[end-3], sV[end-2])
     carControl = CarControls(sV[end-1], sV[end])
 
-    carPose = linear_bycicle_model(carPose, carControl, dt)
+    carPose = kin_bycicle_model(carPose, carControl, dt)
 
     sV = circshift(sV, -8)
     sV[end-2] = carPose.psi_d
@@ -90,20 +92,20 @@ function createNewStateVector(sV, realCarStateVector, dt, N) # sV für stateVect
     return sV
 end
 
-function computeCarStepNonLinear(carPose, res,  dt)
+function computeCarStepDynModel(carPose, res,  dt)
         carControls = CarControls(res[7], res[8])
-        cP = non_linear_model_enhanced_long_cmplx(carPose, carControls, dt)
+        cP = dyn_model_enhanced_long(carPose, carControls, dt)
     return cP
 end
 
-function computeCarStepLinearModel(carPose, res,  dt)
+function computeCarStepKinModel(carPose, res,  dt)
         carControls = CarControls(res[7], res[8])
-        cP = linear_bycicle_model(carPose, carControls, dt)
+        cP = kin_bycicle_model(carPose, carControls, dt)
     return cP
 end
 
 
-function linear_bycicle_model(carPose, carControl, dt)
+function kin_bycicle_model(carPose, carControl, dt)
     beta = atan((lr/(lf + lr)) * tan(carControl.phi))
     max_beta =  atan(1.0/2 * (lf + lr) * max_lat_acc / carPose.x_d^2)
     if (beta >= 0)
@@ -111,7 +113,12 @@ function linear_bycicle_model(carPose, carControl, dt)
     else
         beta = - min(-beta, max_beta)
     end
-    Fbx = VehicleModel.F_long_max * carControl.throttle/10.0
+    #Fbx = VehicleModel.F_long_max * carControl.throttle/10.0
+    if(carControl.throttle > 0)
+        Fbx = max_long_acc * mass * carControl.throttle/10.0
+    else
+        Fbx = max_long_dec * mass * carControl.throttle/10.0
+    end
     x = carPose.x + carPose.x_d * dt * cos(carPose.psi + beta)
     y = carPose.y + carPose.x_d * dt * sin(carPose.psi + beta)
     psi = carPose.psi + (carPose.x_d * dt/lr) * sin(beta)
@@ -126,7 +133,7 @@ function linear_bycicle_model(carPose, carControl, dt)
 end
 
 
-function non_linear_model_base(carPose, carControl, dt)
+function dyn_model_base(carPose, carControl, dt)
     slip_angle_f = carControl.phi- atan((carPose.y_d + lf * carPose.psi_d)/ carPose.x_d)
     slip_angle_b =               - atan((carPose.y_d - lf * carPose.psi_d)/ carPose.x_d)
 
@@ -152,7 +159,7 @@ function non_linear_model_base(carPose, carControl, dt)
 end
 
 #this model incorporates aerodynamic drag and friction*
-function non_linear_model_enhanced_long(carPose, carControl, dt)
+function dyn_model_enhanced_long(carPose, carControl, dt)
     slip_angle_f = carControl.phi- atan((carPose.y_d + lf * carPose.psi_d)/ carPose.x_d)
     slip_angle_b =    - atan((carPose.y_d - lf * carPose.psi_d)/ carPose.x_d)
 
@@ -189,7 +196,7 @@ end
 
 #this model enhances the standard "enhanced_long" model by incorporating the power in kw of the vehicle
 #slowing the acceleration capability of the car with increasing speed
-function non_linear_model_enhanced_long_cmplx(carPose, carControl, dt)
+function dyn_model_enhanced_long_cmplx(carPose, carControl, dt)
     slip_angle_f = carControl.phi- atan((carPose.y_d + lf * carPose.psi_d)/ carPose.x_d)
     slip_angle_b =    - atan((carPose.y_d - lf * carPose.psi_d)/ carPose.x_d)
 
@@ -226,14 +233,14 @@ function non_linear_model_enhanced_long_cmplx(carPose, carControl, dt)
         xd_new = 0.1
     end
     if(xd_new >= max_speed)
-        xd_new = max_speed -0.001
+        xd_new = max_speed - 0.001
     end
     carPoseNew = CarPose(x_new, y_new, xd_new, psi_new, yd_new, psid_new)
     return carPoseNew
 end
 
 
-function non_linear_model_enhanced_lat(carPose, carControl, dt)
+function dyn_model_enhanced_lat(carPose, carControl, dt)
     slip_angle_f = carControl.phi- atan((carPose.y_d + lf * carPose.psi_d)/ carPose.x_d)
     slip_angle_b =               - atan((carPose.y_d - lf * carPose.psi_d)/ carPose.x_d)
 
@@ -259,7 +266,7 @@ function non_linear_model_enhanced_lat(carPose, carControl, dt)
     return carPoseNew
 end
 
-function non_linear_model_enhanced_lat_cmplx(carPose, carControl, dt)
+function dyn_model_enhanced_lat_cmplx(carPose, carControl, dt)
     slip_angle_f = carControl.phi- atan((carPose.y_d + lf * carPose.psi_d)/ carPose.x_d)
     slip_angle_b =    - atan((carPose.y_d - lf * carPose.psi_d)/ carPose.x_d)
 

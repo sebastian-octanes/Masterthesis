@@ -248,8 +248,8 @@ function initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel,
     mpc_struct = define_constraint_max_search_dist(mpc_struct, trackPoints)
     #mpc_struct = define_objective(mpc_struct)
     #mpc_struct = define_objective_middle(mpc_struct)
-    #mpc_struct = define_objective_minimize_dist(mpc_struct)
-    mpc_struct = define_objective_minimize_dist_soft_const(mpc_struct,1, 3)
+    mpc_struct = define_objective_minimize_dist(mpc_struct)
+    #mpc_struct = define_objective_minimize_dist_soft_const(mpc_struct,1, 3)
     #mpc_struct = define_objective_minimize_dist_soft_const_ext(mpc_struct)
 
     return mpc_struct
@@ -272,17 +272,17 @@ keys = KeyControls(0,0,0,0,0)
 carPose = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
 
 #define which racecourse should be used
-#itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(15, 4, 15, 0)
+itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(5, 4, 5, 0)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack2(trackWidth)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack3(trackWidth)
-itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack4(trackWidth)
+#itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack4(trackWidth)
 
 n = 10
 event = Event()
 window = RenderWindow("test", windowSizeX, windowSizeY)
 printLevel = 0
 dt = 0.05
-N = 20
+N = 5
 spline_pos =[]
 avg_deviation =[]
 max_speed = 15
@@ -290,7 +290,9 @@ max_speed = 15
 start_ = 0.01
 end_ = 0.21
 steps_ = 5
-
+# fahre so schnell wie es geht und dann eine laut reglement minimale U-turn
+# untersuche wie schnell man fahren kann ohne raus zu fahren und wie groß die differenz ist
+# zu der annahme dass das fahrzeug innerhalb des horizontes stehen bleiben können muss
 lin = linspace(start_, end_, steps_)
 lin = [ 0.03, 0.04, 0.06, 0.08, 0.09, 0.1]
 for i in lin
@@ -305,7 +307,7 @@ for i in lin
     RaceTrackLeftSprite, RaceTrackRightSprite = createRaceCourse2(scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, itpTrack, itpLeftBound, itpRightBound, window)
 
     #set_framerate_limit(window, convert(Int64, 1 / dt))
-    set_framerate_limit(window, 20)
+    set_framerate_limit(window, 60)
 
     clock = Clock()
     #lapTimeActive needed for timer
@@ -330,7 +332,7 @@ for i in lin
         res = mapKeyToCarControl(keys, res, N)
 
         #predict last point and compute next state with vehicle model
-        realCarStateVector = VehicleModel.computeCarStepLinearModel(realCarStateVector, res, dt)
+        realCarStateVector = VehicleModel.computeCarStepKinModel(realCarStateVector, res, dt)
         trackVehicleControls = vcat(trackVehicleControls, res[7], res[8])
         realCarStateVectorWithNoise = VehicleModel.CarPose(realCarStateVector.x + rand(Normal(0, i)), realCarStateVector.y + rand(Normal(0, i)), realCarStateVector.x_d, realCarStateVector.psi, realCarStateVector.y_d, realCarStateVector.psi_d)
 

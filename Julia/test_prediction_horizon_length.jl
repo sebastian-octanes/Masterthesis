@@ -1,4 +1,5 @@
 using SFML
+using PyPlot
 include("RaceCourse.jl")
 include("VehicleModel.jl")
 include("MPC.jl")
@@ -216,24 +217,6 @@ end
 
 
 function mapKeyToCarControl(keys, res, N)
-#=
-    if keys.up == 1
-         res[ 7] = 10
-    elseif keys.down == 1
-        res[ 7] = -10
-    else
-        res[7] = 0
-    end
-
-    if keys.right == 1
-         res[ 8] = -VehicleModel.max_steering_angle
-    elseif keys.left == 1
-         res[ 8] = VehicleModel.max_steering_angle
-    else
-        res[8] = 0
-    end
-=#
-
     if keys.reset == 1
         for i in 1:N
             res[8*i + 1] = 0; res[8*i + 2] = 0; res[8*i + 3] = 0.01; res[8*i + 4] = pi/2
@@ -244,7 +227,8 @@ function mapKeyToCarControl(keys, res, N)
 end
 
 
-function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed)
+function initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed)
+    startPose = VehicleModel.CarPose(0,0,0.1,0, 0, 0)
     stateVector = []
     start_=[startPose.x, startPose.y, startPose.x_d, startPose.psi, 0, 0, 0, 0]
     for i in 0:N
@@ -253,19 +237,17 @@ function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, 
     evalPoints = RaceCourse.getSplinePositions(itpTrack, stateVector, N)
     trackPoints = RaceCourse.getTrackPoints(itpTrack, itpLeftBound, itpRightBound, evalPoints, N)
     forwardPoint = RaceCourse.getForwardTrackPoint(itpTrack, evalPoints, N)
-    print("last TrackPoint", trackPoints)
-    print("\nforwardPoint", forwardPoint)
+
     mpc_struct = MPCStruct(N, 0, 0, 0, 0, 0)
     mpc_struct = init_MPC(mpc_struct, N, dt, startPose, printLevel, max_speed)
     #mpc_struct = define_constraint_nonlinear_bycicle(mpc_struct)
     mpc_struct = define_constraint_linear_bycicle(mpc_struct)
     mpc_struct = define_constraint_start_pose(mpc_struct, startPose)
     mpc_struct = define_constraint_tangents(mpc_struct, trackPoints)
-    #mpc_struct = define_constraint_max_search_dist(mpc_struct, trackPoints)
+    mpc_struct = define_constraint_max_search_dist(mpc_struct, trackPoints)
     mpc_struct = define_objective(mpc_struct)
     #mpc_struct = define_objective_middle(mpc_struct)
     #mpc_struct = define_objective_minimize_dist(mpc_struct)
-    #mpc_struct = define_objective_minimize_dist_soft_const(mpc_struct,2, 1)
     mpc_struct = update_track_forward_point(mpc_struct, forwardPoint)
 
     return mpc_struct
@@ -285,97 +267,119 @@ radius = 15
 trackWidth = 4
 
 keys = KeyControls(0,0,0,0,0)
-startPose = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
+carPose = VehicleModel.CarPose(0,0,0.1,0, 0, 0)
 
 #define which racecourse should be used
-itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(15.25, 3, 16, 0)
+#itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(15, 4, 15, 0)
+#itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack2(trackWidth)
+#itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack3(trackWidth)
+itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrackUTurn(trackWidth)
 
-N = 10
-printLevel = 0
-dt = 0.05
-max_speed = 100
-mpc_struct = initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed)
+
 event = Event()
 window = RenderWindow("test", windowSizeX, windowSizeY)
-#create CircularBuffer for tracking Vehicle Path
-carPathBuffer = CircularBuffer{VehicleModel.CarState}(400)
+dt = 0.05
+max_speed = 30
+spline_pos = []
 
-#create Sprites
-RaceTrackLeftSprite, RaceTrackRightSprite = createRaceCourse2(scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, itpTrack, itpLeftBound, itpRightBound, window)
+start_ = 65
+end_ = 10
+steps_ = 12
 
-#set_framerate_limit(window, convert(Int64, 1 / dt))
-set_framerate_limit(window, 20)
+lin = linspace(start_, end_, steps_)
+for i in lin
+    N = convert(UInt16, i)
+    printLevel = 0
+    mpc_struct = initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel,max_speed)
 
-clock = Clock()
-#lapTimeActive needed for timer
-lapTimeActive = false
-steps = 0
-circle_time = 0
-circleCount = 0
-realCarStateVector = VehicleModel.CarPose(0,0,0.01,pi/2,0,0)
-while isopen(window)
-    #dt = get_elapsed_time(clock)
-    restart(clock)
-    while pollevent(window, event)
-        if get_type(event) == EventType.CLOSED
-            close(window)
+        #create CircularBuffer for tracking Vehicle Path
+    carPathBuffer = CircularBuffer{VehicleModel.CarState}(400)
+
+    #create Sprites
+    RaceTrackLeftSprite, RaceTrackRightSprite = createRaceCourse2(scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, itpTrack, itpLeftBound, itpRightBound, window)
+
+    set_framerate_limit(window, convert(Int64, 1 / dt))
+    #set_framerate_limit(window, 2)
+
+    clock = Clock()
+    #lapTimeActive needed for timer
+    lapTimeActive = false
+    steps = 0
+    realCarStateVector = VehicleModel.CarPose(0,0,0.01,0,0,0)
+    trackVehicleControls = []
+
+    steps = 0
+
+    while isopen(window)
+        #dt = get_elapsed_time(clock)
+        restart(clock)
+        while pollevent(window, event)
+            if get_type(event) == EventType.CLOSED
+                close(window)
+            end
         end
-    end
-    keys = checkkeys()
+        keys = checkkeys()
+        res, status =  solve_MPC(mpc_struct)
 
-    res, status = solve_MPC(mpc_struct)
-    res = mapKeyToCarControl(keys, res, N)
+        res = mapKeyToCarControl(keys, res, N)
 
-    realCarStateVector = VehicleModel.computeCarStepKinModel(realCarStateVector, res, dt)
-    #realCarStateVector = VehicleModel.computeCarStepNonLinear(realCarStateVector, res, dt)
+        #predict last point and compute next state with vehicle model
+        realCarStateVector = VehicleModel.computeCarStepKinModel(realCarStateVector, res, dt)
+        trackVehicleControls = vcat(trackVehicleControls, res[7], res[8])
+        stateVector = VehicleModel.createNewStateVector(res, realCarStateVector, dt, N)
+        update_start_point_from_pose(mpc_struct, realCarStateVector)
+        evalPoints = RaceCourse.getSplinePositions(itpTrack, stateVector, N)
+        trackPoints = RaceCourse.getTrackPoints(itpTrack, itpLeftBound, itpRightBound, evalPoints, N)
+        forwardPoint = RaceCourse.getForwardTrackPoint(itpTrack, evalPoints, N)
+        update_track_forward_point(mpc_struct, forwardPoint)
+        update_track_points(mpc_struct, trackPoints)
 
-    stateVector = VehicleModel.createNewStateVector(res, realCarStateVector, dt, N)
-    update_start_point_from_pose(mpc_struct, realCarStateVector)
-    evalPoints = RaceCourse.getSplinePositions(itpTrack, stateVector, N)
-    trackPoints = RaceCourse.getTrackPoints(itpTrack, itpLeftBound, itpRightBound, evalPoints, N)
-    forwardPoint = RaceCourse.getForwardTrackPoint(itpTrack, evalPoints, N)
-    update_track_forward_point(mpc_struct, forwardPoint)
-    update_track_points(mpc_struct, trackPoints)
+        carPose = VehicleModel.CarPose(stateVector[1], stateVector[2], stateVector[3], stateVector[4], stateVector[5], stateVector[6])
+        #timer
+        steps = steps + 1
 
-    #timer
-    steps = steps + 1
-    if abs(realCarStateVector.x) > 5
-        lapTimeActive = true
-    end
-    #if abs(realCarStateVector.x) < trackWidth/2 && abs(realCarStateVector.y) < 0.4 && lapTimeActive
-    if(steps > 50 && RaceCourse.computeDistToTrackStartX(itpTrack, itpLeftBound, realCarStateVector) < trackWidth/2.0)
-        if(RaceCourse.computeDistToTrackStartY(realCarStateVector) < 2 && realCarStateVector.y > 0.0)
-            println("\nlap_time_steps:", steps * dt)
-            restart(clock)
-            circleCount = circleCount + 1
-            circle_time = steps*dt
-            steps = 0
-            lapTimeActive = false
+        dist = abs(RaceCourse.computeDistToTrackBoarder(itpTrack, itpLeftBound, realCarStateVector))
+        if(dist > trackWidth/2.0)
+            print("hit barier")
+            spline_pos = vcat(spline_pos, 0)
+            break
         end
-    end
-    if circleCount > 1
-        break
+
+        if(steps >= 200)
+            spline_pos = vcat(spline_pos, evalPoints[1])
+            break
+        end
+        #add position to carPathBuffer
+        push!(carPathBuffer, VehicleModel.CarState(stateVector[1], stateVector[2], stateVector[3], stateVector[4], stateVector[5], stateVector[6], stateVector[7], stateVector[8]))
+
+        #draw car and raceCource
+        carSprite = createcarsprite(scaleX, scaleY)
+        setpositioncar(carSprite, carPose, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY)
+        drawRaceCourse2(window, RaceTrackLeftSprite, RaceTrackRightSprite)
+        # draw tangents for future points
+        createTangent(stateVector, itpTrack, itpLeftBound, itpRightBound, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window)
+        #draw carPathBuffer
+        createCarPathPoint(carPathBuffer, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window)
+        #draw predicted movement of car
+        createPredictionPoints(stateVector, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window, N)
+        draw(window, carSprite)
+        #draw car info
+        displayCarData(res, window)
+        display(window)
+        clear(window, SFML.white)
     end
 
-    #add position to carPathBuffer
-    push!(carPathBuffer, VehicleModel.CarState(stateVector[1], stateVector[2], stateVector[3], stateVector[4], stateVector[5], stateVector[6], stateVector[7], stateVector[8]))
-
-    #draw car and raceCource
-    carSprite = createcarsprite(scaleX, scaleY)
-    setpositioncar(carSprite, realCarStateVector, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY)
-    drawRaceCourse2(window, RaceTrackLeftSprite, RaceTrackRightSprite)
-    # draw tangents for future points
-    createTangent(stateVector, itpTrack, itpLeftBound, itpRightBound, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window)
-    #draw carPathBuffer
-    createCarPathPoint(carPathBuffer, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window)
-    #draw predicted movement of car
-    createPredictionPoints(stateVector, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window, N)
-    draw(window, carSprite)
-    #draw car info
-    displayCarData(res, window)
-    display(window)
-    clear(window, SFML.white)
 end
 
-print("\ncircle time sim: ", circle_time)
-print("\ncircle time real: ", 7.15)
+print("spline_pos", spline_pos)
+
+#x = linspace(10, 10 + t -1, t)
+areas = 10*ones(lin)
+scatter(lin,spline_pos,s=areas,alpha=1.0)
+grid()
+xlabel("Prediction Steps")
+ylabel("Distance Traveled")
+title("Distance Traveled Depending for Different Length of Prediction Horizon")
+ax = gca()
+
+#print("average :  $(average_time/steps)")

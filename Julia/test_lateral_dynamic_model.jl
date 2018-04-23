@@ -288,12 +288,12 @@ keys = KeyControls(0,0,0,0,0)
 startPose = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
 
 #define which racecourse should be used
-itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(15.25, 3, 16, 0)
+itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(15.25, 3, 15.25, 0)
 
-N = 10
+N = 20
 printLevel = 0
 dt = 0.05
-max_speed = 100
+max_speed = 30
 mpc_struct = initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed)
 event = Event()
 window = RenderWindow("test", windowSizeX, windowSizeY)
@@ -326,8 +326,8 @@ while isopen(window)
     res, status = solve_MPC(mpc_struct)
     res = mapKeyToCarControl(keys, res, N)
 
-    realCarStateVector = VehicleModel.computeCarStepKinModel(realCarStateVector, res, dt)
-    #realCarStateVector = VehicleModel.computeCarStepNonLinear(realCarStateVector, res, dt)
+    #realCarStateVector = VehicleModel.computeCarStepKinModel(realCarStateVector, res, dt)
+    realCarStateVector = VehicleModel.computeCarStepDynModel(realCarStateVector, res, dt)
 
     stateVector = VehicleModel.createNewStateVector(res, realCarStateVector, dt, N)
     update_start_point_from_pose(mpc_struct, realCarStateVector)
@@ -344,7 +344,7 @@ while isopen(window)
     end
     #if abs(realCarStateVector.x) < trackWidth/2 && abs(realCarStateVector.y) < 0.4 && lapTimeActive
     if(steps > 50 && RaceCourse.computeDistToTrackStartX(itpTrack, itpLeftBound, realCarStateVector) < trackWidth/2.0)
-        if(RaceCourse.computeDistToTrackStartY(realCarStateVector) < 2 && realCarStateVector.y > 0.0)
+        if(RaceCourse.computeDistToTrackStartY(realCarStateVector) < 3 && realCarStateVector.y > 0.0)
             println("\nlap_time_steps:", steps * dt)
             restart(clock)
             circleCount = circleCount + 1
@@ -377,5 +377,6 @@ while isopen(window)
     clear(window, SFML.white)
 end
 
+print("\n fastest circle time in real: ", 5.7)
 print("\ncircle time sim: ", circle_time)
 print("\ncircle time real: ", 7.15)

@@ -8,12 +8,12 @@ using Distributions
 #print_mpc(mpc_struct)
 #solve_mpc(mpc_struct)
 
-start_ = 0.01
-end_ = 0.21
-steps_ = 5
+start_ = 65
+end_ = 10
+steps_ = 12
 spline_pos =[]
-#lin = linspace(start_,end_,steps_)
-lin = linspace(-1, 1, 101)
+lin = linspace(start_,end_,steps_)
+#lin = linspace(-1, 1, 101)
 #lin = [0.05, 0.01, 0.05, 0.06]
 print(lin)
 for i in lin

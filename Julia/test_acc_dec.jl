@@ -18,9 +18,9 @@ include("smallMPC.jl")
 
 #create manual input
 #res vector for maximal acceleration
-n1, n2, n3 = 40, 30, 30
+n1, n2, n3 = 150, 65, 0
 tmp =  [10,0]
-tmp2 = [0,VehicleModel.max_steering_angle]
+tmp2 = [-10,0]
 tmp3 = [0,-VehicleModel.max_steering_angle]
 controlVectorThrottle = []
 controlVectorSteer = []
@@ -48,29 +48,24 @@ stateVectorKin= VehicleModel.CarPose(0,0,0.1,0, 0, 0)
 stateVectorNonLinear_Base = VehicleModel.CarPose(0,0,0.1,0, 0, 0)
 stateVectorNonLinear_Enhanced_Lat = VehicleModel.CarPose(0,0,0.1,0, 0, 0)
 stateVectorNonLinear_Enhanced_Lat_Cmplx = VehicleModel.CarPose(0,0,0.1,0, 0, 0)
+stateVectorNonLinear_Enhanced_Long_Cmplx = VehicleModel.CarPose(0,0,0.1,0, 0, 0)
 
 
 kin_psi = []
 dyn_base_psi = []
 dyn_lat_psi = []
 dyn_lat_cplx_psi = []
+dyn_long_cplx_speed = []
 max_speed = []
 
 for i in 1:max_steps
     carControl = VehicleModel.CarControls(controlVectorThrottle[i], controlVectorSteer[i])
 
     stateVectorKin =  VehicleModel.kin_bycicle_model(stateVectorKin, carControl, dt)
-    kin_psi = vcat(kin_psi, stateVectorKin.psi)
     max_speed = vcat(max_speed, stateVectorKin.x_d)
 
-    stateVectorNonLinear_Base =  VehicleModel.dyn_model_base(stateVectorNonLinear_Base, carControl, dt)
-    dyn_base_psi = vcat(dyn_base_psi, stateVectorNonLinear_Base.psi)
-
-    stateVectorNonLinear_Enhanced_Lat =  VehicleModel.dyn_model_enhanced_lat(stateVectorNonLinear_Enhanced_Lat, carControl, dt)
-    dyn_lat_psi = vcat(dyn_lat_psi, stateVectorNonLinear_Enhanced_Lat.psi)
-
-    stateVectorNonLinear_Enhanced_Lat_Cmplx =  VehicleModel.dyn_model_enhanced_lat_cmplx(stateVectorNonLinear_Enhanced_Lat_Cmplx, carControl, dt)
-    dyn_lat_cplx_psi = vcat(dyn_lat_cplx_psi, stateVectorNonLinear_Enhanced_Lat_Cmplx.psi)
+    stateVectorNonLinear_Enhanced_Long_Cmplx =  VehicleModel.dyn_model_enhanced_long_cmplx(stateVectorNonLinear_Enhanced_Long_Cmplx, carControl, dt)
+    dyn_long_cplx_speed = vcat(dyn_long_cplx_speed, stateVectorNonLinear_Enhanced_Long_Cmplx.x_d)
 
 end
 
@@ -82,19 +77,17 @@ lin = linspace(1, max_steps, max_steps)
 
 areas = 5*ones(lin)
 subplot(211)
-scatter(lin,controlVectorSteer,s=areas,alpha=1.0)
+scatter(lin,controlVectorThrottle,s=areas,alpha=1.0)
 grid()
 xlabel("Time Steps")
-ylabel("Steering Wheel")
+ylabel("Throttle Input")
 title("Driver Input")
 ax = gca()
 subplot(212)
 xlabel("Time Steps")
-ylabel("Psi in rad")
+ylabel("Speed in m/s")
 title("Orientation of Car")
-scatter(lin,kin_psi,s=areas,alpha=1.0)
-scatter(lin,dyn_base_psi,s=areas,alpha=1.0)
-scatter(lin,dyn_lat_psi,s=areas,alpha=1.0)
-scatter(lin,dyn_lat_cplx_psi,s=areas,alpha=1.0)
+scatter(lin,dyn_long_cplx_speed,s=areas,alpha=1.0)
+scatter(lin,max_speed,s=areas,alpha=1.0)
 
 grid()
