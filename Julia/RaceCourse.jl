@@ -258,17 +258,53 @@ function buildRaceTrackUTurn(trackWidth)
     track = zeros(Float64,1,2)
     leftBound = zeros(Float64,1,2)
     rightBound = zeros(Float64,1,2)
-    leftBound[1,2] = + trackWidth/2
-    rightBound[1,2] = - trackWidth/2
+    track[1,1] = -20
+    leftBound[1,1] = - trackWidth/2 -20
+    rightBound[1,1] = + trackWidth/2 -20
 
-
-    track, leftBound, rightBound = RaceCourse.addStraight(1, 60, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addStraight(0, 10, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addRightTurn(0, 9, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addStraight(1, 80, trackWidth, track, leftBound, rightBound)
     track, leftBound, rightBound = RaceCourse.addRightTurn(1, 9, trackWidth, track, leftBound, rightBound)
     track, leftBound, rightBound = RaceCourse.addRightTurn(2, 9, trackWidth, track, leftBound, rightBound)
-    track, leftBound, rightBound = RaceCourse.addStraight(3, 100, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addStraight(3, 62, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addLeftTurn(1, 9, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addRightTurn(2, 9, trackWidth, track, leftBound, rightBound)
     track, leftBound, rightBound = RaceCourse.addRightTurn(3, 9, trackWidth, track, leftBound, rightBound)
-    track, leftBound, rightBound = RaceCourse.addRightTurn(4, 9, trackWidth, track, leftBound, rightBound)
 
+    x = length(track)/2
+    step = 1/x
+    t = 0:step:(1- step)
+
+    itpTrack = scale(interpolate(track, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
+    itpLeftBound = scale(interpolate(leftBound, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
+    itpRightBound = scale(interpolate(rightBound, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
+    return itpTrack, itpLeftBound, itpRightBound
+end
+
+function buildRaceTrackUUTurn(trackWidth)
+
+    track = zeros(Float64,1,2)
+    leftBound = zeros(Float64,1,2)
+    rightBound = zeros(Float64,1,2)
+    track[1,1] = -20
+    leftBound[1,1] = - trackWidth/2 -20
+    rightBound[1,1] = + trackWidth/2 -20
+
+    track, leftBound, rightBound = RaceCourse.addStraight(0, 10, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addRightTurn(0, 9, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addStraight(1, 80, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addRightTurn(1, 9, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addRightTurn(2, 9, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addLeftTurn(1, 9, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addLeftTurn(2, 9, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addRightTurn(1, 9, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addRightTurn(2, 9, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addStraight(3, 62, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addLeftTurn(1, 9, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addRightTurn(2, 9, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addRightTurn(3, 9, trackWidth, track, leftBound, rightBound)
+    track, leftBound, rightBound = RaceCourse.addStraight(0, 36, trackWidth, track, leftBound, rightBound)
 
     x = length(track)/2
     step = 1/x
@@ -332,47 +368,48 @@ function addRightTurn(direction, radius, trackWidth, track, leftBound, rightBoun
     radius_plus = radius + trackWidth/2.0
     last_pointX = track[end,1]
     last_pointY = track[end,2]
-    newPoints = Array{Float64}(4,2)
-    newPointsLeft = Array{Float64}(4,2)
-    newPointsRight = Array{Float64}(4,2)
+    points = 4
+    newPoints = Array{Float64}(points,2)
+    newPointsLeft = Array{Float64}(points,2)
+    newPointsRight = Array{Float64}(points,2)
     if direction == 0
-        for i in 1:4
-            newPoints[i, 1] = last_pointX + radius - radius*cos(i * pi/8)
-            newPoints[i, 2] = last_pointY + radius*sin(i * pi/8)
-            newPointsLeft[i, 1] = last_pointX + radius - radius_plus * cos(i * pi/8)
-            newPointsLeft[i, 2] = last_pointY + radius_plus*sin(i * pi/8)
-            newPointsRight[i, 1] = last_pointX + radius - radius_minus *cos(i * pi/8)
-            newPointsRight[i, 2] = last_pointY + radius_minus*sin(i * pi/8)
+        for i in 1:points
+            newPoints[i, 1] = last_pointX + radius - radius*cos(i * pi/(2*points))
+            newPoints[i, 2] = last_pointY + radius*sin(i * pi/(2*points))
+            newPointsLeft[i, 1] = last_pointX + radius - radius_plus * cos(i * pi/(2*points))
+            newPointsLeft[i, 2] = last_pointY + radius_plus*sin(i * pi/(2*points))
+            newPointsRight[i, 1] = last_pointX + radius - radius_minus *cos(i * pi/(2*points))
+            newPointsRight[i, 2] = last_pointY + radius_minus*sin(i * pi/(2*points))
         end
     end
     if direction == 1
-        for i in 1:4
-            newPoints[i, 1] = last_pointX + radius*sin(i * pi/8)
-            newPoints[i, 2] = last_pointY -radius + radius*cos(i * pi/8)
-            newPointsLeft[i, 1] = last_pointX +  radius_plus * sin(i * pi/8)
-            newPointsLeft[i, 2] = last_pointY -radius + radius_plus*cos(i * pi/8)
-            newPointsRight[i, 1] = last_pointX + radius_minus *sin(i * pi/8)
-            newPointsRight[i, 2] = last_pointY -radius + radius_minus*cos(i * pi/8)
+        for i in 1:points
+            newPoints[i, 1] = last_pointX + radius*sin(i * pi/(2*points))
+            newPoints[i, 2] = last_pointY -radius + radius*cos(i * pi/(2*points))
+            newPointsLeft[i, 1] = last_pointX +  radius_plus * sin(i * pi/(2*points))
+            newPointsLeft[i, 2] = last_pointY -radius + radius_plus*cos(i * pi/(2*points))
+            newPointsRight[i, 1] = last_pointX + radius_minus *sin(i * pi/(2*points))
+            newPointsRight[i, 2] = last_pointY -radius + radius_minus*cos(i * pi/(2*points))
         end
     end
     if direction == 2
-        for i in 1:4
-            newPoints[i, 1] = last_pointX - radius + radius*cos(i * pi/8)
-            newPoints[i, 2] = last_pointY - radius*sin(i * pi/8)
-            newPointsLeft[i, 1] = last_pointX - radius + radius_plus * cos(i * pi/8)
-            newPointsLeft[i, 2] = last_pointY - radius_plus*sin(i * pi/8)
-            newPointsRight[i, 1] = last_pointX - radius + radius_minus *cos(i * pi/8)
-            newPointsRight[i, 2] = last_pointY - radius_minus*sin(i * pi/8)
+        for i in 1:points
+            newPoints[i, 1] = last_pointX - radius + radius*cos(i * pi/(2*points))
+            newPoints[i, 2] = last_pointY - radius*sin(i * pi/(2*points))
+            newPointsLeft[i, 1] = last_pointX - radius + radius_plus * cos(i * pi/(2*points))
+            newPointsLeft[i, 2] = last_pointY - radius_plus*sin(i * pi/(2*points))
+            newPointsRight[i, 1] = last_pointX - radius + radius_minus *cos(i * pi/(2*points))
+            newPointsRight[i, 2] = last_pointY - radius_minus*sin(i * pi/(2*points))
         end
     end
     if direction == 3
-        for i in 1:4
-            newPoints[i, 1] = last_pointX - radius*sin(i * pi/8)
-            newPoints[i, 2] = last_pointY + radius - radius*cos(i * pi/8)
-            newPointsLeft[i, 1] = last_pointX  - radius_plus * sin(i * pi/8)
-            newPointsLeft[i, 2] = last_pointY + radius - radius_plus*cos(i * pi/8)
-            newPointsRight[i, 1] = last_pointX - radius_minus *sin(i * pi/8)
-            newPointsRight[i, 2] = last_pointY + radius - radius_minus*cos(i * pi/8)
+        for i in 1:points
+            newPoints[i, 1] = last_pointX - radius*sin(i * pi/(2*points))
+            newPoints[i, 2] = last_pointY + radius - radius*cos(i * pi/(2*points))
+            newPointsLeft[i, 1] = last_pointX  - radius_plus * sin(i * pi/(2*points))
+            newPointsLeft[i, 2] = last_pointY + radius - radius_plus*cos(i * pi/(2*points))
+            newPointsRight[i, 1] = last_pointX - radius_minus *sin(i * pi/(2*points))
+            newPointsRight[i, 2] = last_pointY + radius - radius_minus*cos(i * pi/(2*points))
         end
     end
     track = vcat(track, newPoints)
@@ -386,47 +423,48 @@ function addLeftTurn(direction, radius, trackWidth, track, leftBound, rightBound
     radius_plus = radius + trackWidth/2.0
     last_pointX = track[end,1]
     last_pointY = track[end,2]
-    newPoints = Array{Float64}(4,2)
-    newPointsLeft = Array{Float64}(4,2)
-    newPointsRight = Array{Float64}(4,2)
+    points = 4
+    newPoints = Array{Float64}(points,2)
+    newPointsLeft = Array{Float64}(points,2)
+    newPointsRight = Array{Float64}(points,2)
     if direction == 0
-        for i in 1:4
-            newPoints[i, 1] = last_pointX - radius + radius*cos(i * pi/8)
-            newPoints[i, 2] = last_pointY + radius*sin(i * pi/8)
-            newPointsRight[i, 1] = last_pointX - radius + radius_plus * cos(i * pi/8)
-            newPointsRight[i, 2] = last_pointY + radius_plus*sin(i * pi/8)
-            newPointsLeft[i, 1] = last_pointX - radius + radius_minus *cos(i * pi/8)
-            newPointsLeft[i, 2] = last_pointY + radius_minus*sin(i * pi/8)
+        for i in 1:points
+            newPoints[i, 1] = last_pointX - radius + radius*cos(i * pi/(2*points))
+            newPoints[i, 2] = last_pointY + radius*sin(i * pi/(2*points))
+            newPointsRight[i, 1] = last_pointX - radius + radius_plus * cos(i * pi/(2*points))
+            newPointsRight[i, 2] = last_pointY + radius_plus*sin(i * pi/(2*points))
+            newPointsLeft[i, 1] = last_pointX - radius + radius_minus *cos(i * pi/(2*points))
+            newPointsLeft[i, 2] = last_pointY + radius_minus*sin(i * pi/(2*points))
         end
     end
     if direction == 1
-        for i in 1:4
-            newPoints[i, 1] = last_pointX - radius*sin(i * pi/8)
-            newPoints[i, 2] = last_pointY -radius + radius*cos(i * pi/8)
-            newPointsRight[i, 1] = last_pointX -  radius_plus * sin(i * pi/8)
-            newPointsRight[i, 2] = last_pointY -radius + radius_plus*cos(i * pi/8)
-            newPointsLeft[i, 1] = last_pointX - radius_minus *sin(i * pi/8)
-            newPointsLeft[i, 2] = last_pointY -radius + radius_minus*cos(i * pi/8)
+        for i in 1:points
+            newPoints[i, 1] = last_pointX - radius*sin(i * pi/(2*points))
+            newPoints[i, 2] = last_pointY -radius + radius*cos(i * pi/(2*points))
+            newPointsRight[i, 1] = last_pointX -  radius_plus * sin(i * pi/(2*points))
+            newPointsRight[i, 2] = last_pointY -radius + radius_plus*cos(i * pi/(2*points))
+            newPointsLeft[i, 1] = last_pointX - radius_minus *sin(i * pi/(2*points))
+            newPointsLeft[i, 2] = last_pointY -radius + radius_minus*cos(i * pi/(2*points))
         end
     end
     if direction == 2
-        for i in 1:4
-            newPoints[i, 1] = last_pointX + radius - radius*cos(i * pi/8)
-            newPoints[i, 2] = last_pointY - radius*sin(i * pi/8)
-            newPointsRight[i, 1] = last_pointX + radius - radius_plus * cos(i * pi/8)
-            newPointsRight[i, 2] = last_pointY - radius_plus*sin(i * pi/8)
-            newPointsLeft[i, 1] = last_pointX + radius - radius_minus *cos(i * pi/8)
-            newPointsLeft[i, 2] = last_pointY - radius_minus*sin(i * pi/8)
+        for i in 1:points
+            newPoints[i, 1] = last_pointX + radius - radius*cos(i * pi/(2*points))
+            newPoints[i, 2] = last_pointY - radius*sin(i * pi/(2*points))
+            newPointsRight[i, 1] = last_pointX + radius - radius_plus * cos(i * pi/(2*points))
+            newPointsRight[i, 2] = last_pointY - radius_plus*sin(i * pi/(2*points))
+            newPointsLeft[i, 1] = last_pointX + radius - radius_minus *cos(i * pi/(2*points))
+            newPointsLeft[i, 2] = last_pointY - radius_minus*sin(i * pi/(2*points))
         end
     end
     if direction == 3
-        for i in 1:4
-            newPoints[i, 1] = last_pointX + radius*sin(i * pi/8)
-            newPoints[i, 2] = last_pointY + radius - radius*cos(i * pi/8)
-            newPointsRight[i, 1] = last_pointX  + radius_plus * sin(i * pi/8)
-            newPointsRight[i, 2] = last_pointY + radius - radius_plus*cos(i * pi/8)
-            newPointsLeft[i, 1] = last_pointX + radius_minus *sin(i * pi/8)
-            newPointsLeft[i, 2] = last_pointY + radius - radius_minus*cos(i * pi/8)
+        for i in 1:points
+            newPoints[i, 1] = last_pointX + radius*sin(i * pi/(2*points))
+            newPoints[i, 2] = last_pointY + radius - radius*cos(i * pi/(2*points))
+            newPointsRight[i, 1] = last_pointX  + radius_plus * sin(i * pi/(2*points))
+            newPointsRight[i, 2] = last_pointY + radius - radius_plus*cos(i * pi/(2*points))
+            newPointsLeft[i, 1] = last_pointX + radius_minus *sin(i * pi/(2*points))
+            newPointsLeft[i, 2] = last_pointY + radius - radius_minus*cos(i * pi/(2*points))
         end
     end
     track = vcat(track, newPoints)

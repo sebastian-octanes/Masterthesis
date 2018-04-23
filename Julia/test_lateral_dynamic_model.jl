@@ -244,7 +244,7 @@ function mapKeyToCarControl(keys, res, N)
 end
 
 
-function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed)
+function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed, track_width)
     stateVector = []
     start_=[startPose.x, startPose.y, startPose.x_d, startPose.psi, 0, 0, 0, 0]
     for i in 0:N
@@ -256,14 +256,14 @@ function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, 
     print("last TrackPoint", trackPoints)
     print("\nforwardPoint", forwardPoint)
     mpc_struct = MPCStruct(N, 0, 0, 0, 0, 0)
-    mpc_struct = init_MPC(mpc_struct, N, dt, startPose, printLevel, max_speed)
-    #mpc_struct = define_constraint_nonlinear_bycicle(mpc_struct)
-    mpc_struct = define_constraint_linear_bycicle(mpc_struct)
+    mpc_struct = init_MPC(mpc_struct, N, dt, startPose, printLevel, max_speed, track_width)
+    #mpc_struct = define_constraint_dyn_bycicle(mpc_struct)
+    mpc_struct = define_constraint_kin_bycicle(mpc_struct)
     mpc_struct = define_constraint_start_pose(mpc_struct, startPose)
     mpc_struct = define_constraint_tangents(mpc_struct, trackPoints)
     #mpc_struct = define_constraint_max_search_dist(mpc_struct, trackPoints)
-    mpc_struct = define_objective(mpc_struct)
-    #mpc_struct = define_objective_middle(mpc_struct)
+    #mpc_struct = define_objective(mpc_struct)
+    mpc_struct = define_objective_middle(mpc_struct)
     #mpc_struct = define_objective_minimize_dist(mpc_struct)
     #mpc_struct = define_objective_minimize_dist_soft_const(mpc_struct,2, 1)
     mpc_struct = update_track_forward_point(mpc_struct, forwardPoint)
@@ -282,7 +282,7 @@ positionOffsetMeterX = 20
 positionOffsetMeterY = 25
 
 radius = 15
-trackWidth = 4
+trackWidth = 3
 
 keys = KeyControls(0,0,0,0,0)
 startPose = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
@@ -290,11 +290,11 @@ startPose = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
 #define which racecourse should be used
 itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(15.25, 3, 15.25, 0)
 
-N = 20
+N = 16
 printLevel = 0
 dt = 0.05
-max_speed = 30
-mpc_struct = initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed)
+max_speed = 60
+mpc_struct = initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed, trackWidth)
 event = Event()
 window = RenderWindow("test", windowSizeX, windowSizeY)
 #create CircularBuffer for tracking Vehicle Path
@@ -377,6 +377,6 @@ while isopen(window)
     clear(window, SFML.white)
 end
 
-print("\n fastest circle time in real: ", 5.7)
+print("\nfastest circle time in real: ", 5.7)
 print("\ncircle time sim: ", circle_time)
 print("\ncircle time real: ", 7.15)

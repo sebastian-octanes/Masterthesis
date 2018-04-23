@@ -244,7 +244,7 @@ function mapKeyToCarControl(keys, res, N)
 end
 
 
-function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed)
+function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed, trackWidth)
     stateVector = []
     start_=[startPose.x, startPose.y, startPose.x_d, startPose.psi, 0, 0, 0, 0]
     for i in 0:N
@@ -256,9 +256,9 @@ function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, 
     print("last TrackPoint", trackPoints)
     print("\nforwardPoint", forwardPoint)
     mpc_struct = MPCStruct(N, 0, 0, 0, 0, 0)
-    mpc_struct = init_MPC(mpc_struct, N, dt, startPose, printLevel, max_speed)
+    mpc_struct = init_MPC(mpc_struct, N, dt, startPose, printLevel, max_speed, trackWidth)
     #mpc_struct = define_constraint_nonlinear_bycicle(mpc_struct)
-    mpc_struct = define_constraint_linear_bycicle(mpc_struct)
+    mpc_struct = define_constraint_kin_bycicle(mpc_struct)
     mpc_struct = define_constraint_start_pose(mpc_struct, startPose)
     mpc_struct = define_constraint_tangents(mpc_struct, trackPoints)
     #mpc_struct = define_constraint_max_search_dist(mpc_struct, trackPoints)
@@ -295,12 +295,14 @@ startPose = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrackCircle(trackWidth)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrackStraight(trackWidth)
 itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrackTub(trackWidth)
+#itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrackUUTurn(trackWidth)
 
-N = 20
+
+N = 40
 printLevel = 0
 dt = 0.05
-max_speed = 2
-mpc_struct = initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed)
+max_speed = 20
+mpc_struct = initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed, trackWidth)
 event = Event()
 window = RenderWindow("test", windowSizeX, windowSizeY)
 #create CircularBuffer for tracking Vehicle Path
@@ -337,8 +339,8 @@ while isopen(window)
     #stateVector = mapKeyToCarControl(keys, stateVector, N)
 
     #predict last point and compute next state with vehicle model
-    #realCarStateVector = VehicleModel.computeCarStepNonLinear(realCarStateVector, res, dt)
-    realCarStateVector = VehicleModel.computeCarStepKinModel(realCarStateVector, res, dt)
+    realCarStateVector = VehicleModel.computeCarStepDynModel(realCarStateVector, res, dt)
+    #realCarStateVector = VehicleModel.computeCarStepKinModel(realCarStateVector, res, dt)
     #print("\n\nres", res[1:8])
     #print("\nSteer Angle: $(res[8])   Throttle:  $(res[7])")
     print("\npsi: $(realCarStateVector.psi)    y_d:  $(realCarStateVector.y_d)   psi_d: $(realCarStateVector.psi_d)\n")

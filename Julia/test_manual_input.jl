@@ -18,7 +18,7 @@ include("smallMPC.jl")
 
 #create manual input
 #res vector for maximal acceleration
-n1, n2, n3 = 40, 30, 30
+n1, n2, n3 = 5, 30, 30
 tmp =  [10,0]
 tmp2 = [0,VehicleModel.max_steering_angle]
 tmp3 = [0,-VehicleModel.max_steering_angle]
@@ -44,10 +44,10 @@ max_steps = n1 + n2 + n3
 dt = 0.05
 
 
-stateVectorKin= VehicleModel.CarPose(0,0,0.1,0, 0, 0)
-stateVectorNonLinear_Base = VehicleModel.CarPose(0,0,0.1,0, 0, 0)
-stateVectorNonLinear_Enhanced_Lat = VehicleModel.CarPose(0,0,0.1,0, 0, 0)
-stateVectorNonLinear_Enhanced_Lat_Cmplx = VehicleModel.CarPose(0,0,0.1,0, 0, 0)
+stateVectorKin= VehicleModel.CarPose(0,0,20,0, 0, 0)
+stateVectorNonLinear_Base = VehicleModel.CarPose(0,0,20,0, 0, 0)
+stateVectorNonLinear_Enhanced_Lat = VehicleModel.CarPose(0,0,20,0, 0, 0)
+stateVectorNonLinear_Enhanced_Lat_Cmplx = VehicleModel.CarPose(0,0,20,0, 0, 0)
 
 
 kin_psi = []

@@ -14,14 +14,14 @@ mutable struct MPCStruct
 end
 
 
-function init_MPC(mpc_struct, N_, dt, startPose, printLevel, max_speed)
+function init_MPC(mpc_struct, N_, dt, startPose, printLevel, max_speed, track_width)
      m = Model(solver = IpoptSolver(tol=1e-1, print_level = printLevel, max_iter= 500))
      N = N_
 
      lbx = []
      ubx = []
      start = []
-     trackWidth = 4
+     
      lbx_ = [-Inf, -Inf, VehicleModel.min_speed, -Inf, -Inf, -Inf,  -VehicleModel.min_throttle, -VehicleModel.max_steering_angle]
      ubx_ = [ Inf,  Inf, max_speed,               Inf,  Inf,  Inf,   VehicleModel.max_throttle,  VehicleModel.max_steering_angle]
      start_=[startPose.x, startPose.y, startPose.x_d, startPose.psi, startPose.y_d, startPose.psi_d, 0, 0]
@@ -48,7 +48,7 @@ function init_MPC(mpc_struct, N_, dt, startPose, printLevel, max_speed)
     return mpc_struct
 end
 
-function define_constraint_linear_bycicle(mpc_struct)
+function define_constraint_kin_bycicle(mpc_struct)
     x = mpc_struct.x
     m = mpc_struct.m
     N = mpc_struct.N
@@ -57,12 +57,14 @@ function define_constraint_linear_bycicle(mpc_struct)
     lr = VehicleModel.lr
     #create vehicle model constraints
     for i in 0: N-1
-         @NLexpression(m, x_d, (VehicleModel.F_long_max * x[8*i + 7]/10.0)* 1.0/VehicleModel.mass)
+         #@NLexpression(m, x_dd, (VehicleModel.F_long_max * x[8*i + 7]/10.0)* 1.0/VehicleModel.mass)
+         @NLexpression(m, x_dd, (VehicleModel.max_long_acc * x[8*i + 7]/10.0))
+
          @NLconstraints(m, begin
               x[(i + 1)*8 + 1] - (x[i * 8 + 1] + x[8*i + 3]*dt*cos(x[i*8 + 4] + atan(lr/(lf + lr) * tan(x[i*8 + 8])))) == 0
               x[(i + 1)*8 + 2] - (x[i * 8 + 2] + x[8*i + 3]*dt*sin(x[i*8 + 4] + atan(lr/(lf + lr) * tan(x[i*8 + 8])))) == 0
               #x[(i + 1)*8 + 3] - (x[i * 8 + 3] + x[8*i + 7]*dt) == 0
-              x[(i + 1)*8 + 3] - (x[i * 8 + 3] + x_d*dt) == 0
+              x[(i + 1)*8 + 3] - (x[i * 8 + 3] + x_dd*dt) == 0
               x[(i + 1)*8 + 4] - (x[i * 8 + 4] + x[8*i + 3]*dt / lr*sin(atan(lr/(lf + lr) * tan(x[i*8 + 8])))) == 0
               atan(0.5 * (lf + lr) * VehicleModel.max_long_acc / x[i*8 + 3]^2) - atan(lr/(lf + lf) * tan(x[i*8 + 8])) >= 0  #max_beta - beta
               atan(0.5 * (lf + lr) * VehicleModel.max_long_acc / x[i*8 + 3]^2) + atan(lr/(lf + lf) * tan(x[i*8 + 8])) >= 0  #max_beta + beta
@@ -72,7 +74,7 @@ function define_constraint_linear_bycicle(mpc_struct)
 end
 
 
-function define_constraint_nonlinear_bycicle(mpc_struct)
+function define_constraint_dyn_bycicle(mpc_struct)
     x = mpc_struct.x
     m = mpc_struct.m
     N = mpc_struct.N

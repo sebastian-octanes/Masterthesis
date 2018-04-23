@@ -8,6 +8,8 @@ using Distributions
 #print_mpc(mpc_struct)
 #solve_mpc(mpc_struct)
 
+trackWidth = 3
+#=
 start_ = 65
 end_ = 10
 steps_ = 12
@@ -23,3 +25,7 @@ end
 
 areas = 10*ones(lin)
 scatter(lin,spline_pos,s=areas,alpha=1.0)
+=#
+
+itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrackUUTurn(trackWidth)
+RaceCourse.plotRaceTrack(itpTrack, itpLeftBound, itpRightBound)

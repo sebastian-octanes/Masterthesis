@@ -257,8 +257,8 @@ function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, 
     print("\nforwardPoint", forwardPoint)
     mpc_struct = MPCStruct(N, 0, 0, 0, 0, 0)
     mpc_struct = init_MPC(mpc_struct, N, dt, startPose, printLevel, max_speed)
-    #mpc_struct = define_constraint_nonlinear_bycicle(mpc_struct)
-    mpc_struct = define_constraint_linear_bycicle(mpc_struct)
+    #mpc_struct = define_constraint_dyn_bycicle(mpc_struct)
+    mpc_struct = define_constraint_kin_bycicle(mpc_struct)
     mpc_struct = define_constraint_start_pose(mpc_struct, startPose)
     mpc_struct = define_constraint_tangents(mpc_struct, trackPoints)
     #mpc_struct = define_constraint_max_search_dist(mpc_struct, trackPoints)
@@ -290,7 +290,7 @@ startPose = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
 #define which racecourse should be used
 itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(15.25, 3, 16, 0)
 
-N = 10
+N = 12
 printLevel = 0
 dt = 0.05
 max_speed = 100
@@ -312,6 +312,7 @@ lapTimeActive = false
 steps = 0
 circle_time = 0
 circleCount = 0
+avg_speed = []
 realCarStateVector = VehicleModel.CarPose(0,0,0.01,pi/2,0,0)
 while isopen(window)
     #dt = get_elapsed_time(clock)
@@ -343,13 +344,18 @@ while isopen(window)
         lapTimeActive = true
     end
     #if abs(realCarStateVector.x) < trackWidth/2 && abs(realCarStateVector.y) < 0.4 && lapTimeActive
+    avg_speed = vcat(avg_speed, realCarStateVector.x_d)
     if(steps > 50 && RaceCourse.computeDistToTrackStartX(itpTrack, itpLeftBound, realCarStateVector) < trackWidth/2.0)
         if(RaceCourse.computeDistToTrackStartY(realCarStateVector) < 2 && realCarStateVector.y > 0.0)
             println("\nlap_time_steps:", steps * dt)
             restart(clock)
+            if circleCount == 0
+                avg_speed = []
+                steps = 0
+            end
             circleCount = circleCount + 1
             circle_time = steps*dt
-            steps = 0
+
             lapTimeActive = false
         end
     end
@@ -376,6 +382,13 @@ while isopen(window)
     display(window)
     clear(window, SFML.white)
 end
-
+print("steps", steps)
+print("avg_speed", avg_speed)
+#avg_speed = 43/3.6
+avg_speed = sum(avg_speed)
+print("avg_speed", avg_speed)
+avg_speed = avg_speed / steps
+calc_time = (16.75* 2* pi)/(avg_speed)
+print("\ncalculated time:", calc_time)
 print("\ncircle time sim: ", circle_time)
 print("\ncircle time real: ", 7.15)

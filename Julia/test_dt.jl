@@ -1,6 +1,5 @@
 using SFML
 using PyPlot
-using Distributions
 include("RaceCourse.jl")
 include("VehicleModel.jl")
 include("MPC.jl")
@@ -229,7 +228,7 @@ end
 
 
 function initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed)
-    startPose = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
+    startPose = VehicleModel.CarPose(-20,0,10, pi/2.0, 0, 0)
     stateVector = []
     start_=[startPose.x, startPose.y, startPose.x_d, startPose.psi, 0, 0, 0, 0]
     for i in 0:N
@@ -242,15 +241,13 @@ function initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel,
     mpc_struct = MPCStruct(N, 0, 0, 0, 0, 0)
     mpc_struct = init_MPC(mpc_struct, N, dt, startPose, printLevel, max_speed)
     #mpc_struct = define_constraint_nonlinear_bycicle(mpc_struct)
-    mpc_struct = define_constraint_linear_bycicle(mpc_struct)
+    mpc_struct = define_constraint_kin_bycicle(mpc_struct)
     mpc_struct = define_constraint_start_pose(mpc_struct, startPose)
     mpc_struct = define_constraint_tangents(mpc_struct, trackPoints)
-    mpc_struct = define_constraint_max_search_dist(mpc_struct, trackPoints)
+    #mpc_struct = define_constraint_max_search_dist(mpc_struct, trackPoints)
     #mpc_struct = define_objective(mpc_struct)
-    #mpc_struct = define_objective_middle(mpc_struct)
     mpc_struct = define_objective_minimize_dist(mpc_struct)
-    #mpc_struct = define_objective_minimize_dist_soft_const(mpc_struct,1, 3)
-    #mpc_struct = define_objective_minimize_dist_soft_const_ext(mpc_struct)
+    mpc_struct = update_track_forward_point(mpc_struct, forwardPoint)
 
     return mpc_struct
 end
@@ -269,36 +266,33 @@ radius = 15
 trackWidth = 4
 
 keys = KeyControls(0,0,0,0,0)
-carPose = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
+carPose = VehicleModel.CarPose(-20,0,10,pi/2.0, 0, 0)
 
 #define which racecourse should be used
-itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(5, 4, 5, 0)
+#itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(15, 4, 15, 0)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack2(trackWidth)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack3(trackWidth)
-#itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack4(trackWidth)
+itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrackUTurn(trackWidth)
 
-n = 10
+
 event = Event()
 window = RenderWindow("test", windowSizeX, windowSizeY)
-printLevel = 0
-dt = 0.05
-N = 5
-spline_pos =[]
-avg_deviation =[]
-max_speed = 15
+dt = 0.1
+max_speed = 30
+spline_pos = []
 
-start_ = 0.01
-end_ = 0.21
-steps_ = 5
-# fahre so schnell wie es geht und dann eine laut reglement minimale U-turn
-# untersuche wie schnell man fahren kann ohne raus zu fahren und wie groß die differenz ist
-# zu der annahme dass das fahrzeug innerhalb des horizontes stehen bleiben können muss
+start_ = 65
+end_ = 10
+steps_ = 12
+
 lin = linspace(start_, end_, steps_)
-lin = [ 0.03, 0.04, 0.06, 0.08, 0.09, 0.1]
+lin = [30, 40, 50]
+#N = 33
 for i in lin
-    dt = i
-    deviation =[]
-    mpc_struct = initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed)
+    N = convert(UInt16, i)
+    print("\nN:", N)
+    printLevel = 0
+    mpc_struct = initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel,max_speed)
 
         #create CircularBuffer for tracking Vehicle Path
     carPathBuffer = CircularBuffer{VehicleModel.CarState}(400)
@@ -306,14 +300,14 @@ for i in lin
     #create Sprites
     RaceTrackLeftSprite, RaceTrackRightSprite = createRaceCourse2(scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, itpTrack, itpLeftBound, itpRightBound, window)
 
-    #set_framerate_limit(window, convert(Int64, 1 / dt))
-    set_framerate_limit(window, 60)
+    set_framerate_limit(window, convert(Int64, 100))
+    #set_framerate_limit(window, 2)
 
     clock = Clock()
     #lapTimeActive needed for timer
     lapTimeActive = false
     steps = 0
-    realCarStateVector = VehicleModel.CarPose(0,0,0.01,pi/2,0,0)
+    realCarStateVector = VehicleModel.CarPose(-20,0,10,pi/2.0,0,0)
     trackVehicleControls = []
 
     steps = 0
@@ -334,9 +328,7 @@ for i in lin
         #predict last point and compute next state with vehicle model
         realCarStateVector = VehicleModel.computeCarStepKinModel(realCarStateVector, res, dt)
         trackVehicleControls = vcat(trackVehicleControls, res[7], res[8])
-        realCarStateVectorWithNoise = VehicleModel.CarPose(realCarStateVector.x + rand(Normal(0, i)), realCarStateVector.y + rand(Normal(0, i)), realCarStateVector.x_d, realCarStateVector.psi, realCarStateVector.y_d, realCarStateVector.psi_d)
-
-        stateVector = VehicleModel.createNewStateVector(res, realCarStateVectorWithNoise, dt, N)
+        stateVector = VehicleModel.createNewStateVector(res, realCarStateVector, dt, N)
         update_start_point_from_pose(mpc_struct, realCarStateVector)
         evalPoints = RaceCourse.getSplinePositions(itpTrack, stateVector, N)
         trackPoints = RaceCourse.getTrackPoints(itpTrack, itpLeftBound, itpRightBound, evalPoints, N)
@@ -347,26 +339,26 @@ for i in lin
         carPose = VehicleModel.CarPose(stateVector[1], stateVector[2], stateVector[3], stateVector[4], stateVector[5], stateVector[6])
         #timer
         steps = steps + 1
+
         dist = abs(RaceCourse.computeDistToTrackBoarder(itpTrack, itpLeftBound, realCarStateVector))
-        deviation = vcat(deviation, dist)
-        print("\ndist", dist)
-        if(dist > trackWidth/2.0)
+        if(dist > trackWidth/2.0 + 0.1)
             print("hit barier")
+            spline_pos = vcat(spline_pos, 0)
+            break
+        end
+        dist_to_break = sqrt((50 - carPose.x)^2 + (0.5- carPose.y)^2)
+        if(dist_to_break < 3 && carPose.y < 3)
+            print("break condition")
             spline_pos = vcat(spline_pos, evalPoints[1])
             break
         end
-        if(steps > 300 && RaceCourse.computeDistToTrackStartX(itpTrack, itpLeftBound, realCarStateVector) < trackWidth/2.0)
-            if(RaceCourse.computeDistToTrackStartY(realCarStateVector) < 2 && realCarStateVector.y > 0.0)
-                spline_pos = vcat(spline_pos, 1)
-                break
-            end
-        end
+
         #add position to carPathBuffer
         push!(carPathBuffer, VehicleModel.CarState(stateVector[1], stateVector[2], stateVector[3], stateVector[4], stateVector[5], stateVector[6], stateVector[7], stateVector[8]))
 
         #draw car and raceCource
         carSprite = createcarsprite(scaleX, scaleY)
-        setpositioncar(carSprite, realCarStateVectorWithNoise, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY)
+        setpositioncar(carSprite, carPose, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY)
         drawRaceCourse2(window, RaceTrackLeftSprite, RaceTrackRightSprite)
         # draw tangents for future points
         createTangent(stateVector, itpTrack, itpLeftBound, itpRightBound, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window)
@@ -380,18 +372,19 @@ for i in lin
         display(window)
         clear(window, SFML.white)
     end
-    dev = sum(deviation)/steps
-    avg_deviation = vcat(avg_deviation, dev)
 
 end
 
+print("spline_pos", spline_pos)
+print("calculated prediction horizon to break from full speed to stillstand", 65)
 
-print("\n Spline Positions", spline_pos)
 #x = linspace(10, 10 + t -1, t)
-areas = 20*ones(lin)
-scatter(lin,avg_deviation,s=areas,alpha=1.0)
+areas = 10*ones(lin)
+scatter(lin,spline_pos,s=areas,alpha=1.0)
 grid()
-xlabel("dt in s")
-ylabel("Average Deviation")
-title("Deviation with Increasing Dt ")
+xlabel("Prediction Steps")
+ylabel("Distance Traveled")
+title("Distance Traveled Depending for Different Length of Prediction Horizon")
 ax = gca()
+
+#print("average :  $(average_time/steps)")
