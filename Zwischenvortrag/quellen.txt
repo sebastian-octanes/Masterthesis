@@ -1,0 +1,23 @@
+pedal to the metal:
+https://www.gamespot.com/images/1300-2829112
+https://www.keepcalm-o-matic.co.uk/p/keep-calm-and-put-the-pedal-to-the-metal/
+https://giphy.com/gifs/steve-mcqueen-jN5emagv8SHi8
+
+mpc:
+http://new.abb.com/control-systems/features/model-predictive-control-mpc
+
+constraint:
+http://slideplayer.com/slide/4551043/
+
+ipopt:
+https://de.wikipedia.org/wiki/Innere-Punkte-Verfahren#/media/File:Interior-point-method-three-dimensions.png
+
+Vehicle Model
+https://medium.com/@jonathan_hui/lane-keeping-in-autonomous-driving-with-model-predictive-control-50f06e989bc9
+https://www.researchgate.net/profile/Huei_Peng/publication/228528836/figure/fig1/AS:393863115100171@1470915692971/DOF-bicycle-model.png
+
+Ackermann
+https://en.wikipedia.org/wiki/Ackermann_steering_geometry
+
+Tire Model
+http://simracingpaddock.com/editorial/analyzing-tire-models-in-sim-racing/
