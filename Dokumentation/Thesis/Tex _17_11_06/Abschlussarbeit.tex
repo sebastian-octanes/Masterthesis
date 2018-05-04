@@ -1,0 +1,648 @@
+\documentclass{like}
+
+%\selectlanguage{english}
+%\selectlanguage{german}
+
+
+
+% BITTE mit pdf Latex oder Schnelles Übersetzen kompilieren sonst kommen Fehlermeldungen !!!!
+
+\begin{document}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Ab hier beginnt der Text
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+
+%\normalsize
+\include{Inhalt/Titelseite2}
+\include{Inhalt/Bestaetigung}
+\include{Inhalt/Acknowledgement} %Optional
+\include{Inhalt/Thema_Aufgabenstellung}
+\include{Inhalt/Kurzzusammenfassung}
+\include{Inhalt/Abstract}
+%\include{Inhalt/Abkuerzungsverzeichnis} (nach hinten verschoben)
+\include{Inhalt/Content} %Bitte 2x kompilieren - sonst erscheint es nicht
+
+
+\pagenumbering{arabic} %Seitennummerierung arabisch
+\setcounter{page}{1}   %1. Kapitel soll mit Seitenzahl 1 beginnen
+%------------------------------------------------------------------
+\chapter{Einleitung}
+\section{Gliederung}
+Befehle zum Gliedern von Texten:\par
+Nummeriert und im InhV.:\nopagebreak\par\medskip\nopagebreak
+
+\begin{minipage}{0.4\textwidth}
+\begin{verbatim}
+\chapter{Kapitel - Ebene 1 (1 Einleitung)}
+\section{Abschnitt - Ebene 2 (1.1 Gliederung}
+\subsection{Unterabschnitt - Ebene3 1.1.1....} 
+\subsubsection{Unterunterabschnitt - Ebene 4 (nicht sinnvoll)}
+\end{verbatim}
+\end{minipage}
+
+
+\subsection*{nicht nummerierte Überschrift}
+Alles, was nicht ins Inhaltsverzeichnis soll ist mit einem *
+ versehen: -> steht für Kapitel, die nicht nummeriert sind und somit auch nicht im Inhvz. stehen\par
+Befehle: \par
+
+\begin{minipage}{0.2\textwidth}
+\begin{verbatim}
+\chapter*{Thema und Aufgabenstellung}
+\section* {Sektion/Abschnitt} unnummiert 
+\subsection*{Unterabschnitt - Ebene3 } 
+\subsubsection*{Unterunterabschnitt - Ebene 4}
+ \end{verbatim}
+ \end{minipage}
+
+
+\section{Text formatieren}
+
+Folgende Befehlen erzeugen einen Zeilenumbruch:\\ (1ex entspricht der Höhe des Buchstaben \glqq x\grqq\ in der aktuellen Schriftart)\par\medskip
+\qquad\begin{minipage}{0.8\textwidth}
+\begin{verbatim}
+\\
+\newline
+\\[1ex]
+\end{verbatim}
+\end{minipage}\par\bigskip
+
+Folgende Befehle erzeugen einen neuen Absatz:
+
+\qquad\begin{minipage}{0.8\textwidth}
+\begin{verbatim}
+\par
+\par\smallskip
+\par\medskip
+\par\bigskip
+\end{verbatim}
+\end{minipage}\par\bigskip
+
+Folgende Befehle erzeugen einen zusätzlichen horizontalen Abstand:\nopagebreak\par\medskip\nopagebreak
+
+\qquad\begin{minipage}{0.8\textwidth}
+\begin{verbatim}
+\,                 % kleiner Abstand
+\;                 % mittlerer Abstand
+\quad              % großer Abstand
+\qquad             % sehr großer Abstand
+\!                 % kleiner negativer Abstand
+\end{verbatim}
+\end{minipage}\par\bigskip
+
+
+Folgende Befehle zum Seitenumbruch:\nopagebreak\par\medskip\nopagebreak
+
+
+
+\section{Umbrüche}
+Der Text wird normalerweise automatisc umbrochen. Zum expliziten Beenden einer Zeile benutzen Sie
+\begin{verbatim}
+\\[abstand] % bzw.
+\\[2pt]
+\end{verbatim}
+Beispiel\\[4pt]
+Wenn mann zum Beispiel eine Überschrift
+\begin{verbatim}
+\\in zwei Zeilen umbrechen möchten,
+\end{verbatim}
+bitte ein
+\begin{verbatim}
+\protect
+\end{verbatim}
+benutzen. Zusätzlich kann an einer so beendeten Zeile noch gleichzeitig ein Seitenumbruch verhindert werden,
+indem man
+\begin{verbatim}
+\\*[abstand]
+\end{verbatim}
+eingibt.
+Wenn man Latex einen Spielraum lassen will: Dafür dient der Befehl
+\begin{verbatim}
+\linebreak[zwang]
+\end{verbatim}
+
+ Für die Dringlichkeit des-Befehls können Sie die Zahlen von 0 bis 4 eintragen,wobei 0 eine milde Wunschäußerung darstellt und 4 das Zeilenende erzwingt. Gleichzeitig werden beim Beenden einer Zeile die Wörter gestreckt und dabei gleichmäßig überdie Zeile verteilt.
+
+
+\begin{verbatim}
+Der Zwerg nahm seine Axt und hieb mehrere Äste ab.\\
+Der Zwerg nahm seine Axt und hieb mehrere Äste ab.\linebreak[4]
+Der Zwerg nahm seine Axt und hieb mehrere Äste ab.\linebreak[2]
+Der Zwerg nahm seine Axt und hieb mehrere Äste ab.\linebreak[3]
+Sie banden sie mit Bogensehnen zusammen
+\end{verbatim}
+Der Zwerg nahm seine Axt und hieb mehrere Äste ab.\\
+Der Zwerg nahm seine Axt und hieb mehrere Äste ab.\linebreak[4]
+Der Zwerg nahm seine Axt und hieb mehrere Äste ab.\linebreak[2]
+Der Zwerg nahm seine Axt und hieb mehrere Äste ab.\linebreak[3]
+Sie banden sie mit Bogensehnen zusammen
+\par
+oder:
+\begin{verbatim}
+\nolinebreak[zwang]
+\end{verbatim}
+\section{Schriftart formatieren}
+
+Folgende Befehle für die Schriftgröße:\par\smallskip
+
+\qquad\begin{minipage}{0.4\textwidth}
+\vspace*{-0,3cm}
+\begin{verbatim}
+\tiny
+\scriptsize
+\footnotesize
+\small
+\normalsize
+\large
+\Large
+\LARGE
+\huge
+\Huge
+\end{verbatim}
+\end{minipage}
+\hspace*{0,8cm}
+\begin{minipage}{0.4\textwidth}
+\tiny tiny\,
+\scriptsize scriptsize\,
+\footnotesize footnotesize\;
+\small small\;
+\normalsize normalsize\\
+\large large\;
+\Large Large\
+\LARGE LARGE\\
+\huge huge\,
+\Huge Huge\;
+\end{minipage}\normalsize
+
+
+Folgende Befehle für die Schriftart :
+
+\qquad\begin{minipage}{0.2\textwidth}
+\begin{verbatim}
+\textrm{} 
+\texttt{} 
+\textbf{} 
+\textit{} 
+\textsc{} 
+\textsl{} 
+\end{verbatim}
+\end{minipage}\quad
+\begin{minipage}{0.4\textwidth}
+\textrm{Textbeispiel} \\
+\texttt{Textbeispiel} \\
+\textbf{Textbeispiel} \\
+\textit{Textbeispiel} \\
+\textsc{Textbeispiel} \\
+\textsl{Textbeispiel} 
+\end{minipage}
+
+\par\bigskip
+
+
+Folgende Befehle zum Hervorheben (Argument):%\nopagebreak\par\medskip\nopagebreak
+
+\begin{minipage}{0.2\textwidth}
+\begin{verbatim}
+\emph{}
+\underline{}
+\end{verbatim}
+\end{minipage}\quad
+\begin{minipage}{0.4\textwidth}
+\emph{Textbeispiel}\\
+\underline{Textbeispiel}
+\end{minipage}
+\subsection{Default Fonts}
+Für das gesamte Dokument wurde eine Schriftart im cls.-File generiert\par\nopagebreak
+\begin{minipage}[ht!]{0.4\textwidth}
+mittes des Befehls->\\
+und dem Paket Times->\\
+\end{minipage}
+\begin{minipage}[ht!]{0.4\textwidth}
+\vspace*{-.6cm}
+\begin{verbatim}
+\addtokomafont{disposition}{\rmfamily}
+\RequirePackage{times} 
+\end{verbatim}
+\end{minipage}
+
+
+\chapter{Grundlagen}
+
+
+\section{Tabellen}
+
+Folgende Befehle für eine Tabelle:%\nopagebreak\par\medskip\nopagebreak
+
+
+\qquad\begin{minipage}{0.8\textwidth}
+\begin{verbatim}
+&                 % neue Spalte
+\\                % neue Zeile
+\\[1ex]           % neue Zeile mit Abstand 1ex
+\hline            % horizontale Linie
+\end{verbatim}
+\end{minipage}\par\bigskip
+
+Ein Beispiel:
+Syntax:
+\begin{verbatim}
+\begin{tabular}[Position]{Spalten} ... \end{tabular}
+\end{verbatim}
+
+
+Parameter:
+
+Position
+    (optional) b oder t. 
+Spalten
+    eine Spaltendefinition.\\ 
+Beispiel für eine Tabelle:
+ 
+
+\begin{minipage}[t!]{0.5\textwidth}
+  \begin{tabular}[t]{lrr@{.}l}
+    Position 1 & DM &  5 & 49\\
+    Position 2 & DM & 10 & 95\\
+   \end{tabular}
+
+\end{minipage}\hspace*{5pt}
+\begin{minipage}[t!]{0.5\textwidth}
+
+\begin{verbatim}
+
+  \begin{tabular}[t]{lrr@{.}l}
+    Position 1 & DM &  5 & 49\\
+    Position 2 & DM & 10 & 95\\
+  \end{tabular}
+  \end{verbatim}
+\end{minipage}
+\section{Einbindung von Tabellen}
+Tabellen und Grafiken werden nach Kapitel nummeriert
+ \begin{table}[h]
+ 	 \caption{Tabelle}
+  	\begin{tabular}{rl}
+    linke Spalte & rechte Spalte
+  	\end{tabular}
+ \end{table}
+ 
+ \begin{verbatim}
+ \begin{table}[h]
+ 	 \caption{Tabelle}
+  	\begin{tabular}{rl}
+    linke Spalte & rechte Spalte
+  	\end{tabular}
+ \end{table}
+ \end{verbatim}
+Mehr dazu : \\
+\url{http://www.weinelt.de/latex/tabular.html}\\
+\url{http://www.weinelt.de/latex/index.html}\\
+\url{http://www.torsten-schuetze.de/tex/tabsatz-2004.pdf}
+\section{Figures}
+Figures sind Umgebungen mit deren Hilfe man beliebige Objekte wie zum Beispiel
+Tabellen oder Graphiken im laufenden Text platzieren kann.\nopagebreak\par\medskip\nopagebreak
+\qquad\begin{minipage}{0.8\textwidth}
+\begin{verbatim}
+\begin{figure}[ht!]
+  \caption{Bildüberschrift}
+  % beliebiges Objekt
+\end{figure}
+\end{verbatim}
+\end{minipage}\par\bigskip
+Die in eckigen Klammern angegebenen Parameter geben die Positionierung der Figure-Umgebung an \nopagebreak\par\medskip\nopagebreak
+\qquad\begin{minipage}{0.8\textwidth}
+\begin{verbatim}
+h       % Stelle, an der sich Figure befindet
+t       % Anfang der (unter Umständen folgenden) Seite
+b       % Ende der Seite
+p       % Auf einer extra Seite
+!       % Parameter haben Priorität vor Latex-internen
+          Parametern
+\end{verbatim}
+\end{minipage}\par\bigskip
+Mit dem Befehl \verb+\caption{}+ vor dem Bild erzeugt man eine Figure-Übeschrift, bzw nach dem Objekt eine Figure-Unterschrift
+
+\section{Graphiken}
+Um Grafiken einbinden zu können ist das Paket \verb+graphicx+ in der Präambel eingebunden:
+\qquad\begin{minipage}{0.8\textwidth}
+\begin{verbatim}
+\RequirePackage[dvips]{graphicx}
+\end{verbatim}
+\end{minipage}\par\bigskip
+Standardmäßig sollte der Parameter \verb+dvips+ verwenden werden, für \glqq PDFLatex\grqq \, ist \verb+pdftex+ empfehlenswert.
+Der eigentliche Befehl zum Einbinden von Grafiken lautet:
+\subsection{Beispiel für Grafiken}
+
+\qquad\begin{minipage}{0.8\textwidth}
+\begin{verbatim}
+\includegraphics[key=values, key=values]{file}
+\end{verbatim}
+\end{minipage}\par\bigskip
+\verb+key+ kann dabei die folgenden Parameter annehmen die, mit einem Komma getrennt, beliebig kombiniert werden können:\nopagebreak\par\medskip\nopagebreak
+\qquad\begin{minipage}{0.8\textwidth}
+\begin{verbatim}
+width             % Breite festlegen
+height            % Höhe festlegen
+angle             % Rotation gegen den Uhrzeigersinn
+scale             % Skalierung 
+\end{verbatim}
+\end{minipage}\par\bigskip
+
+ \subsection{Einbindung von 2 Grafiken nebeneinander}
+  \begin{figure}[ht!]
+  \begin{centering}
+  \subfigure[Bezeichnung der linken Grafik]{\includegraphics[width=0.33\textwidth]{Abbildungen/mehrkeulenantenne_prinzip.png}}
+  \hspace*{1cm}
+    \subfigure[Bezeichnung der rechten Grafik]{\includegraphics[width=0.33\textwidth]{Abbildungen/pcb_ant.jpg}}
+ \caption{Bildunterschrift}
+  \end{centering}
+  \end{figure}
+\subsection{Darstellung von 3 Bildern nebeneinander}
+mit einer Minipage Umgebung
+
+ \begin{figure}[h!]
+\begin{minipage}[t]{0.3\textwidth}
+\includegraphics[width=\textwidth]{Abbildungen/pcb_ant.jpg}
+Bild 1
+\end{minipage}
+\hspace*{0.2cm}
+\begin{minipage}[t]{0.3\textwidth}
+\includegraphics[width=\textwidth]{Abbildungen/motion-sensor-pcb.jpg}
+Bild 2
+\end{minipage}
+\hspace*{0.2cm}
+\begin{minipage}[t]{0.3\textwidth}
+\includegraphics[width=\textwidth]{Abbildungen/peilantenne_c-band_bottom.png}
+Bild 3
+\end{minipage}
+\caption{Bildunterschrift Unterschrift Bild x Die auf die Rotationsfrequenz des Innenzylinders normierten Eigenfrequenzen der gefundenen Grundmoden der Taylor-Strömung für h}
+  \end{figure}
+
+
+
+
+\section{Bildunterschriften}
+ \subsection*{Einbindung Grafik}
+  \begin{figure}[h!]
+  \begin{centering}
+  {\includegraphics[width=0.33\textwidth]{Abbildungen/fau.png}}
+   \caption{Unterschrift Bild x Die auf die Rotationsfrequenz des Innenzylinders normierten Eigenfrequenzen der gefundenen Grundmoden der Taylor-Strömung für h(Die azimutale Wellenzahl ist mit m  bezeichnet.)}
+  \end{centering}
+  \end{figure}
+%Bildunterschriften
+Mit dem Paket
+\begin{verbatim}
+\usepackage{ragged2e}
+\usepackage{caption}
+\end{verbatim}
+sowie den Einstellungen:
+\begin{verbatim}
+\captionsetup{format=plain,indention=2.3cm,font=small,labelfont=bf,
+labelsep=colon,justification=RaggedRight} ->linksbündig mit 
+indention=Einzug
+Ansonsten: wie hier:
+\captionsetup{font=small,labelfont=bf}
+-> Blocksatz
+\end{verbatim}
+
+Sollte es wider erwarten zu komischen Trennungen kommen - kann man die Befehle 
+\begin{verbatim}
+\sloppy % weniger Worttrennungen, größere Wortabstände
+\fussy % viele Worttrennungen, "schönere" Wortabstände
+\end{verbatim}
+einfügen 
+
+\section{Aufzählungen}
+\par
+
+\begin{minipage}[t!]{0.38\paperwidth}
+\begin{verbatim}
+\begin{itemize}
+	\item  test 2. ebene
+	\item  test 2. ebene
+		\begin{itemize}
+			\item  test 3. ebene
+			\item  test 3. ebene
+				\begin{itemize}
+					\item  test 4. ebene
+					\item  test 4. ebene
+				\end{itemize}
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+Nummerierte Listen:
+	\begin{enumerate}
+	\item Textbeispiel
+		\begin{enumerate}
+		\item Textbeispiel
+		\item Textbeispiel
+			\begin{enumerate}
+		\item Textbeispiel
+		\item Textbeispiel
+\end{enumerate}
+\end{enumerate}
+\end{verbatim}
+
+\end{minipage}\quad
+\begin{minipage}[t!]{0.38\textwidth}
+\vspace*{.5cm}
+\begin{itemize}
+\item 1. Ebene
+\begin{itemize}
+\item  test 2. ebene
+\item  test 2. ebene
+\begin{itemize}
+\item  test 3. ebene
+\item  test 3. ebene
+\begin{itemize}
+\item  test 4. ebene
+\item  test 4. ebene
+\end{itemize}    
+\end{itemize}
+\end{itemize}
+\end{itemize}(alle Ebenen wieder schließen!)
+\par\bigskip
+\begin{enumerate}
+	\item Ebene 1
+		\begin{enumerate}
+			\item Ebene 2
+			\item Ebene 2
+				\begin{enumerate}
+					\item Ebene 3
+					\item Ebene 3
+				\end{enumerate}
+		\end{enumerate}
+		\item Ebene 1
+	\end{enumerate}
+\end{minipage}
+\par
+
+
+
+
+
+
+\section{Farben}
+Um Farben verwenden zu können muss das Paket \verb+color+ Header eingebunden werden. 
+Folgende Befehle dienen dem Ändern von Farben: \nopagebreak\par\medskip\nopagebreak
+\begin{minipage}{0.8\textwidth}
+\begin{verbatim}
+\color{color}          % Ändert die Textfarbe ab hier
+\color{color}{Text}    % Ändert die Textfarbe von "Text".
+\pagecolor{color}      % Ändert die Hintergrundfarbe
+\colorbox{color}{Text} % Unterlegt "Text" mit der gewünschten Farbe
+\fcolorbox{color1}{color2}{Text} 
+% Unterlegt "Text" mit color1 und Rand color2 \end{verbatim}
+ Folgende Farben sind definiert:
+ \begin{verbatim}
+\definecolor{color0}{rgb}{0,0,0}% black
+\definecolor{color1}{rgb}{0.22,0.45,0.70}% light blue
+\definecolor{color2}{rgb}{0.45,0.45,0.45}% dark grey
+
+\end{verbatim}
+\end{minipage}\par\bigskip
+
+
+
+
+\section{Matheumgebung}
+
+Folgende Befehle, um die Matheumgebung einzuschalten:\nopagebreak\par\medskip\nopagebreak
+
+\begin{minipage}{0.8\textwidth}
+\begin{verbatim}
+$             % Anfang/Ende der Matheumgebung im laufenden Text
+
+\(            % Anfang der Matheumgebung im laufenden Text
+\)            % Ende der Matheumgebung im laufenden Text
+
+Einzeilig:
+$$            % Anfang/Ende der Matheumgebung abgesetzter Formel 
+				
+
+\[            % Anfang der Matheumgebung in abgesetzter Formel 
+\]            % Ende der Matheumgebung in abgesetzter Formel 
+
+\begin{equation}  % Anfang der Matheumgeb. (abges.Formel)
+\end{equation}    % Ende der Matheumgebung in abgesetzter Formel 
+
+Mehrzeilig:
+
+\begin{eqnarray}  % Anfang der Matheumgebung in abgesetzter Formel
+\end{eqnarray}    % Ende der Matheumgebung in abgesetzter Formel
+\end{verbatim}
+\end{minipage}\par\bigskip
+
+
+	\section{Formelnummerierung nach section}
+	
+	\begin{verbatim}
+	wer dies andern möchte : 
+	im cls-file
+	\numberwithin{equation}{section} <- section in chapter umändern
+	\end{verbatim}
+	
+		\begin{equation} 
+			x^2 - 5 x + 6 = 0
+		\end{equation}
+		
+		\begin{equation}
+			x_1 = \frac{5 + \sqrt{25 - 4 \times 6}}{2} = 3
+		\end{equation}
+
+		\section{Nummerierung der Formeln}
+  		 \begin{equation}
+    	  E=mc^2
+   		\end{equation}
+\chapter{Implementierung von xy} 
+
+	\section{Running Header}
+	Wenn keine
+	\begin{verbatim}
+ \section 
+ \end{verbatim}
+angegeben ist, wird als Running Header nur 
+das\begin{verbatim}
+\chapter 
+\end{verbatim} ausgegeben
+Code dafür im cls.-file unter
+\begin{verbatim}
+\RequirePackage[headsepline]{scrpage2}
+\pagestyle{scrheadings} 
+\automark[chapter]{chapter}
+\clearscrheadfoot 
+
+Fonts:
+ \setkomafont{pageheadfoot}{%Kopfzeilen in Kapitälchen
+\normalsize\scshape}        
+Fußzeile: mittig
+\cfoot[\pagemark]{\pagemark}                      
+\end{verbatim}
+		%\section{Ich bin der auch der Running Header}
+		
+	
+\section{ich bin der Running Header}
+	
+
+
+
+
+\chapter{Konzept}
+
+
+	\section{Zitate für die Bibliography}
+	\begin{verbatim}
+Citation of  Adler ~\cite{Adler2016}.
+Citation of Adler b\cite{Adler2016b}
+	\end{verbatim}
+	\subsection{Beispiel für Zitate}
+% Zitate :
+Citation of  Adler ~\cite{Adler2016}.
+Citation of Adler b\cite{Adler2016b}
+
+\chapter{Ergebnisse}
+
+communicated with simplicity and charm. And in such a way that the reader will read on. (After all, that’s a reader’s job: to read, isn’t it?) And by the time your readers have reached this point in the finished copy, you will have convinced them that you not only respect their intelligence, but you also unders
+
+
+
+
+\chapter{Diskussion}
+Text beginnt hier...his, of course, is not the real copy for this advertisement. The real words will be written once you have approved the headline. Rest assured, the words will expand the concept. With clarity. Conviction. And even a little wit. Because in today’s competitive marketing environment, the body copy of your advertisment must lead the reader through a series of disarmingly 
+\section{Test für Abstand der Sektion} 
+simple thoughts. All your \ac{sup.}arguments must be communicated with simplicity and charm. And in such a way that the reader will read on. (After all, that’s a reader’s job: to read, isn’t it?) And by the time your readers have reached this point in the finished copy, you will have convinced them that you not only respect their intelligence, but you also understand their needs as consumers. As a result of which, your advertis
+\subsection{Test für den Subsectionabstand}
+simple thoughts. All your supporting arguments must be communicated with simplicity and charm. And in such a way that the reader will read on. (After all, that’s a reader’s job: to read, isn’t it?) And by the time your readers have reached this point in the finished copy, you will have convinced them that you not only respect their intelligence, but you also understand their needs as consumers. As a result of which, your advertis
+
+\chapter[Zusammenfassung]{Zusammenfassung und Ausblick \\\hspace{5mm}( für mehrzeilige Titel)}
+Texte, die eine \ac{Abk.} enthalten, die nicht im Duden steht, sollten ein \acl{Abk.}sverzeichnis haben. Eine \ac{Abk.}, die nicht verwendet wird, steht auch nicht im \acl{Abk.}sverzeichnis.
+
+
+
+\appendix
+
+\include{Inhalt/Anhang}
+
+\include{Inhalt/Abkuerzungsverzeichnis}
+
+%\bibliographystyle{IEEEtran}
+\bibliographystyle{alpha}
+\bibliography{Inhalt/literatur}
+
+% Bitte noch Index anhängen (kommt unter Linux zu Fehlermeldungen)
+%\input{Inhalt/index}
+
+%bitte Lebenslauf anhängen !!!
+% kommt unter Linux zu Fehlermeldungen
+\input{Inhalt/cvalt}
+
+
+
+\end{document}
+
+
+
+ 
