@@ -47,10 +47,10 @@ class CostFunction:
         return cost
         
     def cost_dist_track_speed(self, x):
-        n = x.size/6
+        n = x.size/8
         cost = 0.0
         for i in range(0,n,1):
-            cost = cost + 0.3 - 0.3 * x[i*6 +2]/34.0 
+            cost = cost + 0.3 - 0.3 * x[i*8 +2]/34.0 
         return cost
         
     def cost_dist_track_speed_casadi(self, x):
@@ -75,7 +75,7 @@ class CostFunction:
                 cost = cost + 0.3 - 0.3 * x[i*6 +2]/34.0 
             return cost
         
-        gradient, hessian = gh(cost_dist_track_speed)
+        #gradient, hessian = gh(cost_dist_track_speed)
         return gradient  
     
     def cost_dist_origin(self, X):

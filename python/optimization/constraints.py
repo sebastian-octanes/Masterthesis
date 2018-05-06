@@ -17,27 +17,27 @@ class Constraints:
         
     def constraint_fix_init_state(self, x):
         """constraints the first 4 values to not be changed as of initial state"""
-        ceq = x[0:4] - self.initState
+        ceq = x[0:6] - self.initState
         return ceq
     
     
     """always use this constraint in combination with the ineq_constraint_vehicle_model constraint as it limits the max steering angle possible depending on speed"""
     def constraint_vehicle_model(self, x):
-        N = x.size/6 -1
+        N = x.size/8 -1
         ceq = np.zeros(N*4)
         for i in range(0,N,1):
-            current_State = x[i*6: (i+1)*6]
-            ceq[i*4: (i+1)*4] = x[(i+1)*6: (i+1)*6 + 4] - self.vehicleModel.compute_next_state(current_State)		
+            current_State = x[i*8: (i+1)*8]
+            ceq[i*4: (i+1)*4] = x[(i+1)*8: (i+1)*8 + 4] - self.vehicleModel.compute_next_state(current_State)		
         #return an array of 0= Xnext_state - model(Xnow_state)	
         return ceq
 
     """ineq constraints always have to be positive"""    
     def ineq_constraint_vehicle_model(self, x):
-        N = x.size/6 -1
+        N = x.size/8 -1
         ineq = np.zeros(N*2)
         for i in range(0,N,1):
-            beta = np.arctan((self.vehicleModel.lr/(self.vehicleModel.lf +self.vehicleModel.lr)) * np.tan(x[i*6 +5]))          
-            beta_max = np.arctan((self.vehicleModel.lf + self.vehicleModel.lr) * self.vehicleModel.max_lat_acc *0.25 / x[i*6 +2]**2)            
+            beta = np.arctan((self.vehicleModel.lr/(self.vehicleModel.lf +self.vehicleModel.lr)) * np.tan(x[i*8 +7]))          
+            beta_max = np.arctan((self.vehicleModel.lf + self.vehicleModel.lr) * self.vehicleModel.max_lat_acc *0.25 / x[i*8 +2]**2)            
             ineq[i*2] = -beta + beta_max
             ineq[i*2 +1] = beta + beta_max
         return ineq
@@ -45,10 +45,10 @@ class Constraints:
         
     
     def ineq_constraint_vehicle_bounds_set_tangent_points(self, X0):
-        N = X0.size/6
+        N = X0.size/8
         self.vehicleBoundPoints = np.empty([N, 4, 2])
         for i in range(0,N,1):
-            p1 = np.array([X0[6*i], X0[6*i +1]])
+            p1 = np.array([X0[8*i], X0[8*i +1]])
             arc = self.raceTrack.get_spline_arc_pos(p1)         
             #left bound
             arc = self.raceTrack.get_bnd_left_spline_arc_pos(p1)
@@ -72,10 +72,10 @@ class Constraints:
             
         
     def ineq_constraint_vehicle_bounds(self, X):
-        N = X.size/6 
+        N = X.size/8 
         ineq = np.zeros(N*2)
         for i in range(1,N,1):
-            x = np.array([ X[i*6], X[i*6 + 1]])
+            x = np.array([ X[i*8], X[i*8 + 1]])
             #left bound: if point is right of left bound d = positive
             p1 = self.vehicleBoundPoints[i][0]            
             p2 = self.vehicleBoundPoints[i][1]

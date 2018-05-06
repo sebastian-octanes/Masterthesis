@@ -60,7 +60,7 @@ class SimulationEnvironment():
         self.init_track()
         self.init_state_vector()
         self.mpc_key_counter = 0
-        #self.init_mpc(20)
+        self.init_mpc(20)
         
   
     
@@ -87,6 +87,7 @@ class SimulationEnvironment():
         self.X0[5] = X[5]
         self.X0[6] = X[6]
         self.X0[7] = X[7]
+	print("X02", self.X0)
        
         
     def init_mpc(self, N):
@@ -94,15 +95,15 @@ class SimulationEnvironment():
         self.init_track()        
         self.costFunction = CostFunction(self.raceTrack)
         self.bnds = self.vehicleModel.get_bounds(N)
-        self.init_state_vector(N, [0, 0, 0, math.pi/2, 0, 0])
+        self.init_state_vector(N, [0, 0, 0.1, math.pi/2, 0, 0, 0, 0])
         print self.vehicleModel.get_dt()
-        self.constraints = Constraints(self.X0[:4], self.vehicleModel, self.raceTrack)
+        self.constraints = Constraints(self.X0[:6], self.vehicleModel, self.raceTrack)
         self.constraints.ineq_constraint_vehicle_bounds_set_tangent_points(self.X0)
         self.cons =({'type': 'eq', 'fun': self.constraints.constraint_fix_init_state}, 
                     {'type': 'eq', 'fun': self.constraints.constraint_vehicle_model},
                     {'type': 'ineq', 'fun': self.constraints.ineq_constraint_vehicle_model},
                     {'type': 'ineq', 'fun': self.constraints.ineq_constraint_vehicle_bounds})
-        self.jac = self.costFunction.cost_dist_track_speed_jac()
+        #self.jac = self.costFunction.cost_dist_track_speed_jac()
         self.computation_time = pygame.time.get_ticks()
         self.simulation_time = pygame.time.get_ticks()
         self.simulation_steps = 1
@@ -175,9 +176,9 @@ class SimulationEnvironment():
                 self.screen.set_at((int(self.carPath[i][0]*10 +150), -int(self.carPath[i][1]*10) +350), (speed, 255-speed, 0))
     
     def plot_predicted_path(self, x):
-        n = x.size/6   
+        n = x.size/8   
         for i in range (0, n, 1):
-            self.screen.set_at((int(x[i*6]*10 +150), -int(x[i*6 +1]*10) +350), (255,0,255))
+            self.screen.set_at((int(x[i*8]*10 +150), -int(x[i*8 +1]*10) +350), (255,0,255))
             
     def set_car_path(self):
         if(not self.mpcActive):
@@ -267,9 +268,9 @@ class SimulationEnvironment():
      
        
     def plot_track_bound_constraint(self, X):
-        N = X.size/6
+        N = X.size/8
         for i in range(0, N, 3):
-            arc = self.raceTrack.get_bnd_left_spline_arc_pos(X[i*6:i*6 + 2])
+            arc = self.raceTrack.get_bnd_left_spline_arc_pos(X[i*8:i*8 + 2])
             #left bound line
             tck, u = self.raceTrack.get_spline_tck_bnds_left()
             x,y = interpolate.splev(arc -0.004, tck ,der = 0)             
@@ -284,7 +285,7 @@ class SimulationEnvironment():
             pygame.draw.line(self.screen, (255,0,0), p3 , p4, 1)
     
             #right bound line
-            arc = self.raceTrack.get_bnd_right_spline_arc_pos(X[i*6: i*6 + 2])
+            arc = self.raceTrack.get_bnd_right_spline_arc_pos(X[i*8: i*8 + 2])
             tck, u = self.raceTrack.get_spline_tck_bnds_right()
             x,y = interpolate.splev(arc -0.004, tck ,der = 0)             
             p1 = np.array([x, y])        
@@ -324,6 +325,7 @@ class SimulationEnvironment():
                 #rotate car picture                 
                 #car_pic = pygame.transform.rotate(self.surf, self.X0[3] * 180/math.pi)
                 pic, rect = self.rotate(self.surf, rect, self.X0[3] * 180/math.pi)
+		print("self.X0", self.X0[0])
                 rect.center = [self.X0[0]*10 +150, - self.X0[1] *10 +350]
                 self.screen.blit(pic, rect)
                 
@@ -333,18 +335,20 @@ class SimulationEnvironment():
                 self.plot_car_path()
                 res = minimize(self.costFunction.cost_dist_track_speed, self.X0, method ='SLSQP',  bounds = self.bnds, constraints= self.cons, options={'ftol': 1e-4, 'disp':False})               
                 #compute movement of car later on real hardware this is piped to the actuators 
-                self.X0[0:4] = self.vehicleModel.compute_next_state_(res.x[0:6])
+                self.X0[0:6] = self.vehicleModel.compute_next_state_(res.x[0:8])
+		#self.X0[0:6] = self.vehicleModel.compute_next_state_long(self.X0[0:8])
+
                 #shift the state vector one step to the left and predict last step for constraint handling
-                self.X0[4:-6] = res.x[10:]
-                self.X0[-6:-2] = self.vehicleModel.compute_next_state_(self.X0[-12:-6])
+                self.X0[6:-8] = res.x[14:]
+                self.X0[-8:-2] = self.vehicleModel.compute_next_state_(self.X0[-16:-8])
                 self.constraints.ineq_constraint_vehicle_bounds_set_tangent_points(self.X0)
-                #print self.constraints.ineq_constraint_vehicle_bounds(self.X0)
+                #print self.costraints.ineq_constraint_vehicle_bounds(self.X0)
                                                
                 #self.raceTrack.set_new_vehicle_positon(self.X0[0:2])
                 #set new init_state for constraint                
-                self.constraints.set_initial_state(self.X0[0:4])                
+                self.constraints.set_initial_state(self.X0[0:6])                
                 self.set_car_path()
-                self.display_car_info(res.x[4], res.x[5])
+                self.display_car_info(res.x[6], res.x[7])
                 self.plot_predicted_path(res.x)
                 self.plot_track_bound_constraint(res.x)
                 self.display_simulation_info(res)
