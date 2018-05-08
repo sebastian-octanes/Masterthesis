@@ -227,7 +227,7 @@ function mapKeyToCarControl(keys, res, N)
 end
 
 
-function initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed)
+function initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed, trackWidth)
     startPose = VehicleModel.CarPose(-20,0,10, pi/2.0, 0, 0)
     stateVector = []
     start_=[startPose.x, startPose.y, startPose.x_d, startPose.psi, 0, 0, 0, 0]
@@ -239,7 +239,7 @@ function initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel,
     forwardPoint = RaceCourse.getForwardTrackPoint(itpTrack, evalPoints, N)
 
     mpc_struct = MPCStruct(N, 0, 0, 0, 0, 0)
-    mpc_struct = init_MPC(mpc_struct, N, dt, startPose, printLevel, max_speed)
+    mpc_struct = init_MPC(mpc_struct, N, dt, startPose, printLevel, max_speed, trackWidth)
     #mpc_struct = define_constraint_nonlinear_bycicle(mpc_struct)
     mpc_struct = define_constraint_kin_bycicle(mpc_struct)
     mpc_struct = define_constraint_start_pose(mpc_struct, startPose)
@@ -286,11 +286,11 @@ end_ = 10
 steps_ = 12
 
 lin = linspace(start_, end_, steps_)
-lin = [ 31, 32, 33, 34, 35, 36, 37, 39, 50]
+lin = [ 31, 32, 33, 34, 35, 36]
 for i in lin
     N = convert(UInt16, i)
     printLevel = 0
-    mpc_struct = initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel,max_speed)
+    mpc_struct = initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel,max_speed, trackWidth)
 
         #create CircularBuffer for tracking Vehicle Path
     carPathBuffer = CircularBuffer{VehicleModel.CarState}(400)
@@ -383,5 +383,3 @@ xlabel("Prediction Steps")
 ylabel("Distance Traveled")
 title("Distance Traveled Depending for Different Length of Prediction Horizon")
 ax = gca()
-
-#print("average :  $(average_time/steps)")

@@ -1,18 +1,18 @@
 module VehicleModel
 
 #vehicle geometry
-lf  = 1.09    # distance tire to COG
+lf  = 1.09   # distance tire to COG
 lr  = 0.9
-lb  = 1.99    #width of car
-Af  = 2.25
+lb  = 1.99   #width of car
+Af  = 1.5    #0.6 laut chip
 rad = 0.2    #radius of tires in m
 #mass= 600   #kg
-mass = 220  #car + driver
+mass = 220   #car + driver
 I  = 1000    # kgm²
 
 #values for longitudinal computation
-P_Engine= 40500  #Watt
-Cd      = 1.083   #drag coefficient
+P_Engine= 40500  #40500 Watt
+Cd      = 1.5    #1.5 laut chip drag coefficient
 rho     = 1.225  # air desity in kg/m^3
 Crr     = 0.014  #roll resistance coefficient
 Cf      = 70000  #N/rad
@@ -92,7 +92,13 @@ function createNewStateVector(sV, realCarStateVector, dt, N) # sV für stateVect
     return sV
 end
 
-function computeCarStepDynModel(carPose, res,  dt)
+function computeCarStepDynModelBase(carPose, res,  dt)
+        carControls = CarControls(res[7], res[8])
+        cP = dyn_model_base(carPose, carControls, dt)
+    return cP
+end
+
+function computeCarStepDynModelLong(carPose, res,  dt)
         carControls = CarControls(res[7], res[8])
         cP = dyn_model_enhanced_long(carPose, carControls, dt)
     return cP
@@ -211,6 +217,8 @@ function dyn_model_enhanced_long(carPose, carControl, dt)
     carPoseNew = CarPose(x_new, y_new, xd_new, psi_new, yd_new, psid_new)
     return carPoseNew
 end
+
+
 
 
 function dyn_model_enhanced_lat(carPose, carControl, dt)

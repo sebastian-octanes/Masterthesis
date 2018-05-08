@@ -227,7 +227,7 @@ function mapKeyToCarControl(keys, res, N)
 end
 
 
-function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed)
+function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed, trackWidth)
     stateVector = []
     start_=[startPose.x, startPose.y, startPose.x_d, startPose.psi, 0, 0, 0, 0]
     for i in 0:N
@@ -239,16 +239,16 @@ function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, 
     print("last TrackPoint", trackPoints)
     print("\nforwardPoint", forwardPoint)
     mpc_struct = MPCStruct(N, 0, 0, 0, 0, 0)
-    mpc_struct = init_MPC(mpc_struct, N, dt, startPose, printLevel, max_speed)
+    mpc_struct = init_MPC(mpc_struct, N, dt, startPose, printLevel, max_speed, trackWidth)
     #mpc_struct = define_constraint_nonlinear_bycicle(mpc_struct)
-    mpc_struct = define_constraint_linear_bycicle(mpc_struct)
+    mpc_struct = define_constraint_kin_bycicle(mpc_struct)
     mpc_struct = define_constraint_start_pose(mpc_struct, startPose)
-    #mpc_struct = define_constraint_tangents(mpc_struct, trackPoints)
-    #mpc_struct = define_constraint_max_search_dist(mpc_struct, trackPoints)
-    #mpc_struct = define_objective(mpc_struct)
+    mpc_struct = define_constraint_tangents(mpc_struct, trackPoints)
+    mpc_struct = define_constraint_max_search_dist(mpc_struct, trackPoints)
+    mpc_struct = define_objective(mpc_struct)
     #mpc_struct = define_objective_middle(mpc_struct)
     #mpc_struct = define_objective_minimize_dist(mpc_struct)
-    mpc_struct = define_objective_minimize_dist_soft_const(mpc_struct)
+    #mpc_struct = define_objective_minimize_dist_soft_const(mpc_struct)
     #mpc_struct = define_objective_minimize_dist_soft_const_ext(mpc_struct)
 
     #print("\nforward Point", forwardPoint)
@@ -278,17 +278,17 @@ startPose = VehicleModel.CarPose(0,0,VehicleModel.min_speed, pi/2, 0, 0)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(15, 4, 15, 0)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack2(trackWidth)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack3(trackWidth)
-#itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack4(trackWidth)
+itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack4(trackWidth)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrackCircle(trackWidth)
-itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrackStraight(trackWidth)
+#itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrackStraight(trackWidth)
 
 
 
-N = 15
+N = 80
 printLevel = 0
 dt = 0.05
-max_speed = 10
-mpc_struct = initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed)
+max_speed = 20
+mpc_struct = initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed, trackWidth)
 event = Event()
 window = RenderWindow("test", windowSizeX, windowSizeY)
 #create CircularBuffer for tracking Vehicle Path
@@ -321,14 +321,14 @@ while isopen(window)
 
     #predict last point and compute next state with vehicle model
     #realCarStateVector = VehicleModel.computeCarStepNonLinear(realCarStateVector, res, dt)
-    realCarStateVector = VehicleModel.computeCarStepLinearModel(realCarStateVector, res, dt)
+    realCarStateVector = VehicleModel.computeCarStepKinModel(realCarStateVector, res, dt)
     stateVector = VehicleModel.createNewStateVector(res, realCarStateVector, dt, N)
     update_start_point_from_pose(mpc_struct, realCarStateVector)
     evalPoints = RaceCourse.getSplinePositions(itpTrack, stateVector, N)
     trackPoints = RaceCourse.getTrackPoints(itpTrack, itpLeftBound, itpRightBound, evalPoints, N)
     forwardPoint = RaceCourse.getForwardTrackPoint(itpTrack, evalPoints, N)
-    print("\n position: ", realCarStateVector)
-    print("\nforward Point", forwardPoint)
+    #print("\n position: ", realCarStateVector)
+    #print("\nforward Point", forwardPoint)
     update_track_forward_point(mpc_struct, forwardPoint)
     update_track_points(mpc_struct, trackPoints)
 

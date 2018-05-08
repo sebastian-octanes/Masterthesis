@@ -21,6 +21,10 @@ for i in lin
 end
 
 
-plot(lin,y1)
-plot(lin,y2)
-plot(lin,y3)
+plot(lin,y1, label="linear")
+plot(lin,y2, label="simplified ")
+plot(lin,y3, label="exact")
+grid()
+legend(loc="lower right",fancybox="true")
+xlabel("Slip Angle in rad")
+ylabel("Lateral Force in N")

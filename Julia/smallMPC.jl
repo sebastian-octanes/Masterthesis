@@ -21,7 +21,7 @@ function init_MPC(mpc_struct, N_, dt, startPose, printLevel, max_speed, track_wi
      lbx = []
      ubx = []
      start = []
-     
+
      lbx_ = [-Inf, -Inf, VehicleModel.min_speed, -Inf, -Inf, -Inf,  -VehicleModel.min_throttle, -VehicleModel.max_steering_angle]
      ubx_ = [ Inf,  Inf, max_speed,               Inf,  Inf,  Inf,   VehicleModel.max_throttle,  VehicleModel.max_steering_angle]
      start_=[startPose.x, startPose.y, startPose.x_d, startPose.psi, startPose.y_d, startPose.psi_d, 0, 0]
@@ -260,7 +260,7 @@ end
 
 #changes the softconstraint to a softconstraint that has low cost as long as car stays on the track
 #for now it is not working very good
-function define_objective_minimize_dist_soft_const_ext(mpc_struct)
+function define_objective_minimize_dist_soft_const_ext(mpc_struct, a, b)
     m = mpc_struct.m
     x = mpc_struct.x
     N = mpc_struct.N
@@ -284,8 +284,8 @@ function define_objective_minimize_dist_soft_const_ext(mpc_struct)
     JuMP.register(m, :cost, 6, cost, autodiff=true)
     @NLexpression(m, soft_constraint, sum(cost(x[(i+1)*8 + 1], x[(i+1)*8 + 2], t[i*6 + 1], t[i*6 + 2], t[i*6 + 3], t[i*6 + 4]) for i in 2:5:N))
 
-    a= 10
-    b = 1
+    #a= 10
+    #b = 1
     @NLobjective(m, Min, a*min_dist + b*soft_constraint)
     return mpc_struct
 end

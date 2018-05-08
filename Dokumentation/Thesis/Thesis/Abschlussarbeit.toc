@@ -31,5 +31,5 @@
 \contentsline {subsection}{\numberline {6.1.1}Test f\IeC {\"u}r den Subsectionabstand}{17}{subsection.6.1.1}
 \contentsline {chapter}{\numberline {7}Zusammenfassung}{18}{chapter.7}
 \contentsline {chapter}{\numberline {A}Anhang}{19}{appendix.A}
-\contentsline {chapter}{Abk\IeC {\"u}rzungsverzeichnis}{20}{chapter*.21}
-\contentsline {chapter}{Literaturverzeichnis}{21}{chapter*.22}
+\contentsline {chapter}{Abk\IeC {\"u}rzungsverzeichnis}{20}{chapter*.19}
+\contentsline {chapter}{Literaturverzeichnis}{21}{chapter*.20}

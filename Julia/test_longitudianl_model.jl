@@ -244,7 +244,7 @@ function mapKeyToCarControl(keys, res, N)
 end
 
 
-function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed)
+function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed, trackWidth)
     stateVector = []
     start_=[startPose.x, startPose.y, startPose.x_d, startPose.psi, 0, 0, 0, 0]
     for i in 0:N
@@ -256,7 +256,7 @@ function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, 
     print("last TrackPoint", trackPoints)
     print("\nforwardPoint", forwardPoint)
     mpc_struct = MPCStruct(N, 0, 0, 0, 0, 0)
-    mpc_struct = init_MPC(mpc_struct, N, dt, startPose, printLevel, max_speed)
+    mpc_struct = init_MPC(mpc_struct, N, dt, startPose, printLevel, max_speed, trackWidth)
     #mpc_struct = define_constraint_nonlinear_bycicle(mpc_struct)
     mpc_struct = define_constraint_kin_bycicle(mpc_struct)
     mpc_struct = define_constraint_start_pose(mpc_struct, startPose)
@@ -278,7 +278,7 @@ windowSizeMeterY = 50
 scaleX = windowSizeX/windowSizeMeterX
 scaleY = windowSizeY/windowSizeMeterY
 
-positionOffsetMeterX = 20
+positionOffsetMeterX = 10
 positionOffsetMeterY = 25
 
 radius = 15
@@ -300,7 +300,7 @@ printLevel = 0
 dt = 0.05
 max_speed = 140
 
-mpc_struct = initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed)
+mpc_struct = initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed, trackWidth)
 event = Event()
 window = RenderWindow("test", windowSizeX, windowSizeY)
 #create CircularBuffer for tracking Vehicle Path
@@ -333,7 +333,8 @@ while isopen(window)
     res = mapKeyToCarControl(keys, res, N)
 
     #realCarStateVector = VehicleModel.computeCarStepKinModel(realCarStateVector, res, dt)
-    realCarStateVector = VehicleModel.computeCarStepDynModel(realCarStateVector, res, dt)
+    #realCarStateVector = VehicleModel.computeCarStepDynModelBase(realCarStateVector, res, dt)
+    realCarStateVector = VehicleModel.computeCarStepDynModelLong(realCarStateVector, res, dt)
 
     stateVector = VehicleModel.createNewStateVector(res, realCarStateVector, dt, N)
     update_start_point_from_pose(mpc_struct, realCarStateVector)

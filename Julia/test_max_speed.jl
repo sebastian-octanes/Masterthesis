@@ -253,7 +253,7 @@ function mapKeyToCarControl(keys, res, N)
 end
 
 
-function initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed)
+function initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed, track_width)
     startPose = VehicleModel.CarPose(-20,0,0.1,pi/2, 0, 0)
     stateVector = []
     start_=[startPose.x, startPose.y, startPose.x_d, startPose.psi, 0, 0, 0, 0]
@@ -265,15 +265,15 @@ function initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel,
     forwardPoint = RaceCourse.getForwardTrackPoint(itpTrack, evalPoints, N)
 
     mpc_struct = MPCStruct(N, 0, 0, 0, 0, 0)
-    mpc_struct = init_MPC(mpc_struct, N, dt, startPose, printLevel, max_speed)
+    mpc_struct = init_MPC(mpc_struct, N, dt, startPose, printLevel, max_speed, track_width)
     #mpc_struct = define_constraint_nonlinear_bycicle(mpc_struct)
     mpc_struct = define_constraint_kin_bycicle(mpc_struct)
     mpc_struct = define_constraint_start_pose(mpc_struct, startPose)
-    mpc_struct = define_constraint_tangents(mpc_struct, trackPoints)
-    mpc_struct = define_constraint_max_search_dist(mpc_struct, trackPoints)
-    mpc_struct = define_objective(mpc_struct)
+    #mpc_struct = define_constraint_tangents(mpc_struct, trackPoints)
+    #mpc_struct = define_constraint_max_search_dist(mpc_struct, trackPoints)
+    #mpc_struct = define_objective(mpc_struct)
     #mpc_struct = define_objective_middle(mpc_struct)
-    #mpc_struct = define_objective_minimize_dist(mpc_struct)
+    mpc_struct = define_objective_minimize_dist(mpc_struct)
     #mpc_struct = define_objective_minimize_dist_soft_const(mpc_struct,2, 1)
     mpc_struct = update_track_forward_point(mpc_struct, forwardPoint)
 
@@ -293,7 +293,7 @@ positionOffsetMeterY = 25
 trackWidth = 3
 
 keys = KeyControls(0,0,0,0,0)
-carPose = VehicleModel.CarPose(-20,0,0.1,pi/2, 0, 0)
+carPose = VehicleModel.CarPose(-20,0,1,pi/2, 0, 0)
 
 #define which racecourse should be used
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(15, 4, 15, 0)
@@ -301,7 +301,7 @@ carPose = VehicleModel.CarPose(-20,0,0.1,pi/2, 0, 0)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack3(trackWidth)
 itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrackUUTurn(trackWidth)
 
-n = 10
+n = 30
 event = Event()
 window = RenderWindow("test", windowSizeX, windowSizeY)
 printLevel = 0
@@ -310,15 +310,15 @@ N = 20
 spline_pos =[]
 avg_deviation =[]
 
-start_ = 2
-end_ = 7
+start_ = 10
+end_ = 17
 steps_ = 6
 
 lin = linspace(start_, end_, steps_)
 for i in lin
     max_speed = i
     deviation =[]
-    mpc_struct = initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed)
+    mpc_struct = initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed, trackWidth)
 
         #create CircularBuffer for tracking Vehicle Path
     carPathBuffer = CircularBuffer{VehicleModel.CarState}(400)
@@ -333,7 +333,7 @@ for i in lin
     #lapTimeActive needed for timer
     lapTimeActive = false
     steps = 0
-    realCarStateVector = VehicleModel.CarPose(-20,0,0.01,pi/2,0,0)
+    realCarStateVector = VehicleModel.CarPose(-20,0,1,pi/2,0,0)
     trackVehicleControls = []
 
     steps = 0
@@ -352,8 +352,8 @@ for i in lin
         res = mapKeyToCarControl(keys, res, N)
 
         #predict last point and compute next state with vehicle model
-        #realCarStateVector = VehicleModel.computeCarStepDynModel(realCarStateVector, res, dt)
-        realCarStateVector = VehicleModel.computeCarStepKinModel(realCarStateVector, res, dt)
+        realCarStateVector = VehicleModel.computeCarStepDynModelBase(realCarStateVector, res, dt)
+        #realCarStateVector = VehicleModel.computeCarStepKinModel(realCarStateVector, res, dt)
 
         trackVehicleControls = vcat(trackVehicleControls, res[7], res[8])
         stateVector = VehicleModel.createNewStateVector(res, realCarStateVector, dt, N)
