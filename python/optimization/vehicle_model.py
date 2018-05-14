@@ -31,7 +31,7 @@ class VehicleModel:
     Crr     = 0.014  #roll resistance coefficient
     Af      = 2.25   #m²
     mu	    = 0.0027   #roll resistance
-    max_speed = 100/3.6 # 120km/h /3.6 = m/s
+    max_speed = 30/3.6 # 120km/h /3.6 = m/s
     max_long_acc = 10   #m/s**2 longitudinal acceleration max
     max_long_dec = 10   #m/s**2 longitudinal deceleration max
     max_lat_acc = 20  # 2g lateral acceleration
@@ -55,7 +55,7 @@ class VehicleModel:
 
     """ this compute_next_state function is used for the equality constraint as it does not limit the max_beta. max_beta will be limited with an inequality constraint"""
     def compute_next_state(self, current_state):
- 	x,y,v,orient,acc,steer = current_state
+ 	x,y,v,orient, y_d, psi_d, acc,steer = current_state
         Xnext = np.zeros(4)
         beta = np.arctan((self.lr/(self.lf +self.lr)) * math.tan(steer))
         Xnext[0] = x + v * self.dt * math.cos(orient + beta)
@@ -247,9 +247,9 @@ class VehicleModel:
     """ use this function to compute the next state in the simulation environment only! here the max_beta will be limited in the function hence it is not usable for the mpc controller.
         use compute_next_state for the mpc controller"""
     def compute_next_state_(self, current_state):
-        x,y,v,orient,acc,steer = current_state
+        x,y,v,orient, y_d, psi_d, acc,steer = current_state
 
-        Xnext = np.zeros(4)
+        Xnext = np.zeros(6)
         beta = np.arctan((self.lr/(self.lf +self.lr)) * math.tan(steer))
         max_beta =  np.arctan(1.0/2 * (self.lf + self.lr) * self.max_lat_acc / v**2)
         if(beta >= 0):
@@ -270,11 +270,15 @@ class VehicleModel:
     def get_bounds(self, N):
 
         #define bounds fitting to N and Statevector
-        bnds = ((None, None),(None, None),
-                (0, self.max_speed),(None, None),
+        #bnds = ((None, None),(None, None),
+        #        (0, self.max_speed),(None, None),
+        #        (-self.max_long_dec, self.max_long_acc),
+        #        (-self.max_steering_angle, self.max_steering_angle))*(N + 1)
+	bnds = ((None, None),(None, None),
+                (0, self.max_speed),(None, None),(None, None),(None, None),
                 (-self.max_long_dec, self.max_long_acc),
-                (-self.max_steering_angle, self.max_steering_angle))*(N + 1)
-        return bnds
+                (-self.max_steering_angle, self.max_steering_angle))*(N + 1)        
+	return bnds
 
     def set_bounds_casadi(self, x, opti):
         opti.subject_to(opti.bounded(0, x[2::6], self.max_speed))

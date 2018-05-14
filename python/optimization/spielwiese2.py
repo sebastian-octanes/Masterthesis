@@ -1,11 +1,15 @@
-from cost_function import CostFunction
-from race_track import RaceTrack
-from vehicle_model import VehicleModel
-import numpy as np
+
 from matplotlib import pyplot as plt
+import numpy as np
+from vehicle_model import VehicleModel
 
-track = RaceTrack()
-cost = CostFunction(track)
-cost.print_cost_func(1)
-
+vehicleModel = VehicleModel(0.01)
+tmp = np.linspace(-2, 2, 200)
+tmp2 = []
+for i in range(0,200,1):
+    tmp2.append(vehicleModel.pacejka_tire_model_complex(tmp[i], front = True))
+print(len(tmp))
+print(len(tmp2))
+plt.plot(tmp[:], tmp2[:])
+plt.show()
 
