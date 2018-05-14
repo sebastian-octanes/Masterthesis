@@ -24,10 +24,13 @@ class Constraints:
     """always use this constraint in combination with the ineq_constraint_vehicle_model constraint as it limits the max steering angle possible depending on speed"""
     def constraint_vehicle_model(self, x):
         N = x.size/8 -1
-        ceq = np.zeros(N*4)
+        ceq = np.zeros(N*6)
+        #ceq = np.zeros(N*4)
         for i in range(0,N,1):
             current_State = x[i*8: (i+1)*8]
-            ceq[i*4: (i+1)*4] = x[(i+1)*8: (i+1)*8 + 4] - self.vehicleModel.compute_next_state(current_State)		
+            #ceq[i*4: (i+1)*4] = x[(i+1)*8: (i+1)*8 + 4] - self.vehicleModel.compute_next_state(current_State)	
+	    ceq[i*6: (i+1)*6] = x[(i+1)*8: (i+1)*8 + 6] - self.vehicleModel.compute_next_state_long_(current_State)		
+	
         #return an array of 0= Xnext_state - model(Xnow_state)	
         return ceq
 
