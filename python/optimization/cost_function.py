@@ -20,10 +20,17 @@ class CostFunction:
         k2 = 2.5
         return math.e**(alpha*(k1 + x)) + math.e**(-alpha*(k2 + x))
 
-    def cost_func2(self, x):
-        alpha = 1
+    def cost_func1_(self, x):
+        alpha = 10
         k1 = -2.5
         k2 = 2.5
+        return math.e**(alpha*(k1 + x))
+
+
+    def cost_func2(self, x):
+        alpha = 1
+        k1 = 2.5
+        k2 = -2.5
         return math.fabs(alpha/(k1 - x) + alpha/(k2 - x))
    
      
@@ -95,7 +102,7 @@ class CostFunction:
             if(function == 0):
                 cost[i] = self.cost_func0(space[i])
             if(function == 1):
-                cost[i] = self.cost_func1(space[i])
+                cost[i] = self.cost_func1_(space[i])
             if(function == 2):
                 cost[i] = self.cost_func2(space[i])
         plt.plot(space, cost)
