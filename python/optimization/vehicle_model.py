@@ -68,45 +68,23 @@ class VehicleModel:
 
     def compute_next_state_long_(self, current_state):
 	#x,y,v,psi,acc,phi = current_state
-	#print("current_state", current_state)
+	print("current_state", current_state)
   	X, Y, x_d, psi, y_d, psi_d, acc, phi = current_state
 
 	#long
-	Faero = 1/2.0 * self.rho * self.Cd * self.Af * x_d**2
-	Fzf   = self.m*self.g*self.lf / (self.lf + self.lr)
-	Fzr   = self.m*self.g*self.lr / (self.lf + self.lr)
-	Rxf   = self.mu * Fzf
-	Rxr   = self.mu * Fzr
-	if (fabs(x_d) <= 0.1):
-		Rxf = 0
-		Rxr = 0
-	#as long as state vector uses acc recompute it to power 
-	power = self.P_engine * acc/10.0
-	Fxl   = power * 1000/fabs(x_d)
-
-	if(Fxl > self.F_long_max):
-		Fxl = self.F_long_max
-	if(Fxl < -self.F_long_max):
-		Fxl = -self.F_long_max
-	if(x_d >= 0):
-		x_d = x_d + self.dt * ((Fxl - Rxf - Rxr -Faero)/self.m)
-	elif(x_d < 0):
-		x_d = x_d + self.dt * ((Fxl + Rxf + Rxr +Faero)/self.m)
-
+	Frx = self.F_long_max * acc/10.0
+	
 	#lat
 	theta_f = math.atan((y_d + self.lf * psi_d)/ x_d)
 	theta_r = math.atan((y_d - self.lr * psi_d)/ x_d)
-        print("theta_r", theta_r)
-	print("theta_f", theta_f)
-	#Fyf  = 2 * self.Cf * ( phi - theta_f)
-	Fyf = self.pacejka_tire_model_f(phi - theta_f)
-	#print("Fyf", Fyf)
-	#Fyr  = 2 * self.Cr * (-theta_r)
-	Fyr = self.pacejka_tire_model_b(-theta_r)
-	#print("Fyr", Fyr)	
-	y_d  = y_d + self.dt * ((Fyf + Fyr)/self.m - x_d * psi_d)
 
-	psi_d = psi_d + self.dt * (self.lf*Fyf - self.lr*Fyr)/self.I
+	Ffy = self.pacejka_tire_model_complex(phi - theta_f, front = True)
+	Fry = self.pacejka_tire_model_complex(- theta_r, front = False)
+
+	x_d = x_d + self.dt * (Frx - Ffy*sin(phi) + self.m*y_d*psi_d)*(1.0/self.m)  	
+	y_d = y_d + self.dt * (Fry + Ffy*cos(phi) - self.m*x_d*psi_d)*(1.0/self.m)
+
+	psi_d = psi_d + self.dt * (self.lf*Ffy*cos(phi) - self.lr*Fry)/self.I
 
 	psi = psi + self.dt * psi_d
 	X = X + self.dt * (x_d * cos(psi) - y_d *sin(psi))
@@ -217,7 +195,7 @@ class VehicleModel:
 		ya = self.yab
 		beta = self.betab
 		xm = self.xmb
-	print(ya/D)
+	#print(ya/D)
 	C = 1 + (1 - (2.0/math.pi))* np.arcsin(ya/D)
 	B = math.tan(beta)/(C*D)
 	E = (B * xm - math.tan(math.pi/(2.0*C)))/(B*xm - math.atan(B*xm))
@@ -275,7 +253,7 @@ class VehicleModel:
         #        (-self.max_long_dec, self.max_long_acc),
         #        (-self.max_steering_angle, self.max_steering_angle))*(N + 1)
 	bnds = ((None, None),(None, None),
-                (0, self.max_speed),(None, None),(None, None),(None, None),
+                (0.1, self.max_speed),(None, None),(None, None),(None, None),
                 (-self.max_long_dec, self.max_long_acc),
                 (-self.max_steering_angle, self.max_steering_angle))*(N + 1)        
 	return bnds

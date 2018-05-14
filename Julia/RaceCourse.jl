@@ -244,6 +244,7 @@ function buildRaceTrack4(trackWidth)
     track, leftBound, rightBound = RaceCourse.addRightTurn(3, 5, trackWidth, track, leftBound, rightBound)
     track, leftBound, rightBound = RaceCourse.addStraight(0, 4, trackWidth, track, leftBound, rightBound)
 
+
     x = length(track)/2
     step = 1/x
     t = 0:step:(1- step)
@@ -263,22 +264,27 @@ function buildRaceTrackUTurn(trackWidth)
     rightBound[1,1] = + trackWidth/2 -20
 
     track, leftBound, rightBound = RaceCourse.addStraight(0, 10, trackWidth, track, leftBound, rightBound)
+    print("\n left Bound", leftBound)
     track, leftBound, rightBound = RaceCourse.addRightTurn(0, 9, trackWidth, track, leftBound, rightBound)
+    print("\n left Bound", leftBound)
     track, leftBound, rightBound = RaceCourse.addStraight(1, 80, trackWidth, track, leftBound, rightBound)
+    print("\n left Bound", leftBound)
+
     track, leftBound, rightBound = RaceCourse.addRightTurn(1, 9, trackWidth, track, leftBound, rightBound)
     track, leftBound, rightBound = RaceCourse.addRightTurn(2, 9, trackWidth, track, leftBound, rightBound)
     track, leftBound, rightBound = RaceCourse.addStraight(3, 62, trackWidth, track, leftBound, rightBound)
     track, leftBound, rightBound = RaceCourse.addLeftTurn(1, 9, trackWidth, track, leftBound, rightBound)
     track, leftBound, rightBound = RaceCourse.addRightTurn(2, 9, trackWidth, track, leftBound, rightBound)
     track, leftBound, rightBound = RaceCourse.addRightTurn(3, 9, trackWidth, track, leftBound, rightBound)
+    print("\n track", track)
 
     x = length(track)/2
     step = 1/x
     t = 0:step:(1- step)
 
-    itpTrack = scale(interpolate(track, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
-    itpLeftBound = scale(interpolate(leftBound, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
-    itpRightBound = scale(interpolate(rightBound, (BSpline(Cubic(Natural())), NoInterp()), OnGrid()), t, 1:2)
+    itpTrack = scale(interpolate(track, (BSpline(Quadratic(Natural())), NoInterp()), OnCell()), t, 1:2)
+    itpLeftBound = scale(interpolate(leftBound, (BSpline(Quadratic(Natural())), NoInterp()), OnCell()), t, 1:2)
+    itpRightBound = scale(interpolate(rightBound, (BSpline(Quadratic(Natural())), NoInterp()), OnCell()), t, 1:2)
     return itpTrack, itpLeftBound, itpRightBound
 end
 
@@ -351,7 +357,7 @@ function buildRaceTrackStraight(trackWidth)
 
 
     track, leftBound, rightBound = RaceCourse.addStraight(1, 150, trackWidth, track, leftBound, rightBound)
-
+    track, leftBound, rightBound = RaceCourse.addRightTurn(0, 0.1, trackWidth, track, leftBound, rightBound)
     x = length(track)/2
     step = 1/x
     t = 0:step:(1- step)
@@ -531,7 +537,7 @@ end
 
 function plotRaceTrack(itpTrack, leftBound, rightBound)
 
-    tfine = 0:.001:1
+    tfine = 0:.0001:1
 
     xsT, ysT = [itpTrack[t,1] for t in tfine], [itpTrack[t,2] for t in tfine]
     xsO, ysO = [leftBound[t,1] for t in tfine], [leftBound[t,2] for t in tfine]

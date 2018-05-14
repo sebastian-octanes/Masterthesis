@@ -196,6 +196,8 @@ function dyn_model_enhanced_long(carPose, carControl, dt)
         Fbx = VehicleModel.F_long_max * carControl.throttle/10.0
     end
     #base model from here
+    #Ffy = Df * slip_angle_f / xmf
+    #Fby = Db * slip_angle_b / xmb
     Ffy = pacejka_tire_model_linear(slip_angle_f, true)
     Fby = pacejka_tire_model_linear(slip_angle_b, false)
 

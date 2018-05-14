@@ -1,4 +1,5 @@
 include("smallMPC.jl")
+include("RaceCourse.jl")
 using PyPlot
 using Distributions
 #mpc_struct = MPCStruct(0,0,0)
@@ -27,5 +28,5 @@ areas = 10*ones(lin)
 scatter(lin,spline_pos,s=areas,alpha=1.0)
 =#
 
-itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrackUUTurn(trackWidth)
+itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrackUTurn(trackWidth)
 RaceCourse.plotRaceTrack(itpTrack, itpLeftBound, itpRightBound)

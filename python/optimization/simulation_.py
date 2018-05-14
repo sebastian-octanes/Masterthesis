@@ -60,7 +60,7 @@ class SimulationEnvironment():
         self.init_track()
         self.init_state_vector()
         self.mpc_key_counter = 0
-        self.init_mpc(20)
+        self.init_mpc(5)
         
   
     
@@ -101,7 +101,7 @@ class SimulationEnvironment():
         self.constraints.ineq_constraint_vehicle_bounds_set_tangent_points(self.X0)
         self.cons =({'type': 'eq', 'fun': self.constraints.constraint_fix_init_state}, 
                     {'type': 'eq', 'fun': self.constraints.constraint_vehicle_model},
-                    {'type': 'ineq', 'fun': self.constraints.ineq_constraint_vehicle_model},
+                    #{'type': 'ineq', 'fun': self.constraints.ineq_constraint_vehicle_model},
                     {'type': 'ineq', 'fun': self.constraints.ineq_constraint_vehicle_bounds})
         #self.jac = self.costFunction.cost_dist_track_speed_jac()
         self.computation_time = pygame.time.get_ticks()
@@ -319,13 +319,13 @@ class SimulationEnvironment():
                 self.plot_car_path()
                 #plot racecar        
                 self.vehicleModel.set_dt(self.clock.get_time()/1000.0)
-                self.X0[0:6] = self.vehicleModel.compute_next_state_long(self.X0[0:8])
+                self.X0[0:6] = self.vehicleModel.compute_next_state_long_(self.X0[0:8])
                 self.display_car_info(self.X0[6], self.X0[7])
                 self.set_car_path()                
                 #rotate car picture                 
                 #car_pic = pygame.transform.rotate(self.surf, self.X0[3] * 180/math.pi)
                 pic, rect = self.rotate(self.surf, rect, self.X0[3] * 180/math.pi)
-		print("self.X0", self.X0[0])
+		#print("self.X0", self.X0[0])
                 rect.center = [self.X0[0]*10 +150, - self.X0[1] *10 +350]
                 self.screen.blit(pic, rect)
                 
@@ -343,7 +343,7 @@ class SimulationEnvironment():
                 self.X0[-8:-2] = self.vehicleModel.compute_next_state_(self.X0[-16:-8])
                 self.constraints.ineq_constraint_vehicle_bounds_set_tangent_points(self.X0)
                 #print self.costraints.ineq_constraint_vehicle_bounds(self.X0)
-                                               
+                print("X0", self.X0[0:8])                           
                 #self.raceTrack.set_new_vehicle_positon(self.X0[0:2])
                 #set new init_state for constraint                
                 self.constraints.set_initial_state(self.X0[0:6])                
