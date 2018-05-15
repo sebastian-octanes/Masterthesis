@@ -27,13 +27,28 @@
 \pagenumbering{arabic} %Seitennummerierung arabisch
 \setcounter{page}{1}   %1. Kapitel soll mit Seitenzahl 1 beginnen
 %------------------------------------------------------------------
-\chapter{Einleitung}
-\section{Motivation}
-Die Motivation für die hier vorgestellte Masterarbeit basiert auf der Entwicklung eines Autonomen Rennautos für die Formula Stundent. 
+
+\chapter{Autonomes Fahren}
+Gegen Ende des Jahres 2018, also nur wenigen Monaten nachdem diese Zeilen verfasst werden, wird Alphabets Tochterunternehmen Waymo die ersten voll autonomen (Level 5) Fahrzeuge als Taxis in Phoenix in Betrieb nehmen \cite{Waymo}. Dieser historische Moment wird eine Flut an neuen Assistenzsystem nach sich ziehen die in wenigen Jahren das Straßenbild verändern werden. \\
+Während sich die traditionellen Automobilhersteller aktuell auf Assistenzsysteme im Bereich von Level zwei und drei konzentrieren, wollen Unternehmen wie Google, GM und Uber alle Zwischenschritte überspringen und direkt voll autonom fahren um fahrerlose Taxiflotten aufzubauen. Dies ist nach aktuellem Stand der Technik jedoch nur kostengünstig und mit Rechnerplattformen welche in bestehende Fahrzeugkonzepte integrierbar sind realisierbar wenn die Fahrzeuge auf eine genaue Umgebungskarte zurückgreifen können. Erst mit Echtzeitupdates und bei einer Genauigkeit von +-10 cm des Kartenmaterials können Fahrzeug auch im innerstädtischen Verkehr autonom fahren \cite{SEIF2016159}. 
+Nicht nur im normalen Straßenverkehr ist ein möglichst genaues Wissen der Umgebung von Vorteil, auch bei autonomen Rennserien spielt die Kenntnis über den Rennkurs eine große Rolle. Kann das Fahrzeug nur auf Sicht fahren muss die Geschwindigkeit so gewählt werden dass das innerhalb der Sichtweite angehalten werden kann. Außerdem ist das berechnen einer idealen Trajektorie nur möglich wenn die gesamte Strecke bekannt ist.
+
+
+\section{Formula Student Driverless}
+
 Die Formula Student ist ein Ingenieurswettbewerb für Studenten. Er hat seine Wurzeln in den USA im Jahre 1981 und wurde ab 1998 auch in Europa ausgetragen.
 Dass der Wettbewerb sehr Erfolgreich ist, machen nicht nur die inzwischen fast 700 Teams Weltweit \cite{FsWorldRank:1} deutlich, sondern auch die Anzahl der verschiedenen Events die überall auf der Welt im Sommer stattfinden. Seit dem Jahr 2017 gibt es neben der ursprünglichen Combustion-Klasse und der vor 10 Jahren eingeführten Electric-Klasse auch noch die Driverless-Klasse.
 In dieser wird von den Teams ein Altfahrzeug um ein Sensorsystem sowie Aktoren so erweitert, dass das Rennauto die Kurse autonom bestreiten kann.
-Die dynamischen Disziplinen, in denen das Fahrzeug selbstständig fährt, sind hierbei: Acceleration, Skidpad (liegende 8) und Trackdrive. Letzterer ist ein bis zu 800m langer Kurs welcher von den Teams ohne Vorwissen möglichst schnell und fehlerfrei 11 mal durchfahren werden muss. Gerade nach der ersten Runde, nachdem eine detaillierte Karte der Strecke erstellt wurde, gilt es die Algorithmen für die Fahrzeuge so auszulegen dass möglichst kurze Rundenzeiten gefahren werden. An diesem Punkt soll die hier ausgeführte Arbeit anknüpfen.
+Der Wettbewerb ist unterteilt in Dynamische und Statische Events. In letzteren werden verschiedene Präsentationen von den Teams verlangt. Diese beziehen sich auf die technische Realisierung, Softwaredesign, Kostenaufstellung und ein Businessplan in dem die Teams ein Konzept erstellen müssen wie man das gebaute Fahrzeug über eine kleine Massenfertigung gewinnbringend verkaufen kann.
+
+Die dynamischen Disziplinen, in denen das Fahrzeug selbstständig fährt, sind hierbei:
+\begin{itemize}
+	\item Acceleration \\ 75 Meter Beschleunigungsstreifen. Punkte werden nach der Zeit nicht nach der Endgeschwindigkeit vergeben.
+	\item Skidpad \\ eine liegende 8 bei an der Engstelle eingefahren wird und jeweils 2 rechte und 2 linke Runden gefahren werden. Jeweils die zweite Runde wird gezählt. Die Abmaße sind exakt vorgegeben.
+	\item Trackdrive \\ ein bis zu 800 Meter langer Kurs mit maximal 80 Meter langen geraden und Kurven mit minimalem Innenradius von 9 Metern. Es werden 11 runden gefahren und die Teams erhalten im Vornherein keine Möglichkeit Messungen am Kurs vorzunehmen.
+\end{itemize}
+
+Für diese Arbeit ist vorallem der Trackdrive von Interesse. Es wird davon ausgegangen dass das Fahrzeug bereits die erste Runde absolviert, und sich damit eine genaue Karte des Rennkurses erstellt hat. Die Messungen und Vergleiche beziehen sich damit auch immer auf einen Kurs der so (wenn auch nicht so lang) in einem FS-Event für die Driverless Fahrzeuge vorkommen könnte.
  
 
 \section{}

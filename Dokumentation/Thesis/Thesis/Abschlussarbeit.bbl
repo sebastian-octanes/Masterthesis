@@ -1,8 +1,14 @@
-\begin{thebibliography}{FsW}
+\begin{thebibliography}{SH16}
 
 \bibitem[FsW]{FsWorldRank:1}
 Formula student - world ranking lists.
 \newblock \url{https://mazur-events.de/fs-world/}.
 \newblock Accessed on 2018-05-14.
+
+\bibitem[SH16]{SEIF2016159}
+Heiko~G. Seif and Xiaolong Hu.
+\newblock Autonomous driving in the icity—hd maps as a key challenge of the
+  automotive industry.
+\newblock {\em Engineering}, 2(2):159 -- 162, 2016.
 
 \end{thebibliography}
