@@ -29,9 +29,11 @@
 %------------------------------------------------------------------
 
 \chapter{Autonomes Fahren}
+
+\section{Stand der Technik}
 Gegen Ende des Jahres 2018, also nur wenigen Monaten nachdem diese Zeilen verfasst werden, wird Alphabets Tochterunternehmen Waymo die ersten voll autonomen (Level 5) Fahrzeuge als Taxis in Phoenix in Betrieb nehmen \cite{Waymo}. Dieser historische Moment wird eine Flut an neuen Assistenzsystem nach sich ziehen die in wenigen Jahren das Straßenbild verändern werden. \\
 Während sich die traditionellen Automobilhersteller aktuell auf Assistenzsysteme im Bereich von Level zwei und drei konzentrieren, wollen Unternehmen wie Google, GM und Uber alle Zwischenschritte überspringen und direkt voll autonom fahren um fahrerlose Taxiflotten aufzubauen. Dies ist nach aktuellem Stand der Technik jedoch nur kostengünstig und mit Rechnerplattformen welche in bestehende Fahrzeugkonzepte integrierbar sind realisierbar wenn die Fahrzeuge auf eine genaue Umgebungskarte zurückgreifen können. Erst mit Echtzeitupdates und bei einer Genauigkeit von +-10 cm des Kartenmaterials können Fahrzeug auch im innerstädtischen Verkehr autonom fahren \cite{SEIF2016159}. 
-Nicht nur im normalen Straßenverkehr ist ein möglichst genaues Wissen der Umgebung von Vorteil, auch bei autonomen Rennserien spielt die Kenntnis über den Rennkurs eine große Rolle. Kann das Fahrzeug nur auf Sicht fahren muss die Geschwindigkeit so gewählt werden dass das innerhalb der Sichtweite angehalten werden kann. Außerdem ist das berechnen einer idealen Trajektorie nur möglich wenn die gesamte Strecke bekannt ist.
+Nicht nur im normalen Straßenverkehr ist ein möglichst genaues Wissen der Umgebung von Vorteil, auch bei autonomen Rennserien spielt die Kenntnis über den Rennkurs eine große Rolle. Kann das Fahrzeug nur auf Sicht fahren muss die Geschwindigkeit so gewählt werden, dass innerhalb der Sichtweite angehalten werden kann. Außerdem ist das berechnen einer idealen Trajektorie nur möglich wenn die gesamte Strecke bekannt ist.
 
 
 \section{Formula Student Driverless}
@@ -48,218 +50,133 @@ Die dynamischen Disziplinen, in denen das Fahrzeug selbstständig fährt, sind h
 	\item Trackdrive \\ ein bis zu 800 Meter langer Kurs mit maximal 80 Meter langen geraden und Kurven mit minimalem Innenradius von 9 Metern. Es werden 11 runden gefahren und die Teams erhalten im Vornherein keine Möglichkeit Messungen am Kurs vorzunehmen.
 \end{itemize}
 
-Für diese Arbeit ist vorallem der Trackdrive von Interesse. Es wird davon ausgegangen dass das Fahrzeug bereits die erste Runde absolviert, und sich damit eine genaue Karte des Rennkurses erstellt hat. Die Messungen und Vergleiche beziehen sich damit auch immer auf einen Kurs der so (wenn auch nicht so lang) in einem FS-Event für die Driverless Fahrzeuge vorkommen könnte.
+Für diese Arbeit ist vorallem der Trackdrive von Interesse. Es wird davon ausgegangen dass das Fahrzeug bereits die erste Runde absolviert, und sich damit eine genaue Karte des Rennkurses erstellt hat. Die Messungen und Vergleiche beziehen sich damit auch immer auf einen Kurs der so (wenn auch nicht so kurz) in einem FS-Event für die Driverless Fahrzeuge vorkommen könnte.
  
+\begin{figure}[hb!]
+	\caption{Zürichs FS-Driverless Fahrzeug im Jahr 2017 während des Trackdrive}
+	\includegraphics[width=400pt]{Abbildungen/amz-driverless-long.jpg}
+\end{figure}
 
-\section{}
 
 \chapter{Grundlagen}
 
 \section{Fahrzeugmodelle}
+Wie der Name Model Predictive Control schon verdeutlicht benötigt man eine Systembeschreibung des zu Regelnden Modells. Diese wird genutzt um zukünftige Zustände zu Berechnen und bildet damit einen wichtigen Bestandteil. Desto genauer die Beschreibung das realen System approximiert, desto besser ist die Vorhersage und damit auch die Regelung des Fahrzeugs.
+Im folgenden wird zuerst ein kinematisches Fahrzeugmodell eingeführt und dann zu einem dynamischen Modell erweitert.   
+
+\subsection{Kinematisches Modell}
+Unter gewissen Einschränkungen welche weiter unten beschrieben werden kann ein kinematisches Modell die Laterale und Longitudinale Bewegung eines Fahrzeuges mathematisch Beschreiben. In diesem sehr stark vereinfachten Modell werden keine wirkenden Kräfte berücksichtigt, sondern nur die geometrischen Beziehungen des Fahrzeuges genutzt um die Bewegung zu berechnen. \\
+Im ersten Schritt werden die jeweils an einer Achse verbundenen Räder zu einem einzigen Zusammengefasst \cite{BicycleModel}. Dies wird als Bicycle Modell bezeichnet und vereinfacht die Berechnungen erheblich. Obwohl auch für Hinterradlenkung möglich, wird im folgenden nur die Vorderradlenkung betrachtet da das Driverless Fahrzeug der Uni Erlangen nur über eine solche verfügt. Die Lenkwinkel welche durch das Bicycle Modell berechnet werden entsprechen nicht den Lenkwinkel am echten Fahrzeug. Die kurveninneren und kurvenäußeren Räder bewegen sich auf zwei Kreisen mit unterschiedlichen Radien, und damit auch verschiedenen Lenkwinkeln. Dies wird in Fahrzeugen durch die Ackermann Lenkung mechanisch abgebildet \cite{rajamani2011vehicle}.
+
+
+Die nichtlinearen zeitkontinuierlichen Gleichungen basieren auf \cite{rajamani2011vehicle, 7225830} und beschreiben das kinematische Modell bezüglich eines Inertialsystems (\ref{fig:kinmodel}),
+
+\begin{eqnarray}
+\ddot{x}   &= &v  \cos(\psi + \beta)\\
+\ddot{y}   &= &v  \sin(\psi + \beta)\\
+\dot{\psi} &= &\frac{v}{l_r} \sin(\beta) \\
+\dot{v}    &= &a \\
+\beta      &= &\arctan(\frac{l_r}{l_f + l_r} \tan(\varphi_f))
+\end{eqnarray}
+
+in dem \(x\) und \(y\) die Koordinaten des Schwerpunktes im Inertialsystem darstellen. 
+\(\varphi\) ist die Orientierung und \(v\) die Geschwindigkeit des Fahrzeugs. \(l_f\) und \(l_r\) sind die Abstände der vorderen (\(l_f)\) und hinteren (\(l_r)\) Achsen zum Schwerpunkt.
+Der Schwimmwinkel (\(\beta\)) ist der Winkel  zwischen der Bewegungsrichtung des Fahrzeugs im Schwerpunkt und der Fahrzeuglängsachse bei der Kurvenfahrt. Die Beschleunigung \(a\) bezieht sich ebenfalls auf den Schwerpunkt und zeigt immer in die gleiche Richtung wie die Geschwindigkeit. \\
+Die Parameter lassen sich in zwei Bereiche unterteilen:
+
+\begin{itemize}
+	\item Steuerparameter  \\
+			\(a\), \(\varphi\)
+	\item Zustandsgrößen \\
+			\(x\), \(y\), \(v\), \(\varphi\)
+	
+\end{itemize}
+
+
+Die Annahme eines kräftefreien Modells, bei dem das Vorderrad genau in die Richtung rollt in die es zeigt, ist nur bis etwa 5 m/s anwendbar \cite{rajamani2011vehicle}. Danach müssen die Kräfte welche die Reifen auf die Straße übertragen können mit betrachtet werden. Diese Kräfte werden dann im dynamischen Modell genutzt um eine genauere Vorhersage berechnen zu können.
+
+\begin{figure}[ht!]
+	\label{fig:kinmodel}
+	\caption{Kinematisches Modell}
+	\includegraphics[width=400pt]{Abbildungen/kin_bicycle.png}
+\end{figure}
+
+\subsection{Reifenmodell}
+Da die Reifen der einzige Kontaktpunkt zwischen Straße und Fahrzeug sind, beeinflussen sie ganz erheblich das Verhalten des Rennautos.
+Aus diesem Grund werden zuerst die Grundlagen des Reifenmodells vermittelt bevor das Dynamische Fahrzeugmodell eingeführt wird.
+
+Luft gefüllte Reifen haben nicht nur einen Kontaktpunkt mit der Straße sondern aufgrund von Verformung hervorgerufen durch vertikale Belastung einen Kontaktbereich. Alle Kräfte die auf den Reifen wirken gehen vom Mittelpunkt dieses Bereichs aus und lassen sich in drei Achsen aufteilen. Von Interesse für diese Arbeit ist die X-Achse welche in Laufrichtung und die Y-Achse welche in Richtung der Rotationsachse zeigt. Die jeweiligen Kräfte dazu werden als \(F_x\) und \(F_y\) bezeichnet.
+
+Die lateralen Kräfte welche zwischen Straße und Reifen entstehen hängen vom Schräglaufwinkel (slip angle) ab. Er ist definiert als der Winkel zwischen der Orientierung des Reifen und der Orientierung des Geschwindigkeitsvektors des Reifen (siehe \ref{fig:linLat})
+
+\begin{figure}[ht!]
+	\label{fig:linLat}
+	\caption{Kinematisches Modell}
+	\includegraphics[width=400pt]{Abbildungen/linLat.png}
+\end{figure}
+
+\begin{equation}
+\alpha_f = \delta - \theta_{vf}
+\end{equation}
+Der gleiche Zusammenhang gilt auch für das hintere Rad welches jedoch in unserem Fall nicht gelenkt wird.
+\begin{equation}
+\alpha_r = \theta_{vr}
+\end{equation}
+
+Für kleine Schräglaufwinkel besteht ein linearer Zusammenhang aus lateraler Kraft und Winkel. 
+\begin{eqnarray}
+F_{yf} = C_\alpha \alpha_f \\
+F_{yr} = C_\alpha \alpha_r
+\end{eqnarray}
+
+Am Schaubild \ref{fig:pacejka} lässt sich dieser Bereich sehr gut erkennen.
+Auch dass für größere Schräglaufwinkel die Kräfte anders berechnet werden müssen ist ersichtlich. Hierfür wird die so genannte \textit{Magic Formula} verwendet. Dabei handelt es sich um eine mathematische Gleichung die sehr gut Messkurven approximiert welche auf Testständen gemessen werden.
+Es wurde 1993 von Pacejka und Bakker entwickelt, und eignet sich sowohl für die Berechnung der longitudinalen wie auch der lateralen Kräfte . Bei Eingabe des Schräglaufwinkels in \(x\) erhält man die lateral auf die Straße wirkende Kraft \(F_y\). 
+
+ \begin{equation}
+ F_y = D\sin[C\arctan{Bx - E(Bx - \arctan(Bx))}]
+ \end{equation}
+
+	
+	
+
+\begin{figure}[ht!]
+	\label{fig:pacejka}
+	\caption{Tire Model}
+	\includegraphics[width=350pt]{Abbildungen/pacejka.png}
+\end{figure}
+
+Die Parameter, welche für die \textit{Magic Formula} benötigt werden, wurden vom High Octane Motorsports e.V. zur Verfügung gestellt und beziehen sich auf das Fahrzeug des Jahres 2017.
+
+\begin{tabular}[t]{lr}
+	B	&	0.71 \\
+	C	&	1.40 \\
+	D	&	1.00 \\
+	E	&  -0.20 \\
+\end{tabular}
+
+Mit dem Wissen wie die lateralen Kräfte berechnet werden, kann nun ein genaueres Systemmodell genutzt werden.
+
+\subsection{Dynamisches Fahrzeugmodell}
+
+Die Basis für das dynamische Modell bi
+
+
+\begin{figure}[hb!]
+	\label{fig:dynModel}
+	\caption{Dynamic Vehicle Model}
+	\includegraphics[width=350pt]{Abbildungen/dynModel.png}
+\end{figure}
+
+
+
+
+\section{Nichtlineare Programmierung}
+
 \section{Model Predictive Control}
 \section{Simulation}
 
 
-
-
-\chapter{Implementierung von xy} 
-\section{Gliederung}
-Befehle zum Gliedern von Texten:\par
-Nummeriert und im InhV.:\nopagebreak\par\medskip\nopagebreak
-
-\begin{minipage}{0.4\textwidth}
-	\begin{verbatim}
-	\chapter{Kapitel - Ebene 1 (1 Einleitung)}
-	\section{Abschnitt - Ebene 2 (1.1 Gliederung}
-	\subsection{Unterabschnitt - Ebene3 1.1.1....} 
-	\subsubsection{Unterunterabschnitt - Ebene 4 (nicht sinnvoll)}
-	\end{verbatim}
-\end{minipage}
-
-
-\subsection*{nicht nummerierte Überschrift}
-Alles, was nicht ins Inhaltsverzeichnis soll ist mit einem *
-versehen: -> steht für Kapitel, die nicht nummeriert sind und somit auch nicht im Inhvz. stehen\par
-Befehle: \par
-
-\begin{minipage}{0.2\textwidth}
-	\begin{verbatim}
-	\chapter*{Thema und Aufgabenstellung}
-\section* {Sektion/Abschnitt} unnummiert 
-\subsection*{Unterabschnitt - Ebene3 } 
-\subsubsection*{Unterunterabschnitt - Ebene 4}
-\end{verbatim}
-\end{minipage}
-
-
-\section{Text formatieren}
-
-Folgende Befehlen erzeugen einen Zeilenumbruch:\\ (1ex entspricht der Höhe des Buchstaben \glqq x\grqq\ in der aktuellen Schriftart)\par\medskip
-\qquad\begin{minipage}{0.8\textwidth}
-	\begin{verbatim}
-	\\
-	\newline
-	\\[1ex]
-	\end{verbatim}
-\end{minipage}\par\bigskip
-
-Folgende Befehle erzeugen einen neuen Absatz:
-
-\qquad\begin{minipage}{0.8\textwidth}
-	\begin{verbatim}
-	\par
-	\par\smallskip
-	\par\medskip
-	\par\bigskip
-	\end{verbatim}
-\end{minipage}\par\bigskip
-
-Folgende Befehle erzeugen einen zusätzlichen horizontalen Abstand:\nopagebreak\par\medskip\nopagebreak
-
-\qquad\begin{minipage}{0.8\textwidth}
-	\begin{verbatim}
-	\,                 % kleiner Abstand
-	\;                 % mittlerer Abstand
-	\quad              % großer Abstand
-	\qquad             % sehr großer Abstand
-	\!                 % kleiner negativer Abstand
-	\end{verbatim}
-\end{minipage}\par\bigskip
-
-
-Folgende Befehle zum Seitenumbruch:\nopagebreak\par\medskip\nopagebreak
-
-
-
-\section{Umbrüche}
-Der Text wird normalerweise automatisc umbrochen. Zum expliziten Beenden einer Zeile benutzen Sie
-\begin{verbatim}
-\\[abstand] % bzw.
-\\[2pt]
-\end{verbatim}
-Beispiel\\[4pt]
-Wenn mann zum Beispiel eine Überschrift
-\begin{verbatim}
-\\in zwei Zeilen umbrechen möchten,
-\end{verbatim}
-bitte ein
-\begin{verbatim}
-\protect
-\end{verbatim}
-benutzen. Zusätzlich kann an einer so beendeten Zeile noch gleichzeitig ein Seitenumbruch verhindert werden,
-indem man
-\begin{verbatim}
-\\*[abstand]
-\end{verbatim}
-eingibt.
-Wenn man Latex einen Spielraum lassen will: Dafür dient der Befehl
-\begin{verbatim}
-\linebreak[zwang]
-\end{verbatim}
-
-Für die Dringlichkeit des-Befehls können Sie die Zahlen von 0 bis 4 eintragen,wobei 0 eine milde Wunschäußerung darstellt und 4 das Zeilenende erzwingt. Gleichzeitig werden beim Beenden einer Zeile die Wörter gestreckt und dabei gleichmäßig überdie Zeile verteilt.
-
-
-\begin{verbatim}
-Der Zwerg nahm seine Axt und hieb mehrere Äste ab.\\
-Der Zwerg nahm seine Axt und hieb mehrere Äste ab.\linebreak[4]
-Der Zwerg nahm seine Axt und hieb mehrere Äste ab.\linebreak[2]
-Der Zwerg nahm seine Axt und hieb mehrere Äste ab.\linebreak[3]
-Sie banden sie mit Bogensehnen zusammen
-\end{verbatim}
-Der Zwerg nahm seine Axt und hieb mehrere Äste ab.\\
-Der Zwerg nahm seine Axt und hieb mehrere Äste ab.\linebreak[4]
-Der Zwerg nahm seine Axt und hieb mehrere Äste ab.\linebreak[2]
-Der Zwerg nahm seine Axt und hieb mehrere Äste ab.\linebreak[3]
-Sie banden sie mit Bogensehnen zusammen
-\par
-oder:
-\begin{verbatim}
-\nolinebreak[zwang]
-\end{verbatim}
-\section{Schriftart formatieren}
-
-Folgende Befehle für die Schriftgröße:\par\smallskip
-
-\qquad\begin{minipage}{0.4\textwidth}
-	\vspace*{-0,3cm}
-	\begin{verbatim}
-	\tiny
-	\scriptsize
-	\footnotesize
-	\small
-	\normalsize
-	\large
-	\Large
-	\LARGE
-	\huge
-	\Huge
-	\end{verbatim}
-\end{minipage}
-\hspace*{0,8cm}
-\begin{minipage}{0.4\textwidth}
-	\tiny tiny\,
-	\scriptsize scriptsize\,
-	\footnotesize footnotesize\;
-	\small small\;
-	\normalsize normalsize\\
-	\large large\;
-	\Large Large\
-	\LARGE LARGE\\
-	\huge huge\,
-	\Huge Huge\;
-\end{minipage}\normalsize
-
-
-Folgende Befehle für die Schriftart :
-
-\qquad\begin{minipage}{0.2\textwidth}
-	\begin{verbatim}
-	\textrm{} 
-	\texttt{} 
-	\textbf{} 
-	\textit{} 
-	\textsc{} 
-	\textsl{} 
-	\end{verbatim}
-\end{minipage}\quad
-\begin{minipage}{0.4\textwidth}
-	\textrm{Textbeispiel} \\
-	\texttt{Textbeispiel} \\
-	\textbf{Textbeispiel} \\
-	\textit{Textbeispiel} \\
-	\textsc{Textbeispiel} \\
-	\textsl{Textbeispiel} 
-\end{minipage}
-
-\par\bigskip
-
-
-Folgende Befehle zum Hervorheben (Argument):%\nopagebreak\par\medskip\nopagebreak
-
-\begin{minipage}{0.2\textwidth}
-	\begin{verbatim}
-	\emph{}
-	\underline{}
-	\end{verbatim}
-\end{minipage}\quad
-\begin{minipage}{0.4\textwidth}
-	\emph{Textbeispiel}\\
-	\underline{Textbeispiel}
-\end{minipage}
-\subsection{Default Fonts}
-Für das gesamte Dokument wurde eine Schriftart im cls.-File generiert\par\nopagebreak
-\begin{minipage}[ht!]{0.4\textwidth}
-	mittes des Befehls->\\
-	und dem Paket Times->\\
-\end{minipage}
-\begin{minipage}[ht!]{0.4\textwidth}
-	\vspace*{-.6cm}
-	\begin{verbatim}
-	\addtokomafont{disposition}{\rmfamily}
-	\RequirePackage{times} 
-	\end{verbatim}
-\end{minipage}
 
 
 

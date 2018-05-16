@@ -1,14 +1,33 @@
-\begin{thebibliography}{SH16}
+\begin{thebibliography}{KPSB15}
 
 \bibitem[FsW]{FsWorldRank:1}
 Formula student - world ranking lists.
 \newblock \url{https://mazur-events.de/fs-world/}.
 \newblock Accessed on 2018-05-14.
 
+\bibitem[KPSB15]{7225830}
+J.~Kong, M.~Pfeiffer, G.~Schildbach, and F.~Borrelli.
+\newblock Kinematic and dynamic vehicle models for autonomous driving control
+  design.
+\newblock In {\em 2015 IEEE Intelligent Vehicles Symposium (IV)}, pages
+  1094--1099, June 2015.
+
+\bibitem[Raj11]{rajamani2011vehicle}
+R.~Rajamani.
+\newblock {\em Vehicle Dynamics and Control}.
+\newblock Mechanical Engineering Series. Springer US, 2011.
+
 \bibitem[SH16]{SEIF2016159}
 Heiko~G. Seif and Xiaolong Hu.
 \newblock Autonomous driving in the icity—hd maps as a key challenge of the
   automotive industry.
 \newblock {\em Engineering}, 2(2):159 -- 162, 2016.
+
+\bibitem[WQ01]{BicycleModel}
+Danwei Wang and Feng Qi.
+\newblock Trajectory planning for a four-wheel-steering vehicle.
+\newblock In {\em Proceedings 2001 ICRA. IEEE International Conference on
+  Robotics and Automation (Cat. No.01CH37164)}, volume~4, pages 3320--3325
+  vol.4, 2001.
 
 \end{thebibliography}
