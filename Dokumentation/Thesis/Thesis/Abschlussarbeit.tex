@@ -54,7 +54,7 @@ Für diese Arbeit ist vorallem der Trackdrive von Interesse. Es wird davon ausge
  
 \begin{figure}[hb!]
 	\caption{Zürichs FS-Driverless Fahrzeug im Jahr 2017 während des Trackdrive}
-	\includegraphics[width=400pt]{Abbildungen/amz-driverless-long.jpg}
+	\includegraphics[width=200pt]{Abbildungen/amz-driverless-long.jpg}
 \end{figure}
 
 
@@ -69,7 +69,13 @@ Unter gewissen Einschränkungen welche weiter unten beschrieben werden kann ein 
 Im ersten Schritt werden die jeweils an einer Achse verbundenen Räder zu einem einzigen Zusammengefasst \cite{BicycleModel}. Dies wird als Bicycle Modell bezeichnet und vereinfacht die Berechnungen erheblich. Obwohl auch für Hinterradlenkung möglich, wird im folgenden nur die Vorderradlenkung betrachtet da das Driverless Fahrzeug der Uni Erlangen nur über eine solche verfügt. Die Lenkwinkel welche durch das Bicycle Modell berechnet werden entsprechen nicht den Lenkwinkel am echten Fahrzeug. Die kurveninneren und kurvenäußeren Räder bewegen sich auf zwei Kreisen mit unterschiedlichen Radien, und damit auch verschiedenen Lenkwinkeln. Dies wird in Fahrzeugen durch die Ackermann Lenkung mechanisch abgebildet \cite{rajamani2011vehicle}.
 
 
-Die nichtlinearen zeitkontinuierlichen Gleichungen basieren auf \cite{rajamani2011vehicle, 7225830} und beschreiben das kinematische Modell bezüglich eines Inertialsystems (\ref{fig:kinmodel}),
+Die nichtlinearen zeitkontinuierlichen Gleichungen basieren auf \cite{rajamani2011vehicle, 7225830} und beschreiben das kinematische Modell bezüglich eines Inertialsystems (siehe Abbildung \ref{fig:kinmodel}),
+
+\begin{figure}[ht!]
+	\caption{Kinematisches Modell}
+	\includegraphics[width=400pt]{Abbildungen/kin_bicycle.png}
+	\label{fig:kinmodel}
+\end{figure}
 
 \begin{eqnarray}
 \ddot{x}   &= &v  \cos(\psi + \beta)\\
@@ -95,24 +101,20 @@ Die Parameter lassen sich in zwei Bereiche unterteilen:
 
 Die Annahme eines kräftefreien Modells, bei dem das Vorderrad genau in die Richtung rollt in die es zeigt, ist nur bis etwa 5 m/s anwendbar \cite{rajamani2011vehicle}. Danach müssen die Kräfte welche die Reifen auf die Straße übertragen können mit betrachtet werden. Diese Kräfte werden dann im dynamischen Modell genutzt um eine genauere Vorhersage berechnen zu können.
 
-\begin{figure}[ht!]
-	\label{fig:kinmodel}
-	\caption{Kinematisches Modell}
-	\includegraphics[width=400pt]{Abbildungen/kin_bicycle.png}
-\end{figure}
+
 
 \subsection{Reifenmodell}
 Da die Reifen der einzige Kontaktpunkt zwischen Straße und Fahrzeug sind, beeinflussen sie ganz erheblich das Verhalten des Rennautos.
-Aus diesem Grund werden zuerst die Grundlagen des Reifenmodells vermittelt bevor das Dynamische Fahrzeugmodell eingeführt wird.
+Aus diesem Grund werden zuerst die Grundlagen des Reifenmodells vermittelt bevor das dynamische Fahrzeugmodell eingeführt wird.
 
-Luft gefüllte Reifen haben nicht nur einen Kontaktpunkt mit der Straße sondern aufgrund von Verformung hervorgerufen durch vertikale Belastung einen Kontaktbereich. Alle Kräfte die auf den Reifen wirken gehen vom Mittelpunkt dieses Bereichs aus und lassen sich in drei Achsen aufteilen. Von Interesse für diese Arbeit ist die X-Achse welche in Laufrichtung und die Y-Achse welche in Richtung der Rotationsachse zeigt. Die jeweiligen Kräfte dazu werden als \(F_x\) und \(F_y\) bezeichnet.
+Luft gefüllte Reifen haben nicht nur einen Kontaktpunkt mit der Straße sondern aufgrund von elastischer Verformung, hervorgerufen durch vertikale Belastung, einen Kontaktbereich. Alle Kräfte die auf den Reifen wirken gehen vom Mittelpunkt dieses Bereichs aus und lassen sich in drei Achsen aufteilen. Von Interesse für diese Arbeit ist die X-Achse welche in Laufrichtung, und die Y-Achse welche in Richtung der Rotationsachse zeigt. Die jeweiligen Kräfte dazu werden als \(F_x\) und \(F_y\) bezeichnet. Die Normalkraft die den Reifen auf die Straße presst \(F_z\) wird als konstant angesehen und berechnet sich aus dem Gewicht und der Radlastverteilung.
 
 Die lateralen Kräfte welche zwischen Straße und Reifen entstehen hängen vom Schräglaufwinkel (slip angle) ab. Er ist definiert als der Winkel zwischen der Orientierung des Reifen und der Orientierung des Geschwindigkeitsvektors des Reifen (siehe \ref{fig:linLat})
 
 \begin{figure}[ht!]
-	\label{fig:linLat}
 	\caption{Kinematisches Modell}
 	\includegraphics[width=400pt]{Abbildungen/linLat.png}
+	\label{fig:linLat}
 \end{figure}
 
 \begin{equation}
@@ -132,19 +134,38 @@ F_{yr} = C_\alpha \alpha_r
 Am Schaubild \ref{fig:pacejka} lässt sich dieser Bereich sehr gut erkennen.
 Auch dass für größere Schräglaufwinkel die Kräfte anders berechnet werden müssen ist ersichtlich. Hierfür wird die so genannte \textit{Magic Formula} verwendet. Dabei handelt es sich um eine mathematische Gleichung die sehr gut Messkurven approximiert welche auf Testständen gemessen werden.
 Es wurde 1993 von Pacejka und Bakker entwickelt, und eignet sich sowohl für die Berechnung der longitudinalen wie auch der lateralen Kräfte . Bei Eingabe des Schräglaufwinkels in \(x\) erhält man die lateral auf die Straße wirkende Kraft \(F_y\). 
-
  \begin{equation}
  F_y = D\sin[C\arctan{Bx - E(Bx - \arctan(Bx))}]
+ \label{eq:magicF}
+ \end{equation}
+ 
+ \begin{figure}[ht!]
+ 	\caption{Tire Model}
+ 	\includegraphics[width=350pt]{Abbildungen/pacejka.png}
+ 	\label{fig:pacejka}
+ \end{figure}
+ 
+ 
+Da in der später genutzten Simulation kein Motor simuliert wird, kann der Schlupf und damit die exakte longitudinale Kraft die der Reifen wirkt nicht berechnet werden. Stattdessen wird die Kraft über die Leistung, Reibung und Luftwiederstand berechnet (siehe Section \ref{dynModel}) und durch \(F_{max}\) begrenzt. \\
+Der Zusammenhang zwischen lateraler und longitudinaler Kraft wird über den \textit{Kammschen Kreis} Modelliert (siehe Schaubild \ref{fig:kamKreis}). Dieser schränkt die wirkenden Kräfte so ein, dass die Kathete aus \(F_x\) und \(F_y\) sich maximal auf einem Einheitskreis bewegen kann. Dieser hat den Radius der maximalen Kraft die der Reifen übertragen kann (\(F_{max}\)).
+
+\begin{eqnarray}
+	F <= F_{max} \\
+	F = \sqrt{F_x^2 + F_y^2}  \\
+	|F_y| <= F_{max}^2 - F_x^2
+\end{eqnarray}
+In Kombination mit \ref{eq:magicF} erhält man
+ \begin{equation}
+	|D\sin[C\arctan{Bx - E(Bx - \arctan(Bx))}]| <= F_{max}^2 - F_x^2
  \end{equation}
 
-	
-	
-
 \begin{figure}[ht!]
-	\label{fig:pacejka}
-	\caption{Tire Model}
-	\includegraphics[width=350pt]{Abbildungen/pacejka.png}
+	\caption{Kammscher Kreis}
+	\includegraphics[width=400pt]{Abbildungen/kamKreis.jpg}
+	\label{fig:kamKreis}
 \end{figure}
+	
+	
 
 Die Parameter, welche für die \textit{Magic Formula} benötigt werden, wurden vom High Octane Motorsports e.V. zur Verfügung gestellt und beziehen sich auf das Fahrzeug des Jahres 2017.
 
@@ -158,15 +179,85 @@ Die Parameter, welche für die \textit{Magic Formula} benötigt werden, wurden v
 Mit dem Wissen wie die lateralen Kräfte berechnet werden, kann nun ein genaueres Systemmodell genutzt werden.
 
 \subsection{Dynamisches Fahrzeugmodell}
+\label{dynModel}
 
-Die Basis für das dynamische Modell bi
+Die Basis ist wie auch schon beim kinematischen Modell das \textit{bicycle model}. Es wird nun um die durch das zweite newtonsche Gesetz entstehenden Kräfte entlang der \(y\)-Achse erweitert.
 
+\begin{equation}
+ma_y = F_{yf} + F_{yr}
+\end{equation}   
+
+
+
+Die Kräfte \(F_{yf}\) und \(F_{yr}\) greifen jeweils am vorderen \((.)_f\) und hinteren \((.)_r\) Rad an und verlaufen senkrecht zur Radlaufrichtung (siehe Schaubild \ref{fig:dynModel}).
 
 \begin{figure}[hb!]
-	\label{fig:dynModel}
 	\caption{Dynamic Vehicle Model}
 	\includegraphics[width=350pt]{Abbildungen/dynModel.png}
+	\label{fig:dynModel}
 \end{figure}
+
+Wobei\(a_y\) aus zwei Anteilen besteht, der Querbeschleunigung und der Zentripetalkraft.
+
+
+
+Zusätzlich muss das Drehmoment um die \(z\)-Achse betrachtet werden.
+\begin{equation}
+I_z \ddot{\psi} = l_f F_{yf} - l_r F_{yr}
+\end{equation}
+Daraus lassen sich die Gleichungen für Longitudinal-, Lateral- und Drehbewegung aufstellen.
+
+\begin{eqnarray}
+	m \ddot{x} = m \dot{y} \dot{\psi} + 2 F_{xf} + 2 F_{xr} \\
+	m \ddot{y} = - m \dot{x} \dot{\psi} + 2 F_{yf} + 2 F_{yf} \\
+	I \ddot{(\psi)} = 2 l_f F_{yf} - 2 l_r F_{yr}
+\end{eqnarray}
+
+Die finale Bewegungsgleichung lautet
+\begin{eqnarray}
+\dot{X} =& \dot{x} \cos(\psi) - \dot{y} \sin(\psi) \\
+\dot{Y} =& \dot{x} \sin(\psi) - \dot{y} \cos(\psi) \\
+m \ddot{x} =& m \dot{y} \dot{\psi} + 2F_{xf} + 2 F_{xr} - F_a \\
+m \ddot{y} =& - m \dot{x} \dot{\psi} + 2 F_{yf} + 2 F_{yr} \\
+I \ddot{\psi} =& 2 l_f F_{yf} - 2 l_r F_{yr} \\
+\end{eqnarray}
+
+und in diskreter Form
+
+\begin{eqnarray}
+X_{k+1} =& X_k + \Delta t(\dot{x}_k \cos(\Psi_k) - \dot{y}_k \sin(\Psi_k) \\
+Y_{k+1} =& Y_{k} + \Delta t(\dot{x}_k \sin(\Psi_k) - \dot{y}_k \cos(\Psi_k) \\
+\dot{\Psi}_{k+1} =& \Psi_k + \Delta t \dot{\psi}_k \\
+\dot{x}_{k+1} =&  \dot{x}_k + \Delta t (\frac{2F_{xf_k} + 2 F_{xr_k}- F_a}{m} + \dot{y}_k \dot{\psi}_k) \\
+\dot{y}_{k+1} =&  \dot{y}_k + \Delta t (\frac{2 F_{yf_k} + 2 F_{yr_k}}{m} - \dot{x}_k \dot{\psi}_k)  \\
+\ddot{\psi}_{k+1} =& \dot{\psi}_k + \Delta t \frac{2 l_f F_{yf} - 2 l_r F_{yr}}{I} \\
+\end{eqnarray}
+
+Im dynamische Fahrzeugmodell ändert sich damit auch der Zustandsvektor: \\
+\(X\), \(Y\), \(x_d\), \(y_d\), \(\psi\), \(\dot{\psi}\) \\
+Der Steuervektor ist gleich geblieben.
+
+Die zur Berechnung verwendeten Fahrzeugparameter
+
+\begin{tabular}[t]{lrr}
+	Formelzeichen & Wert & Einheit\\
+	\(l_f\)	&	1.09 & m\\
+	\(l_r\)	&	0.9 & m\\
+	\(l_b\)	&	1.99 & m \\
+	\(r\)	&	0.2 & m \\
+	\(m\)	&  	163 & kg\\
+	\(I\)	&  	1000 & kgm\textsuperscript{2}\\
+	\(A_f\)	&  	1.5 & m\textsuperscript{2}\\
+	\(P_{engine}\) &  40,5 & kW\\
+	\(C_d\)	&  	1.5 & - \\
+	\(\rho\)	&  	1.225 & kg / m\textsuperscript{3}\\
+	\(F_max\)	&  	3 & kN \\
+
+\end{tabular}
+
+
+
+
 
 
 
