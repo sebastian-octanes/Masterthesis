@@ -12,6 +12,11 @@ J.~Kong, M.~Pfeiffer, G.~Schildbach, and F.~Borrelli.
 \newblock In {\em 2015 IEEE Intelligent Vehicles Symposium (IV)}, pages
   1094--1099, June 2015.
 
+\bibitem[PB92]{magicFormula}
+Hans~B. Pacejka and Egbert Bakker.
+\newblock The magic formula tyre model.
+\newblock {\em Vehicle System Dynamics}, 21(sup001):1--18, 1992.
+
 \bibitem[Raj11]{rajamani2011vehicle}
 R.~Rajamani.
 \newblock {\em Vehicle Dynamics and Control}.
