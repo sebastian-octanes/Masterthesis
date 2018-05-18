@@ -58,13 +58,13 @@ Für diese Arbeit ist vorallem der Trackdrive von Interesse. Es wird davon ausge
 \end{figure}
 
 
-\chapter{Grundlagen}
+\chapter{Fahrzeugmodelle}
 
-\section{Fahrzeugmodelle}
+
 Wie der Name Model Predictive Control schon verdeutlicht benötigt man eine Systembeschreibung des zu Regelnden Modells. Diese wird genutzt um zukünftige Zustände zu Berechnen und bildet damit einen wichtigen Bestandteil. Desto genauer die Beschreibung das realen System approximiert, desto besser ist die Vorhersage und damit auch die Regelung des Fahrzeugs.
 Im folgenden wird zuerst ein kinematisches Fahrzeugmodell eingeführt und dann zu einem dynamischen Modell erweitert.   
 
-\subsection{Kinematisches Modell}
+\section{Kinematisches Modell}
 Unter gewissen Einschränkungen welche weiter unten beschrieben werden kann ein kinematisches Modell die Laterale und Longitudinale Bewegung eines Fahrzeuges mathematisch Beschreiben. In diesem sehr stark vereinfachten Modell werden keine wirkenden Kräfte berücksichtigt, sondern nur die geometrischen Beziehungen des Fahrzeuges genutzt um die Bewegung zu berechnen. \\
 Im ersten Schritt werden die jeweils an einer Achse verbundenen Räder zu einem einzigen Zusammengefasst. Dies wird als Bicycle Modell bezeichnet und vereinfacht die Berechnungen erheblich \cite{BicycleModel}. Obwohl auch für Hinterradlenkung möglich, wird im folgenden nur die Vorderradlenkung betrachtet da das Driverless Fahrzeug der Uni Erlangen nur über eine solche verfügt. Die Lenkwinkel welche durch das Bicycle Modell berechnet werden entsprechen nicht den Lenkwinkel am echten Fahrzeug. Die kurveninneren und kurvenäußeren Räder bewegen sich auf zwei Kreisen mit unterschiedlichen Radien, und damit auch verschiedenen Anstellwinkeln. Dies wird in Fahrzeugen durch die Ackermann Lenkung mechanisch abgebildet \cite{rajamani2011vehicle}.
 
@@ -103,7 +103,7 @@ Die Annahme eines kräftefreien Modells, bei dem das Vorderrad genau in die Rich
 
 
 
-\subsection{Reifenmodell}
+\section{Reifenmodell}
 \label{tireModel}
 Da die Reifen der einzige Kontaktpunkt zwischen Fahrbahn und Fahrzeug sind,  beeinflusst er das Fahrverhalten maßgeblich. Aufgabe des Reifens ist es, sämtliche Kräfte und Momente zu übertragen, um eine optimale Straßenlage zu erzielen. Demzufolge ist der Reifen das Bauteil, welches die Fahrleistungen am stärksten einschränkt.
 
@@ -187,7 +187,7 @@ In Kombination mit \ref{eq:magicF} erhält man
 
 Mit dem Wissen wie die longitudinalen und lateralen Kräfte berechnet werden, kann nun ein genaueres Systemmodell genutzt werden.
 
-\subsection{Dynamisches Fahrzeugmodell}
+\section{Dynamisches Fahrzeugmodell}
 \label{dynModel}
 
 Die Basis ist wie auch schon beim kinematischen Modell das \textit{bicycle model}. Es wird nun um die durch das zweite newtonsche Gesetz entstehenden Kräfte entlang der \(y\)-Achse erweitert.
@@ -248,7 +248,7 @@ Die dafür benötigten Schräglaufwinkel werden durch folgende Formeln bestimmt:
 \alpha_r = - \arctan(\frac{\dot{y} - l_r \dot{\psi}}{\dot{x}})
 \end{eqnarray}
 
-\subsubsection*{Longitudinale Kräfte}
+\subsection*{Longitudinale Kräfte}
 Da wie bereits im letzten Abschnitt angedeutet können die longitudinalen Kräfte nur genau berechnet werden, wenn ein Motor simuliert wird. Da dies den Umfang der Arbeit sprengt werden die Kräfte direkt über die Motorleistung und \(F_max\) bestimmt.
 \begin{eqnarray}
 	F_{lr_{acc}} = \frac{P_{engine} * throttle }{|\dot{x}|} \\
@@ -322,25 +322,14 @@ Die zur Berechnung verwendeten Fahrzeugparameter wurden für das zum Verfassen d
 
 
 
+
+\chapter{Model Predictive Control}
 \section{Nichtlineare Programmierung}
 
-\section{Model Predictive Control}
-\section{Simulation}
+\chapter{Simulation}
+\section{Julia}
 
-
-
-
-
-\chapter{Konzept}
-
-
-
-\chapter{Ergebnisse}
-
-
-
-
-\chapter{Diskussion}
+\chapter{Evaluierung}
 
 \chapter[Zusammenfassung]{Zusammenfassung und Ausblick}
 
