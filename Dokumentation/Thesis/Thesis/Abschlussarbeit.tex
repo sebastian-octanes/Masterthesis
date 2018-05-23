@@ -101,6 +101,17 @@ Die Parameter lassen sich in zwei Bereiche unterteilen:
 
 Die Annahme eines kräftefreien Modells, bei dem das Vorderrad genau in die Richtung rollt in die es zeigt, ist nur bis etwa 5 m/s plausibel \cite{rajamani2011vehicle}. Danach müssen die Kräfte welche die Reifen auf die Straße übertragen können mit betrachtet werden. Diese werden dann im dynamischen Modell genutzt um eine genauere Vorhersage berechnen zu können.
 
+Die für das kinematische Modell angenommenen Werte stammen vom Fahrzeug aus dem Jahr 2017 des High Octane Motorsports Verein der Uni Erlangen (siehe \ref{vehicleParam}). Die Beschleunigung \(a\) wurde für den besten \textit{Acceleration} Durchgang in FSG-2017 mit der Zeit $t = 4.5s$ und der Endgeschwindigkeit $v = 32.78 \frac{m}{s\textsuperscript{2}}$ berechnet. Für 
+\begin{equation}
+	a = \frac{v}{t} 
+\end{equation}
+erhält man eine mittlere Beschleunigung von $7.284 \frac{m}{s\textsuperscript{2}} $.
+
+Überprüft man die Werte mit der Formel zum berechnen der zurück gelegten Entfernung 
+\begin{equation}
+x = \frac{1}{2} * a * t^2  
+\end{equation}
+liegt man mit \(73.75m\) nur zwei Prozent neben der genauen Streckenlänge von \(75m\).
 
 
 \section{Reifenmodell}
@@ -311,7 +322,7 @@ Die zur Berechnung verwendeten Fahrzeugparameter wurden für das zum Verfassen d
 		\(P_{engine}\) &  40,5 & kW\\
 		\(C_d\)	&  	1.5 & - \\
 		\(\rho\)	&  	1.225 & kg / m\textsuperscript{3}\\
-		\(F_max\)	&  	3 & kN \\ 
+		\(F_{max}\)	&  	3 & kN \\ 
 	\end{tabular}
 	\caption{Vehicle Parameter}
 	\label{vehicleParam}
@@ -397,6 +408,8 @@ Der Punkt, der die Kostenfunktion $c: x \rightarrow c\textsuperscript{T} x$ mini
  	\includegraphics[width=350pt]{Abbildungen/iterPoint.png}
  	\label{fig:iterPoint}
  \end{figure}
+ 
+ 
  \subsection*{Nichtlineare Optimierung}
  
 
