@@ -3,7 +3,7 @@
 %\selectlanguage{english}
 %\selectlanguage{german}
 
-
+\usepackage{amsmath}
 \begin{document}
 
 
@@ -323,15 +323,119 @@ Die zur Berechnung verwendeten Fahrzeugparameter wurden für das zum Verfassen d
 
 
 
-\chapter{Model Predictive Control}
-\section{Nichtlineare Programmierung}
+\chapter{Trajektionsplanung und Fahrzeugregelung}
 
-\chapter{Simulation}
+Um für das Fahrzeug ideale Trajektorien zu berechnen, und gleichzeitig das Rennauto in Echtzeit zu regeln wurde ein Model Predictive Control Ansatz gewählt. Dieses Verfahren basiert auf der Optimierung eines nichtlinearen Programms.
+
+
+\section{Optimierung}
+Das Konzept der Optimierung ist es, eine gegebene Funktion \(f(\vec{x})\), auch als Kostenfunktion bezeichnet, zu mini- oder maximieren. 
+Dies wird in einer Vielzahl von Anwendungsgebieten genutzt.
+Zum Beispiel zur Berechnung von Profit / Verlust in einem Betrieb, Geschwindigkeit oder Distanz in einem physikalischen Problem oder der erwartete \textit{return of investment} für ein Geldanlage.  
+Die Bezeichnung lineare Programmierung bezieht sich auf die Lösung eines  Optimierungsproblems und hat nichts mit dem eigentlichen Programm zu tun.
+
+Die allgemeine mathematische Definition eines Optimierungsproblems ist
+
+ $minimize$  
+  \noindent\hspace*{3mm}%
+ $f(\vec{x}) $ \\
+ $subject$  $to$ 
+ \noindent\hspace*{3mm}%
+ $g_i(\vec{x})$ $\leq$ $0,$ $i=1,2,...,p$  \\
+ \noindent\hspace*{22mm}%
+ $h_j(\vec{x})= 0,$ $j= 1,2,...,m$\\ 
+ \noindent\hspace*{22mm}%
+
+ 
+ Der Eingabeparameter $\vec{x}$ sei aus $\Re \textsuperscript{n} $, das heißt, das Problem hängt von \(n\) Einflussparameter ab, die im Vektor $\vec{x}$ eingelagert sind. Die Zielfunktion $f:D \rightarrow \Re $ sei einmal stetig differenzierbar. Weiterhin sind die Nebenbedingungen in Ungleichheitsform $g_i:D \rightarrow \Re$ mit $1\leq i \leq p$ und in Gleichheitsform $h_j:D \rightarrow \Re$ mit $1\leq j \leq m$ gegeben.
+ In dem \(f(\vec{x})\) durch \(-f(\vec{x})\) ersetzt wird, kann aus dem Minimierungs, ein Maximierungsproblem gemacht werden.  
+  
+ Eine Optimierungsproblem hat nicht immer eine Lösung. Die Ungleichungen, welche den Suchraum einschränken, können sich widersprechen (z.b. $x \leq 0 $ und $x > 0$). In diesem Fall gibt es keine Lösung. Außerdem kann das Problem unbeschränkt sein, was unendlich viele zulässige Lösungen zur Folge hätte und damit auch als nicht lösbar eingestuft wird. 
+ 
+ Ein lineares Programm (alle Funktionen sind linear) lässt sich in Matrixschreibweise darstellen. Es besteht aus $A \in \Re \textsuperscript{m,n}$ und zwei Vektoren $b \in \Re \textsuperscript{m,1}$ und $c \in \Re \textsuperscript{1,n}$. \\
+ \begin{array}{lccl}
+ 	a_{11}x_1 + & ... & + a_1_n x_n &\leq b_1 \\ 
+  	a_{21}x_1 + & ... & + a_2_n x_n &\leq b_2 \\ 
+ 	. & . & . & . \\
+ 	. & . & . & . \\
+ 	a_{m1}x_1 + & ... & + a_m_n x_n &\leq b_m \\ 
+ \end{array}
+ 
+ Das Optimierungsverfahren sucht eine Lösung für den Vektor \vec{x} welcher sowohl die linearen Bedingungen erfüllt, als auch die Zielfunktion 
+ $cx=c_1 x_1 + ... + c_n x_n$ minimiert.
+ Die Kurzschreibweise für dieses Gleichungssystem ist: \\
+ $min \{ cx | Ax \leq b, x \geq 0 \}$
+ 
+Besonders einfach veranschaulichen lässt sich die Lösung des Problems geometrisch im zweidimensionalen Raum.
+Jede Ungleichung $a_i x \leq b_i$ teilt den Suchraum in zwei Hälften, eine mit zulässigen Punkten und eine ohne. Die Punkte auf der Grenze sind ebenfalls zulässig. Die Menge der Punkte welche alle Ungleichungen erfüllt, ist genau der Schnitt dieser Halbräume, also die Menge aller Punkte, die für jede Ungleichung in der jeweiligen zulässigen Hälfte des Raumes liegt. 
+Der Punkt, der die Kostenfunktion $c: x \rightarrow c\textsuperscript{T} x$ minimiert, liegt auf den Kanten der Ungleichungen und wird durch Verschiebung der Hyperebene $ \{x| c\textsuperscript{T} x = 0 \}$ in Richtung des Vektors \(c\) gefunden. 
+\begin{figure}[ht!]
+	\caption{Lineare Optimierung}
+	\includegraphics[width=350pt]{Abbildungen/linOpt.png}
+	\label{fig:linOpt}
+\end{figure}
+
+ \subsection*{Lösungsverfahren}
+ Im Folgenden werden die zwei meist verbreitetsten Lösungsverfahren für lineare Optimierungsprobleme kurz vorgestellt. 
+ Die Grundvorraussetzung ist dass das Problem in Standardform vorliegt. Ein Minierungsproblem wird in ein Maximierungsproblem umgewandelt.
+ Alle Ungleichungen $g_i(\vec{x})$ $\leq b_i$ werden unter Zuhilfenahme von \textit{slack}-Variablen so umgewandelt, dass die Gleichungen im Format $g_i(\vec{x}) - b_i -s_i$ $=  0$ vorliegen. \\
+ Als Beispiel wird $a_{i1}x_1 + a_i_2 x_2 + a_i_n x_n\leq b_i$ umgewandelt in 
+ $a_{i1}x_1 + a_i_2 x_2 + a_i_n x_n - b_i +s_i = 0$ mit \(s_i\) \geq \(0\).
+ Ungleichungen der Form $a_{i1}x_1 + a_i_2 x_2 + a_i_n x_n\geq b_i$ werden  durch  
+ $a_{i1}x_1 + a_i_2 x_2 + a_i_n x_n - b_i - s_i = 0$ mit \(s_i\) \geq \(0\) ersetzt.
+ 
+ Nach der Umformung
+ 
+ Warmstart
+  Simplex-Verfahren
+  
+ \subsection*{Interior Point Verfahren}  
+ Die Idee des \textit{Interior Point} Verfahren ist es, sich der Lösung nicht von außen, entlang der Grenzen der Hyperebenen zu nähern, sondern durch das Innere des zulässigen Bereiches. Dies ist in Abbildung \ref{fig:iterPoint}.
+ 
+ \begin{figure}[ht!]
+ 	\caption{Interior Point Verfahren}
+ 	\includegraphics[width=350pt]{Abbildungen/iterPoint.png}
+ 	\label{fig:iterPoint}
+ \end{figure}
+ \subsection*{Nichtlineare Optimierung}
+ 
+
+ 
+ Automatische Ableitung
+ 
+ 
+ 
+ 
+\section{Model Predictive Control}
+Es wurde ein kombinierter Ansatz gewählt, anstatt das Problem auf einen Linearen und Longitudinalen Regler aufzuteilen. Die Vorteile, Nachteile sind:
+
+It is possible to divide the problem defined in Section 1.4 in longitudinal and lateral control. This division has
+some advantages, namely:
+• Easier to tune the parameters and weight matrices. Each problem has different states and control inputs to
+be tuned;
+• More robust. If one of the controllers fails the other is still able to function with certain limitations;
+• Two less complex problems. The complexity grows quadratically with the number of states;
+• Easier to test. The controllers can be tested independently.
+But it also has some disadvantages, namely:
+25• Harder to design. It requires two problems to be defined;
+• Harder to integrate. Both controllers need to communicate in between each other and match their inputs at
+every time step;
+• Loss of optimality. Both controllers cannot calculate their outputs at the same time, so only the last one to
+calculate its control outputs is calculated based on the exact references.
+The advantages outweigh the disadvantages, so the division is made.
+
+\chapter{Implementierung}
+
+\section{Simulation}
+
 \section{Julia}
+
 
 \chapter{Evaluierung}
 
 \chapter[Zusammenfassung]{Zusammenfassung und Ausblick}
+\section{Dynamisches Fahrzeugmodell im MPC}
+
 
 
 \appendix

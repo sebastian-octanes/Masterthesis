@@ -5,12 +5,15 @@
 \BOOKMARK [1][-]{section.2.1}{Kinematisches Modell}{chapter.2}% 5
 \BOOKMARK [1][-]{section.2.2}{Reifenmodell}{chapter.2}% 6
 \BOOKMARK [1][-]{section.2.3}{Dynamisches Fahrzeugmodell}{chapter.2}% 7
-\BOOKMARK [0][-]{chapter.3}{Model Predictive Control}{}% 8
-\BOOKMARK [1][-]{section.3.1}{Nichtlineare Programmierung}{chapter.3}% 9
-\BOOKMARK [0][-]{chapter.4}{Simulation}{}% 10
-\BOOKMARK [1][-]{section.4.1}{Julia}{chapter.4}% 11
-\BOOKMARK [0][-]{chapter.5}{Evaluierung}{}% 12
-\BOOKMARK [0][-]{chapter.6}{Zusammenfassung}{}% 13
-\BOOKMARK [0][-]{appendix.A}{Anhang}{}% 14
-\BOOKMARK [0][-]{chapter*.22}{Abk\374rzungsverzeichnis}{}% 15
-\BOOKMARK [0][-]{chapter*.23}{Literaturverzeichnis}{}% 16
+\BOOKMARK [0][-]{chapter.3}{Trajektionsplanung und Fahrzeugregelung}{}% 8
+\BOOKMARK [1][-]{section.3.1}{Optimierung}{chapter.3}% 9
+\BOOKMARK [1][-]{section.3.2}{Model Predictive Control}{chapter.3}% 10
+\BOOKMARK [0][-]{chapter.4}{Implementierung}{}% 11
+\BOOKMARK [1][-]{section.4.1}{Simulation}{chapter.4}% 12
+\BOOKMARK [1][-]{section.4.2}{Julia}{chapter.4}% 13
+\BOOKMARK [0][-]{chapter.5}{Evaluierung}{}% 14
+\BOOKMARK [0][-]{chapter.6}{Zusammenfassung}{}% 15
+\BOOKMARK [1][-]{section.6.1}{Dynamisches Fahrzeugmodell im MPC}{chapter.6}% 16
+\BOOKMARK [0][-]{appendix.A}{Anhang}{}% 17
+\BOOKMARK [0][-]{chapter*.27}{Abk\374rzungsverzeichnis}{}% 18
+\BOOKMARK [0][-]{chapter*.28}{Literaturverzeichnis}{}% 19

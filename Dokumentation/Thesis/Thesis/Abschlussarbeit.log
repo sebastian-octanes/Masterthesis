@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6650) (preloaded format=pdflatex 2018.5.3)  18 MAY 2018 15:40
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6700) (preloaded format=pdflatex 2018.5.3)  23 MAY 2018 15:04
 entering extended mode
 **./Abschlussarbeit.tex
 (Abschlussarbeit.tex
@@ -1457,12 +1457,12 @@ LaTeX Info: Redefining \nameref on input line 7.
  (Inhalt/Titelseite2.tex
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <14.4> not available
 (Font)              Font shape `T1/ptm/b/n' tried instead on input line 103.
-<Abbildungen/fau.png, id=67, 217.2918pt x 58.7796pt>
+<Abbildungen/fau.png, id=79, 217.2918pt x 58.7796pt>
 File: Abbildungen/fau.png Graphic file (type png)
 <use Abbildungen/fau.png>
 Package pdftex.def Info: Abbildungen/fau.png  used on input line 103.
 (pdftex.def)             Requested size: 173.83365pt x 47.02371pt.
-<Abbildungen/like.png, id=69, 299.4387pt x 99.7326pt>
+<Abbildungen/like.png, id=81, 299.4387pt x 99.7326pt>
 File: Abbildungen/like.png Graphic file (type png)
 <use Abbildungen/like.png>
 Package pdftex.def Info: Abbildungen/like.png  used on input line 103.
@@ -1720,7 +1720,7 @@ Package babel Info: Redefining ngerman shorthand "~
 ]
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <10.95> not available
 (Font)              Font shape `T1/ptm/b/n' tried instead on input line 56.
-<Abbildungen/amz-driverless-long.jpg, id=138, 652.4375pt x 301.125pt>
+<Abbildungen/amz-driverless-long.jpg, id=153, 652.4375pt x 301.125pt>
 File: Abbildungen/amz-driverless-long.jpg Graphic file (type jpg)
 <use Abbildungen/amz-driverless-long.jpg>
 Package pdftex.def Info: Abbildungen/amz-driverless-long.jpg  used on input lin
@@ -1744,7 +1744,7 @@ Package babel Info: Redefining ngerman shorthand "|
 (babel)             in language  on input line 67.
 Package babel Info: Redefining ngerman shorthand "~
 (babel)             in language  on input line 67.
-<Abbildungen/kin_bicycle.png, id=149, 577.15625pt x 416.55624pt>
+<Abbildungen/kin_bicycle.png, id=164, 577.15625pt x 416.55624pt>
 File: Abbildungen/kin_bicycle.png Graphic file (type png)
 <use Abbildungen/kin_bicycle.png>
 Package pdftex.def Info: Abbildungen/kin_bicycle.png  used on input line 76.
@@ -1773,7 +1773,7 @@ Package babel Info: Redefining ngerman shorthand "|
 (babel)             in language  on input line 106.
 Package babel Info: Redefining ngerman shorthand "~
 (babel)             in language  on input line 106.
-<Abbildungen/linLat.png, id=168, 991.705pt x 479.7925pt>
+<Abbildungen/linLat.png, id=183, 991.705pt x 479.7925pt>
 File: Abbildungen/linLat.png Graphic file (type png)
 <use Abbildungen/linLat.png>
 Package pdftex.def Info: Abbildungen/linLat.png  used on input line 123.
@@ -1787,7 +1787,7 @@ Package babel Info: Redefining ngerman shorthand "|
 Package babel Info: Redefining ngerman shorthand "~
 (babel)             in language  on input line 135.
  [5]
-<Abbildungen/pacejka.png, id=180, 429.605pt x 341.275pt>
+<Abbildungen/pacejka.png, id=195, 429.605pt x 341.275pt>
 File: Abbildungen/pacejka.png Graphic file (type png)
 <use Abbildungen/pacejka.png>
 Package pdftex.def Info: Abbildungen/pacejka.png  used on input line 156.
@@ -1810,7 +1810,7 @@ Package babel Info: Redefining ngerman shorthand "|
 Package babel Info: Redefining ngerman shorthand "~
 (babel)             in language  on input line 172.
  [7 <./Abbildungen/pacejka.png>]
-<Abbildungen/kamKreis.jpg, id=199, 569.12625pt x 520.94624pt>
+<Abbildungen/kamKreis.jpg, id=214, 569.12625pt x 520.94624pt>
 File: Abbildungen/kamKreis.jpg Graphic file (type jpg)
 <use Abbildungen/kamKreis.jpg>
 Package pdftex.def Info: Abbildungen/kamKreis.jpg  used on input line 180.
@@ -1828,7 +1828,7 @@ Package babel Info: Redefining ngerman shorthand "|
 (babel)             in language  on input line 190.
 Package babel Info: Redefining ngerman shorthand "~
 (babel)             in language  on input line 190.
-<Abbildungen/dynModel.png, id=209, 1417.295pt x 843.15pt>
+<Abbildungen/dynModel.png, id=224, 1417.295pt x 843.15pt>
 File: Abbildungen/dynModel.png Graphic file (type png)
 <use Abbildungen/dynModel.png>
 Package pdftex.def Info: Abbildungen/dynModel.png  used on input line 205.
@@ -1889,70 +1889,248 @@ Package babel Info: Redefining ngerman shorthand "|
 Package babel Info: Redefining ngerman shorthand "~
 (babel)             in language  on input line 326.
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 327.
+(babel)             in language  on input line 331.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 327.
+(babel)             in language  on input line 331.
+! Missing $ inserted.
+<inserted text> 
+                $
+l.356  \begin{array}{lccl}
+                          
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Double subscript.
+l.357  	a_{11}x_1 + & ... & + a_1_
+                                  n x_n &\leq b_1 \\
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+l.358   	a_{21}x_1 + & ... & + a_2_
+                                   n x_n &\leq b_2 \\
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+l.361  	a_{m1}x_1 + & ... & + a_m_
+                                  n x_n &\leq b_m \\
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.362  \end{array}
+                  
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 329.
+(babel)             in language  on input line 364.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 329.
+(babel)             in language  on input line 364.
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 329.
+(babel)             in language  on input line 364.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 329.
+(babel)             in language  on input line 364.
 [14
 
 ]
+
+! Package amsmath Error: \vec allowed only in math mode.
+
+See the amsmath package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.364 ...ucht eine Lösung für den Vektor \vec{x}
+                                                   welcher sowohl die linear...
+
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+<Abbildungen/linOpt.png, id=267, 906.08513pt x 636.87938pt>
+File: Abbildungen/linOpt.png Graphic file (type png)
+<use Abbildungen/linOpt.png>
+Package pdftex.def Info: Abbildungen/linOpt.png  used on input line 374.
+(pdftex.def)             Requested size: 350.0pt x 246.01077pt.
+! Double subscript.
+l.382  Als Beispiel wird $a_{i1}x_1 + a_i_
+                                          2 x_2 + a_i_n x_n\leq b_i$ umgewan...
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+l.382 ...ispiel wird $a_{i1}x_1 + a_i_2 x_2 + a_i_
+                                                  n x_n\leq b_i$ umgewandelt in
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+l.383  $a_{i1}x_1 + a_i_
+                        2 x_2 + a_i_n x_n - b_i +s_i = 0$ mit \(s_i\) \geq \...
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+l.383  $a_{i1}x_1 + a_i_2 x_2 + a_i_
+                                    n x_n - b_i +s_i = 0$ mit \(s_i\) \geq \...
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.383 ..._i_n x_n - b_i +s_i = 0$ mit \(s_i\) \geq
+                                                   \(0\).
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.383 ...n x_n - b_i +s_i = 0$ mit \(s_i\) \geq \(
+                                                  0\).
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Double subscript.
+l.384  Ungleichungen der Form $a_{i1}x_1 + a_i_
+                                               2 x_2 + a_i_n x_n\geq b_i$ we...
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+l.384 ...en der Form $a_{i1}x_1 + a_i_2 x_2 + a_i_
+                                                  n x_n\geq b_i$ werden  durch
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+l.385  $a_{i1}x_1 + a_i_
+                        2 x_2 + a_i_n x_n - b_i - s_i = 0$ mit \(s_i\) \geq ...
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+l.385  $a_{i1}x_1 + a_i_2 x_2 + a_i_
+                                    n x_n - b_i - s_i = 0$ mit \(s_i\) \geq ...
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.385 ...i_n x_n - b_i - s_i = 0$ mit \(s_i\) \geq
+                                                   \(0\) ersetzt.
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.385 ... x_n - b_i - s_i = 0$ mit \(s_i\) \geq \(
+                                                  0\) ersetzt.
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+<Abbildungen/iterPoint.png, id=269, 492.84125pt x 452.69125pt>
+File: Abbildungen/iterPoint.png Graphic file (type png)
+<use Abbildungen/iterPoint.png>
+Package pdftex.def Info: Abbildungen/iterPoint.png  used on input line 397.
+(pdftex.def)             Requested size: 350.0pt x 321.50282pt.
+Package babel Info: Redefining ngerman shorthand "|
+(babel)             in language  on input line 399.
+Package babel Info: Redefining ngerman shorthand "~
+(babel)             in language  on input line 399.
+Package babel Info: Redefining ngerman shorthand "|
+(babel)             in language  on input line 399.
+Package babel Info: Redefining ngerman shorthand "~
+(babel)             in language  on input line 399.
+[15]
+Package babel Info: Redefining ngerman shorthand "|
+(babel)             in language  on input line 409.
+Package babel Info: Redefining ngerman shorthand "~
+(babel)             in language  on input line 409.
+Package babel Info: Redefining ngerman shorthand "|
+(babel)             in language  on input line 426.
+Package babel Info: Redefining ngerman shorthand "~
+(babel)             in language  on input line 426.
+Package babel Info: Redefining ngerman shorthand "|
+(babel)             in language  on input line 426.
+Package babel Info: Redefining ngerman shorthand "~
+(babel)             in language  on input line 426.
+ [16 <./Abbildungen/linOpt.png (PNG copy)>]
+Package babel Info: Redefining ngerman shorthand "|
+(babel)             in language  on input line 427.
+Package babel Info: Redefining ngerman shorthand "~
+(babel)             in language  on input line 427.
+Package babel Info: Redefining ngerman shorthand "|
+(babel)             in language  on input line 427.
+Package babel Info: Redefining ngerman shorthand "~
+(babel)             in language  on input line 427.
+ [17 <./Abbildungen/iterPoint.png>]
 chapter 4.
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 329.
+(babel)             in language  on input line 427.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 329.
+(babel)             in language  on input line 427.
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 330.
+(babel)             in language  on input line 429.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 330.
+(babel)             in language  on input line 429.
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 332.
+(babel)             in language  on input line 431.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 332.
+(babel)             in language  on input line 431.
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 332.
+(babel)             in language  on input line 434.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 332.
-[15
+(babel)             in language  on input line 434.
+Package babel Info: Redefining ngerman shorthand "|
+(babel)             in language  on input line 434.
+Package babel Info: Redefining ngerman shorthand "~
+(babel)             in language  on input line 434.
+[18
 
 ]
 chapter 5.
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 332.
+(babel)             in language  on input line 434.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 332.
+(babel)             in language  on input line 434.
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 334.
+(babel)             in language  on input line 436.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 334.
+(babel)             in language  on input line 436.
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 334.
+(babel)             in language  on input line 436.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 334.
-[16
+(babel)             in language  on input line 436.
+[19
 
 ]
 chapter 6.
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 334.
+(babel)             in language  on input line 436.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 334.
+(babel)             in language  on input line 436.
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 339.
+(babel)             in language  on input line 437.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 339.
+(babel)             in language  on input line 437.
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 339.
+(babel)             in language  on input line 443.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 339.
-[17
+(babel)             in language  on input line 443.
+Package babel Info: Redefining ngerman shorthand "|
+(babel)             in language  on input line 443.
+Package babel Info: Redefining ngerman shorthand "~
+(babel)             in language  on input line 443.
+[20
 
 ]
 \openout2 = `Inhalt/Anhang.aux'.
@@ -1963,7 +2141,7 @@ Package babel Info: Redefining ngerman shorthand "|
 (babel)             in language  on input line 9.
 Package babel Info: Redefining ngerman shorthand "~
 (babel)             in language  on input line 9.
-<Abbildungen/Engine_power.png, id=265, 593.21625pt x 520.94624pt>
+<Abbildungen/Engine_power.png, id=301, 593.21625pt x 520.94624pt>
 File: Abbildungen/Engine_power.png Graphic file (type png)
 <use Abbildungen/Engine_power.png>
 Package pdftex.def Info: Abbildungen/Engine_power.png  used on input line 16.
@@ -2002,26 +2180,26 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 )
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 339.
+(babel)             in language  on input line 443.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 339.
+(babel)             in language  on input line 443.
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 339.
+(babel)             in language  on input line 443.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 339.
- [18
+(babel)             in language  on input line 443.
+ [21
 
 
  <./Abbildungen/Engine_power.png>]
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 339.
+(babel)             in language  on input line 443.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 339.
+(babel)             in language  on input line 443.
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 339.
+(babel)             in language  on input line 443.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 339.
- [19]
+(babel)             in language  on input line 443.
+ [22]
 \openout2 = `Inhalt/Abkuerzungsverzeichnis.aux'.
 
  (Inhalt/Abkuerzungsverzeichnis.tex
@@ -2031,14 +2209,14 @@ Package babel Info: Redefining ngerman shorthand "~
 (babel)             in language  on input line 6.
 )
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 341.
+(babel)             in language  on input line 445.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 341.
+(babel)             in language  on input line 445.
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 341.
+(babel)             in language  on input line 445.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 341.
- [20
+(babel)             in language  on input line 445.
+ [23
 
 
 
@@ -2056,72 +2234,87 @@ Package babel Info: Redefining ngerman shorthand "|
 (babel)             in language  on input line 7.
 Package babel Info: Redefining ngerman shorthand "~
 (babel)             in language  on input line 7.
- [21
+ [24
 
 
 ])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 356.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 460.
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 356.
+(babel)             in language  on input line 460.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 356.
+(babel)             in language  on input line 460.
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 356.
+(babel)             in language  on input line 460.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 356.
- [22
+(babel)             in language  on input line 460.
+ [25
 
 ]
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 356.
+(babel)             in language  on input line 460.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 356.
+(babel)             in language  on input line 460.
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 356.
+(babel)             in language  on input line 460.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 356.
- [23]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 356.
+(babel)             in language  on input line 460.
+ [26]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 460.
 
 (Abschlussarbeit.aux (Inhalt/Titelseite2.aux) (Inhalt/Bestaetigung.aux)
 (Inhalt/Acknowledgement.aux) (Inhalt/Thema_Aufgabenstellung.aux)
 (Inhalt/Kurzzusammenfassung.aux) (Inhalt/Abstract.aux) (Inhalt/Content.aux)
 (Inhalt/Anhang.aux) (Inhalt/Abkuerzungsverzeichnis.aux))
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 356.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 356.
-Package rerunfilecheck Info: File `Abschlussarbeit.out' has not changed.
-(rerunfilecheck)             Checksum: EE0E37F24F835898409032137370527D;923.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 460.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 460.
 
+
+Package rerunfilecheck Warning: File `Abschlussarbeit.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `Abschlussarbeit.out':
+(rerunfilecheck)             Before: F8E3A2051515BAB089B3F9ED4AD43AAB;1135
+(rerunfilecheck)             After:  1ABD13835A0A367C537A13B9EBB37EA5;1135.
 
 LaTeX Warning: There were undefined references.
 
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
  ) 
 Here is how much of TeX's memory you used:
- 25093 strings out of 494894
- 445094 string characters out of 3178673
- 768745 words of memory out of 3000000
- 28030 multiletter control sequences out of 15000+200000
- 611898 words of font info for 205 fonts, out of 3000000 for 9000
+ 25139 strings out of 494894
+ 445711 string characters out of 3178673
+ 769858 words of memory out of 3000000
+ 28043 multiletter control sequences out of 15000+200000
+ 612773 words of font info for 217 fonts, out of 3000000 for 9000
  0 hyphenation exceptions out of 8191
  54i,12n,68p,10434b,454s stack positions out of 5000i,500n,10000p,200000b,50000s
-{/home/weller/.miktex/texmfs/install/fonts/enc/dvips/base/8r.enc}{/home/welle
-r/.miktex/texmfs/install/fonts/enc/dvips/lm/lm-mathsy.enc}{/home/weller/.miktex
-/texmfs/install/fonts/enc/dvips/lm/lm-mathit.enc}{/home/weller/.miktex/texmfs/i
-nstall/fonts/enc/dvips/lm/lm-rm.enc}{/home/weller/.miktex/texmfs/install/fonts/
-enc/dvips/lm/lm-mathex.enc}</home/weller/.miktex/texmfs/install/fonts/type1/pub
-lic/lm/lmex10.pfb></home/weller/.miktex/texmfs/install/fonts/type1/public/lm/lm
-mi12.pfb></home/weller/.miktex/texmfs/install/fonts/type1/public/lm/lmmi7.pfb><
-/home/weller/.miktex/texmfs/install/fonts/type1/public/lm/lmmi9.pfb></home/well
-er/.miktex/texmfs/install/fonts/type1/public/lm/lmr12.pfb></home/weller/.miktex
-/texmfs/install/fonts/type1/public/lm/lmr9.pfb></home/weller/.miktex/texmfs/ins
-tall/fonts/type1/public/lm/lmsy10.pfb></home/weller/.miktex/texmfs/install/font
-s/type1/public/lm/lmsy9.pfb></home/weller/.miktex/texmfs/install/fonts/type1/ur
-w/courier/ucrr8a.pfb></home/weller/.miktex/texmfs/install/fonts/type1/urw/times
-/utmb8a.pfb></home/weller/.miktex/texmfs/install/fonts/type1/urw/times/utmr8a.p
-fb></home/weller/.miktex/texmfs/install/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Abschlussarbeit.pdf (31 pages, 664301 bytes).
+pdfTeX warning (dest): name{figure.caption.18} has been referenced but does n
+ot exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{chapter*.26} has been referenced but does not exist
+, replaced by a fixed one
+
+{/home/weller/.miktex/texmfs/install/fonts/enc/dvips/base/8r.enc}{/home/weller/
+.miktex/texmfs/install/fonts/enc/dvips/lm/lm-mathsy.enc}{/home/weller/.miktex/t
+exmfs/install/fonts/enc/dvips/lm/lm-mathit.enc}{/home/weller/.miktex/texmfs/ins
+tall/fonts/enc/dvips/lm/lm-rm.enc}{/home/weller/.miktex/texmfs/install/fonts/en
+c/dvips/lm/lm-mathex.enc}</home/weller/.miktex/texmfs/install/fonts/type1/publi
+c/lm/lmex10.pfb></home/weller/.miktex/texmfs/install/fonts/type1/public/lm/lmmi
+12.pfb></home/weller/.miktex/texmfs/install/fonts/type1/public/lm/lmmi7.pfb></h
+ome/weller/.miktex/texmfs/install/fonts/type1/public/lm/lmmi9.pfb></home/weller
+/.miktex/texmfs/install/fonts/type1/public/lm/lmr12.pfb></home/weller/.miktex/t
+exmfs/install/fonts/type1/public/lm/lmr9.pfb></home/weller/.miktex/texmfs/insta
+ll/fonts/type1/public/lm/lmsy10.pfb></home/weller/.miktex/texmfs/install/fonts/
+type1/public/lm/lmsy9.pfb></home/weller/.miktex/texmfs/install/fonts/type1/urw/
+courier/ucrr8a.pfb></home/weller/.miktex/texmfs/install/fonts/type1/urw/times/u
+tmb8a.pfb></home/weller/.miktex/texmfs/install/fonts/type1/urw/times/utmr8a.pfb
+></home/weller/.miktex/texmfs/install/fonts/type1/urw/times/utmri8a.pfb>
+Output written on Abschlussarbeit.pdf (34 pages, 728473 bytes).
 PDF statistics:
- 371 PDF objects out of 1000 (max. 8388607)
- 99 named destinations out of 1000 (max. 500000)
- 42158 words of extra memory for PDF output out of 42996 (max. 10000000)
+ 411 PDF objects out of 1000 (max. 8388607)
+ 112 named destinations out of 1000 (max. 500000)
+ 42192 words of extra memory for PDF output out of 42996 (max. 10000000)
 
