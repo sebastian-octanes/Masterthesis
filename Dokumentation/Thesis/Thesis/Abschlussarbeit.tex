@@ -57,9 +57,10 @@ Für diese Arbeit ist vorallem der Trackdrive von Interesse. Es wird davon ausge
 	\includegraphics[width=200pt]{Abbildungen/amz-driverless-long.jpg}
 \end{figure}
 
+\section{Ziel der Arbeit}
+
 
 \chapter{Fahrzeugmodelle}
-
 
 Wie der Name Model Predictive Control schon verdeutlicht benötigt man eine Systembeschreibung des zu Regelnden Modells. Diese wird genutzt um zukünftige Zustände zu Berechnen und bildet damit einen wichtigen Bestandteil. Desto genauer die Beschreibung das realen System approximiert, desto besser ist die Vorhersage und damit auch die Regelung des Fahrzeugs.
 Im folgenden wird zuerst ein kinematisches Fahrzeugmodell eingeführt und dann zu einem dynamischen Modell erweitert.   
@@ -273,10 +274,9 @@ F_{reib} = m \mu g \\
 F_{aero} = \frac{1}{2} \rho C_d A_f \dot{x}^2
 \end{eqnarray}
 
-Die resultierenden longitudinalen Kräfte 
+Die resultierenden longitudinalen Kraft 
 \begin{eqnarray}
 F_{acc} = F_{lr_{acc}} - F_{reib} - F_{aero}\\
-F_{dec} = F_{lr_{dec}} - F_{aero}
 \end{eqnarray}
 
 werden mit den lateralen Kräften im Kammschen Kreis verrechnet und in der finalen Bewegungsgleichung verwendet.
@@ -364,62 +364,125 @@ Die allgemeine mathematische Definition eines Optimierungsproblems ist
  Eine Optimierungsproblem hat nicht immer eine Lösung. Die Ungleichungen, welche den Suchraum einschränken, können sich widersprechen (z.b. $x \leq 0 $ und $x > 0$). In diesem Fall gibt es keine Lösung. Außerdem kann das Problem unbeschränkt sein, was unendlich viele zulässige Lösungen zur Folge hätte und damit auch als nicht lösbar eingestuft wird. 
  
  Ein lineares Programm (alle Funktionen sind linear) lässt sich in Matrixschreibweise darstellen. Es besteht aus $A \in \Re \textsuperscript{m,n}$ und zwei Vektoren $b \in \Re \textsuperscript{m,1}$ und $c \in \Re \textsuperscript{1,n}$. \\
- \begin{array}{lccl}
- 	a_{11}x_1 + & ... & + a_1_n x_n &\leq b_1 \\ 
-  	a_{21}x_1 + & ... & + a_2_n x_n &\leq b_2 \\ 
- 	. & . & . & . \\
- 	. & . & . & . \\
- 	a_{m1}x_1 + & ... & + a_m_n x_n &\leq b_m \\ 
- \end{array}
+
+\[ \left( \begin{array}{cccc}
+a_{11} x_1 + & ... & + a_{1n} x_n & \leq b_1 \\   	
+a_{21} x_1 + & ... & + a_{2n} x_n & \leq b_2 \\ 
+. & . & . & . \\
+. & . & . & . \\
+a_{m1} x_1 + & ... & + a_{mn} x_n & \leq b_m \\
+\end{array} \right)\] 
  
- Das Optimierungsverfahren sucht eine Lösung für den Vektor \vec{x} welcher sowohl die linearen Bedingungen erfüllt, als auch die Zielfunktion 
+ Das Optimierungsverfahren sucht eine Lösung für den Vektor \(\vec{x}\) welcher sowohl die linearen Bedingungen erfüllt, als auch die Zielfunktion 
  $cx=c_1 x_1 + ... + c_n x_n$ minimiert.
  Die Kurzschreibweise für dieses Gleichungssystem ist: \\
- $min \{ cx | Ax \leq b, x \geq 0 \}$
+ $min \{ c\textsuperscript{T}x | Ax \leq b, x \geq 0 \}$
  
-Besonders einfach veranschaulichen lässt sich die Lösung des Problems geometrisch im zweidimensionalen Raum.
-Jede Ungleichung $a_i x \leq b_i$ teilt den Suchraum in zwei Hälften, eine mit zulässigen Punkten und eine ohne. Die Punkte auf der Grenze sind ebenfalls zulässig. Die Menge der Punkte welche alle Ungleichungen erfüllt, ist genau der Schnitt dieser Halbräume, also die Menge aller Punkte, die für jede Ungleichung in der jeweiligen zulässigen Hälfte des Raumes liegt. 
-Der Punkt, der die Kostenfunktion $c: x \rightarrow c\textsuperscript{T} x$ minimiert, liegt auf den Kanten der Ungleichungen und wird durch Verschiebung der Hyperebene $ \{x| c\textsuperscript{T} x = 0 \}$ in Richtung des Vektors \(c\) gefunden. 
+Besonders einfach veranschaulichen lässt sich die Lösung des Problems geometrisch im zweidimensionalen Raum, so dargestellt in Abbildung \ref*{fig:linOpt}.
+
 \begin{figure}[ht!]
 	\caption{Lineare Optimierung}
 	\includegraphics[width=350pt]{Abbildungen/linOpt.png}
 	\label{fig:linOpt}
 \end{figure}
 
+Jede Ungleichung $a_i x \leq b_i$ teilt den Suchraum in zwei Hälften, eine mit zulässigen Punkten und eine ohne. Die Punkte auf der Grenze sind ebenfalls zulässig. Die Menge der Punkte welche alle Ungleichungen erfüllt, ist genau der Schnitt dieser Halbräume, also die Menge aller Punkte, die für jede Ungleichung in der jeweiligen zulässigen Hälfte des Raumes liegt. 
+Der Punkt, der die Kostenfunktion $c: x \rightarrow c\textsuperscript{T} x$ minimiert, liegt auf den Kanten der Ungleichungen und wird durch Verschiebung der Hyperebene $ \{x| c\textsuperscript{T} x = 0 \}$ in Richtung des Vektors \(c\) gefunden. 
+
+
  \subsection*{Lösungsverfahren}
- Im Folgenden werden die zwei meist verbreitetsten Lösungsverfahren für lineare Optimierungsprobleme kurz vorgestellt. 
- Die Grundvorraussetzung ist dass das Problem in Standardform vorliegt. Ein Minierungsproblem wird in ein Maximierungsproblem umgewandelt.
- Alle Ungleichungen $g_i(\vec{x})$ $\leq b_i$ werden unter Zuhilfenahme von \textit{slack}-Variablen so umgewandelt, dass die Gleichungen im Format $g_i(\vec{x}) - b_i -s_i$ $=  0$ vorliegen. \\
- Als Beispiel wird $a_{i1}x_1 + a_i_2 x_2 + a_i_n x_n\leq b_i$ umgewandelt in 
- $a_{i1}x_1 + a_i_2 x_2 + a_i_n x_n - b_i +s_i = 0$ mit \(s_i\) \geq \(0\).
- Ungleichungen der Form $a_{i1}x_1 + a_i_2 x_2 + a_i_n x_n\geq b_i$ werden  durch  
- $a_{i1}x_1 + a_i_2 x_2 + a_i_n x_n - b_i - s_i = 0$ mit \(s_i\) \geq \(0\) ersetzt.
- 
- Nach der Umformung
- 
- Warmstart
-  Simplex-Verfahren
+
+
   
- \subsection*{Interior Point Verfahren}  
- Die Idee des \textit{Interior Point} Verfahren ist es, sich der Lösung nicht von außen, entlang der Grenzen der Hyperebenen zu nähern, sondern durch das Innere des zulässigen Bereiches. Dies ist in Abbildung \ref{fig:iterPoint}.
+ \subsection{Innere-Punkte-Verfahren}  
+ Im Folgenden wir das Innere-Punkte-Lösungsverfahren für lineare, quadratische und nichtlineare Optierungsprobleme kurz vorgestellt. Die Idee hinter dem Verfahren ist es, die Positivitätsbedingungen $x >= 0$ durch logarithmische Strafterme $-\mu \ln x_i $ zu ersetzen. Dadurch nähert man sich nicht von außen entlang der Grenzen der Hyperebene, sondern durch das Innere des zulässigen Bereiches (\ref{fig:iterPoint}). 
+  
+  \begin{figure}[ht!]
+  	\caption{Innere-Punkte-Verfahren}
+  	\includegraphics[width=350pt]{Abbildungen/iterPoint.png}
+  	\label{fig:iterPoint}
+  \end{figure}
  
- \begin{figure}[ht!]
- 	\caption{Interior Point Verfahren}
- 	\includegraphics[width=350pt]{Abbildungen/iterPoint.png}
- 	\label{fig:iterPoint}
- \end{figure}
+ Das zu Lösende Problem lautet dann: \\
+ $min \{ c\textsuperscript{T}x - \mu \sum_{i}^{n} \ln x_i | Ax \leq b\}$ \\
+ Für kleine Werte von x wird $-\ln x $ sehr groß. Dies nutzt man aus, um kleine Werte von \(x\) zu Bestrafen und damit die Suche der Lösung immer innerhalb des zulässigen Bereiches zu führen. Während der Suche wird \(\mu\) sukzessive verkleinert, bis im Grenzfall $ \mu \rightarrow 0$ das Barriereproblem gegen die Lösung des Optimierungsproblemes konvergiert (siehe Abbildung \ref{fig:iterPointLn}).\\
+   
+   \begin{figure}[ht!]
+   	\caption{Logarithmische Barrierefunktionen}
+   	\includegraphics[width=350pt]{Abbildungen/intPointLn.png}
+   	\label{fig:iterPointLn}
+   \end{figure}
  
- 
- \subsection*{Nichtlineare Optimierung}
- 
+ Die Grundvorraussetzung ist, dass das Problem in Standardform vorliegt. Ein Minierungsproblem wird in ein Maximierungsproblem umgewandelt.
+ Alle Ungleichungen $g_i(\vec{x})$ $\leq b_i$ werden unter Zuhilfenahme von \textit{slack}-Variablen so umgewandelt, dass die Gleichungen im Format $g_i(\vec{x}) - b_i -s_i$ $=  0$ vorliegen. \\
+ Als Beispiel wird $a_{i1}x_1 + a_{i2} x_2 + a_{in} x_n\leq b_i$ umgewandelt in 
+ $a_{i1} x_1 + a_{i2} x_2 + a_{in} x_n - b_i +s_i = 0$ mit $s_i \geq 0$. Ungleichungen der Form $a_{i1} x_1 + a_{i2} x_2 + a_{in} x_n\geq b_i$ werden  durch  
+ $a_{i1}x_1 + a_{i2} x_2 + a_{in} x_n - b_i - s_i = 0$ mit $s_i \geq 0$ ersetzt.
+
+ Nach der Umformung 
 
  
- Automatische Ableitung
+
+  
+ 
+   
+
+   
+   Warmstart
+
+ 
+\subsection{Automatische Ableitung}
  
  
  
  
 \section{Model Predictive Control}
+Bei \ac{MPC} handelt es sich um einen fortschrittlichen Algorithmus, mit dem sehr komplexe, multivariable Regelungsprobleme lösen lassen. Soll ein Prozess kontrolliert werden, welcher mehrere Ein- und Ausgänge besitzt und gleichzeitig Ungleich- und Gleichheitsbedingungen erfüllen, ist \acs{MPC} ein mächtiges Werkzeug. Vorausgesetzt ein ausreichend genaues Modell des Prozesses vorhanden, können unter ausnutzen von Messungen und dem Modell zukünftige Zustände des Prozesses berechnet werden. Diese Information wird genutzt um die Eingangsparameter abhängig von dem gewünschten Verhalten, für zukünftige Steuerparameter, zu Berechnen \cite{seborg2010process}. \\
+Einige wichtige Vorteile von \ac{MPC} sind:
+(1) das sehr gute annähern an Prozessgrenzen und damit ein hoher Durchsatz/Effizienz, (2) Einschränkungen der Eingangs und Ausgangsgrößen werden berücksichtigt, (3) die Vorhersage des Fahrzeugzustands kann genutzt werden um mögliche Probleme frühzeitig zu detektieren.
+Seit den späten 70ern bis in die frühen 2000er wurde \ac{MPC} vor allem in der Chemiebranche genutzt um die komplexen multivariablen Regelungsprozesse bei zum Beispiel der Ölraffinerie zu Steuern. Für diese Aufgabengebiete war \acl{MPC} hervorragend geeignet, da die Prozesse im Vergleich zu anderen Regelungsaufgaben sehr langsam sind und damit die geringe Rechenleistung der damaligen Zeit ausgereicht hat. 
+Gerade in den letzten Jahren, mit stark gestiegener Prozessorleistung, sind die Einsatzgebiete vielfältiger geworden. Auch die Steuerung hoch dynamischer Systeme wie Quadcopter \cite{quadcopterMpc} oder Fahrzeugen \cite{carMPC} ist inzwischen möglich. 
+
+\subsection{Funktion}
+Die Systematischen Ablauf eines \ac{MPC}- Algorithmus ist in Abbildung \ref{fig:mpcBlock} aufgezeigt.  
+
+  \begin{figure}[ht!]
+  	\caption{Block Diagramm zu MPC}
+  	\includegraphics[width=350pt]{Abbildungen/mpcBlockDiagram.png}
+  	\label{fig:mpcBlock}
+  \end{figure}
+
+Die Funktion lässt sich in mehrere Schritte unterteilen:
+\begin{itemize}
+	\item Zustandsschätzung \\ Im ersten Schritt wird der aktuelle Zustand des System erfasst und als Ausgangspunkt für die Berechnung des Optimierungsproblems festgelegt.
+	\item Optimierung \\ In diesem Schritt werden die zukünftigen Zustände des System berechnet und welche Steuerparameter von Nöten sind um eine Kostenfunktion zu minimieren. Diese entspricht im industriellen Umfeld zum Beispiel einer Optimierung der Fertigungsrate, Kostenreduktion,  Temperatursteuerung, etc.
+	\item Steuerung \\ Die berechneten Steuerparameter werden auf dem realen System angewandt. Danach geht es wieder beim ersten Schritt los.   
+\end{itemize}
+
+
+Die Mächtigkeit von \ac{MPC} basiert auf der Prädiktion des Systemverhaltens. Ein präzises Vorhersagen setzt daher eine möglichst gute Systembeschreibung voraus. Je genauer diese an die Realität heran reicht, desto weiter in die Zukunft können die Systemzustände berechnet werden. Außerdem kann die Regelung näher an die Systemgrenzen gehen. \\
+Bei \acl{MPC} handelt es sich um ein sogenanntes \textit{finite-horizon} Verfahren. Die Optimierung wird immer für einen bestimmten Zeitraum in die Zukunft durchgeführt $ [t_0, t_0 + T] $. Dieser Bereich \(T\) wird dann in \(k\) Schritte unterteilt für die jeweils ein Prädiktionsschritt berechnet wird. Dieser geht aus dem vorherigen Zustand $k -1$ und den dazu gehörigen Steuergrößen hervor. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Es wurde ein kombinierter Ansatz gewählt, anstatt das Problem auf einen Linearen und Longitudinalen Regler aufzuteilen. Die Vorteile, Nachteile sind:
 
 It is possible to divide the problem defined in Section 1.4 in longitudinal and lateral control. This division has
@@ -437,6 +500,10 @@ every time step;
 calculate its control outputs is calculated based on the exact references.
 The advantages outweigh the disadvantages, so the division is made.
 
+\subsection{Bedingungen}
+\subsection{Schranken}
+
+
 \chapter{Implementierung}
 
 \section{Simulation}
@@ -445,9 +512,17 @@ The advantages outweigh the disadvantages, so the division is made.
 
 
 \chapter{Evaluierung}
+\section{Verifizierung der Fahrzeugmodelle}
+\section{Regelung verschiedener Modelle}
+\section{Kostenfunktionen}
 
-\chapter[Zusammenfassung]{Zusammenfassung und Ausblick}
+
+
+\chapter[Ausblick]{Zusammenfassung und Ausblick}
 \section{Dynamisches Fahrzeugmodell im MPC}
+\section{Trajektionsregelung}
+\section{Zweispurmodell}
+\section{Zusammenfassung}
 
 
 

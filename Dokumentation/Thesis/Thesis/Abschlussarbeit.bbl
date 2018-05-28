@@ -1,9 +1,21 @@
-\begin{thebibliography}{KPSB15}
+\begin{thebibliography}{SMED10}
+
+\bibitem[FB05]{carMPC}
+T.~Keviczky J. Asgari D.~Hrovat F.~Borrelli, P.~Falcone.
+\newblock Mpc-based approach to active steering for autonomous vehicle systems.
+\newblock {\em International Journal of Vehicle Autonomous Systems (IJVAS)},
+  3(2/3/4), 2005.
 
 \bibitem[FsW]{FsWorldRank:1}
 Formula student - world ranking lists.
 \newblock \url{https://mazur-events.de/fs-world/}.
 \newblock Accessed on 2018-05-14.
+
+\bibitem[GD17]{quadcopterMpc}
+G.~Ganga and M.~M. Dharmana.
+\newblock Mpc controller for trajectory tracking control of quadcopter.
+\newblock In {\em 2017 International Conference on Circuit ,Power and Computing
+  Technologies (ICCPCT)}, pages 1--6, April 2017.
 
 \bibitem[KPSB15]{7225830}
 J.~Kong, M.~Pfeiffer, G.~Schildbach, and F.~Borrelli.
@@ -27,6 +39,11 @@ Heiko~G. Seif and Xiaolong Hu.
 \newblock Autonomous driving in the icity—hd maps as a key challenge of the
   automotive industry.
 \newblock {\em Engineering}, 2(2):159 -- 162, 2016.
+
+\bibitem[SMED10]{seborg2010process}
+D.E. Seborg, D.A. Mellichamp, T.F. Edgar, and F.J. Doyle.
+\newblock {\em Process Dynamics and Control}.
+\newblock John Wiley \& Sons, 2010.
 
 \bibitem[WQ01]{BicycleModel}
 Danwei Wang and Feng Qi.

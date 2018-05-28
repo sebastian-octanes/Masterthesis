@@ -12,4 +12,16 @@ The style file: alpha.bst
 Database file #1: Inhalt/literatur.bib
 Warning--I didn't find a database entry for "Waymo"
 Warning--to sort, need author or key in FsWorldRank:1
-(There were 2 warnings)
+Too many commas in name 1 of "F. Borrelli , P. Falcone , T. Keviczky , J. Asgari , D. Hrovat" for entry carMPC
+while executing---line 1185 of file alpha.bst
+Too many commas in name 1 of "F. Borrelli , P. Falcone , T. Keviczky , J. Asgari , D. Hrovat" for entry carMPC
+while executing---line 1185 of file alpha.bst
+Too many commas in name 1 of "F. Borrelli , P. Falcone , T. Keviczky , J. Asgari , D. Hrovat" for entry carMPC
+while executing---line 1185 of file alpha.bst
+Too many commas in name 1 of "F. Borrelli , P. Falcone , T. Keviczky , J. Asgari , D. Hrovat" for entry carMPC
+while executing---line 1185 of file alpha.bst
+Too many commas in name 1 of "F. Borrelli , P. Falcone , T. Keviczky , J. Asgari , D. Hrovat" for entry carMPC
+while executing---line 1250 of file alpha.bst
+Too many commas in name 1 of "F. Borrelli , P. Falcone , T. Keviczky , J. Asgari , D. Hrovat" for entry carMPC
+while executing---line 1250 of file alpha.bst
+(There were 6 error messages)
