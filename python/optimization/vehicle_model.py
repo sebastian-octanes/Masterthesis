@@ -19,9 +19,9 @@ class VehicleModel:
     r     = 0.2
     beta = 0.0    #slip angle
     gammaf = 0.0  #steering angle
-    F_long_max = 4000   # 3000N for car
+    F_long_max = 3000   # 3000N for car
     #P_engine = 39 #kW
-    P_engine = 60 #kW
+    P_engine = 50.5 #kW
     m       = 600    # mass in kg
     g       = 9.81   #m/s²
     Cd      = 1.083   #drag coefficient
@@ -31,8 +31,8 @@ class VehicleModel:
     Crr     = 0.014  #roll resistance coefficient
     Af      = 2.25   #m²
     mu	    = 0.0027   #roll resistance
-    max_speed = 30/3.6 # 120km/h /3.6 = m/s
-    max_long_acc = 10   #m/s**2 longitudinal acceleration max
+    max_speed = 120/3.6 # 120km/h /3.6 = m/s
+    max_long_acc = 7.46   #m/s**2 longitudinal acceleration max
     max_long_dec = 10   #m/s**2 longitudinal deceleration max
     max_lat_acc = 20  # 2g lateral acceleration
     max_steering_angle = (30.0/180.0)*math.pi #
@@ -224,7 +224,7 @@ class VehicleModel:
 
     """ use this function to compute the next state in the simulation environment only! here the max_beta will be limited in the function hence it is not usable for the mpc controller.
         use compute_next_state for the mpc controller"""
-    def compute_next_state_(self, current_state):
+    def kinematic_model(self, current_state):
         x,y,v,orient, y_d, psi_d, acc,steer = current_state
 
         Xnext = np.zeros(6)
@@ -245,13 +245,120 @@ class VehicleModel:
 
         return Xnext
 
+    def dynamic_model(self, current_state):
+	X, Y, x_d, psi, y_d, psi_d, acc, phi = current_state
+
+	#lat
+	theta_f = math.atan((y_d + self.lf * psi_d)/ x_d)
+	theta_r = math.atan((y_d - self.lr * psi_d)/ x_d)
+	Ffy = 2 * self.pacejka_tire_model_complex(phi - theta_f, front = True)
+	Fry = 2 * self.pacejka_tire_model_complex(- theta_r, front = False)
+
+	#long
+	Frx = 0
+	Ffx = 0
+	if(acc <= 0): 	#breaking
+		Frx = self.F_long_max * (acc/10.0)* 2 
+		Ffx = self.F_long_max * (acc/10.0)* 2
+	else:		#accelerating
+		Frx = self.P_engine * 1000* (acc/10.0) * 1.0/abs(x_d) 
+		Ffx = 0
+		if(Frx > 2* self.F_long_max):
+			Frx = 2 * self.F_long_max
+		
+	Fx = Ffx + Frx
+	x_d = x_d + self.dt * (Fx - Ffy*sin(phi) + self.m*y_d*psi_d)*(1.0/self.m)  	
+	y_d = y_d + self.dt * (Fry + Ffy*cos(phi) - self.m*x_d*psi_d)*(1.0/self.m)
+
+	psi_d = psi_d + self.dt * (self.lf*Ffy*cos(phi) - self.lr*Fry)/self.I
+
+	psi = psi + self.dt * psi_d
+	X = X + self.dt * (x_d * cos(psi) - y_d *sin(psi))
+	Y = Y + self.dt * (x_d * sin(psi) + y_d *cos(psi))
+	
+	Xnext = np.zeros(6)
+	Xnext[0] = X
+	Xnext[1] = Y
+	Xnext[2] = x_d
+	Xnext[3] = psi
+	Xnext[4] = y_d
+	Xnext[5] = psi_d
+	return Xnext
+
+    def kamsches_model(self, current_state):
+	X, Y, x_d, psi, y_d, psi_d, acc, phi = current_state
+	
+	
+	#lat
+	theta_f = math.atan((y_d + self.lf * psi_d)/ x_d)
+	theta_r = math.atan((y_d - self.lr * psi_d)/ x_d)
+
+	Ffy = 2 * self.pacejka_tire_model_complex(phi - theta_f, front = True)
+	Fry = 2 * self.pacejka_tire_model_complex(- theta_r, front = False)
+	
+	print("\n")
+	print("Ffy", Ffy)
+	print("Fry", Fry)
+
+
+	#long
+	Frx = 0
+	Ffx = 0
+	if(acc <= 0): 	#breaking
+		Frx = self.F_long_max * (acc/10.0)* 2 
+		Ffx = self.F_long_max * (acc/10.0)* 2
+	else:		#accelerating
+		Frx = self.P_engine * 1000* (acc/10.0) * 1.0/abs(x_d) 
+		Ffx = 0
+		if(Frx > 2* self.F_long_max):
+			Frx = 2 * self.F_long_max
+
+	#kammscher kreis
+	
+	Ff = np.sqrt(Ffx*Ffx + Ffy*Ffy)
+	if(Ff > 2* self.F_long_max):
+		alpha = np.arctan2(Ffx, Ffy)
+		Ffx = math.sin(alpha) * self.F_long_max * 2
+		Ffy = math.cos(alpha) * self.F_long_max * 2
+	
+	Fr = np.sqrt(Frx*Frx + Fry*Fry)
+	if(Fr > 2* self.F_long_max):
+		alpha = np.arctan2(Frx, Fry)
+		Frx = math.sin(alpha) * self.F_long_max *2
+		Fry = math.cos(alpha) * self.F_long_max *2
+		
+	Fx = Frx + Ffx		
+
+	print("x_d", x_d)
+	print("y_d", y_d)
+
+	x_d = x_d + self.dt * (Fx - Ffy*sin(phi) + self.m*y_d*psi_d)*(1.0/self.m)  	
+	y_d = y_d + self.dt * (Fry + Ffy*cos(phi) - self.m*x_d*psi_d)*(1.0/self.m)
+
+	psi_d = psi_d + self.dt * (self.lf*Ffy*cos(phi) - self.lr*Fry)/self.I
+
+	psi = psi + self.dt * psi_d
+	X = X + self.dt * (x_d * cos(psi) - y_d *sin(psi))
+	Y = Y + self.dt * (x_d * sin(psi) + y_d *cos(psi))
+
+	if(x_d <= 0.1):
+		x_d = 1.0	
+
+	Xnext = np.zeros(6)
+	Xnext[0] = X
+	Xnext[1] = Y
+	Xnext[2] = x_d
+	Xnext[3] = psi
+	Xnext[4] = y_d
+	Xnext[5] = psi_d
+	return Xnext
+
+
+
+
     def get_bounds(self, N):
 
         #define bounds fitting to N and Statevector
-        #bnds = ((None, None),(None, None),
-        #        (0, self.max_speed),(None, None),
-        #        (-self.max_long_dec, self.max_long_acc),
-        #        (-self.max_steering_angle, self.max_steering_angle))*(N + 1)
 	bnds = ((None, None),(None, None),
                 (0.1, self.max_speed),(None, None),(None, None),(None, None),
                 (-self.max_long_dec, self.max_long_acc),
@@ -272,24 +379,6 @@ class VehicleModel:
     def get_max_dec(self):
         return self.max_long_dec
 
-
-    def compute_friction(self,v):
-        #rolling resistance: Fr = Crr * m * g
-        #air resistance: Fa = pCdA/2 * v^2
-        #air resistance: Plost = 0.0 p * A * v^3 * Cd
-        #simplified: 0.5 * p * A * Cd * v(t)^2
-        a = (self.FEngine * self.throttle_position)/self.mass  - ((self.p * self.Cd * self.A * v * v)/(2 * self.mass))
-        #add roll resistance depending on travel direction or else car will move backward if throttle is zero
-        if(v > 0):
-            a -=  (self.Crr * self.mass * 9.81)/self.mass
-        elif (v < 0):
-            a+=  (self.Crr * self.mass * 9.81)/self.mass
-        print "speed is " + repr(v * 3.6) + "km/h"
-
-        return a
-
-
-
     def set_throttle_position(self, throttle):
         if(throttle <= 1.0):
             self.throttle_position = throttle
@@ -303,6 +392,7 @@ class VehicleModel:
 
     def set_dt(self, dt_):
         self.dt = dt_
+
     def get_dt(self):
         return self.dt
 

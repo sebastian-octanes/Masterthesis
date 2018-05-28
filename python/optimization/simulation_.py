@@ -319,8 +319,10 @@ class SimulationEnvironment():
                 self.plot_car_path()
                 #plot racecar        
                 self.vehicleModel.set_dt(self.clock.get_time()/1000.0)
-                self.X0[0:6] = self.vehicleModel.compute_next_state_long_(self.X0[0:8])
-                self.display_car_info(self.X0[6], self.X0[7])
+                #self.X0[0:6] = self.vehicleModel.compute_next_state_long_(self.X0[0:8])
+                #self.X0[0:6] = self.vehicleModel.dynamic_model(self.X0[0:8])
+                self.X0[0:6] = self.vehicleModel.kamsches_model(self.X0[0:8])
+                #self.display_car_info(self.X0[6], self.X0[7])
                 self.set_car_path()                
                 #rotate car picture                 
                 #car_pic = pygame.transform.rotate(self.surf, self.X0[3] * 180/math.pi)
@@ -341,7 +343,8 @@ class SimulationEnvironment():
                 #shift the state vector one step to the left and predict last step for constraint handling
                 self.X0[6:-8] = res.x[14:]
                 self.X0[-8:-2] = self.vehicleModel.compute_next_state_(self.X0[-16:-8])
-                self.constraints.ineq_constraint_vehicle_bounds_set_tangent_points(self.X0)
+		#self.X0[-8:-2] = self.vehicleModel.dynamic_model(self.X0[-16:-8])
+		self.constraints.ineq_constraint_vehicle_bounds_set_tangent_points(self.X0)
                 #print self.costraints.ineq_constraint_vehicle_bounds(self.X0)
                 print("X0", self.X0[0:8])                           
                 #self.raceTrack.set_new_vehicle_positon(self.X0[0:2])
