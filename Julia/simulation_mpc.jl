@@ -260,7 +260,7 @@ function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, 
     #mpc_struct = define_constraint_nonlinear_bycicle(mpc_struct)
     mpc_struct = define_constraint_kin_bycicle(mpc_struct)
     mpc_struct = define_constraint_start_pose(mpc_struct, startPose)
-    #mpc_struct = define_constraint_tangents(mpc_struct, trackPoints)
+    mpc_struct = define_constraint_tangents(mpc_struct, trackPoints)
     #mpc_struct = define_constraint_max_search_dist(mpc_struct, trackPoints)
     #mpc_struct = define_objective(mpc_struct)
     #mpc_struct = define_objective_middle(mpc_struct)
@@ -300,7 +300,7 @@ itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack4(trackWidth)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrackUUTurn(trackWidth)
 
 
-N = 10
+N = 30
 printLevel = 0
 dt = 0.05
 max_speed = 20
@@ -384,7 +384,7 @@ while isopen(window)
     createPredictionPoints(stateVector, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window, N)
     draw(window, carSprite)
     #draw car info
-    displayCarData(res, window)
+    #displayCarData(res, window)
     display(window)
     clear(window, SFML.white)
 end

@@ -45,9 +45,9 @@ Der Wettbewerb ist unterteilt in Dynamische und Statische Events. In letzteren w
 
 Die dynamischen Disziplinen, in denen das Fahrzeug selbstständig fährt, sind hierbei:
 \begin{itemize}
-	\item Acceleration \\ 75 Meter Beschleunigungsstreifen. Punkte werden nach der Zeit nicht nach der Endgeschwindigkeit vergeben.
-	\item Skidpad \\ eine liegende 8 bei an der Engstelle eingefahren wird und jeweils 2 rechte und 2 linke Runden gefahren werden. Jeweils die zweite Runde wird gezählt. Die Abmaße sind exakt vorgegeben.
-	\item Trackdrive \\ ein bis zu 800 Meter langer Kurs mit maximal 80 Meter langen geraden und Kurven mit minimalem Innenradius von 9 Metern. Es werden 11 runden gefahren und die Teams erhalten im Vornherein keine Möglichkeit Messungen am Kurs vorzunehmen.
+	\item Acceleration \\ 75 Meter langer Beschleunigungsstreifen. Punkte werden nach der Zeit nicht nach der Endgeschwindigkeit vergeben.
+	\item Skidpad \\ eine liegende 8 bei der an der Engstelle eingefahren wird und jeweils 2 rechte und 2 linke Runden gefahren werden. Die zweite Runde wird jeweils gezählt. Die Abmaße sind exakt vorgegeben.
+	\item Trackdrive \\ ein bis zu 800 Meter langer Kurs mit maximal 80 Meter langen Geraden und Kurven mit minimalem Innenradius von 9 Metern. Es werden 11 Runden gefahren und die Teams erhalten im Vornherein keine Möglichkeit Messungen am Kurs vorzunehmen.
 \end{itemize}
 
 Für diese Arbeit ist vorallem der Trackdrive von Interesse. Es wird davon ausgegangen dass das Fahrzeug bereits die erste Runde absolviert, und sich damit eine genaue Karte des Rennkurses erstellt hat. Die Messungen und Vergleiche beziehen sich damit auch immer auf einen Kurs der so (wenn auch nicht so kurz) in einem FS-Event für die Driverless Fahrzeuge vorkommen könnte.
@@ -392,6 +392,8 @@ Der Punkt, der die Kostenfunktion $c: x \rightarrow c\textsuperscript{T} x$ mini
 
  \subsection*{Lösungsverfahren}
 
+\subsection{Simplex - Verfahren}
+Zur besseren Veranschaulichung wird zuerst kurz das Simplex verfahren erklärt welches für die meisten Optimierungsverfahren am schnellsten ist.
 
   
  \subsection{Innere-Punkte-Verfahren}  
@@ -437,14 +439,14 @@ Der Punkt, der die Kostenfunktion $c: x \rightarrow c\textsuperscript{T} x$ mini
  
  
 \section{Model Predictive Control}
-Bei \ac{MPC} handelt es sich um einen fortschrittlichen Algorithmus, mit dem sehr komplexe, multivariable Regelungsprobleme lösen lassen. Soll ein Prozess kontrolliert werden, welcher mehrere Ein- und Ausgänge besitzt und gleichzeitig Ungleich- und Gleichheitsbedingungen erfüllen, ist \acs{MPC} ein mächtiges Werkzeug. Vorausgesetzt ein ausreichend genaues Modell des Prozesses vorhanden, können unter ausnutzen von Messungen und dem Modell zukünftige Zustände des Prozesses berechnet werden. Diese Information wird genutzt um die Eingangsparameter abhängig von dem gewünschten Verhalten, für zukünftige Steuerparameter, zu Berechnen \cite{seborg2010process}. \\
-Einige wichtige Vorteile von \ac{MPC} sind:
+Bei \ac{MPC} handelt es sich um einen fortschrittlichen Algorithmus, mit dem sehr komplexe, multivariable Regelungsprobleme lösen lassen. Soll ein Prozess kontrolliert werden, welcher mehrere Ein- und Ausgänge besitzt und gleichzeitig Ungleich- und Gleichheitsbedingungen erfüllen werden müssen, ist \acs{MPC} ein mächtiges Werkzeug. Vorausgesetzt ein ausreichend genaues Modell des Prozesses vorhanden, können unter ausnutzen von Messungen und dem Modell zukünftige Zustände des Prozesses berechnet werden. Diese Information wird genutzt um die Eingangsparameter abhängig von dem gewünschten Verhalten, für zukünftige Steuerparameter, zu Berechnen \cite{seborg2010process}. \\
+Einige wichtige Vorteile von \ac{MPC} sind: \\
 (1) das sehr gute annähern an Prozessgrenzen und damit ein hoher Durchsatz/Effizienz, (2) Einschränkungen der Eingangs und Ausgangsgrößen werden berücksichtigt, (3) die Vorhersage des Fahrzeugzustands kann genutzt werden um mögliche Probleme frühzeitig zu detektieren.
-Seit den späten 70ern bis in die frühen 2000er wurde \ac{MPC} vor allem in der Chemiebranche genutzt um die komplexen multivariablen Regelungsprozesse bei zum Beispiel der Ölraffinerie zu Steuern. Für diese Aufgabengebiete war \acl{MPC} hervorragend geeignet, da die Prozesse im Vergleich zu anderen Regelungsaufgaben sehr langsam sind und damit die geringe Rechenleistung der damaligen Zeit ausgereicht hat. 
+Seit den späten 70ern bis in die frühen 2000er wurde \ac{MPC} vor allem in der Chemiebranche genutzt um die komplexen multivariablen Regelungsprozesse bei zum Beispiel der Ölraffinerie zu Steuern. Für diese Aufgabengebiete war \acl{MPC} hervorragend geeignet, da die Prozesse im Vergleich zu anderen Regelungsaufgaben sehr langsam sind und damit die geringe Rechenleistung der damaligen Zeit ausreichend war. 
 Gerade in den letzten Jahren, mit stark gestiegener Prozessorleistung, sind die Einsatzgebiete vielfältiger geworden. Auch die Steuerung hoch dynamischer Systeme wie Quadcopter \cite{quadcopterMpc} oder Fahrzeugen \cite{carMPC} ist inzwischen möglich. 
 
 \subsection{Funktion}
-Die Systematischen Ablauf eines \ac{MPC}- Algorithmus ist in Abbildung \ref{fig:mpcBlock} aufgezeigt.  
+Der systematische Ablauf eines \ac{MPC}- Algorithmus ist in Abbildung \ref{fig:mpcBlock} aufgezeigt.  
 
   \begin{figure}[ht!]
   	\caption{Block Diagramm zu MPC}
@@ -460,28 +462,52 @@ Die Funktion lässt sich in mehrere Schritte unterteilen:
 \end{itemize}
 
 
-Die Mächtigkeit von \ac{MPC} basiert auf der Prädiktion des Systemverhaltens. Ein präzises Vorhersagen setzt daher eine möglichst gute Systembeschreibung voraus. Je genauer diese an die Realität heran reicht, desto weiter in die Zukunft können die Systemzustände berechnet werden. Außerdem kann die Regelung näher an die Systemgrenzen gehen. \\
-Bei \acl{MPC} handelt es sich um ein sogenanntes \textit{finite-horizon} Verfahren. Die Optimierung wird immer für einen bestimmten Zeitraum in die Zukunft durchgeführt $ [t_0, t_0 + T] $. Dieser Bereich \(T\) wird dann in \(k\) Schritte unterteilt für die jeweils ein Prädiktionsschritt berechnet wird. Dieser geht aus dem vorherigen Zustand $k -1$ und den dazu gehörigen Steuergrößen hervor. 
+Die Mächtigkeit von \ac{MPC} basiert auf der Prädiktion des Systemverhaltens. Ein präzises Vorhersagen setzt daher eine möglichst gute Systembeschreibung voraus. Je genauer diese an die Realität heran reicht, desto weiter in die Zukunft können die Systemzustände berechnet werden. Außerdem kann das System näher an seine Systemgrenzen geführt werden. \\
+Bei \acl{MPC} handelt es sich um ein sogenanntes \textit{finite-horizon} Verfahren, das heißt Optimierung wird immer für einen bestimmten Zeitraum in die Zukunft durchgeführt $ [t_0, t_0 + T] $. Dieser Bereich \(T\) wird dann in \(k\) Schritte unterteilt für die jeweils ein Prädiktionsschritt berechnet wird. Dieser geht aus dem vorherigen Zustand $k -1$ und den dazu gehörigen Steuergrößen hervor. Nach dem der Optimierer die für die Kostenfunktion idealen Steuergrößen für den gesammten Prädiktionsvektor berechnet hat, wird nur der erste Steuerwert ausgewählt und zur Regelung im realen System eingesetzt. \\
 
 
 
 
+Wie bereits erwähnt wurde, berücksichtigt der \ac{MPC}-Ansatz auch  Bedingungen (constraints) mit welchen man den Suchraum einschränkt. Diese sind im Falle eines Rennautos zum Beispiel die maximale Geschwindigkeit, Lenkeinschlag, Beschleunigung und Bremskraft. Ebenfalls ein sehr gutes Beispiel ist die Änderungsrate der Querbeschleunigung, welche ein direkter Indikator für den Komfort einer autonomen Fahrzeugs während der Fahrt darstellt.
+
+\section{Python}
+
+Zu Beginn der Masterarbeit wurde zuerst die Programmiersprache Python verwendet um das \ac{MPC} zu programmieren. Als Optimierer wurde ein \textit{Sequential Least SQuarez Programming}-Algorithmus verwendet. Dieser ist direkt in die SciPy-Bibliothek integriert und unterstützt Eingangs-, Ausgangs- und Zustandsbeschränkungen ohne die es nicht möglich ist das \ac{MPC} für die Fahrzeugregelung auszulegen. So lange die Anzahl der Prädiktionsschritte klein bleibt und 10 nicht überschreitet ist die Ausführungszeit gering genug um eine Updaterate von 20Hz zu erreichen. 
+
+\begin{figure}[ht!]
+	\includegraphics[width=400pt]{Abbildungen/juliaBenchmark.png}
+	\caption{Ausführungszeiten für verschiedene Horizontlängen}
+	\label{fig:juliaBench}
+\end{figure}
+
+Bei größeren Prädiktionsvektoren fällt die Geschwindigkeit jedoch sehr schnell ab da die automatische Ableitung benötigt wird. Diese lässt sich in Python mit Frameworks wie \textit{CasADi} \cite{Casadi:1} integrieren. Auf Grund der schlechten Dokumentation wurde nach einer alternativen Programmiersprache gesucht, die für diese Art von Problem besser geeignet ist.
+
+
+\section{Julia}
+Die Sprache die dies ermöglicht ist die Programmiersprache \text{Julia}. Sie wurde im Jahr 2009 von Jeff Bezanson, Stefan Karpinski, Viral B. Shah, and Alan Edelman ersonnen und ist damit noch eine sehr junge Sprache. Sie ist vor allem für numerische Analyse und wissenschaftliche Berechnungen erfunden worden und bietet in diesen Bereichen viele Funktionalitäten. Ebenfalls ein wichtiges Ziel bei der Entwicklung war es, ohne vorheriges Kompilieren sehr schnell zu sein und trotzdem weiterhin das \textit{general-purpose} Paradigma zu erfüllen. Ein Vergleich der Berechnungsgeschwindigkeit verschiedener Sprachen bezüglich viel genutzten Funktionen im wissenschaftlichen Umfeld ist in dem Benchmark \ref{fig:juliaBench} zu sehen.
+
+\begin{figure}[ht!]
+	\includegraphics[width=450pt]{Abbildungen/juliaBenchmark.png}
+	\caption{Ausführungszeiten für verschiedene Sprachen}
+	\label{fig:juliaBench}
+\end{figure}
+
+Die wichtigsten Feautres von Julia sind:
+\begin{itemize}
+	\item optional typing: \\
+	
+	\item multiple dispatch: Wird genutzt um die gleiche Methode für verschiedene Kombinationen an Eingabeparametern oder Variablentypen zu überladen. Bei dem Funktionsaufruf wird die am besten passende Methodendefinition aufgerufen. \\
+	\item type inference: Automatische detektieren des Datentyps. Dies befreit den Programmierer vom festlegen des Typs und ermöglicht trotzdem Typprüfung. \\
+	\item \ac{JIT} Kompilierung: Ein System in dem ein \ac{JIT} Kompilierer implementiert ist, wandelt den Computer Code erst zur Laufzeit in Bytecode um. Der große Vorteil ist, dass während der Ausführung kontinuierliche Analysen durchgeführt werden, um Bereiche ausfindig zu machen die durch ein neukompilieren eine signifikanten verbesserung bei der Ausführungszeit erfahren würden.\\
+	
+\end{itemize}
 
 
 
 
+\chapter{Implementierung}
 
-
-
-
-
-
-
-
-
-
-
-
+\section{MPC for Racecar}
 
 Es wurde ein kombinierter Ansatz gewählt, anstatt das Problem auf einen Linearen und Longitudinalen Regler aufzuteilen. Die Vorteile, Nachteile sind:
 
@@ -500,18 +526,15 @@ every time step;
 calculate its control outputs is calculated based on the exact references.
 The advantages outweigh the disadvantages, so the division is made.
 
-\subsection{Bedingungen}
-\subsection{Schranken}
-
-
-\chapter{Implementierung}
+\subsubsection{Suchbereich einschränken (constraint)}
 
 \section{Simulation}
 
-\section{Julia}
+
 
 
 \chapter{Evaluierung}
+
 \section{Verifizierung der Fahrzeugmodelle}
 \section{Regelung verschiedener Modelle}
 \section{Kostenfunktionen}

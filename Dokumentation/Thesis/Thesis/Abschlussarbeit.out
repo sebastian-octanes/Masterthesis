@@ -8,24 +8,26 @@
 \BOOKMARK [1][-]{section.2.3}{Dynamisches Fahrzeugmodell}{chapter.2}% 8
 \BOOKMARK [0][-]{chapter.3}{Trajektionsplanung und Fahrzeugregelung}{}% 9
 \BOOKMARK [1][-]{section.3.1}{Optimierung}{chapter.3}% 10
-\BOOKMARK [2][-]{subsection.3.1.1}{Innere-Punkte-Verfahren}{section.3.1}% 11
-\BOOKMARK [2][-]{subsection.3.1.2}{Automatische Ableitung}{section.3.1}% 12
-\BOOKMARK [1][-]{section.3.2}{Model Predictive Control}{chapter.3}% 13
-\BOOKMARK [2][-]{subsection.3.2.1}{Funktion}{section.3.2}% 14
-\BOOKMARK [2][-]{subsection.3.2.2}{Bedingungen}{section.3.2}% 15
-\BOOKMARK [2][-]{subsection.3.2.3}{Schranken}{section.3.2}% 16
-\BOOKMARK [0][-]{chapter.4}{Implementierung}{}% 17
-\BOOKMARK [1][-]{section.4.1}{Simulation}{chapter.4}% 18
-\BOOKMARK [1][-]{section.4.2}{Julia}{chapter.4}% 19
-\BOOKMARK [0][-]{chapter.5}{Evaluierung}{}% 20
-\BOOKMARK [1][-]{section.5.1}{Verifizierung der Fahrzeugmodelle}{chapter.5}% 21
-\BOOKMARK [1][-]{section.5.2}{Regelung verschiedener Modelle}{chapter.5}% 22
-\BOOKMARK [1][-]{section.5.3}{Kostenfunktionen}{chapter.5}% 23
-\BOOKMARK [0][-]{chapter.6}{Ausblick}{}% 24
-\BOOKMARK [1][-]{section.6.1}{Dynamisches Fahrzeugmodell im MPC}{chapter.6}% 25
-\BOOKMARK [1][-]{section.6.2}{Trajektionsregelung}{chapter.6}% 26
-\BOOKMARK [1][-]{section.6.3}{Zweispurmodell}{chapter.6}% 27
-\BOOKMARK [1][-]{section.6.4}{Zusammenfassung}{chapter.6}% 28
-\BOOKMARK [0][-]{appendix.A}{Anhang}{}% 29
-\BOOKMARK [0][-]{chapter*.28}{Abk\374rzungsverzeichnis}{}% 30
-\BOOKMARK [0][-]{chapter*.29}{Literaturverzeichnis}{}% 31
+\BOOKMARK [2][-]{subsection.3.1.1}{Simplex - Verfahren}{section.3.1}% 11
+\BOOKMARK [2][-]{subsection.3.1.2}{Innere-Punkte-Verfahren}{section.3.1}% 12
+\BOOKMARK [2][-]{subsection.3.1.3}{Automatische Ableitung}{section.3.1}% 13
+\BOOKMARK [1][-]{section.3.2}{Model Predictive Control}{chapter.3}% 14
+\BOOKMARK [2][-]{subsection.3.2.1}{Funktion}{section.3.2}% 15
+\BOOKMARK [1][-]{section.3.3}{Python}{chapter.3}% 16
+\BOOKMARK [1][-]{section.3.4}{Julia}{chapter.3}% 17
+\BOOKMARK [0][-]{chapter.4}{Implementierung}{}% 18
+\BOOKMARK [1][-]{section.4.1}{MPC for Racecar}{chapter.4}% 19
+\BOOKMARK [2][-]{subsubsection.4.1.0.1}{Suchbereich einschr\344nken \(constraint\)}{section.4.1}% 20
+\BOOKMARK [1][-]{section.4.2}{Simulation}{chapter.4}% 21
+\BOOKMARK [0][-]{chapter.5}{Evaluierung}{}% 22
+\BOOKMARK [1][-]{section.5.1}{Verifizierung der Fahrzeugmodelle}{chapter.5}% 23
+\BOOKMARK [1][-]{section.5.2}{Regelung verschiedener Modelle}{chapter.5}% 24
+\BOOKMARK [1][-]{section.5.3}{Kostenfunktionen}{chapter.5}% 25
+\BOOKMARK [0][-]{chapter.6}{Ausblick}{}% 26
+\BOOKMARK [1][-]{section.6.1}{Dynamisches Fahrzeugmodell im MPC}{chapter.6}% 27
+\BOOKMARK [1][-]{section.6.2}{Trajektionsregelung}{chapter.6}% 28
+\BOOKMARK [1][-]{section.6.3}{Zweispurmodell}{chapter.6}% 29
+\BOOKMARK [1][-]{section.6.4}{Zusammenfassung}{chapter.6}% 30
+\BOOKMARK [0][-]{appendix.A}{Anhang}{}% 31
+\BOOKMARK [0][-]{chapter*.31}{Abk\374rzungsverzeichnis}{}% 32
+\BOOKMARK [0][-]{chapter*.32}{Literaturverzeichnis}{}% 33

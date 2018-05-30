@@ -1,5 +1,10 @@
 \begin{thebibliography}{SMED10}
 
+\bibitem[Cas]{Casadi:1}
+Casadi.
+\newblock \url{https://github.com/casadi/casadi/wiki}.
+\newblock Accessed on 2018-05-30.
+
 \bibitem[FB05]{carMPC}
 T.~Keviczky J. Asgari D.~Hrovat F.~Borrelli, P.~Falcone.
 \newblock Mpc-based approach to active steering for autonomous vehicle systems.

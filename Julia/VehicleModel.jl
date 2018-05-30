@@ -308,12 +308,16 @@ function dyn_model_kamCircle(carPose, carControl, dt)
     Ffdiff = F_max - fabs(Ffx)
     if(Fby >= 0 && Fby > Fbdiff)
         Fby = Fbdiff
+    end
     if(Fby <= 0 && Fby < Fbdiff)
         Fby = - Fbdiff
+    end
     if(Ffy >= 0 && Ffy > Ffdiff)
         Ffy = Ffdiff
+    end
     if(Ffy <= 0 && Ffy < Ffdiff)
         Ffy = -Ffdiff
+    end
 
 
     #base model from here again
