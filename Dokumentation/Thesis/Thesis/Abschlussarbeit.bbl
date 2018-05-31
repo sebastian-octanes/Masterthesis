@@ -5,11 +5,23 @@ Casadi.
 \newblock \url{https://github.com/casadi/casadi/wiki}.
 \newblock Accessed on 2018-05-30.
 
+\bibitem[Dan51]{dantzig51}
+G.~B. Dantzig.
+\newblock {\em {Maximization of a Linear Function of Variables Subject to
+  Linear Inequalities, in Activity Analysis of Production and Allocation}},
+  chapter XXI.
+\newblock Wiley, New York, 1951.
+
 \bibitem[FB05]{carMPC}
 T.~Keviczky J. Asgari D.~Hrovat F.~Borrelli, P.~Falcone.
 \newblock Mpc-based approach to active steering for autonomous vehicle systems.
 \newblock {\em International Journal of Vehicle Autonomous Systems (IJVAS)},
   3(2/3/4), 2005.
+
+\bibitem[FGW02]{doi:10.1137/S0036144502414942}
+Anders Forsgren, Philip~E. Gill, and Margaret~H. Wright.
+\newblock Interior methods for nonlinear optimization.
+\newblock {\em SIAM Review}, 44(4):525--597, 2002.
 
 \bibitem[FsW]{FsWorldRank:1}
 Formula student - world ranking lists.
@@ -44,6 +56,11 @@ Heiko~G. Seif and Xiaolong Hu.
 \newblock Autonomous driving in the icity—hd maps as a key challenge of the
   automotive industry.
 \newblock {\em Engineering}, 2(2):159 -- 162, 2016.
+
+\bibitem[sim]{simplexWiki:1}
+Simplex verfahren.
+\newblock \url{https://de.wikipedia.org/wiki/Simplex-Verfahren}.
+\newblock Accessed on 2018-05-31.
 
 \bibitem[SMED10]{seborg2010process}
 D.E. Seborg, D.A. Mellichamp, T.F. Edgar, and F.J. Doyle.
