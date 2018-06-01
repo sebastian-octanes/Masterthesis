@@ -1,10 +1,5 @@
 \begin{thebibliography}{SMED10}
 
-\bibitem[Cas]{Casadi:1}
-Casadi.
-\newblock \url{https://github.com/casadi/casadi/wiki}.
-\newblock Accessed on 2018-05-30.
-
 \bibitem[Dan51]{dantzig51}
 G.~B. Dantzig.
 \newblock {\em {Maximization of a Linear Function of Variables Subject to
@@ -33,6 +28,11 @@ G.~Ganga and M.~M. Dharmana.
 \newblock Mpc controller for trajectory tracking control of quadcopter.
 \newblock In {\em 2017 International Conference on Circuit ,Power and Computing
   Technologies (ICCPCT)}, pages 1--6, April 2017.
+
+\bibitem[jul]{julDiff}
+Juliadiff.
+\newblock \url{http://www.juliadiff.org/}.
+\newblock Accessed on 2018-06-01.
 
 \bibitem[KPSB15]{7225830}
 J.~Kong, M.~Pfeiffer, G.~Schildbach, and F.~Borrelli.
@@ -66,6 +66,11 @@ Simplex verfahren.
 D.E. Seborg, D.A. Mellichamp, T.F. Edgar, and F.J. Doyle.
 \newblock {\em Process Dynamics and Control}.
 \newblock John Wiley \& Sons, 2010.
+
+\bibitem[TT16]{DBLP:journals/corr/TurkinT16}
+Andrei Turkin and Aung Thu.
+\newblock Benchmarking python tools for automatic differentiation.
+\newblock {\em CoRR}, abs/1606.06311, 2016.
 
 \bibitem[WQ01]{BicycleModel}
 Danwei Wang and Feng Qi.

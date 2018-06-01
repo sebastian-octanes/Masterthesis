@@ -53,8 +53,9 @@ Die dynamischen Disziplinen, in denen das Fahrzeug selbstständig fährt, sind h
 Für diese Arbeit ist vorallem der Trackdrive von Interesse. Es wird davon ausgegangen dass das Fahrzeug bereits die erste Runde absolviert, und sich damit eine genaue Karte des Rennkurses erstellt hat. Die Messungen und Vergleiche beziehen sich damit auch immer auf einen Kurs der so (wenn auch nicht so kurz) in einem FS-Event für die Driverless Fahrzeuge vorkommen könnte.
  
 \begin{figure}[hb!]
+	\centering
+	\includegraphics[width=270pt]{Abbildungen/amz-driverless-long.jpg}
 	\caption{Zürichs FS-Driverless Fahrzeug im Jahr 2017 während des Trackdrive}
-	\includegraphics[width=200pt]{Abbildungen/amz-driverless-long.jpg}
 \end{figure}
 
 \section{Ziel der Arbeit}
@@ -78,6 +79,7 @@ Gerade in den letzten Jahren, mit stark gestiegener Prozessorleistung, sind die 
 Der systematische Ablauf eines \ac{MPC}- Algorithmus ist in Abbildung \ref{fig:mpcBlock} aufgezeigt.  
 
   \begin{figure}[ht!]
+  	\centering
   	\includegraphics[width=350pt]{Abbildungen/mpcBlockDiagram.png}
   	\caption{Block Diagramm zu MPC}
   	\label{fig:mpcBlock}
@@ -95,6 +97,7 @@ Die Mächtigkeit von \ac{MPC} basiert auf der Prädiktion des Systemverhaltens. 
 Bei \acl{MPC} handelt es sich um ein sogenanntes \textit{finite-horizon} Verfahren, das heißt die Optimierung wird immer für einen bestimmten Zeitraum in die Zukunft durchgeführt $ [t_0, t_0 + T] $. Dieser Bereich \(T\) wird dann in \(k\) Schritte unterteilt für die jeweils ein Prädiktionsschritt berechnet wird. Dieser geht aus dem vorherigen Zustand $k -1$ und den dazu gehörigen Steuergrößen hervor. Nach dem der Optimierer die für die Kostenfunktion idealen Steuergrößen für den gesammten Prädiktionsvektor berechnet hat, wird nur der \emph{erste} Steuerwert ausgewählt und zur Regelung im realen System eingesetzt. Der Zusammenhang aus Prädiktion und Kostenfunktion ist im Schaubild \ref{fig:mpcTheory} verdeutlicht.
 
 \begin{figure}[ht!]
+	\centering
 	\includegraphics[width=350pt]{Abbildungen/mpcParadigm.jpg}
 	\caption{Funktionsprinzip von \ac{MPC}: Die Kostenfunktion ist die Reduktion der Distanz zur Referenztrajektorie. Durch das Modell kann das System so geregelt werden dass es nicht über die Zieltrajektorie hinaus schießt.}
 	\label{fig:mpcTheory}
@@ -157,8 +160,9 @@ $min \{ c\textsuperscript{T}x | Ax \leq b, x \geq 0 \}$
 Besonders einfach veranschaulichen lässt sich die Lösung des Problems geometrisch im zweidimensionalen Raum, so dargestellt in Abbildung \ref*{fig:linOpt}.
 
 \begin{figure}[ht!]
-	\caption{Lineare Optimierung}
+	\centering
 	\includegraphics[width=350pt]{Abbildungen/linOpt.png}
+	\caption{Lineare Optimierung}
 	\label{fig:linOpt}
 \end{figure}
 
@@ -171,6 +175,7 @@ Der Punkt, der die Kostenfunktion $c: x \rightarrow c\textsuperscript{T} x$ mini
 \subsection{Simplex - Verfahren}
 Obwohl zur Lösung der nichtlinearen Probleme die in dieser Arbeit berechnet werden müssen das Innere-Punkte-Verfahren genutzt wird, soll ein kurzer Überblick über das prominenteste Verfahren zum lösen von linearen Programmen gegeben werden. Dies dient der Veranschaulichung im späteren Verlauf. Das Verfahren wurde 1947 von Dantzig \cite{dantzig51} entwickelt und nutzt die Eigenschaft, dass ein \textit{well behaved} (wenn das aufgestellte Problem der Standardform entspricht und lösbar ist) lineares Programm immer einen Knoten besitzt an dem sich Kanten verschiedener Ungleichheitsbedingungen treffen und die Kostenfunktion minimieren. Das Verfahren nutzt diesen Zustand aus in dem es sich iterativ von einem Eckpunkt zum nächsten Bewegt. 
 \begin{figure}[ht!]
+	\centering
 	\includegraphics[width=200pt]{Abbildungen/simplexMethod.png}
 	\caption{Simplex Methode: Ablaufen des Suchraums entlang der Kanten der Ungleichheitsbedingungen von Knoten zu Knoten}
 	\label{fig:splxMethod}
@@ -179,16 +184,17 @@ Obwohl zur Lösung der nichtlinearen Probleme die in dieser Arbeit berechnet wer
 Die Richtung welche gewählt wird hängt von der Flanke (Ungleichung) ab welche die Kostenfunktion weiter minimiert. Kann keine weitere Flanke gefunden werden welche die kosten weiter reduziert endet das Verfahren im Optimum. Da im schlechtesten Fall der Simplex-Algorithmus jeden Knotenpunkt ein mal besuchen muss, hat das Verfahren ein exponentielles Wachstum abhängig von der Dimension des Optimierungsproblems \cite{doi:10.1137/S0036144502414942}.Trotz dieser Problematik hat das Simplex-Verfahren in der Praxis eine sehr gute Laufzeit und kann für den wiederholten Aufruf einer nur leicht veränderten Optimierung (anpassen von Parametern nach dem letzten Aufruf) einen so genannten Warmstart nutzen. Dieser Beschleunigt die Lösung ebenfalls deutlich \cite{simplexWiki:1}.\\
 Die Suche nach noch besseren Verfahren, dessen Komplexität nur Polynomial mit der Dimension anwächst führte dann in den Jahren 1979 bis 1984 zur Entwicklung eines neuen Algorithmus, welcher auch für nichtlineare Probleme genutzt werden kann.
 
-\subsection{Innere-Punkte-Verfahren}  
+\subsection{Innere-Punkte-Verfahren} 
+\label{ipm} 
 Im Folgenden wir das Innere-Punkte-Lösungsverfahren für lineare, quadratische und nichtlineare Optierungsprobleme kurz vorgestellt. Die Idee hinter dem Verfahren ist es, sich nicht mehr auf den Kanten zu bewegen sondern immer im Inneren des erlaubten Bereiches. Diese Bewegung durch das Innere des Polytop ist in Abbildung \ref{fig:iterPointMethod} veranschaulicht.  
 \begin{figure}[ht!]
-
+	\centering
 	\includegraphics[width=200pt]{Abbildungen/iterPointMethod.png}
-	\caption{Innere-Punkte-Verfahren: Bewegt sich durch das Innere des Polytop auf der Suche nach dem mimimum}
+	\caption{Innere-Punkte-Verfahren: Bewegt sich durch das Innere des Polytop auf der Suche nach dem mimimum.}
 	\label{fig:iterPointMethod}
 \end{figure}
 
-Um dieses Verfahren umzusetzen wird die die Positivitätsbedingungen $x \geq 0$ der Standardform durch einen logarithmische Strafterm $-\mu \ln x_i $  ersetzt und in die Kostenfunktion integriert. Die daraus resultierende Funktion wird als Barrierefunktion  $B(x,\mu)$ bezeichnet und ist definiert als \\
+Um dieses Verfahren umzusetzen wird die Positivitätsbedingungen $x \geq 0$ der Standardform durch einen logarithmische Strafterm $-\mu \ln x_i $  ersetzt und in die Kostenfunktion integriert. Die daraus resultierende Funktion wird als Barrierefunktion bezeichnet und ist definiert als \\
 $B(x,\mu) =  c\textsuperscript{T}x - \mu \sum_{i}^{n} \ln x_i$, mit $\mu > 0$. \\
 Das ursprüngliche Optimierungsproblem wird damit ersetzt durch 
 $min \{B(x,\mu) | Ax \leq b\}$.\\
@@ -206,7 +212,7 @@ Für kleine Werte von x wird $-\ln x $ sehr groß. Dies nutzt man aus, um kleine
 	\label{fig:iterPointLn}
 \end{figure}
 
-Um in jedem der iterativen Schritte möglichst schnell zu einer Lösung zu kommen, bedient man sich dem Newton-Rapshon-Verfahren. 
+Um in jedem der iterativen Schritte möglichst schnell zu einer Lösung zu kommen, bedient man sich dem Newton-Rapshon-Verfahren . 
 Der Algorithmus benötigt die Ableitungsmatrix der Barrierefunktion. Die Berechnung dieser wird durch eine automatische Ableitung realisiert welche im Kapitel \ref{julia} genauer ausgeführt ist. 
 
 
@@ -484,7 +490,7 @@ Die zur Berechnung verwendeten Fahrzeugparameter wurden für das zum Verfassen d
 
 \section{Python}
 
-Zu Beginn der Masterarbeit wurde zuerst die Programmiersprache Python verwendet um das \ac{MPC} zu programmieren. Als Optimierer wurde ein \textit{Sequential Least SQuarez Programming}-Algorithmus verwendet. Dieser ist direkt in die SciPy-Bibliothek integriert und unterstützt Eingangs-, Ausgangs- und Zustandsbeschränkungen ohne die es nicht möglich ist das \ac{MPC} für die Fahrzeugregelung auszulegen. So lange die Anzahl der Prädiktionsschritte klein bleibt und 10 nicht überschreitet ist die Ausführungszeit gering genug um eine Updaterate von 20Hz zu erreichen. 
+Zu Beginn der Masterarbeit wurde zuerst die Programmiersprache Python verwendet um das \ac{MPC} zu programmieren. Als Optimierer wurde ein \ac{SLSQP}-Algorithmus verwendet. Dieser ist direkt in die SciPy-Bibliothek integriert und unterstützt Eingangs-, Ausgangs- und Zustandsbeschränkungen ohne die es nicht möglich ist das \ac{MPC} für die Fahrzeugregelung auszulegen. So lange die Anzahl der Prädiktionsschritte klein bleibt und 10 nicht überschreitet ist die Ausführungszeit gering genug um eine Updaterate von 20Hz zu erreichen. 
 
 \begin{figure}[ht!]
 	\includegraphics[width=400pt]{Abbildungen/pythonDummy.png}
@@ -492,16 +498,19 @@ Zu Beginn der Masterarbeit wurde zuerst die Programmiersprache Python verwendet 
 	\label{fig:pythonBench}
 \end{figure}
 
-Bei größeren Prädiktionsvektoren fällt die Geschwindigkeit jedoch sehr schnell ab da die automatische Ableitung benötigt wird. Diese lässt sich in Python mit Frameworks wie \textit{CasADi} \cite{Casadi:1} integrieren. Auf Grund der schlechten Dokumentation wurde nach einer alternativen Programmiersprache gesucht, die für diese Art von Problem besser geeignet ist.
+Bei größeren Prädiktionsvektoren fällt die Geschwindigkeit jedoch sehr schnell ab.
+Dies liegt daran, dass der SLSQ- Algorithmus nicht für nichtlineare Probleme ausgelegt ist. Bessere Skalierung erhält man bei der Verwendung eines \textit{Solvers} der das Innere-Punkte-Verfahren nutzt. Dieser Algorithmus setzt jedoch um gute Performance zu erreichen, wie in Abschnitt \ref{ipm} beleuchtet, die Kenntnis über die Ableitung der Systemfunktion voraus. Diese kann mit Frameworks wie: CasADi, PyADOL-C, PyCppAD berechnet werden \cite{DBLP:journals/corr/TurkinT16}. 
+Eine Implementierung des \ac{MPC}-Ansatzes in CasADi wurde  aufgrund der schlechten Dokumentation abgebrochen und nach einer Alternativlösung gesucht. Das Ergebnis dieser Suche führte zur Verwendung einer neuen Programmiersprache. 
 
 
 \section{Julia}
 \label{julia}
-Die Sprache die dies ermöglicht ist die Programmiersprache \text{Julia}. Sie wurde im Jahr 2009 von Jeff Bezanson, Stefan Karpinski, Viral B. Shah, and Alan Edelman ersonnen und ist damit noch eine sehr junge Sprache. Sie ist vor allem für numerische Analyse und wissenschaftliche Berechnungen erfunden worden und bietet in diesen Bereichen viele Funktionalitäten. Ebenfalls ein wichtiges Ziel bei der Entwicklung war es, ohne vorheriges Kompilieren sehr schnell zu sein und trotzdem weiterhin das \textit{general-purpose} Paradigma zu erfüllen. Ein Vergleich der Berechnungsgeschwindigkeit verschiedener Sprachen bezüglich viel genutzten Funktionen im wissenschaftlichen Umfeld ist in dem Benchmark \ref{fig:juliaBench} zu sehen.
+Die Sprache welche die Umsetzung des \acl{MPC}-Algorithmus effizient und performant ermöglichte ist die Programmiersprache \text{Julia}. Sie wurde im Jahr 2009 von Jeff Bezanson, Stefan Karpinski, Viral B. Shah, and Alan Edelman ersonnen und ist damit noch eine sehr junge Sprache. Sie ist vor allem für numerische Analyse und wissenschaftliche Berechnungen entworfen worden und bietet in diesen Bereichen viele Funktionalitäten. Ebenfalls ein wichtiges Ziel bei der Entwicklung war es, ohne vorheriges Kompilieren sehr schnell zu sein und trotzdem weiterhin das \textit{general-purpose} Paradigma zu erfüllen. Ein Vergleich der Berechnungsgeschwindigkeit verschiedener Sprachen bezüglich viel genutzten Funktionen im wissenschaftlichen Umfeld ist in dem Benchmark \ref{fig:juliaBench} zu sehen.
 
 \begin{figure}[ht!]
 	\includegraphics[width=450pt]{Abbildungen/juliaBenchmark.png}
 	\caption{Ausführungszeiten für verschiedene Sprachen}
+
 	\label{fig:juliaBench}
 \end{figure}
 
@@ -513,8 +522,24 @@ Die wichtigsten Feautres von Julia sind:
 	\item \ac{JIT} Kompilierung: Ein System in dem ein \ac{JIT} Kompilierer implementiert ist, wandelt den Computer Code erst zur Laufzeit in Bytecode um. Der große Vorteil ist, dass während der Ausführung kontinuierliche Analysen durchgeführt werden um Bereiche ausfindig zu machen die durch ein Neukompilieren eine signifikante Verbesserung bei der Ausführungszeit erfahren würden. \\
 \end{itemize}
 
+\subsection{Jump}
 
-\subsection{Automatische Ableitung}
+Ableitungen sind eine Grundvoraussetzung für viele numerische Algorithmen. Die Genauigkeit der Berechnung und die Geschwindigkeit ist jedoch oftmals problematisch.
+
+Ein möglicher Ansatz die Ableitung $\Delta{\tiny } f(x) = (\frac{\partial f}{\partial x_1} (x), ..., \frac{\partial f}{\partial x_n})$ der Funktion $f:\Re \textsuperscript{n} \rightarrow \Re $ zu Berechnen ist \\
+  $f'(x) \approx \frac{f(x+h) - f(h)}{h}$ mit $ h \rightarrow 0 $. \\
+Dieser ist jedoch sehr ineffizient mit einer Laufzeit von $\mathcal{O}(n)$, zudem spielt hier der Rundungsfehler des \textit{float}-Datentyps mit in die Genauigkeit der Lösung \cite{julDiff}.
+
+Eine andere Alternative wäre die Ableitung manuell zu berechnen, was jedoch für komplexere Systeme sehr Aufwändig und vor allem Fehleranfällig ist. Eine bessere Lösung ist die automatische Ableitung (\emph{automatic differentiation}). 
+Dieses System kann die Ableitung bis auf die maximal mögliche Genauigkeit eines \textit{float} berechnen. Zu der höheren Präzision kommt noch die deutlich bessere Laufzeit. Im Idealfall entspricht die Komplexität $\mathcal{O}(1)$. Um diese Vorteile nutzen zu können benötigt es jedoch ein genaues Wissen über die abzuleitende Funktion \(f(x)\) , realisiert wird dies durch den Zugriff auf den Sourcecode der Methode oder durch ein überladen der Operatoren. Das Verfahren ist abhängig von den Möglichkeiten der Programmiersprache und welcher Ansatz bei der Implementierung der automatischen Ableitung verfolgt wurde. \\
+An diesem Punkt kommt Jump ins Spiel. Jump ist eine Erweiterung für Julia mit der man mathematische Probleme modellieren und lösen kann. Es besitzt Schnittstellen für mehrere sowohl frei verfügbare wie auch kommerzielle Optimierer, mit denen sich zum Beispiel lineare oder nichtlineare Probleme lösen lassen. Der große Vorteil von Jump ist, dass die Definition des mathematischen Problems unabhängig von dem verwendeten Optimierer ist und dieser damit leicht ausgetauscht werden kann (siehe Schaubild \ref{fig:jumpDiagram}). Ebenfalls ersichtlich ist dass Jump sich direkt um die automatische Ableitung kümmert und so dem Programmierer sehr viel Arbeit erspart. 
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=350pt]{Abbildungen/jumpDiagram.png}
+	\caption{Blockdiagramm von Jump}
+	\label{fig:jumpDiagram}
+\end{figure}
 
 
 \chapter{Implementierung}
