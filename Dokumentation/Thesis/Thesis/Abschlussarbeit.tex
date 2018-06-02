@@ -29,12 +29,21 @@
 %------------------------------------------------------------------
 
 \chapter{Autonomes Fahren}
+Das Jahr 2018 entwickelt sich immer mehr zum wichtigsten Jahr für autonome Fahrzeuge seit dem die Darpa im Jahr 2004 den Hype mit der \emph{Grand Challenge} ins Rollen brachte. 
+
 
 \section{Stand der Technik}
+
+
+
 Gegen Ende des Jahres 2018, also nur wenigen Monaten nachdem diese Zeilen verfasst werden, wird Alphabets Tochterunternehmen Waymo die ersten voll autonomen (Level 5) Fahrzeuge als Taxis in Phoenix in Betrieb nehmen \cite{Waymo}. Dieser historische Moment wird eine Flut an neuen Assistenzsystem nach sich ziehen die in wenigen Jahren das Straßenbild verändern werden. \\
 Während sich die traditionellen Automobilhersteller aktuell auf Assistenzsysteme im Bereich von Level zwei und drei konzentrieren, wollen Unternehmen wie Google, GM und Uber alle Zwischenschritte überspringen und direkt voll autonom fahren um fahrerlose Taxiflotten aufzubauen. Dies ist nach aktuellem Stand der Technik jedoch nur kostengünstig und mit Rechnerplattformen welche in bestehende Fahrzeugkonzepte integrierbar sind realisierbar wenn die Fahrzeuge auf eine genaue Umgebungskarte zurückgreifen können. Erst mit Echtzeitupdates und bei einer Genauigkeit von +-10 cm des Kartenmaterials können Fahrzeug auch im innerstädtischen Verkehr autonom fahren \cite{SEIF2016159}. 
 Nicht nur im normalen Straßenverkehr ist ein möglichst genaues Wissen der Umgebung von Vorteil, auch bei autonomen Rennserien spielt die Kenntnis über den Rennkurs eine große Rolle. Kann das Fahrzeug nur auf Sicht fahren muss die Geschwindigkeit so gewählt werden, dass innerhalb der Sichtweite angehalten werden kann. Außerdem ist das berechnen einer idealen Trajektorie nur möglich wenn die gesamte Strecke bekannt ist.
 
+\section{Autonomes Rennfahren}
+
+
+Auch für normale Konsumer kann die Technik interessante Vorteile bieten. So ist es vorstellbar dass für Wochenendausflüge auf Rennstrecken die Fahrzeuge den Fahrern optimale Trajektorien auf dem Kurs direkt in der realen Situation vorfahren können. Ebenfalls ein wichtiges Einsatzkriterium ist das Vorausberechnen ob ein Fahrer die eigenen Fähigkeiten und/oder die des Autos in dem er fährt überschätzt. In diesem Fall kann das Fahrzeug eingreifen und schlimmeres Verhindern. Zudem ist es deutlich günstiger Grenzerfahrungen in einem autonom gesteuerten Fahrzeug zu erleben als einen professionellen Fahrer zu bezahlen der viele Jahre Erfahrung am Steuer gesammelt haben muss.
 
 \section{Formula Student Driverless}
 
@@ -213,8 +222,36 @@ Für kleine Werte von x wird $-\ln x $ sehr groß. Dies nutzt man aus, um kleine
 \end{figure}
 
 Um in jedem der iterativen Schritte möglichst schnell zu einer Lösung zu kommen, bedient man sich dem Newton-Rapshon-Verfahren . 
-Der Algorithmus benötigt die Ableitungsmatrix der Barrierefunktion. Die Berechnung dieser wird durch eine automatische Ableitung realisiert welche im Kapitel \ref{julia} genauer ausgeführt ist. 
+Der Algorithmus benötigt die Ableitungsmatrix der Barrierefunktion. Die Berechnung dieser wird durch eine automatische Ableitung realisiert.
 
+\subsection{Automatische Ableitung} 
+
+Ableitungen sind eine Grundvoraussetzung für viele numerische Algorithmen. Die Genauigkeit der Berechnung und die Geschwindigkeit ist jedoch oftmals problematisch.
+
+Ein möglicher Ansatz die Ableitung $\Delta{\tiny } f(x) = (\frac{\partial f}{\partial x_1} (x), ..., \frac{\partial f}{\partial x_n})$ der Funktion $f:\Re \textsuperscript{n} \rightarrow \Re $ zu Berechnen ist \\
+$f'(x) \approx \frac{f(x+h) - f(h)}{h}$ mit $ h \rightarrow 0 $. \\
+Dieser ist jedoch sehr ineffizient mit einer Laufzeit von $\mathcal{O}(n)$, zudem spielt hier der Rundungsfehler des \textit{float}-Datentyps mit in die Genauigkeit der Lösung \cite{julDiff}.
+
+Eine andere Alternative wäre die Ableitung manuell zu berechnen, was jedoch für komplexere Systeme sehr aufwändig und vor allem fehleranfällig ist. Eine bessere Lösung ist die automatische Ableitung (\emph{automatic differentiation}). 
+Dieses System kann die Ableitung bis auf die maximal mögliche Genauigkeit eines \textit{float} berechnen. Zu der höheren Präzision kommt noch die deutlich bessere Laufzeit. Im Idealfall entspricht die Komplexität $\mathcal{O}(1)$. Um diese Vorteile nutzen zu können benötigt es jedoch ein genaues Wissen über die abzuleitende Funktion \(f(x)\) , realisiert wird dies durch den Zugriff auf den Sourcecode der Methode oder durch ein überladen der Operatoren. Das Verfahren ist abhängig von den Möglichkeiten der Programmiersprache und welcher Ansatz bei der Implementierung der automatischen Ableitung verfolgt wurde. 
+\subsubsection*{Vorwärtsmodus}
+Ein Verfahren der Umsetzung ist der Vorwärtsmodus. Er basiert auf der Kettenregel $(f \circ g)' = (f' \circ g)g'$. \\
+Um dies auszunutzen wird eine abzuleitende Funktion $ y = f(g(h(x)))$ in seine Bestandteile $y = f(g(h(w_0))) = f(g(w_1)) = f(w_2) = w_3$ aufgetrennt und anschließend in die Kettenregel eingesetzt 
+
+$\frac{\partial y}{\partial x} = \frac{\partial y}{\partial w_2} \frac{\partial w_2}{\partial w_1} \frac{\partial w_1}{\partial x}$. \\
+Zum besseren Verständnis wird die Ableitung für folgende Funktion
+$y = f(x_1, x_2) = x_1x_2 + \sin(x_1)$ berechnet.\\
+Dazu werden wie oben bereits beschrieben zuerst die Bestandteile substituiert:\\
+$y = w_1w_2 + \sin(w_1) $ \\
+$y = w_3 + w_4$ \\
+$y = w_5$
+
+Danach muss der sogenannte \textit{seed} errechnet werden. Er kodiert über welche Variable differenziert werden soll. Für $x_1$ ist der \textit{seed} $\dot{w_1} = \frac{\partial x_1}{\partial x_1} = 1$ und   $\dot{w_2} = \frac{\partial x_2}{\partial x_1} = 0$
+Im letzten Schritt werden nur noch von innen nach außen die Substitutionen ersetzt. \\
+$\dot{w_3} = w_2\dot{w_1} + w_1 \dot{w_2}$ \\
+$\dot{w_4} = \cos{w_1} \cdot \dot{w_1}$ \\
+$\dot{w_5} = \dot{w_3} + \dot{w_4}$ \\
+Dieses Verfahren kann im sogenannten Rückwärtsmodus auch von außen nach innen berechnet werden. Nachdem die Grundlagen zur Optimierung gelegt wurden, wird nun auf den Teil im \acl{MPC} eingegangen welcher für die Un-, und Gleichheitsbedienungen erzeugt. 
 
 \section{Fahrzeugmodelle}
 
@@ -524,14 +561,8 @@ Die wichtigsten Feautres von Julia sind:
 
 \subsection{Jump}
 
-Ableitungen sind eine Grundvoraussetzung für viele numerische Algorithmen. Die Genauigkeit der Berechnung und die Geschwindigkeit ist jedoch oftmals problematisch.
 
-Ein möglicher Ansatz die Ableitung $\Delta{\tiny } f(x) = (\frac{\partial f}{\partial x_1} (x), ..., \frac{\partial f}{\partial x_n})$ der Funktion $f:\Re \textsuperscript{n} \rightarrow \Re $ zu Berechnen ist \\
-  $f'(x) \approx \frac{f(x+h) - f(h)}{h}$ mit $ h \rightarrow 0 $. \\
-Dieser ist jedoch sehr ineffizient mit einer Laufzeit von $\mathcal{O}(n)$, zudem spielt hier der Rundungsfehler des \textit{float}-Datentyps mit in die Genauigkeit der Lösung \cite{julDiff}.
 
-Eine andere Alternative wäre die Ableitung manuell zu berechnen, was jedoch für komplexere Systeme sehr Aufwändig und vor allem Fehleranfällig ist. Eine bessere Lösung ist die automatische Ableitung (\emph{automatic differentiation}). 
-Dieses System kann die Ableitung bis auf die maximal mögliche Genauigkeit eines \textit{float} berechnen. Zu der höheren Präzision kommt noch die deutlich bessere Laufzeit. Im Idealfall entspricht die Komplexität $\mathcal{O}(1)$. Um diese Vorteile nutzen zu können benötigt es jedoch ein genaues Wissen über die abzuleitende Funktion \(f(x)\) , realisiert wird dies durch den Zugriff auf den Sourcecode der Methode oder durch ein überladen der Operatoren. Das Verfahren ist abhängig von den Möglichkeiten der Programmiersprache und welcher Ansatz bei der Implementierung der automatischen Ableitung verfolgt wurde. \\
 An diesem Punkt kommt Jump ins Spiel. Jump ist eine Erweiterung für Julia mit der man mathematische Probleme modellieren und lösen kann. Es besitzt Schnittstellen für mehrere sowohl frei verfügbare wie auch kommerzielle Optimierer, mit denen sich zum Beispiel lineare oder nichtlineare Probleme lösen lassen. Der große Vorteil von Jump ist, dass die Definition des mathematischen Problems unabhängig von dem verwendeten Optimierer ist und dieser damit leicht ausgetauscht werden kann (siehe Schaubild \ref{fig:jumpDiagram}). Ebenfalls ersichtlich ist dass Jump sich direkt um die automatische Ableitung kümmert und so dem Programmierer sehr viel Arbeit erspart. 
 
 \begin{figure}[ht!]
@@ -547,6 +578,8 @@ An diesem Punkt kommt Jump ins Spiel. Jump ist eine Erweiterung für Julia mit d
 \section{MPC for Racecar}
 
 Es wurde ein kombinierter Ansatz gewählt, anstatt das Problem auf einen Linearen und Longitudinalen Regler aufzuteilen. Die Vorteile, Nachteile sind:
+
+
 
 It is possible to divide the problem defined in Section 1.4 in longitudinal and lateral control. This division has
 some advantages, namely:
