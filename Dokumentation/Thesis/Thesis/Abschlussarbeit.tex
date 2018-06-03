@@ -107,7 +107,7 @@ Bei \acl{MPC} handelt es sich um ein sogenanntes \textit{finite-horizon} Verfahr
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=350pt]{Abbildungen/mpcParadigm.jpg}
+	\includegraphics[width=350pt]{Abbildungen/mpcParadigm.png}
 	\caption{Funktionsprinzip von \ac{MPC}: Die Kostenfunktion ist die Reduktion der Distanz zur Referenztrajektorie. Durch das Modell kann das System so geregelt werden dass es nicht über die Zieltrajektorie hinaus schießt.}
 	\label{fig:mpcTheory}
 \end{figure}
@@ -260,14 +260,15 @@ Im folgenden wird zuerst ein kinematisches Fahrzeugmodell eingeführt und dann z
 
 \subsection{Kinematisches Modell}
 Unter gewissen Einschränkungen welche weiter unten beschrieben werden kann ein kinematisches Modell die Laterale und Longitudinale Bewegung eines Fahrzeuges mathematisch Beschreiben. In diesem sehr stark vereinfachten Modell werden keine wirkenden Kräfte berücksichtigt, sondern nur die geometrischen Beziehungen des Fahrzeuges genutzt um die Bewegung zu berechnen. \\
-Im ersten Schritt werden die jeweils an einer Achse verbundenen Räder zu einem einzigen Zusammengefasst. Dies wird als Bicycle Modell bezeichnet und vereinfacht die Berechnungen erheblich \cite{BicycleModel}. Obwohl auch für Hinterradlenkung möglich, wird im folgenden nur die Vorderradlenkung betrachtet da das Driverless Fahrzeug der Uni Erlangen nur über eine solche verfügt. Die Lenkwinkel welche durch das Bicycle Modell berechnet werden entsprechen nicht den Lenkwinkel am echten Fahrzeug. Die kurveninneren und kurvenäußeren Räder bewegen sich auf zwei Kreisen mit unterschiedlichen Radien, und damit auch verschiedenen Anstellwinkeln. Dies wird in Fahrzeugen durch die Ackermann Lenkung mechanisch abgebildet \cite{rajamani2011vehicle}.
+Im ersten Schritt werden die jeweils an einer Achse verbundenen Räder zu einem einzigen Zusammengefasst. Dies wird als Bicycle Modell bezeichnet und vereinfacht die Berechnungen erheblich \cite{BicycleModel}. Obwohl auch für Hinterradlenkung möglich, wird im folgenden nur die Vorderradlenkung betrachtet da das Driverless Fahrzeug der Uni Erlangen nur über eine solche verfügt. Die Lenkwinkel welche durch das Bicycle Modell berechnet werden entsprechen nicht den Lenkwinkel am echten Fahrzeug. Die kurveninneren und kurvenäußeren Räder bewegen sich auf zwei Kreisen mit unterschiedlichen Radien, und damit auch verschiedenen Anstellwinkeln. Dies wird in Fahrzeugen durch die Ackermann Lenkung mechanisch umgesetzt \cite{rajamani2011vehicle}.
 
 
 Die nichtlinearen zeitkontinuierlichen Gleichungen basieren auf \cite{rajamani2011vehicle, 7225830} und beschreiben das kinematische Modell bezüglich eines Inertialsystems (siehe Abbildung \ref{fig:kinmodel}),
 
 \begin{figure}[ht!]
-	\caption{Kinematisches Modell}
+	\centering
 	\includegraphics[width=400pt]{Abbildungen/kin_bicycle.png}
+	\caption{Kinematisches Modell:}
 	\label{fig:kinmodel}
 \end{figure}
 
@@ -307,13 +308,21 @@ x = \frac{1}{2} * a * t^2
 \end{equation}
 liegt man mit \(73.75m\) nur zwei Prozent neben der genauen Streckenlänge von \(75m\).
 
+\subsubsection*{Begrenzung des Kurvenradius}
+Da beim kinematischen Modell die Geschwindigkeit in Kurven keine Rolle spielt kann das Fahrzeug mit jedem \(v\) den gleichen Kurvenradius durchfahren. Um auch in höheren Geschwindigkeiten eine akzeptable Regelung zu erhalten wird eine Beschränkung eingefügt welche die maximale Querbeschleunigung beschränkt. Der Maximalwert entspricht dem höchsten g-Wert den das Fahrzeug des High Octane Motorsports mit Aerodynamik in einer Kurve erreichen kann: $a_{max} = 2.0g$. 
+Mit der Gleichung
+\begin{equation}
+	|\beta| \leq \arctan(\frac{1}{2} \frac{\frac{l}{2} a_{max}}{v^2})
+\end{equation}
+wird dies über die Einschränkung des Schwimmwinkel (und damit gleichzeitig des Lenkwinkels) erreicht.
+
 
 \subsection{Reifenmodell}
 \label{tireModel}
 Da die Reifen der einzige Kontaktpunkt zwischen Fahrbahn und Fahrzeug sind,  beeinflusst er das Fahrverhalten maßgeblich. Aufgabe des Reifens ist es, sämtliche Kräfte und Momente zu übertragen, um eine optimale Straßenlage zu erzielen. Demzufolge ist der Reifen das Bauteil, welches die Fahrleistungen am stärksten einschränkt.
 
-Die Kräfte die ein Reifen auf die Straße übertragen kann hängen von dem Schräglaufwinkel, dem Schlupf und der Radlast ab. Die Radlast \(F_z\) berechnet sich aus der Normalkraft und der Radlastverteilung und wird im folgenden als konstant angesehen.
-Die Seitenführungskraft \(F_y\) wirkt bei einer Kurvenfahrt der Fliehkraft entgegen und hält das Fahrzeug auf der Spur solange ein Kräftegleichgewicht besteht. Als Schräglaufwinkel bezeichnet man den von der Radmittelebene \(\delta\) (Lenkwinkel) und der Bewegungsrichtung \(\theta_{vf}\) des Fahrzeugs eingeschlossenen Winkel (siehe Abbildung \ref{fig:linLat}). Dieser ist notwendig, damit der Reifen eine Seitenkraft aufbauen kann. \\
+Die Kräfte welche ein Reifen auf die Straße übertragen kann hängen von dem Schräglaufwinkel, dem Schlupf und der Radlast ab. Die Radlast \(F_z\) berechnet sich aus der Normalkraft und der Radlastverteilung und wird im folgenden als konstant angesehen.
+Die Seitenführungskraft \(F_y\) wirkt bei einer Kurvenfahrt der Fliehkraft entgegen und hält das Fahrzeug auf der Spur, solange ein Kräftegleichgewicht besteht. Als Schräglaufwinkel bezeichnet man den von der Radmittelebene \(\delta\) (Lenkwinkel) und der Bewegungsrichtung \(\theta_{vf}\) des Fahrzeugs eingeschlossenen Winkel (siehe Abbildung \ref{fig:linLat}). Dieser ist notwendig, damit der Reifen eine Seitenkraft aufbauen kann. \\
 
 \begin{equation}
 \alpha_f = \delta - \theta_{vf}
@@ -325,12 +334,11 @@ Der gleiche Zusammenhang gilt auch für das hintere Rad welches jedoch in unsere
 
 
 \begin{figure}[ht!]
-	\includegraphics[width=400pt]{Abbildungen/linLat.png}
+	\centering
+	\includegraphics[width=70pt]{Abbildungen/linLat.png}
 	\caption{Schräglaufwinkel}
 	\label{fig:linLat}
 \end{figure}
-
-
 
 
 Für kleine Schräglaufwinkel besteht ein linearer Zusammenhang aus lateraler Kraft und Winkel. 
@@ -339,23 +347,29 @@ F_{yf} = C_\alpha \alpha_f \\
 F_{yr} = C_\alpha \alpha_r
 \end{eqnarray}
 
-Am Schaubild \ref{fig:pacejka} lässt sich dieser Bereich sehr gut erkennen.
-Auch dass für größere Schräglaufwinkel die Kräfte anders berechnet werden müssen ist ersichtlich. Hierfür wird die so genannte \textit{Magic Formula}  \cite{magicFormula} verwendet. Dabei handelt es sich um eine mathematische Gleichung die sehr gut Messkurven approximiert welche auf Testständen gemessen werden.
+Am Schaubild \ref{fig:pacejka} lässt sich dieser Bereich zwischen -1.5° und 1.5° sehr gut erkennen. Für größere Schräglaufwinkel kann kein linearer Verlauf mehr angenommen werden und es muss eine genauere Approximation des Reifenverhaltens gewählt werden. Hierfür wird die so genannte \textit{Magic Formula}  \cite{magicFormula} verwendet. Dabei handelt es sich um eine mathematische Gleichung die sehr gut Messkurven approximiert welche auf Testständen gemessen werden.
 Es wurde 1993 von Pacejka und Bakker entwickelt, und eignet sich sowohl für die Berechnung der longitudinalen wie auch der lateralen Kräfte . Bei Eingabe des Schräglaufwinkels in \(x\) erhält man die lateral auf die Straße wirkende Kraft \(F_y\). 
 \begin{equation}
 F_y = D\sin[C\arctan{Bx - E(Bx - \arctan(Bx))}]
 \label{eq:magicF}
 \end{equation}
 
-Die Parameter, welche für die \textit{Magic Formula} benötigt werden, wurden vom High Octane Motorsports e.V. zur Verfügung gestellt und beziehen sich auf das Fahrzeug des Jahres 2017.
+Die Parameter, welche für die \textit{Magic Formula} benötigt werden, wurden vom High Octane Motorsports e.V. zur Verfügung gestellt und beziehen sich auf das Fahrzeug des Jahres 2018.
 
-\begin{tabular}[t]{lr}
-	B	&	0.71 \\
-	C	&	1.40 \\
-	D	&	1.00 \\
-	E	&  -0.20 \\
-\end{tabular}
+\begin{table}[]
+	\centering
+	\begin{tabular}{l|l}
+		\hline
+		Parameter	& Wert \\ \hline
+		\(B\)	&  0.71 \\
+		\(C\)	&  1.41 \\
+		\(D\)	&  1.00 \\
+		\(E\)	& -0.20 \\
 
+	\end{tabular}
+	\caption{Magic Formula Parameter}
+	\label{tireParam}
+\end{table}
 
 \begin{figure}[ht!]
 	\includegraphics[width=350pt]{Abbildungen/pacejka.png}
@@ -372,22 +386,24 @@ Der Zusammenhang zwischen lateraler und longitudinaler Kraft wird über den \tex
 
 \begin{eqnarray}
 F <= F_{max} \\
-F = \sqrt{F_x^2 + F_y^2}  \\
-|F_y| <= F_{max}^2 - F_x^2
+F_{ll} = \sqrt{F_x^2 + F_y^2}  \\
 \end{eqnarray}
-In Kombination mit \ref{eq:magicF} erhält man
-\begin{equation}
-|D\sin[C\arctan{Bx - E(Bx - \arctan(Bx))}]| <= F_{max}^2 - F_x^2
-\end{equation}
+Falls die Kraft $F_{ll}$ größer als $F_{max}$ ist, wird das Verhältnis der Kräfte berechnet und auf $F_{max}$ herunterskaliert.
+
+\begin{eqnarray}
+\alpha = \arctan(F_x, F_y)\\
+F_x = F_{max} \sin(\alpha)\\
+F_y = F_{max} \cos(\alpha)\\ 
+\end{eqnarray}
 
 \begin{figure}[ht!]
-	\caption{Kammscher Kreis}
-	\includegraphics[width=400pt]{Abbildungen/kamKreis.jpg}
+	\centering
+	\includegraphics[width=350pt]{Abbildungen/kamKreis.png}
+	\caption{Kammscher Kreis: Zusammenhang von longitudinaler, lateraler und maximaler Reifenkraft}
 	\label{fig:kamKreis}
 \end{figure}
 
-
-
+Der aufmerksame Leser wird bemerkt haben, dass bei einem gleichen Anteil an longitudinaler und lateraler Kraft die Reifen das größte Moment auf die Straße übertragen können. Dieser Punkt wird von Rennfahrern versucht in Kurven zu treffen um das gesamte Potential der Reifen auszunutzen.
 
 
 Mit dem Wissen wie die longitudinalen und lateralen Kräfte berechnet werden, kann nun ein genaueres Systemmodell genutzt werden.
@@ -439,13 +455,13 @@ Diese hängen ab von den lateralen \((.)_C\) und longitudinalen \((.)_l\)    Rad
 \begin{eqnarray}
 F_{xf} =& - 2 F_{Cf} \sin(\delta_f) \\
 F_{yf} =& 2 F_{Cf} \cos(\delta_f) \\
-F_{xr} =& 2 F_{lr} \\
+F_{xr} =&   F_{lr} \\
 F_{yr} =& 2 F_{Cr}
 \end{eqnarray}
 Es ist zu beachten, dass das Fahrzeug in der Realität vier Reifen besitzt und daher die Kräfte mit zwei multipliziert werden müssen.
 
 
-Die Kräfte \(F_{Cf}\) und \(F_{Cr}\) werden durch die \textit{magic formula} im letzten Abschnitt \ref{tireModel} berechnet.
+Die Kräfte \(F_{Cf}\) und \(F_{Cr}\) werden durch die \textit{magic formula} wie im letzten Abschnitt \ref{tireModel} berechnet.
 Die dafür benötigten Schräglaufwinkel werden durch folgende Formeln bestimmt:
 
 \begin{eqnarray}
@@ -454,32 +470,36 @@ Die dafür benötigten Schräglaufwinkel werden durch folgende Formeln bestimmt:
 \end{eqnarray}
 
 \subsection*{Longitudinale Kräfte}
-Da wie bereits im letzten Abschnitt angedeutet können die longitudinalen Kräfte nur genau berechnet werden, wenn ein Motor simuliert wird. Da dies den Umfang der Arbeit sprengt werden die Kräfte direkt über die Motorleistung und \(F_max\) bestimmt.
+Da keine Simulation des Motors genutzt wird müssen die Kräfte welche die Reifen longitudinal auf die Straße bringen \(F_{lr}\) anders als über den Schlupf berechnet werden.
+Dies realisiert man über die maximale Motorleistung und \(F_{max}\).
+
 \begin{eqnarray}
 F_{lr_{acc}} = \frac{P_{engine} * throttle }{|\dot{x}|} \\
-F_{lr_{acc}} <= F_{max} \\
-F_{lr_{dec}} = - F_{max} * break\\
+F_{lr_{acc}} <= 2 F_{max} \\
+F_{lr_{dec}} = - 2 F_{max} * break\\
 \end{eqnarray}
-Es wird von einer idealen \textit{Launchcontrol} ausgegangen (kein durchdrehen der Reifen).
+Die Berechnung der Reifenkräfte sind für Beschleunigung und Bremsvorgang unterschiedlich.
+
 Beschleunigt das Fahrzeug wirkt nicht nur die Rollreibung der longitudinalen Kraft des Motors entgegen, sondern auch der Luftwiderstand. Es wird von einem Rennkurs ausgegangen der keine Steigung besitzt.
 \begin{eqnarray}
 F_{reib} = m \mu g \\
 F_{aero} = \frac{1}{2} \rho C_d A_f \dot{x}^2
 \end{eqnarray}
 
-Die resultierenden longitudinalen Kraft 
+Die resultierende longitudinale Kraft (getrennt nach Beschleunigung und Bremsvorgang)
 \begin{eqnarray}
-F_{acc} = F_{lr_{acc}} - F_{reib} - F_{aero}\\
+F_lr = F_{lr_{acc}} - F_{reib} - F_{aero}\\
+F_lr = F_{lr_{dec}} - F_{reib} - F_{aero}\\
 \end{eqnarray}
 
-werden mit den lateralen Kräften im Kammschen Kreis verrechnet und in der finalen Bewegungsgleichung verwendet.
+wird mit den lateralen Kraft im Kammschen-Kreis verrechnet und in der finalen Bewegungsgleichung verwendet.
 
 \begin{eqnarray}
 \dot{X} =& \dot{x} \cos(\psi) - \dot{y} \sin(\psi) \\
 \dot{Y} =& \dot{x} \sin(\psi) - \dot{y} \cos(\psi) \\
-m \ddot{x} =& m \dot{y} \dot{\psi} + 2F_{xf} + 2 F_{xr}\\
-m \ddot{y} =& - m \dot{x} \dot{\psi} + 2 F_{yf} + 2 F_{yr} \\
-I \ddot{\psi} =& 2 l_f F_{yf} - 2 l_r F_{yr} \\
+m \ddot{x} =& m \dot{y} \dot{\psi} + F_{xf} +  F_{xr}\\
+m \ddot{y} =& - m \dot{x} \dot{\psi} +  F_{yf} +  F_{yr} \\
+I \ddot{\psi} =&  l_f F_{yf} -  l_r F_{yr} \\
 \end{eqnarray}
 
 Das Gleichungssystem kann auch in diskreter Form aufgestellt werden.
@@ -488,9 +508,9 @@ Das Gleichungssystem kann auch in diskreter Form aufgestellt werden.
 X_{k+1} =& X_k + \Delta t(\dot{x}_k \cos(\Psi_k) - \dot{y}_k \sin(\Psi_k) \\
 Y_{k+1} =& Y_{k} + \Delta t(\dot{x}_k \sin(\Psi_k) - \dot{y}_k \cos(\Psi_k) \\
 \Psi_{k+1} =& \Psi_k + \Delta t \dot{\psi}_k \\
-\dot{x}_{k+1} =&  \dot{x}_k + \Delta t (\frac{2F_{xf_k} + 2 F_{xr_k}- F_a}{m} + \dot{y}_k \dot{\psi}_k) \\
-\dot{y}_{k+1} =&  \dot{y}_k + \Delta t (\frac{2 F_{yf_k} + 2 F_{yr_k}}{m} - \dot{x}_k \dot{\psi}_k)  \\
-\dot{\psi}_{k+1} =& \dot{\psi}_k + \Delta t \frac{2 l_f F_{yf} - 2 l_r F_{yr}}{I} \\
+\dot{x}_{k+1} =&  \dot{x}_k + \Delta t (\frac{F_{xf_k} +  F_{xr_k}- F_a}{m} + \dot{y}_k \dot{\psi}_k) \\
+\dot{y}_{k+1} =&  \dot{y}_k + \Delta t (\frac{ F_{yf_k} +  F_{yr_k}}{m} - \dot{x}_k \dot{\psi}_k)  \\
+\dot{\psi}_{k+1} =& \dot{\psi}_k + \Delta t \frac{ l_f F_{yf} -  l_r F_{yr}}{I} \\
 \end{eqnarray}
 
 Im dynamische Fahrzeugmodell ändert sich damit auch der Zustandsvektor: \\
@@ -527,7 +547,7 @@ Die zur Berechnung verwendeten Fahrzeugparameter wurden für das zum Verfassen d
 
 \section{Python}
 
-Zu Beginn der Masterarbeit wurde zuerst die Programmiersprache Python verwendet um das \ac{MPC} zu programmieren. Als Optimierer wurde ein \ac{SLSQP}-Algorithmus verwendet. Dieser ist direkt in die SciPy-Bibliothek integriert und unterstützt Eingangs-, Ausgangs- und Zustandsbeschränkungen ohne die es nicht möglich ist das \ac{MPC} für die Fahrzeugregelung auszulegen. So lange die Anzahl der Prädiktionsschritte klein bleibt und 10 nicht überschreitet ist die Ausführungszeit gering genug um eine Updaterate von 20Hz zu erreichen. 
+Zu Beginn der Masterarbeit wurde zuerst die Programmiersprache Python verwendet um das \ac{MPC} zu programmieren. Als Optimierer wurde ein \emph{\ac{SLSQP}}-Algorithmus verwendet. Dieser ist direkt in die SciPy-Bibliothek integriert und unterstützt Eingangs-, Ausgangs- und Zustandsbeschränkungen ohne die es nicht möglich ist das \ac{MPC} für die Fahrzeugregelung auszulegen. So lange die Anzahl der Prädiktionsschritte klein bleibt und 10 nicht überschreitet ist die Ausführungszeit gering genug um eine Updaterate von 20Hz zu erreichen. 
 
 \begin{figure}[ht!]
 	\includegraphics[width=400pt]{Abbildungen/pythonDummy.png}
@@ -567,7 +587,7 @@ An diesem Punkt kommt Jump ins Spiel. Jump ist eine Erweiterung für Julia mit d
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=350pt]{Abbildungen/jumpDiagram.png}
+	\includegraphics[width=350pt]{Abbildungen/jumpDiagram.jpeg}
 	\caption{Blockdiagramm von Jump}
 	\label{fig:jumpDiagram}
 \end{figure}
@@ -607,7 +627,9 @@ The advantages outweigh the disadvantages, so the division is made.
 \chapter{Evaluierung}
 
 \section{Verifizierung der Fahrzeugmodelle}
+\subsection{Kinematisches Modell constraint of beta}
 \section{Regelung verschiedener Modelle}
+\subsection{Was hat beta für einen Einfluss auf die Regelung?}
 \section{Kostenfunktionen}
 
 
