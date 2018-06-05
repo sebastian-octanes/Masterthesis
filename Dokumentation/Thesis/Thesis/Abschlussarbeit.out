@@ -17,22 +17,27 @@
 \BOOKMARK [1][-]{section.2.4}{Python}{chapter.2}% 17
 \BOOKMARK [1][-]{section.2.5}{Julia}{chapter.2}% 18
 \BOOKMARK [2][-]{subsection.2.5.1}{Jump}{section.2.5}% 19
-\BOOKMARK [0][-]{chapter.3}{Implementierung}{}% 20
-\BOOKMARK [1][-]{section.3.1}{MPC for Racecar}{chapter.3}% 21
-\BOOKMARK [2][-]{subsubsection.3.1.0.1}{Suchbereich einschr\344nken \(constraint\)}{section.3.1}% 22
-\BOOKMARK [3][-]{subsubsection.3.1.0.2}{Implementierung in ROS}{subsubsection.3.1.0.1}% 23
-\BOOKMARK [1][-]{section.3.2}{Simulation}{chapter.3}% 24
-\BOOKMARK [0][-]{chapter.4}{Evaluierung}{}% 25
-\BOOKMARK [1][-]{section.4.1}{Verifizierung der Fahrzeugmodelle}{chapter.4}% 26
-\BOOKMARK [2][-]{subsection.4.1.1}{Kinematisches Modell constraint of beta}{section.4.1}% 27
-\BOOKMARK [1][-]{section.4.2}{Regelung verschiedener Modelle}{chapter.4}% 28
-\BOOKMARK [2][-]{subsection.4.2.1}{Was hat beta f\374r einen Einfluss auf die Regelung?}{section.4.2}% 29
-\BOOKMARK [1][-]{section.4.3}{Kostenfunktionen}{chapter.4}% 30
-\BOOKMARK [0][-]{chapter.5}{Ausblick}{}% 31
-\BOOKMARK [1][-]{section.5.1}{Dynamisches Fahrzeugmodell im MPC}{chapter.5}% 32
-\BOOKMARK [1][-]{section.5.2}{Trajektionsregelung}{chapter.5}% 33
-\BOOKMARK [1][-]{section.5.3}{Zweispurmodell}{chapter.5}% 34
-\BOOKMARK [1][-]{section.5.4}{Zusammenfassung}{chapter.5}% 35
-\BOOKMARK [0][-]{appendix.A}{Anhang}{}% 36
-\BOOKMARK [0][-]{chapter*.38}{Abk\374rzungsverzeichnis}{}% 37
-\BOOKMARK [0][-]{chapter*.39}{Literaturverzeichnis}{}% 38
+\BOOKMARK [0][-]{chapter.3}{MPC zur Trajektionsplanung und Regelung}{}% 20
+\BOOKMARK [1][-]{section.3.1}{Fahrzeugmodell}{chapter.3}% 21
+\BOOKMARK [1][-]{section.3.2}{Kostenfunktionen}{chapter.3}% 22
+\BOOKMARK [1][-]{section.3.3}{Streckenbegrenzung}{chapter.3}% 23
+\BOOKMARK [0][-]{chapter.4}{Simulationsumgebung}{}% 24
+\BOOKMARK [1][-]{section.4.1}{Simple and Fast Multimedia Library}{chapter.4}% 25
+\BOOKMARK [1][-]{section.4.2}{Trackdrive}{chapter.4}% 26
+\BOOKMARK [2][-]{subsubsection.4.2.0.1}{Suchbereich einschr\344nken \(constraint\)}{section.4.2}% 27
+\BOOKMARK [3][-]{subsubsection.4.2.0.2}{Implementierung in ROS}{subsubsection.4.2.0.1}% 28
+\BOOKMARK [1][-]{section.4.3}{Simulation}{chapter.4}% 29
+\BOOKMARK [0][-]{chapter.5}{Evaluierung}{}% 30
+\BOOKMARK [1][-]{section.5.1}{Verifizierung der Fahrzeugmodelle}{chapter.5}% 31
+\BOOKMARK [2][-]{subsection.5.1.1}{Kinematisches Modell constraint of beta}{section.5.1}% 32
+\BOOKMARK [1][-]{section.5.2}{Regelung verschiedener Modelle}{chapter.5}% 33
+\BOOKMARK [2][-]{subsection.5.2.1}{Was hat beta f\374r einen Einfluss auf die Regelung?}{section.5.2}% 34
+\BOOKMARK [1][-]{section.5.3}{Kostenfunktionen}{chapter.5}% 35
+\BOOKMARK [0][-]{chapter.6}{Ausblick}{}% 36
+\BOOKMARK [1][-]{section.6.1}{Dynamisches Fahrzeugmodell im MPC}{chapter.6}% 37
+\BOOKMARK [1][-]{section.6.2}{Trajektionsregelung}{chapter.6}% 38
+\BOOKMARK [1][-]{section.6.3}{Zweispurmodell}{chapter.6}% 39
+\BOOKMARK [1][-]{section.6.4}{Zusammenfassung}{chapter.6}% 40
+\BOOKMARK [0][-]{appendix.A}{Anhang}{}% 41
+\BOOKMARK [0][-]{chapter*.46}{Abk\374rzungsverzeichnis}{}% 42
+\BOOKMARK [0][-]{chapter*.47}{Literaturverzeichnis}{}% 43
