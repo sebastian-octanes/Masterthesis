@@ -8,10 +8,25 @@ class CostFunction:
     
     def __init__(self, track_):  
         self.track = track_
+
+
+    def print_cost_func(self, function):
+        space = np.linspace(-3.0, 3.0, 100)
+        cost =  np.zeros(space.size)
+        for i in range(0, space.size, 1):
+            if(function == 0):
+                cost[i] = self.cost_func0(space[i])
+            if(function == 1):
+                cost[i] = self.cost_func1(space[i])
+            if(function == 2):
+                cost[i] = self.cost_func2(space[i])
+        plt.plot(space, cost)
+        plt.show()
+
     
     def cost_func0(self, x):
         #alpha = 2/(8*(self.track.track_width/8.0)**7)
-	alpha = 100        
+	alpha = 5        
 	return alpha *(x)**2
     
     def cost_func1(self, x):
@@ -32,6 +47,10 @@ class CostFunction:
         k1 = 2.5
         k2 = -2.5
         return math.fabs(alpha/(k1 - x) + alpha/(k2 - x))
+    
+    def cost_func3(self, x):
+        alpha = 10
+        return alpha * math.fabs(x)
    
      
     def cost_dist_line(self, X):
@@ -95,16 +114,5 @@ class CostFunction:
 
 
 
-    def print_cost_func(self, function):
-        space = np.linspace(-3.0, 3.0, 100)
-        cost =  np.zeros(space.size)
-        for i in range(0, space.size, 1):
-            if(function == 0):
-                cost[i] = self.cost_func0(space[i])
-            if(function == 1):
-                cost[i] = self.cost_func1_(space[i])
-            if(function == 2):
-                cost[i] = self.cost_func2(space[i])
-        plt.plot(space, cost)
-        plt.show()
+
 

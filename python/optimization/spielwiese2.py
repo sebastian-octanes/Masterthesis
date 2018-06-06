@@ -13,3 +13,6 @@ print(len(tmp2))
 plt.plot(tmp[:], tmp2[:])
 plt.show()
 
+
+
+

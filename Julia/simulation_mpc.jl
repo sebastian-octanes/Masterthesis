@@ -1,4 +1,4 @@
-using SFML
+using  SFML
 include("RaceCourse.jl")
 include("VehicleModel.jl")
 include("MPC.jl")
@@ -274,9 +274,9 @@ function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, 
 end
 
 windowSizeX = 1000
-windowSizeY = 500
+windowSizeY = 1000
 windowSizeMeterX = 100
-windowSizeMeterY = 50
+windowSizeMeterY = 100
 scaleX = windowSizeX/windowSizeMeterX
 scaleY = windowSizeY/windowSizeMeterY
 
