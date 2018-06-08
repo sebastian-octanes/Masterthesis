@@ -1,0 +1,12 @@
+\pgfplotstabletypeset{Grafiken/accdec.dat}
+
+
+
+\begin{tikzpicture}
+\begin{axis}[
+xlabel=Q Series,
+ylabel=P Values]
+\addplot table [y=P, x=$Q1$]{data.dat};
+
+\end{axis}
+\end{tikzpicture}

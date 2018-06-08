@@ -37,17 +37,19 @@ max_steps = n1 + n2 + n3
 
 dt = 0.05
 
-
+#average acceleration
 stateVectorKin= VehicleModel.CarPose(0,0,0.1,0, 0, 0)
-stateVectorDynLinear_Base = VehicleModel.CarPose(0,0,0.1,0, 0, 0)
+#motor power and tire force
 stateVectorNonLinear_Enhanced_Long = VehicleModel.CarPose(0,0,0.1,0, 0, 0)
+#friction and air resistance
+stateVectorNonLinear_Cplx_Long = VehicleModel.CarPose(0,0,0.1,0, 0, 0)
 
 
 
 
-dyn_long_speed = []
-dyn_lat_speed = []
 kin_long_speed = []
+dyn_long_speed = []
+dyn_long_cplx_speed = []
 
 for i in 1:max_steps
     carControl = VehicleModel.CarControls(controlVectorThrottle[i], controlVectorSteer[i])
@@ -55,12 +57,11 @@ for i in 1:max_steps
     stateVectorKin =  VehicleModel.kin_bycicle_model(stateVectorKin, carControl, dt)
     kin_long_speed = vcat(kin_long_speed, stateVectorKin.x_d)
 
-    stateVectorDynLinear_Base =  VehicleModel.dyn_model_base(stateVectorDynLinear_Base, carControl, dt)
-    dyn_lat_speed = vcat(dyn_lat_speed, stateVectorDynLinear_Base.x_d)
-
     stateVectorNonLinear_Enhanced_Long =  VehicleModel.dyn_model_enhanced_long(stateVectorNonLinear_Enhanced_Long, carControl, dt)
     dyn_long_speed = vcat(dyn_long_speed, stateVectorNonLinear_Enhanced_Long.x_d)
 
+    stateVectorNonLinear_Cplx_Long =  VehicleModel.dyn_model_cplx_long(stateVectorNonLinear_Cplx_Long, carControl, dt)
+    dyn_long_cplx_speed = vcat(dyn_long_cplx_speed, stateVectorNonLinear_Cplx_Long.x_d)
 
 end
 
@@ -70,21 +71,31 @@ print("max_speed", kin_long_speed[indmax(kin_long_speed)])
 
 lin = linspace(1, max_steps, max_steps)
 
+
 areas = 5*ones(lin)
+#=
 subplot(211)
 scatter(lin,controlVectorThrottle,s=areas,alpha=1.0)
 grid()
 xlabel("Time Steps")
 ylabel("Throttle Input")
 title("Driver Input")
-ax = gca()
+
+
 subplot(212)
+=#
+
+open("outputFiles/accdec.txt", "w") do io
+    writedlm(io, [lin kin_long_speed dyn_long_speed  dyn_long_cplx_speed])
+end
+
+ax = gca()
 xlabel("Time Steps")
 ylabel("Speed in m/s")
 title("Orientation of Car")
 
 scatter(lin,dyn_long_speed,s=areas,alpha=1.0)
-scatter(lin,dyn_lat_speed,s=areas,alpha=1.0)
 scatter(lin,kin_long_speed,s=areas,alpha=1.0)
+scatter(lin,dyn_long_cplx_speed,s=areas,alpha=1.0)
 
 grid()

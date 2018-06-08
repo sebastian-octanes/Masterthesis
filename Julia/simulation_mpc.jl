@@ -260,12 +260,12 @@ function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, 
     #mpc_struct = define_constraint_nonlinear_bycicle(mpc_struct)
     mpc_struct = define_constraint_kin_bycicle(mpc_struct)
     mpc_struct = define_constraint_start_pose(mpc_struct, startPose)
-    mpc_struct = define_constraint_tangents(mpc_struct, trackPoints)
+    #mpc_struct = define_constraint_tangents(mpc_struct, trackPoints)
     #mpc_struct = define_constraint_max_search_dist(mpc_struct, trackPoints)
     #mpc_struct = define_objective(mpc_struct)
     #mpc_struct = define_objective_middle(mpc_struct)
-    mpc_struct = define_objective_minimize_dist(mpc_struct)
-    #mpc_struct = define_objective_minimize_dist_soft_const(mpc_struct,2, 1)
+    #mpc_struct = define_objective_minimize_dist(mpc_struct)
+    mpc_struct = define_objective_minimize_dist_soft_const(mpc_struct,2, 1)
     #mpc_struct = define_objective_minimize_dist_soft_const_ext(mpc_struct,10, 1)
 
     mpc_struct = update_track_forward_point(mpc_struct, forwardPoint)
@@ -300,9 +300,9 @@ itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack4(trackWidth)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrackUUTurn(trackWidth)
 
 
-N = 30
+N = 10
 printLevel = 0
-dt = 0.05
+dt = 0.1
 max_speed = 20
 mpc_struct = initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed, trackWidth)
 event = Event()
@@ -313,8 +313,8 @@ carPathBuffer = CircularBuffer{VehicleModel.CarState}(400)
 #create Sprites
 RaceTrackLeftSprite, RaceTrackRightSprite = createRaceCourse2(scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, itpTrack, itpLeftBound, itpRightBound, window)
 
-#set_framerate_limit(window, convert(Int64, 1 / dt))
-set_framerate_limit(window, 20)
+set_framerate_limit(window, convert(Int64, 1 / dt))
+#set_framerate_limit(window, 20)
 
 clock = Clock()
 #lapTimeActive needed for timer
