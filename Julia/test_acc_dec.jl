@@ -70,7 +70,7 @@ end
 print("max_speed", kin_long_speed[indmax(kin_long_speed)])
 
 lin = linspace(1, max_steps, max_steps)
-
+lin = lin*0.05
 
 areas = 5*ones(lin)
 #=

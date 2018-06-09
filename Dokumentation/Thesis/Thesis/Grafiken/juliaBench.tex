@@ -1,0 +1,29 @@
+
+\begin{tikzpicture}
+\begin{axis}[
+width = 1.0\textwidth,
+height = 0.6\textwidth,
+ymin=-1e0, ymax=1e1,
+ylabel=Ausführungszeiten relativ zu C,
+x tick label style={font=\small,text width=1.2cm,align=center},
+xticklabels={Benchmark,C,Julia,LuaJIT,Go,Fortran,Java,Java-script,Matlab,Mathe-matica, Python},
+legend pos=north west]
+
+\addplot [color=red, only marks] table [x index=0, y index=1]{Data/juliaBench.dat};
+\addplot [color=blue, only marks] table [x index=0, y index=2]{Data/juliaBench.dat};
+\addplot [color=green, only marks] table [x index=0, y index=3]{Data/juliaBench.dat};
+\addplot [color=black, only marks] table [x index=0, y index=4]{Data/juliaBench.dat};
+\addplot [color=orange, only marks] table [x index=0, y index=5]{Data/juliaBench.dat};
+\addplot [color=yellow, only marks] table [x index=0, y index=6]{Data/juliaBench.dat};
+\addplot [color=purple, only marks] table [x index=0, y index=7]{Data/juliaBench.dat};
+\addplot [color=brown, only marks] table [x index=0, y index=8]{Data/juliaBench.dat};
+\addlegendentry{iteration pi sum}
+\addlegendentry{recursion fibonacci}
+\addlegendentry{recursion quicksort}
+\addlegendentry{parse integers}
+\addlegendentry{print to file}
+\addlegendentry{matrix statistics}
+\addlegendentry{matrix multiply}
+\addlegendentry{mandelbrot}
+\end{axis}
+\end{tikzpicture}

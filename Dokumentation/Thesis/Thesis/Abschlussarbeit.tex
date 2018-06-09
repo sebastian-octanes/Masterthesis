@@ -75,16 +75,16 @@ Für diese Arbeit ist vorallem der Trackdrive von Interesse. Es wird davon ausge
 
 \chapter{Trajektionsplanung und Fahrzeugregelung}
 
-Um für das Fahrzeug ideale Trajektorien zu berechnen, und gleichzeitig das Rennauto in Echtzeit zu regeln wurde ein Model Predictive Control Ansatz gewählt. Dieses Verfahren basiert auf der Optimierung eines nichtlinearen Programms.
+Um für das Fahrzeug ideale Trajektorien zu berechnen und gleichzeitig das Rennauto in Echtzeit zu regeln wurde ein Model Predictive Control Ansatz gewählt. Dieses Verfahren basiert auf der Optimierung eines nicht linearen Programms.
 
  
  
 \section{Model Predictive Control}
-Bei \ac{MPC} handelt es sich um einen fortschrittlichen Algorithmus, mit dem sehr komplexe, multivariable Regelungsprobleme lösen lassen. Soll ein Prozess kontrolliert werden, welcher mehrere Ein- und Ausgänge besitzt und gleichzeitig Ungleich- und Gleichheitsbedingungen erfüllen werden müssen, ist \acs{MPC} ein mächtiges Werkzeug. Vorausgesetzt ein ausreichend genaues Modell des Prozesses vorhanden, können unter ausnutzen von Messungen und dem Modell zukünftige Zustände des Prozesses berechnet werden. Diese Information wird genutzt um die Eingangsparameter abhängig von dem gewünschten Verhalten, für zukünftige Steuerparameter, zu Berechnen \cite{seborg2010process}. \\
+Bei \ac{MPC} handelt es sich um einen fortschrittlichen Algorithmus, mit dem sehr komplexe, multivariable Regelungsprobleme lösen lassen. Soll ein Prozess kontrolliert werden, welcher mehrere Ein- und Ausgänge besitzt und gleichzeitig Ungleich- und Gleichheitsbedingungen erfüllen werden müssen, ist \acs{MPC} ein mächtiges Werkzeug. Vorausgesetzt ein ausreichend genaues Modell des Prozesses vorhanden, können unter ausnutzen von Messungen und dem Modell zukünftige Zustände des Prozesses berechnet werden. Diese Information wird genutzt um die Eingangsparameter abhängig von dem gewünschten Verhalten, für zukünftige Steuerparameter, zu berechnen \cite{seborg2010process}. \\
 Einige wichtige Vorteile von \ac{MPC} sind: \\
-(1) das sehr gute annähern an Prozessgrenzen und damit ein hoher Durchsatz/Effizienz, (2) Einschränkungen der Eingangs und Ausgangsgrößen werden berücksichtigt, (3) die Vorhersage des Fahrzeugzustands kann genutzt werden um mögliche Probleme frühzeitig zu detektieren.
+(1) das sehr gute annähern an Prozessgrenzen und damit ein hoher Durchsatz/Effizienz, (2) Einschränkungen der Eingangs- und Ausgangsgrößen werden berücksichtigt, (3) die Vorhersage des Fahrzeugzustands kann genutzt werden um mögliche Probleme frühzeitig zu detektieren.
 Seit den späten 70ern bis in die frühen 2000er wurde \ac{MPC} vor allem in der Chemiebranche genutzt um die komplexen multivariablen Regelungsprozesse bei zum Beispiel der Ölraffinerie zu Steuern. Für diese Aufgabengebiete war \acl{MPC} hervorragend geeignet, da die Prozesse im Vergleich zu anderen Regelungsaufgaben sehr langsam sind und damit die geringe Rechenleistung der damaligen Zeit ausreichend war. 
-Gerade in den letzten Jahren, mit stark gestiegener Prozessorleistung, sind die Einsatzgebiete vielfältiger geworden. Auch die Steuerung hoch dynamischer Systeme wie Quadcopter \cite{quadcopterMpc} oder Fahrzeugen \cite{carMPC} ist inzwischen möglich. 
+Gerade in den letzten Jahren, mit stark gestiegener Prozessorleistung, sind die Einsatzgebiete vielfältiger geworden. Auch die Steuerung hoch dynamischer Systeme wie Quadrocopter \cite{quadcopterMpc} oder Fahrzeugen \cite{carMPC} ist inzwischen möglich. 
 
 \subsection{Funktion}
 Der systematische Ablauf eines \ac{MPC}- Algorithmus ist in Abbildung \ref{fig:mpcBlock} aufgezeigt.  
@@ -98,14 +98,14 @@ Der systematische Ablauf eines \ac{MPC}- Algorithmus ist in Abbildung \ref{fig:m
 
 Die Funktion lässt sich in mehrere Schritte unterteilen:
 \begin{itemize}
-	\item Zustandsschätzung \\ Im ersten Schritt wird der aktuelle Zustand des System erfasst und als Ausgangspunkt für die Berechnung des Optimierungsproblems festgelegt.
-	\item Optimierung \\ In diesem Schritt werden die zukünftigen Zustände des System berechnet und welche Steuerparameter von Nöten sind um eine Kostenfunktion zu minimieren. Diese entspricht im industriellen Umfeld zum Beispiel einer Optimierung der Fertigungsrate, Kostenreduktion,  Temperatursteuerung, etc.
-	\item Steuerung \\ Die berechneten Steuerparameter werden auf dem realen System angewandt. Danach geht es wird beim ersten Schritt  fortgefahren.   
+	\item Zustandsschätzung \\ Im ersten Schritt wird der aktuelle Zustand des Systems erfasst und als Ausgangspunkt für die Berechnung des Optimierungsproblems festgelegt.
+	\item Optimierung \\ In diesem Schritt werden die zukünftigen Zustände des Systems berechnet und welche Steuerparameter vonnöten sind um eine Kostenfunktion zu minimieren. Diese entspricht im industriellen Umfeld zum Beispiel einer Optimierung der Fertigungsrate, Kostenreduktion,  Temperatursteuerung, etc.
+	\item Steuerung \\ Die berechneten Steuerparameter werden auf dem realen System angewandt. Danach wird wieder beim ersten Schritt fortgefahren.   
 \end{itemize}
 
 
-Die Mächtigkeit von \ac{MPC} basiert auf der Prädiktion des Systemverhaltens. Ein präzises Vorhersagen setzt daher eine möglichst gute Systembeschreibung voraus. Je genauer diese an die Realität heran reicht, desto weiter in die Zukunft können die Systemzustände berechnet werden. Außerdem kann das System näher an seine Systemgrenzen geführt werden. \\
-Bei \acl{MPC} handelt es sich um ein sogenanntes \textit{finite-horizon} Verfahren, das heißt die Optimierung wird immer für einen bestimmten Zeitraum in die Zukunft durchgeführt $ [t_0, t_0 + T] $. Dieser Bereich \(T\) wird dann in \(k\) Schritte unterteilt für die jeweils ein Prädiktionsschritt berechnet wird. Dieser geht aus dem vorherigen Zustand $k -1$ und den dazu gehörigen Steuergrößen hervor. Nach dem der Optimierer die für die Kostenfunktion idealen Steuergrößen für den gesammten Prädiktionsvektor berechnet hat, wird nur der \emph{erste} Steuerwert ausgewählt und zur Regelung im realen System eingesetzt. Der Zusammenhang aus Prädiktion und Kostenfunktion ist im Schaubild \ref{fig:mpcTheory} verdeutlicht.
+Die Mächtigkeit von \ac{MPC} basiert auf der Prädiktion des Systemverhaltens. Ein präzises Vorhersagen setzt daher eine möglichst gute Systembeschreibung voraus. Je genauer diese an die Realität heranreicht, desto weiter in die Zukunft können die Systemzustände berechnet werden. Außerdem kann das System näher an seine Systemgrenzen geführt werden. \\
+Bei \acl{MPC} handelt es sich um ein sogenanntes \textit{finite-horizon} Verfahren, das heißt die Optimierung wird immer für einen bestimmten Zeitraum in die Zukunft durchgeführt $ [t_0, t_0 + T] $. Dieser Bereich \(T\) wird dann in \(k\) Schritte unterteilt, für die jeweils ein Prädiktionsschritt berechnet wird. Dieser geht aus dem vorherigen Zustand $k -1$ und den dazu gehörigen Steuergrößen hervor. Nachdem der Optimierer die für die Kostenfunktion idealen Steuergrößen für den gesamten Prädiktionsvektor berechnet hat, wird nur der \emph{erste} Steuerwert ausgewählt und zur Regelung im realen System eingesetzt. Der Zusammenhang aus Prädiktion und Kostenfunktion ist im Schaubild \ref{fig:mpcTheory} verdeutlicht.
 
 \begin{figure}[ht!]
 	\centering
@@ -114,7 +114,7 @@ Bei \acl{MPC} handelt es sich um ein sogenanntes \textit{finite-horizon} Verfahr
 	\label{fig:mpcTheory}
 \end{figure}
 
-Wie bereits erwähnt wurde, berücksichtigt der \ac{MPC}-Ansatz auch Eingangs-, Ausgangs- und Zustandsbeschränkungen mit welchen man den Suchraum einschränkt. Diese sind im Falle eines Rennautos zum Beispiel die maximale Geschwindigkeit, Lenkeinschlag, Beschleunigung und Bremskraft. Ebenfalls ein sehr gutes Beispiel für eine Zustandsbeschränkung ist die Änderungsrate der Querbeschleunigung, welche ein direkter Indikator für den Komfort einer autonomen Fahrzeugs während der Fahrt darstellt.\\
+Wie bereits erwähnt wurde, berücksichtigt der \ac{MPC}-Ansatz auch Eingangs-, Ausgangs- und Zustandsbeschränkungen mit welchen man den Suchraum einschränkt. Diese sind im Falle eines Rennautos zum Beispiel die maximale Geschwindigkeit, Lenkeinschlag, Beschleunigung und Bremskraft. Ebenfalls ein sehr gutes Beispiel für eine Zustandsbeschränkung ist die Änderungsrate der Querbeschleunigung, welche ein direkter Indikator für den Komfort eines autonomen Fahrzeugs während der Fahrt darstellt.\\
 
 Um den \textit{\acl{MPC}} Algorithmus für den Anwendungsfall eines Rennautos zu implementieren braucht man Folglich:
 \begin{itemize}
@@ -132,7 +132,7 @@ Auf beides wird in den nächsten Kapiteln eingegangen.
 \section{Optimierung}
 Das Konzept der Optimierung ist es, eine gegebene Funktion \(f(\vec{x})\), auch als Kostenfunktion bezeichnet, zu mini- oder maximieren. 
 Dies wird in einer Vielzahl von Anwendungsgebieten genutzt.
-Zum Beispiel zur Berechnung von Profit / Verlust in einem Betrieb, Geschwindigkeit oder Distanz in einem physikalischen Problem oder der erwartete \textit{return of investment} für ein Geldanlage.  
+Zum Beispiel zur Berechnung von Profit / Verlust in einem Betrieb, Geschwindigkeit oder Distanz in einem physikalischen Problem oder der erwartete \textit{return of investment} für eine Geldanlage.  
 Die Bezeichnung lineare Programmierung bezieht sich auf die Lösung eines  Optimierungsproblems und hat nichts mit dem eigentlichen Programm zu tun.
 
 Die allgemeine mathematische Definition eines Optimierungsproblems ist
@@ -149,9 +149,9 @@ $h_j(\vec{x})= 0,$ $j= 1,2,...,m$\\
 
 
 Der Eingabeparameter $\vec{x}$ sei aus $\Re \textsuperscript{n} $, das heißt, das Problem hängt von \(n\) Einflussparameter ab, die im Vektor $\vec{x}$ eingelagert sind. Die Zielfunktion $f:D \rightarrow \Re $ sei einmal stetig differenzierbar. Weiterhin sind die Nebenbedingungen in Ungleichheitsform $g_i:D \rightarrow \Re$ mit $1\leq i \leq p$ und in Gleichheitsform $h_j:D \rightarrow \Re$ mit $1\leq j \leq m$ gegeben.
-In dem \(f(\vec{x})\) durch \(-f(\vec{x})\) ersetzt wird, kann aus dem Minimierungs, ein Maximierungsproblem gemacht werden.  
+In dem \(f(\vec{x})\) durch \(-f(\vec{x})\) ersetzt wird, kann aus dem Minimierens, ein Maximierungsproblem gemacht werden.  
 
-Eine Optimierungsproblem hat nicht immer eine Lösung. Die Ungleichungen, welche den Suchraum einschränken, können sich widersprechen (z.b. $x \leq 0 $ und $x > 0$). In diesem Fall gibt es keine Lösung. Außerdem kann das Problem unbeschränkt sein, was unendlich viele zulässige Lösungen zur Folge hätte und damit auch als nicht lösbar eingestuft wird. 
+Ein Optimierungsproblem hat nicht immer eine Lösung. Die Ungleichungen, welche den Suchraum einschränken, können sich widersprechen (z.b. $x \leq 0 $ und $x > 0$). In diesem Fall gibt es keine Lösung. Außerdem kann das Problem unbeschränkt sein, was unendlich viele zulässige Lösungen zur Folge hätte und damit auch als nicht lösbar eingestuft wird. 
 
 Ein lineares Programm (alle Funktionen sind linear) lässt sich in Matrixschreibweise darstellen. Es besteht aus $A \in \Re \textsuperscript{m,n}$ und zwei Vektoren $b \in \Re \textsuperscript{m,1}$ und $c \in \Re \textsuperscript{1,n}$. \\
 
@@ -184,7 +184,7 @@ Der Punkt, der die Kostenfunktion $c: x \rightarrow c\textsuperscript{T} x$ mini
 \subsection*{Lösungsverfahren}
 
 \subsection{Simplex - Verfahren}
-Obwohl zur Lösung der nichtlinearen Probleme die in dieser Arbeit berechnet werden müssen das Innere-Punkte-Verfahren genutzt wird, soll ein kurzer Überblick über das prominenteste Verfahren zum lösen von linearen Programmen gegeben werden. Dies dient der Veranschaulichung im späteren Verlauf. Das Verfahren wurde 1947 von Dantzig \cite{dantzig51} entwickelt und nutzt die Eigenschaft, dass ein \textit{well behaved} (wenn das aufgestellte Problem der Standardform entspricht und lösbar ist) lineares Programm immer einen Knoten besitzt an dem sich Kanten verschiedener Ungleichheitsbedingungen treffen und die Kostenfunktion minimieren. Das Verfahren nutzt diesen Zustand aus in dem es sich iterativ von einem Eckpunkt zum nächsten Bewegt. 
+Obwohl zur Lösung der nichtlinearen Probleme die in dieser Arbeit berechnet werden müssen das Innere-Punkte-Verfahren genutzt wird, soll ein kurzer Überblick über das prominenteste Verfahren zum Lösen von linearen Programmen gegeben werden. Dies dient der Veranschaulichung im späteren Verlauf. Das Verfahren wurde 1947 von Dantzig \cite{dantzig51} entwickelt und nutzt die Eigenschaft, dass ein \textit{well behaved} (wenn das aufgestellte Problem der Standardform entspricht und lösbar ist) lineares Programm immer einen Knoten besitzt an dem sich Kanten verschiedener Ungleichheitsbedingungen treffen und die Kostenfunktion minimieren. Das Verfahren nutzt diesen Zustand aus in dem es sich iterativ von einem Eckpunkt zum nächsten Bewegt. 
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=200pt]{Abbildungen/simplexMethod.png}
@@ -192,12 +192,12 @@ Obwohl zur Lösung der nichtlinearen Probleme die in dieser Arbeit berechnet wer
 	\label{fig:splxMethod}
 \end{figure}
 
-Die Richtung welche gewählt wird hängt von der Flanke (Ungleichung) ab welche die Kostenfunktion weiter minimiert. Kann keine weitere Flanke gefunden werden welche die kosten weiter reduziert endet das Verfahren im Optimum. Da im schlechtesten Fall der Simplex-Algorithmus jeden Knotenpunkt ein mal besuchen muss, hat das Verfahren ein exponentielles Wachstum abhängig von der Dimension des Optimierungsproblems \cite{doi:10.1137/S0036144502414942}.Trotz dieser Problematik hat das Simplex-Verfahren in der Praxis eine sehr gute Laufzeit und kann für den wiederholten Aufruf einer nur leicht veränderten Optimierung (anpassen von Parametern nach dem letzten Aufruf) einen so genannten Warmstart nutzen. Dieser Beschleunigt die Lösung ebenfalls deutlich \cite{simplexWiki:1}.\\
-Die Suche nach noch besseren Verfahren, dessen Komplexität nur Polynomial mit der Dimension anwächst führte dann in den Jahren 1979 bis 1984 zur Entwicklung eines neuen Algorithmus, welcher auch für nichtlineare Probleme genutzt werden kann.
+Die Richtung, welche gewählt wird, hängt von der Flanke (Ungleichung) ab welche die Kostenfunktion weiter minimiert. Kann keine weitere Flanke gefunden werden, welche die kosten weiter reduziert endet das Verfahren im Optimum. Da im schlechtesten Fall der Simplex-Algorithmus jeden Knotenpunkt ein mal besuchen muss, hat das Verfahren ein exponentielles Wachstum abhängig von der Dimension des Optimierungsproblems \cite{doi:10.1137/S0036144502414942}.Trotz dieser Problematik hat das Simplex-Verfahren in der Praxis eine sehr gute Laufzeit und kann für den wiederholten Aufruf einer nur leicht veränderten Optimierung (anpassen von Parametern nach dem letzten Aufruf) einen sogenannten Warmstart nutzen. Dieser Beschleunigt die Lösung ebenfalls deutlich \cite{simplexWiki:1}.\\
+Die Suche nach noch besseren Verfahren, dessen Komplexität nur Polynomial mit der Dimension anwächst, führte dann in den Jahren 1979 bis 1984 zur Entwicklung eines neuen Algorithmus welcher auch für nichtlineare Probleme genutzt werden kann.
 
 \subsection{Innere-Punkte-Verfahren} 
 \label{ipm} 
-Im Folgenden wir das Innere-Punkte-Lösungsverfahren für lineare, quadratische und nichtlineare Optierungsprobleme kurz vorgestellt. Die Idee hinter dem Verfahren ist es, sich nicht mehr auf den Kanten zu bewegen sondern immer im Inneren des erlaubten Bereiches. Diese Bewegung durch das Innere des Polytop ist in Abbildung \ref{fig:iterPointMethod} veranschaulicht.  
+Im Folgenden wir das Innere-Punkte-Lösungsverfahren für lineare, quadratische und nichtlineare Optimierungsprobleme kurz vorgestellt. Die Idee hinter dem Verfahren ist es, sich nicht mehr auf den Kanten zu bewegen, sondern immer im Inneren des erlaubten Bereiches. Diese Bewegung durch das Innere des Polytop ist in Abbildung \ref{fig:iterPointMethod} veranschaulicht.  
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=200pt]{Abbildungen/iterPointMethod.png}
@@ -209,13 +209,13 @@ Um dieses Verfahren umzusetzen wird die Positivitätsbedingungen $x \geq 0$ der 
 $B(x,\mu) =  c\textsuperscript{T}x - \mu \sum_{i}^{n} \ln x_i$, mit $\mu > 0$. \\
 Das ursprüngliche Optimierungsproblem wird damit ersetzt durch 
 $min \{B(x,\mu) | Ax \leq b\}$.\\
-Wird \(\mu\) sehr klein (tendiert gegen \(0\) ) ist die Lösung des Barriereproblems die gleiche wie unser ursprüngliches Optimierungsproblem. Dies nutzt man aus, um von einem großen \(\mu\) als Startpunkt iterativ $B(x,\mu)$ zu Optimieren und dann vor der nächsten Iteration \(\mu\) zu verkleinern.
+Wird \(\mu\) sehr klein (tendiert gegen \(0\) ) ist die Lösung des Barriereproblems die gleiche wie unser ursprüngliches Optimierungsproblem. Dies nutzt man aus, um von einem großen \(\mu\) als Startpunkt iterativ $B(x,\mu)$ zu optimieren und dann vor der nächsten Iteration \(\mu\) zu verkleinern.
 
 
-Der Strafterm $-\mu \ln x_i $ wird für $x$-Werte nahe an ihrer Grenze sehr groß was in dem Plot \ref{fig:iterPointLn} aufgezeigt wird. Das Ergebnis ist, dass die Lösungen des Barriereproblemes, solange $\mu$ groß genug ist, von den Flächen des Polytop entfernt bleiben.
+Der Strafterm $-\mu \ln x_i $ wird für $x$-Werte nahe an ihrer Grenze sehr groß was in dem Plot \ref{fig:iterPointLn} aufgezeigt wird. Das Ergebnis ist, dass die Lösungen des Barriereproblems, solange $\mu$ groß genug ist, von den Flächen des Polytop entfernt bleiben.
 Dadurch nähert man sich nicht von außen entlang der Grenzen der Hyperebene, sondern durch das Innere des zulässigen Bereiches der optimalen Lösung des Optimierungsproblems an. 
 
-Für kleine Werte von x wird $-\ln x $ sehr groß. Dies nutzt man aus, um kleine Werte von \(x\) zu Bestrafen und damit die Suche der Lösung immer innerhalb des zulässigen Bereiches zu führen (verdeutlicht in Abbildung \ref{fig:iterPointMethod}). Während der Suche wird \(\mu\) sukzessive verkleinert, bis im Grenzfall $ \mu \rightarrow 0$ das Barriereproblem gegen die Lösung des Optimierungsproblemes konvergiert (siehe Abbildung \ref{fig:iterPointLn}).\\
+Für kleine Werte von x wird $-\ln x $ sehr groß. Dies nutzt man aus, um kleine Werte von \(x\) zu bestrafen und damit die Suche der Lösung immer innerhalb des zulässigen Bereiches zu führen (verdeutlicht in Abbildung \ref{fig:iterPointMethod}). Während der Suche wird \(\mu\) sukzessive verkleinert, bis im Grenzfall $ \mu \rightarrow 0$ das Barriereproblem gegen die Lösung des Optimierungsproblems konvergiert (siehe Abbildung \ref{fig:iterPointLn}).\\
 
 \begin{figure}[ht!]
 	\centering
@@ -224,19 +224,21 @@ Für kleine Werte von x wird $-\ln x $ sehr groß. Dies nutzt man aus, um kleine
 	\label{fig:iterPointLn}
 \end{figure}
 
-Um in jedem der iterativen Schritte möglichst schnell zu einer Lösung zu kommen, bedient man sich dem Newton-Rapshon-Verfahren . 
+Um in jedem der iterativen Schritte möglichst schnell zu einer Lösung zu kommen, bedient man sich dem Newton-Rapshon-Verfahren. 
 Der Algorithmus benötigt die Ableitungsmatrix der Barrierefunktion. Die Berechnung dieser wird durch eine automatische Ableitung realisiert.
 
 \subsection{Automatische Ableitung} 
 
-Ableitungen sind eine Grundvoraussetzung für viele numerische Algorithmen. Die Genauigkeit der Berechnung und die Geschwindigkeit ist jedoch oftmals problematisch.
+Ableitungen sind eine Grundvoraussetzung für viele numerische Algorithmen. Die Genauigkeit der Berechnung und die Geschwindigkeit sind jedoch oftmals problematisch.
 
-Ein möglicher Ansatz die Ableitung $\Delta{\tiny } f(x) = (\frac{\partial f}{\partial x_1} (x), ..., \frac{\partial f}{\partial x_n})$ der Funktion $f:\Re \textsuperscript{n} \rightarrow \Re $ zu Berechnen ist \\
+Ein möglicher Ansatz die Ableitung $\Delta{\tiny } f(x) = (\frac{\partial f}{\partial x_1} (x), ..., \frac{\partial f}{\partial x_n})$ der Funktion $f:\Re \textsuperscript{n} \rightarrow \Re $ zu berechnen ist \\
 $f'(x) \approx \frac{f(x+h) - f(h)}{h}$ mit $ h \rightarrow 0 $. \\
-Dieser ist jedoch sehr ineffizient mit einer Laufzeit von $\mathcal{O}(n)$, zudem spielt hier der Rundungsfehler des \textit{float}-Datentyps mit in die Genauigkeit der Lösung \cite{julDiff}.
+Dieser Weg ist jedoch sehr ineffizient mit einer Laufzeit von $\mathcal{O}(n)$, zudem spielt hier der Rundungsfehler des \textit{float}-Datentyps mit in die Genauigkeit der Lösung \cite{julDiff}.
 
-Eine andere Alternative wäre die Ableitung manuell zu berechnen, was jedoch für komplexere Systeme sehr aufwändig und vor allem fehleranfällig ist. Eine bessere Lösung ist die automatische Ableitung (\emph{automatic differentiation}). 
-Dieses System kann die Ableitung bis auf die maximal mögliche Genauigkeit eines \textit{float} berechnen. Zu der höheren Präzision kommt noch die deutlich bessere Laufzeit. Im Idealfall entspricht die Komplexität $\mathcal{O}(1)$. Um diese Vorteile nutzen zu können benötigt es jedoch ein genaues Wissen über die abzuleitende Funktion \(f(x)\) , realisiert wird dies durch den Zugriff auf den Sourcecode der Methode oder durch ein überladen der Operatoren. Das Verfahren ist abhängig von den Möglichkeiten der Programmiersprache und welcher Ansatz bei der Implementierung der automatischen Ableitung verfolgt wurde. 
+Eine andere Möglichkeit wäre die Ableitung manuell zu berechnen, was jedoch für komplexere Systeme sehr aufwendig und vor allem fehleranfällig ist. Eine bessere Lösung ist die automatische Ableitung (\emph{automatic differentiation}). 
+Dieses System kann die Ableitung bis auf die maximal mögliche Genauigkeit eines \textit{float} berechnen. Zu der höheren Präzision kommt noch die deutlich bessere Laufzeit. Im Idealfall entspricht die Komplexität $\mathcal{O}(1)$. Um diese Vorteile nutzen zu können benötigt es jedoch ein genaues Wissen über die abzuleitende Funktion \(f(x)\), realisiert wird dies durch den Zugriff auf den Sourcecode der Methode oder durch ein überladen der Operatoren. Das Verfahren ist abhängig von den Möglichkeiten der Programmiersprache und welcher Ansatz bei der Implementierung der automatischen Ableitung verfolgt wurde. 
+
+
 \subsubsection*{Vorwärtsmodus}
 Ein Verfahren der Umsetzung ist der Vorwärtsmodus. Er basiert auf der Kettenregel $(f \circ g)' = (f' \circ g)g'$. \\
 Um dies auszunutzen wird eine abzuleitende Funktion $ y = f(g(h(x)))$ in seine Bestandteile $y = f(g(h(w_0))) = f(g(w_1)) = f(w_2) = w_3$ aufgetrennt und anschließend in die Kettenregel eingesetzt 
@@ -249,25 +251,25 @@ $y = w_1w_2 + \sin(w_1) $ \\
 $y = w_3 + w_4$ \\
 $y = w_5$
 
-Danach muss der sogenannte \textit{seed} errechnet werden. Er kodiert über welche Variable differenziert werden soll. Für $x_1$ ist der \textit{seed} $\dot{w_1} = \frac{\partial x_1}{\partial x_1} = 1$ und   $\dot{w_2} = \frac{\partial x_2}{\partial x_1} = 0$
+Danach muss der sogenannte \textit{seed} errechnet werden. Er kodiert, über welche Variable differenziert werden soll. Für $x_1$ ist der \textit{seed} $\dot{w_1} = \frac{\partial x_1}{\partial x_1} = 1$ und   $\dot{w_2} = \frac{\partial x_2}{\partial x_1} = 0$
 Im letzten Schritt werden nur noch von innen nach außen die Substitutionen ersetzt. \\
 $\dot{w_3} = w_2\dot{w_1} + w_1 \dot{w_2}$ \\
 $\dot{w_4} = \cos{w_1} \cdot \dot{w_1}$ \\
 $\dot{w_5} = \dot{w_3} + \dot{w_4}$ \\
-Dieses Verfahren kann im sogenannten Rückwärtsmodus auch von außen nach innen berechnet werden. Nachdem die Grundlagen zur Optimierung gelegt wurden, wird nun auf den Teil im \acl{MPC} eingegangen welcher für die Un-, und Gleichheitsbedienungen erzeugt. 
+Dieses Verfahren kann im sogenannten Rückwärtsmodus auch von außen nach innen berechnet werden. Nachdem die Grundlagen zur Optimierung gelegt wurden, wird nun auf den Teil im \acl{MPC} eingegangen welcher für die Un- und Gleichheitsbedienungen erzeugt. 
 
 \section{Fahrzeugmodelle}
 
-Wie der Name Model Predictive Control schon verdeutlicht benötigt man eine Systembeschreibung des zu Regelnden Modells. Diese wird genutzt um zukünftige Zustände zu Berechnen und bildet damit einen wichtigen Bestandteil. Desto genauer die Beschreibung das realen System approximiert, desto besser ist die Vorhersage und damit auch die Regelung des Fahrzeugs.
-Im folgenden wird zuerst ein kinematisches Fahrzeugmodell eingeführt und dann zu einem dynamischen Modell erweitert.   
+Wie der Name Model Predictive Control schon verdeutlicht benötigt man eine Systembeschreibung des zu regelnden Modells. Diese wird genutzt, um zukünftige Zustände zu berechnen und bildet damit einen wichtigen Bestandteil. Desto genauer die Beschreibung das reale System approximiert, desto besser ist die Vorhersage und damit auch die Regelung des Fahrzeugs.
+Im Folgenden wird zuerst ein kinematisches Fahrzeugmodell eingeführt und dann zu einem dynamischen Modell erweitert.   
 
 \subsection{Kinematisches Modell}
 \label{kinematicModel}
-Unter gewissen Einschränkungen welche weiter unten beschrieben werden kann ein kinematisches Modell die Laterale und Longitudinale Bewegung eines Fahrzeuges mathematisch Beschreiben. In diesem sehr stark vereinfachten Modell werden keine wirkenden Kräfte berücksichtigt, sondern nur die geometrischen Beziehungen des Fahrzeuges genutzt um die Bewegung zu berechnen. \\
-Im ersten Schritt werden die jeweils an einer Achse verbundenen Räder zu einem einzigen Zusammengefasst. Dies wird als Bicycle Modell bezeichnet und vereinfacht die Berechnungen erheblich \cite{BicycleModel}. Obwohl auch für Hinterradlenkung möglich, wird im folgenden nur die Vorderradlenkung betrachtet da das Driverless Fahrzeug der Uni Erlangen nur über eine solche verfügt. Die Lenkwinkel welche durch das Bicycle Modell berechnet werden entsprechen nicht den Lenkwinkel am echten Fahrzeug. Die kurveninneren und kurvenäußeren Räder bewegen sich auf zwei Kreisen mit unterschiedlichen Radien, und damit auch verschiedenen Anstellwinkeln. Dies wird in Fahrzeugen durch die Ackermann Lenkung mechanisch umgesetzt \cite{rajamani2011vehicle}.
+Unter gewissen Einschränkungen, welche weiter unten beschrieben werden, kann ein kinematisches Modell die laterale und longitudinale Bewegung eines Fahrzeuges mathematisch Beschreiben. In diesem sehr stark vereinfachten Modell werden keine wirkenden Kräfte berücksichtigt, sondern nur die geometrischen Beziehungen des Fahrzeuges genutzt, um die Bewegung zu berechnen. \\
+Im ersten Schritt werden die jeweils an einer Achse verbundenen Räder zu einem einzigen Zusammengefasst. Dies wird als Bicycle Modell bezeichnet und vereinfacht die Berechnungen erheblich \cite{BicycleModel}. Obwohl auch für Hinterradlenkung möglich wird im folgenden nur die Vorderradlenkung betrachtet da das Driverless Fahrzeug der Uni Erlangen nur über eine solche verfügt. Die Lenkwinkel welche durch das Bicycle Modell berechnet werden entsprechen nicht den Lenkwinkel am echten Fahrzeug. Die kurveninneren und kurvenäußeren Räder bewegen sich auf zwei Kreisen mit unterschiedlichen Radien und damit auch verschiedenen Anstellwinkeln. Dies wird in Fahrzeugen durch die Ackermann Lenkung mechanisch umgesetzt \cite{rajamani2011vehicle}.
 
 
-Die nichtlinearen zeitkontinuierlichen Gleichungen basieren auf \cite{rajamani2011vehicle, 7225830} und beschreiben das kinematische Modell bezüglich eines Inertialsystems (siehe Abbildung \ref{fig:kinmodel}),
+Die nichtlinearen zeit kontinuierlichen Gleichungen basieren auf \cite{rajamani2011vehicle, 7225830} und beschreiben das kinematische Modell bezüglich eines Inertialsystems (siehe Abbildung \ref{fig:kinmodel}),
 
 \begin{figure}[ht!]
 	\centering
@@ -299,7 +301,7 @@ Die Parameter lassen sich in zwei Bereiche unterteilen:
 \end{itemize}
 
 
-Die Annahme eines kräftefreien Modells, bei dem das Vorderrad genau in die Richtung rollt in die es zeigt, ist nur bis etwa 5 m/s plausibel \cite{rajamani2011vehicle}. Danach müssen die Kräfte welche die Reifen auf die Straße übertragen können mit betrachtet werden. Diese werden dann im dynamischen Modell genutzt um eine genauere Vorhersage berechnen zu können.
+Die Annahme eines kräftefreien Modells, bei dem das Vorderrad genau in die Richtung rollt in die es zeigt, ist nur bis etwa 5 m/s plausibel \cite{rajamani2011vehicle}. Danach müssen die Kräfte, welche die Reifen auf die Straße übertragen können mit betrachtet werden. Diese werden dann im dynamischen Modell genutzt um eine genauere Vorhersage berechnen zu können.
 
 Die für das kinematische Modell angenommenen Werte stammen vom Fahrzeug aus dem Jahr 2017 des High Octane Motorsports Verein der Uni Erlangen (siehe \ref{vehicleParam}). Die Beschleunigung \(a\) wurde für den besten \textit{Acceleration} Durchgang in FSG-2017 mit der Zeit $t = 4.5s$ und der Endgeschwindigkeit $v = 32.78 \frac{m}{s\textsuperscript{2}}$ berechnet. Für 
 \begin{equation}
@@ -314,7 +316,7 @@ x = \frac{1}{2} * a * t^2
 liegt man mit \(73.75m\) nur zwei Prozent neben der genauen Streckenlänge von \(75m\).
 
 \subsubsection*{Begrenzung des Kurvenradius}
-Da beim kinematischen Modell die Geschwindigkeit in Kurven keine Rolle spielt kann das Fahrzeug mit jedem \(v\) den gleichen Kurvenradius durchfahren. Um auch in höheren Geschwindigkeiten eine akzeptable Regelung zu erhalten wird eine Beschränkung eingefügt welche die maximale Querbeschleunigung beschränkt. Der Maximalwert entspricht dem höchsten g-Wert den das Fahrzeug des High Octane Motorsports mit Aerodynamik in einer Kurve erreichen kann: $a_{max} = 2.0g$. 
+Da beim kinematischen Modell die Geschwindigkeit in Kurven keine Rolle spielt, kann das Fahrzeug mit jedem \(v\) den gleichen Kurvenradius durchfahren. Um auch in höheren Geschwindigkeiten eine akzeptable Regelung zu erhalten wird eine Beschränkung eingefügt welche die maximale Querbeschleunigung beschränkt. Der Maximalwert entspricht dem höchsten g-Wert, den das Fahrzeug des High Octane Motorsports mit Aerodynamik in einer Kurve erreichen kann: $a_{max} = 2.0g$. 
 Mit der Gleichung
 \begin{equation}
 	|\beta| \leq \arctan(\frac{1}{2} \frac{\frac{l}{2} a_{max}}{v^2})
@@ -326,7 +328,7 @@ wird dies über die Einschränkung des Schwimmwinkel (und damit gleichzeitig des
 \label{tireModel}
 Da die Reifen der einzige Kontaktpunkt zwischen Fahrbahn und Fahrzeug sind,  beeinflusst er das Fahrverhalten maßgeblich. Aufgabe des Reifens ist es, sämtliche Kräfte und Momente zu übertragen, um eine optimale Straßenlage zu erzielen. Demzufolge ist der Reifen das Bauteil, welches die Fahrleistungen am stärksten einschränkt.
 
-Die Kräfte welche ein Reifen auf die Straße übertragen kann hängen von dem Schräglaufwinkel, dem Schlupf und der Radlast ab. Die Radlast \(F_z\) berechnet sich aus der Normalkraft und der Radlastverteilung und wird im folgenden als konstant angesehen.
+Die Kräfte, welche ein Reifen auf die Straße übertragen kann hängen von dem Schräglaufwinkel, Schlupf und der Radlast ab. Die Radlast \(F_z\) berechnet sich aus der Normalkraft und der Radlastverteilung und wird im folgenden als konstant angesehen.
 Die Seitenführungskraft \(F_y\) wirkt bei einer Kurvenfahrt der Fliehkraft entgegen und hält das Fahrzeug auf der Spur, solange ein Kräftegleichgewicht besteht. Als Schräglaufwinkel bezeichnet man den von der Radmittelebene \(\delta\) (Lenkwinkel) und der Bewegungsrichtung \(\theta_{vf}\) des Fahrzeugs eingeschlossenen Winkel (siehe Abbildung \ref{fig:linLat}). Dieser ist notwendig, damit der Reifen eine Seitenkraft aufbauen kann. \\
 
 \begin{equation}
@@ -352,8 +354,8 @@ F_{yf} = C_\alpha \alpha_f \\
 F_{yr} = C_\alpha \alpha_r
 \end{eqnarray}
 
-Am Schaubild \ref{fig:pacejka} lässt sich dieser Bereich zwischen -1.5° und 1.5° sehr gut erkennen. Für größere Schräglaufwinkel kann kein linearer Verlauf mehr angenommen werden und es muss eine genauere Approximation des Reifenverhaltens gewählt werden. Hierfür wird die so genannte \textit{Magic Formula}  \cite{magicFormula} verwendet. Dabei handelt es sich um eine mathematische Gleichung die sehr gut Messkurven approximiert welche auf Testständen gemessen werden.
-Es wurde 1993 von Pacejka und Bakker entwickelt, und eignet sich sowohl für die Berechnung der longitudinalen wie auch der lateralen Kräfte . Bei Eingabe des Schräglaufwinkels in \(x\) erhält man die lateral auf die Straße wirkende Kraft \(F_y\). 
+Am Schaubild \ref{fig:pacejka} lässt sich dieser Bereich zwischen -1.5° und 1.5° sehr gut erkennen. Für größere Schräglaufwinkel kann kein linearer Verlauf mehr angenommen werden und es muss eine genauere Approximation des Reifenverhaltens gewählt werden. Hierfür wird die sogenannte \textit{Magic Formula}  \cite{magicFormula} verwendet. Dabei handelt es sich um eine mathematische Gleichung die sehr gut Messkurven approximiert welche auf Testständen gemessen werden.
+Es wurde 1993 von Pacejka und Bakker entwickelt und eignet sich sowohl für die Berechnung der longitudinalen wie auch der lateralen Kräfte. Bei Eingabe des Schräglaufwinkels in \(x\) erhält man die lateral auf die Straße wirkende Kraft \(F_y\). 
 \begin{equation}
 F_y = D\sin[C\arctan{Bx - E(Bx - \arctan(Bx))}]
 \label{eq:magicF}
@@ -384,11 +386,11 @@ Die Parameter, welche für die \textit{Magic Formula} benötigt werden, wurden v
 \end{figure}
 
 Ähnlich wie bei \(F_y\) wird auch die Kraft welche das Fahrzeug in Längsrichtung beschleunigt \(F_x\) durch den Schlupf berechnet. Dieser hängt direkt von der Geschwindigkeit und Raddrehzahl ab. 
-Da für die bestimmung dieser jedoch eine Motorsimulation vonnöten wäre, wird \(F_x\) direkt aus der Motorleistung, Reibung und Luftwiderstand berechnet (siehe Section \ref{dynModel}) und durch \(F_{max}\) begrenzt. \(F_{max}\) entspricht der maximalen Kraft, die der Reifen übertragen kann.\\
+Da für die Bestimmung dieser jedoch eine Motorsimulation vonnöten wäre, wird \(F_x\) direkt aus der Motorleistung, Reibung und Luftwiderstand berechnet (siehe Abschnitt \ref{dynModel}) und durch \(F_{max}\) begrenzt. \(F_{max}\) entspricht der maximalen Kraft, die der Reifen übertragen kann.\\
 \begin{equation}
 F_x <= F_{max}
 \end{equation}
-Der Zusammenhang zwischen lateraler und longitudinaler Kraft wird über den \textit{Kammschen Kreis} Modelliert (siehe Schaubild \ref{fig:kamKreis}). Dieser schränkt die wirkenden Kräfte so ein, dass die Hypotenuse aus \(F_x\) und \(F_y\) sich maximal auf einem Einheitskreis bewegen kann. Dieser hat den Radius der maximalen Kraft die der Reifen übertragen kann (\(F_{max}\)).
+Der Zusammenhang zwischen lateraler und longitudinaler Kraft wird über den \textit{Kammschen Kreis} modelliert (siehe Schaubild \ref{fig:kamKreis}). Dieser schränkt die wirkenden Kräfte so ein, dass die Hypotenuse aus \(F_x\) und \(F_y\) sich maximal auf einem Einheitskreis bewegen kann. Der Radius entspricht maximalen Kraft welche die Reifen übertragen können (\(F_{max}\)).
 
 \begin{eqnarray}
 F <= F_{max} \\
@@ -409,7 +411,7 @@ F_y = F_{max} \cos(\alpha)\\
 	\label{fig:kamKreis}
 \end{figure}
 
-Der aufmerksame Leser wird bemerkt haben, dass bei einem gleichen Anteil an longitudinaler und lateraler Kraft die Reifen das größte Moment auf die Straße übertragen können. Dieser Punkt wird von Rennfahrern versucht in Kurven zu treffen um das gesamte Potential der Reifen auszunutzen.
+Der aufmerksame Leser wird bemerkt haben, dass bei einem gleichen Anteil an longitudinaler und lateraler Kraft die Reifen das größte Moment auf die Straße übertragen können. Dieser Punkt wird von Rennfahrern versucht in Kurven zu treffen, um das gesamte Potenzial der Reifen auszunutzen.
 
 
 Mit dem Wissen wie die longitudinalen und lateralen Kräfte berechnet werden, kann nun ein genaueres Systemmodell genutzt werden.
@@ -457,7 +459,7 @@ F_x = F_{xf} + F_{xr} \\
 F_y = F_{yf} + F_{yr}
 \end{eqnarray}
 
-Diese hängen ab von den lateralen \((.)_C\) und longitudinalen \((.)_l\)    Radkräften und dem Lenkwinkel. Da das Vorderrad nicht angetrieben ist besitzt es keinen longitudinalen Anteil. 
+Diese hängen ab von den lateralen \((.)_C\) und longitudinalen \((.)_l\)    Radkräften und dem Lenkwinkel. Da das Vorderrad nicht angetrieben ist, besitzt es keinen longitudinalen Anteil. 
 
 \begin{eqnarray}
 F_{xf} =& - 2 F_{Cf} \sin(\delta_f) \\
@@ -477,7 +479,7 @@ Die dafür benötigten Schräglaufwinkel werden durch folgende Formeln bestimmt:
 \end{eqnarray}
 
 \subsection*{Longitudinale Kräfte}
-Da keine Simulation des Motors genutzt wird müssen die Kräfte welche die Reifen longitudinal auf die Straße bringen \(F_{lr}\) anders als über den Schlupf berechnet werden.
+Da keine Simulation des Motors genutzt wird, müssen die Kräfte welche die Reifen longitudinal auf die Straße bringen \(F_{lr}\) anders als über den Schlupf berechnet werden.
 Dies realisiert man über die maximale Motorleistung und \(F_{max}\).
 
 \begin{eqnarray}
@@ -485,7 +487,7 @@ F_{lr_{acc}} = \frac{P_{engine} * throttle }{|\dot{x}|} \label{long_dyn_engine}\
 F_{lr_{acc}} <= 2 F_{max} \label{long_dyn_max}\\
 F_{lr_{dec}} = - 2 F_{max} * break\\
 \end{eqnarray}
-Die Berechnung der Reifenkräfte sind für Beschleunigung und Bremsvorgang unterschiedlich.
+Die Berechnung der Reifenkräfte ist für Beschleunigung und Bremsvorgang unterschiedlich.
 
 Beschleunigt das Fahrzeug wirkt nicht nur die Rollreibung der longitudinalen Kraft des Motors entgegen, sondern auch der Luftwiderstand. Es wird von einem Rennkurs ausgegangen der keine Steigung besitzt.
 \begin{eqnarray}
@@ -555,16 +557,17 @@ Die zur Berechnung verwendeten Fahrzeugparameter wurden für das zum Verfassen d
 \section{Programmiersprachen}
 \subsection{Python}
 
-Zu Beginn der Masterarbeit wurde zuerst die Programmiersprache Python verwendet um das \ac{MPC} zu programmieren. Als Optimierer wurde ein \emph{\ac{SLSQP}}-Algorithmus verwendet. Dieser ist direkt in die SciPy-Bibliothek integriert und unterstützt Eingangs-, Ausgangs- und Zustandsbeschränkungen ohne die es nicht möglich ist das \ac{MPC} für die Fahrzeugregelung auszulegen. So lange die Anzahl der Prädiktionsschritte klein bleibt und 10 nicht überschreitet ist die Ausführungszeit gering genug um eine Updaterate von 20Hz zu erreichen. 
+Zu Beginn der Masterarbeit wurde zuerst die Programmiersprache Python verwendet, um den \ac{MPC}-Ansatz zu programmieren. Als Optimierer wurde ein \emph{\ac{SLSQP}}-Algorithmus verwendet. Dieser ist direkt in die SciPy-Bibliothek integriert und unterstützt Eingangs-, Ausgangs- und Zustandsbeschränkungen, ohne die es nicht möglich ist den \ac{MPC}-Algorithmus für die Fahrzeugregelung auszulegen. So lange die Anzahl der Prädiktionsschritte klein bleibt und 10 nicht überschreitet ist die Ausführungszeit gering genug um eine Updaterate von 20Hz zu erreichen. 
 
 \begin{figure}[ht!]
-	\includegraphics[width=400pt]{Abbildungen/pythonDummy.png}
+	\centering
+	\input{Grafiken/pythonBench.tex} 
 	\caption{Ausführungszeiten für verschiedene  große Horizontlängen}
 	\label{fig:pythonBench}
 \end{figure}
 
 Bei größeren Prädiktionsvektoren fällt die Geschwindigkeit jedoch sehr schnell ab.
-Dies liegt daran, dass der SLSQ- Algorithmus nicht für nichtlineare Probleme ausgelegt ist. Bessere Skalierung erhält man bei der Verwendung eines \textit{Solvers} der das Innere-Punkte-Verfahren nutzt. Dieser Algorithmus setzt jedoch um gute Performance zu erreichen, wie in Abschnitt \ref{ipm} beleuchtet, die Kenntnis über die Ableitung der Systemfunktion voraus. Diese kann mit Frameworks wie: CasADi, PyADOL-C, PyCppAD berechnet werden \cite{DBLP:journals/corr/TurkinT16}. 
+Dies liegt daran, dass der SLSQ- Algorithmus nicht für nichtlineare Probleme ausgelegt ist. Bessere Skalierung erhält man bei der Verwendung eines \textit{Solvers} der das Innere-Punkte-Verfahren nutzt. Dieser Algorithmus setzt jedoch, um gute Performance zu erreichen, wie in Abschnitt \ref{ipm} beleuchtet, die Kenntnis über die Ableitung der Systemfunktion voraus. Diese kann mit Frameworks wie: CasADi, PyADOL-C, PyCppAD berechnet werden \cite{DBLP:journals/corr/TurkinT16}. 
 Eine Implementierung des \ac{MPC}-Ansatzes in CasADi wurde  aufgrund der schlechten Dokumentation abgebrochen und nach einer Alternativlösung gesucht. Das Ergebnis dieser Suche führte zur Verwendung einer neuen Programmiersprache. 
 
 
@@ -573,9 +576,9 @@ Eine Implementierung des \ac{MPC}-Ansatzes in CasADi wurde  aufgrund der schlech
 Die Sprache welche die Umsetzung des \acl{MPC}-Algorithmus effizient und performant ermöglichte ist die Programmiersprache \text{Julia}. Sie wurde im Jahr 2009 von Jeff Bezanson, Stefan Karpinski, Viral B. Shah, and Alan Edelman ersonnen und ist damit noch eine sehr junge Sprache. Sie ist vor allem für numerische Analyse und wissenschaftliche Berechnungen entworfen worden und bietet in diesen Bereichen viele Funktionalitäten. Ebenfalls ein wichtiges Ziel bei der Entwicklung war es, ohne vorheriges Kompilieren sehr schnell zu sein und trotzdem weiterhin das \textit{general-purpose} Paradigma zu erfüllen. Ein Vergleich der Berechnungsgeschwindigkeit verschiedener Sprachen bezüglich viel genutzten Funktionen im wissenschaftlichen Umfeld ist in dem Benchmark \ref{fig:juliaBench} zu sehen.
 
 \begin{figure}[ht!]
-	\includegraphics[width=450pt]{Abbildungen/juliaBenchmark.png}
+	\centering
+	\input{Grafiken/juliaBench.tex} 
 	\caption{Ausführungszeiten für verschiedene Sprachen}
-
 	\label{fig:juliaBench}
 \end{figure}
 
@@ -584,14 +587,11 @@ Die wichtigsten Feautres von Julia sind:
 
 	\item multiple dispatch: Wird genutzt um die gleiche Methode für verschiedene Kombinationen an Eingabeparametern oder Variablentypen zu überladen. Bei dem Funktionsaufruf wird die am besten passende Methodendefinition aufgerufen. \\
 	\item type inference: Das automatische detektieren des Datentyps. Dies befreit den Programmierer vom festlegen des Typs und ermöglicht trotzdem Typprüfung. \\
-	\item \ac{JIT} Kompilierung: Ein System in dem ein \ac{JIT} Kompilierer implementiert ist, wandelt den Computer Code erst zur Laufzeit in Bytecode um. Der große Vorteil ist, dass während der Ausführung kontinuierliche Analysen durchgeführt werden um Bereiche ausfindig zu machen die durch ein Neukompilieren eine signifikante Verbesserung bei der Ausführungszeit erfahren würden. \\
+	\item \ac{JIT} Kompilierung: Ein System, in dem ein \ac{JIT} Kompilierer implementiert ist, wandelt den Computer Code erst zur Laufzeit in Bytecode um. Der große Vorteil ist, dass während der Ausführung kontinuierliche Analysen durchgeführt werden, um Bereiche ausfindig zu machen die durch ein Neukompilieren eine signifikante Verbesserung bei der Ausführungszeit erfahren würden. \\
 \end{itemize}
 
 \subsubsection*{Jump}
-
-
-
-An diesem Punkt kommt Jump ins Spiel. Jump ist eine Erweiterung für Julia mit der man mathematische Probleme modellieren und lösen kann. Es besitzt Schnittstellen für mehrere sowohl frei verfügbare wie auch kommerzielle Optimierer, mit denen sich zum Beispiel lineare oder nichtlineare Probleme lösen lassen. Der große Vorteil von Jump ist, dass die Definition des mathematischen Problems unabhängig von dem verwendeten Optimierer ist und dieser damit leicht ausgetauscht werden kann (siehe Schaubild \ref{fig:jumpDiagram}). Ebenfalls ersichtlich ist dass Jump sich direkt um die automatische Ableitung kümmert und so dem Programmierer sehr viel Arbeit erspart. 
+An diesem Punkt kommt Jump ins Spiel. Jump ist eine Erweiterung für Julia mit der man mathematische Probleme modellieren und lösen kann. Es besitzt Schnittstellen für mehrere sowohl frei verfügbare wie auch kommerzielle Optimierer, mit denen sich zum Beispiel lineare oder nichtlineare Probleme lösen lassen. Der große Vorteil von Jump ist, dass die Definition des mathematischen Problems unabhängig von dem verwendeten Optimierer ist und dieser damit leicht ausgetauscht werden kann (siehe Schaubild \ref{fig:jumpDiagram}). Ebenfalls ersichtlich ist das Jump sich direkt um die automatische Ableitung kümmert und so dem Programmierer sehr viel Arbeit erspart. 
 
 \begin{figure}[ht!]
 	\centering
@@ -601,24 +601,24 @@ An diesem Punkt kommt Jump ins Spiel. Jump ist eine Erweiterung für Julia mit d
 \end{figure}
 
 \chapter{MPC zur Trajektionsplanung und Regelung}
-Im Folgenden werden die Bestandteile des \acl{MPC}-Algorithmus zur Trajektionsplanung und Regelung für das Rennauto aufgeschlüsselt und Veranschaulicht.\\
+Im Folgenden werden die Bestandteile des \acl{MPC}-Algorithmus zur Trajektionsplanung und Regelung für das Rennauto aufgeschlüsselt und veranschaulicht.\\
 
-Zu beginn der Entwicklung hätte die Möglichkeit bestanden die Regelung der lateralen und longitudinalen Führung des Fahrzeuges zu trennen. 
+Zu Beginn der Entwicklung hätte die Möglichkeit bestanden die Regelung der lateralen und longitudinalen Führung des Fahrzeuges zu trennen. 
 Vorteile hierfür wären gewesen:
 \begin{itemize}
 	\item Einfachere Anpassung der Parameter für das reale Fahrzeug.
 	\item Robustheit. Der Ausfall eines Reglers würde zumindest noch eine eingeschränkte Kontrolle ermöglichen.
-	\item Zwei einfacher zu berechnende Probleme. Da die Berechnungszeit nicht linear mit der Komplexität steigt wären hier möglicherweise deutliche Geschwindigkeitssteigerungen möglich.
-	\item Weniger Komplexes \ac{MPC} ist einfacher zu testen und entwickeln.
+	\item Zwei einfacher zu berechnende Probleme. Da die Berechnungszeit nicht linear mit der Komplexität steigt, wären hier möglicherweise deutliche Geschwindigkeitssteigerungen möglich.
+	\item Weniger Komplexer \ac{MPC}-Ansatz ist einfacher zu testen und entwickeln.
 \end{itemize}
 
 Die Vorteile werden aber mit dem Nachteil begleitet, dass bei einem Rennauto die longitudinale und laterale Bewegung des Fahrzeugs ganz signifikant miteinander verbunden sind. Durch die Trennung kann keine optimale Lösung mehr gefunden werden. 
 Zudem ist die Integration komplexer, da beide Regler gleichzeitig laufen, und ihre Berechnungen miteinander Austauschen müssen.
-Auf Grund des Anwendungsszenarios wurde sich gegen den zweigeteilten Ansatz entschieden.
+Aufgrund des Anwendungsszenarios wurde sich gegen den zweigeteilten Ansatz entschieden.
 
 
-Der erste Schritt ist das erstellen des Vektors an Einflussparametern $\vec{X}$. Er setzt sich immer aus der Kombination von Systemzustand und Steuerparametern zusammen  $\vec{x} = [x, y, v, \psi, a, \delta ]^T $ (siehe \ref{kinematicModel}). 
-Dieser Teilvektor wird dann für die Anzahl der gewünschten Prädiktionsschritte \(N\) mal in $\vec{X}$ wiederholt. Da zusätzlich zu den Prädiktionsschritten auch der aktuelle Fahrzeugzustand benötigt wird ist, besteht der Vektor also aus $N+1$ mal $\vec{x}$. In der Abbildung \ref{fig:predictionMpc} ist grafisch dargestellt wie man sich die Prädiktion für $N=3$ vorstellen kann. Zwischen jedem der einzelnen Schritte wird ein $\Delta t$ angenommen welches der Abtastrate der Positionsschätzung entspricht also $\frac{1}{20} s$. Der Vorteil der hieraus entsteht ist dass bei einer Verzögerung der Positionsschätzung der nächsten im Prädiktionshorizont berechneten Steuerbefehl genutzt werden kann. Dies geht solange bis die Zeitverzögerung genauso groß ist wie die gesamte Zukunftsprädiktion. Obwohl man diese Werte zum Regeln nutzen kann, nimmt aufgrund von Modellfehlern die Güte der berechneten Werte mit \(n\) zu. Man ist also bestrebt den Algorithmus mit der gleichen Rate wie die Positionsschätzung laufen zu lassen. 
+Der erste Schritt ist das Erstellen des Vektors an Einflussparametern $\vec{X}$. Er setzt sich immer aus der Kombination von Systemzustand und Steuerparametern zusammen  $\vec{x} = [x, y, v, \psi, a, \delta ]^T $ (siehe \ref{kinematicModel}). 
+Dieser Teilvektor wird dann für die Anzahl der gewünschten Prädiktionsschritte \(N\) mal in $\vec{X}$ wiederholt. Da zusätzlich zu den Prädiktionsschritten auch der aktuelle Fahrzeugzustand benötigt wird, besteht der Vektor also aus $N+1$ mal $\vec{x}$. In der Abbildung \ref{fig:predictionMpc} ist grafisch dargestellt, wie man sich die Prädiktion für $N=3$ vorstellen kann. Zwischen jedem der einzelnen Schritte wird ein $\Delta t$ angenommen, welches der Abtastrate der Positionsschätzung entspricht also $\frac{1}{20} s$. Der Vorteil, der hieraus entsteht, ist dass bei einer Verzögerung der Positionsschätzung der nächsten im Prädiktionshorizont berechneten Steuerbefehl genutzt werden kann. Dies geht, solange die Zeitverzögerung kleiner als die gesamte Zukunftsprädiktion ist. Obwohl man diese Werte zum Regeln nutzen kann, nimmt aufgrund von Modellfehlern die Güte der berechneten Werte mit \(n\) zu. Man ist also bestrebt den Algorithmus mit der gleichen Rate wie die Positionsschätzung laufen zu lassen. 
 
   
 \begin{figure}[ht!]
@@ -630,7 +630,7 @@ Dieser Teilvektor wird dann für die Anzahl der gewünschten Prädiktionsschritt
 Nachdem der Vektor mit den Einflussparametern definiert ist werden im nächsten Schritt alle Beschränkungen sukzessive ergänzt.
 
 \section{Fahrzeugmodell}
-Zu Beginn haben die Teilvektoren $\vec{x}$ keinen Zusammenhang untereinander, da aber die einzelnen Prädiktionsschritte voneinander über den Fahrzeugzustand, Steuerparameter und das Fahrzeugmodell zusammenhängen, werden im zweiten Schritt die Beschränkungen hierfür integriert. Dazu wird die diskretisierte Form des Systemmodells \ref{kinDiscrete} genutzt um immer zwei aufeinander folgende Schritte miteinander zu verknüpfen. Die entstehenden Gleichheitsbedingungen sind im Anhang unter \ref aufgeführt.\\
+Zu Beginn haben die Teilvektoren $\vec{x}$ keinen Zusammenhang untereinander, da aber die einzelnen Prädiktionsschritte voneinander über den Fahrzeugzustand, Steuerparameter und das Fahrzeugmodell zusammenhängen, werden im zweiten Schritt die Beschränkungen hierfür integriert. Dazu wird die diskretisierte Form des Systemmodells \ref{kinDiscrete} genutzt, um immer zwei aufeinander folgende Schritte miteinander zu verknüpfen. Die entstehenden Gleichheitsbedingungen sind im Anhang unter \ref aufgeführt.\\
 
 Zusätzlich zu der Systembeschreibung fehlen noch Einschränkungen für den Optimierer, welche die physikalischen Eigenschaften des Rennautos abbilden.
 Dazu zählen die maximale Geschwindigkeit, Beschleunigung und Lenkwinkel. 
@@ -659,7 +659,7 @@ Für diese Kostenfunktion wird vor den letzten Prädiktionsschritt ein virtuelle
 
 
 \section{Strecken,- und Positionsbeschränkung}
-Die Kostenfunktionen führen dazu, dass der Optimierer die Steuerparameter so anpasst, dass die Kosten minimal werden. Dies würde auf einem Rennkurs zum Abkürzen bei Kurven führen, da hierfür die Kosten schneller minimal werden. Um dies zu verhindern wurde eine zusätzliche Streckenbeschränkung eingeführt. Diese basiert auf zwei Tangenten die in jedem Prädiktionsschritt an die Fahrbahn Außen-, und Innenseite projiziert werden und einer Bedingung die nur erfüllt ist, solange sich das Fahrzeug innerhalb dieser Tangenten bewegt. Während des Optimierungsvorgangs wird die Position der Tangenten nicht verändert, sondern vor der Optimierung fix gesetzt. Um für den Prädiktionsschritt \(n\) den passenden Streckenabschnitt zu suchen für den die Beschränkung ausgelegt wird, wird auf die Ergebnisse der vorausgehenden Optimierung zurückgegriffen. Die Position des $n+1$-Schritt wird gewählt und als Ausgangssituation gewählt. Für den letzten Schritt \(N\) ist dies nicht möglich, hier wird mithilfe der Geschwindigkeit und Orientierung ein virtueller Punkt projiziert.   
+Die Kostenfunktionen führen dazu, dass der Optimierer die Steuerparameter so anpasst, dass die Kosten minimal werden. Dies würde auf einem Rennkurs zum Abkürzen bei Kurven führen, da hierfür die Kosten schneller minimal werden. Um dies zu verhindern wurde eine zusätzliche Streckenbeschränkung eingeführt. Diese basiert auf zwei Tangenten die in jedem Prädiktionsschritt an die Fahrbahn Außen- und Innenseite projiziert werden und einer Bedingung, die nur erfüllt ist, solange sich das Fahrzeug innerhalb dieser Tangenten bewegt. Während des Optimierungsvorgangs wird die Position der Tangenten nicht verändert, sondern vor der Optimierung fix gesetzt. Um für den Prädiktionsschritt \(n\) den passenden Streckenabschnitt zu suchen für den die Beschränkung ausgelegt wird, wird auf die Ergebnisse der vorausgehenden Optimierung zurückgegriffen. Die Position des $n+1$-Schritt wird gewählt und als Ausgangssituation gewählt. Für den letzten Schritt \(N\) ist dies nicht möglich, hier wird mithilfe der Geschwindigkeit und Orientierung ein virtueller Punkt projiziert.   
 
 \begin{figure}[ht!]
 	\centering
@@ -667,14 +667,14 @@ Die Kostenfunktionen führen dazu, dass der Optimierer die Steuerparameter so an
 	\caption{Tangentiale Begrenzung hält das Fahrzeug auf der Fahrspur}
 	\label{fig:costGoalDist}
 \end{figure}
-Dieses Verfahren funktioniert nur, da die Beschleunigung des Rennautos physikalischen Grenzen unterliegt und sich daher immer in einem bestimmten Bereich um den Punkt herum bewegt welcher bei gleichbleibenden Geschwindigkeit $\Delta t * v$ Meter entfernt von seinem Vorgängerzustand liegt. Wenn sich dieser Punkt in einer Kurve direkt an der Streckenmarkierung befindet, könnte das Fahrzeug sich trotzdem, trotz erfüllen der Tangentialbeschränkung, vom Kurs herunter bewegen. Dies wird dadurch verhindert, dass der nächste Prädiktionsschritt in diesem Fall seine Beschränkung nicht mehr erfüllen würde.
+Dieses Verfahren funktioniert nur, da die Beschleunigung des Rennautos physikalischen Grenzen unterliegt und sich daher immer in einem bestimmten Bereich um den Punkt herum bewegt, welcher bei gleichbleibenden Geschwindigkeit $\Delta t * v$ Meter entfernt von seinem Vorgängerzustand liegt. Wenn sich dieser Punkt in einer Kurve direkt an der Streckenmarkierung befindet, könnte das Fahrzeug sich trotzdem, trotz erfüllen der Tangentialbeschränkung, vom Kurs herunterbewegen. Dies wird dadurch verhindert, dass der nächste Prädiktionsschritt in diesem Fall seine Beschränkung nicht mehr erfüllen würde.
 Mathematisch lassen sich die Tangenten durch eine Vektorprojektion realisieren\\
 $d = \frac{a*b}{|b|}$ mit a als Vektor vom Mittelpunkt der Strecke zum Massenschwerpunkt des Rennautos und b als Vektor vom Mittelpunkt zum Rand des Rennkurses. In diesem Fall können sich die Räder des Fahrzeuges über den Rand hinaus bewegen. Soll dies verhindert werden, muss diese Beschränkung auf jedes der einzelnen Räder erweitert werden.
 
 Im letzten Schritt bevor der \ac{MPC}-Algorithmus funktionsbereit ist, muss der Fahrzeugzustand des aktuellen Zeitschritts $t_0$ als Beschränkung verankert werden.  Dies ist nötig um zu verhindern, dass der Optimierer einfach die \(x\)-, und \(y\)-Position auf einen Punkt legt welcher die Kostenfunktion ideal minimiert. 
 
 \subsubsection{Suchbereichsbeschränkung}
-Während dem testen der Kostenfunktion zum maximieren der Geschwindigkeit ist das Phänomen aufgetreten, dass der Optimierer augenscheinlich, unmögliche Lösungen gefunden hat bei denen sich das Rennauto links aus einer Rechtskurve,und andersherum, herausbewegt. Dies passiert jedoch nur in Kurven die mehr als $90°$ aufweisen. Der Grund hierfür liegt in den tangentialen Beschränkungen und dass sie immer nur am Anfang des MPC-Zyklus aktualisiert werden. Werden die Tangenten wie in Abbildung \ref{fig:curveAnomaly} sehr lang eingezeichnet, ist ersichtlich dass eine zweite mögliche Trajektorie entstehen kann welche eine höhere Geschwindigkeit ermöglicht. Bei der Berechnung der tangentialen Beschränkung für den nächsten MPC-Durchlauf liegen jetzt jedoch alle Tangen nahezu auf einem Punkt und verhindern daher das ausscheren des Rennautos. Die daher entstehende neue optimale Trajektorie entspricht wieder nahezu der ursprünglichen. Es entsteht also ein 3er Zyklus welcher im schlechtesten Fall solange durchlaufen wird, bis das Fahrzeug eine Tangente trifft und die Optimierung beendet wird da keine weitere mögliche Lösung gefunden werden kann.\\
+Während dem Testen der Kostenfunktion zum Maximieren der Geschwindigkeit ist das Phänomen aufgetreten, dass der Optimierer augenscheinlich, unmögliche Lösungen gefunden hat bei denen sich das Rennauto links aus einer Rechtskurve und andersherum, herausbewegt. Dies passiert jedoch nur in Kurven die mehr als $90°$ aufweisen. Der Grund hierfür liegt in den tangentialen Beschränkungen und dass sie immer nur am Anfang des MPC-Zyklus aktualisiert werden. Werden die Tangenten wie in Abbildung \ref{fig:curveAnomaly} sehr lang eingezeichnet, ist ersichtlich, dass eine zweite mögliche Trajektorie entstehen kann welche eine höhere Geschwindigkeit ermöglicht. Bei der Berechnung der tangentialen Beschränkung für den nächsten MPC-Durchlauf liegen jetzt jedoch alle Tangen nahezu auf einem Punkt und verhindern daher das Ausscheren des Rennautos. Die daher entstehende neue optimale Trajektorie entspricht wieder nahezu der ursprünglichen. Es entsteht also ein 3er Zyklus, welcher im schlechtesten Fall solange durchlaufen wird, bis das Fahrzeug eine Tangente trifft und die Optimierung beendet wird da keine weitere mögliche Lösung gefunden werden kann.\\
 Um dieses Verhalten zu verhindern, wird für diese Kostenfunktion eine zusätzliche Suchbereichsbeschränkung eingeführt. Diese legt um die Prädiktionsschritte der letzten Optimierung einen Kreis, welcher den Suchbereich so einschränkt, dass keine neue Trajektorie entstehen kann. Es ist darauf zu achten, dass das Fahrzeug trotzdem in den Grenzen seines Fahrzeugmodells keine Beschränkung erfährt. Dies ist Bildlich in \ref aufgezeigt.  
 
 
@@ -687,7 +687,7 @@ Um dieses Verhalten zu verhindern, wird für diese Kostenfunktion eine zusätzli
 
 
 \subsubsection*{Elastische Distanzminimierung}
-Der Nachteil beider oben aufgeführten Kostenfunktionen ist, dass sie kein Spielraum beim erfüllen der Streckenbeschränkung haben. In der Simulationsumgebung kann, wenn sowohl das im Simulator wie auch im \ac{MPC} hinterlegte Fahrzeugmodell das gleiche sind, das virtuelle Rennauto bis an die Streckenbegrenzung heranfahren, ohne dass die Optimierung unlösbar wird. In der Realität würde eine solche Kostenfunktion das Fahrzeug jedoch zu nah an die Pylonen heranführen was bei nur dem kleinsten Regelfehler, Rutschen, abweichungen vom Fahrzeugmodell etc, dazu führen würde dass sich der inertiale Fahrzeugzustand $\vec{x}_0$ bereits außerhalb der Beschränkungen befindet und damit keine Lösung mehr für das Optimierungsproblem gefunden werden kann. Um dieses Problem zu umgehen, wird eine neue Art der Kostenfunktion eingeführt welche die Ungleichheitsbedingung der Streckenbegrenzung ersetzt. Die elastische Kostenfunktion. Hier wird eine der oberen Funktionen erweitert durch ein Kostenanteil der wächst sobald sich das Fahrzeug vom Mittelpunkt der Fahrbahn nach außen hin bewegt. Das Verhältnis der beiden Kostenfunktionen wird über die Gewichtungsvariablen \(a\) und \(b\) gesteuert.\\
+Der Nachteil beider oben aufgeführten Kostenfunktionen ist, dass sie kein Spielraum beim Erfüllen der Streckenbeschränkung haben. In der Simulationsumgebung kann, wenn sowohl das im Simulator wie auch im \ac{MPC} hinterlegte Fahrzeugmodell das gleiche sind, das virtuelle Rennauto bis an die Streckenbegrenzung heranfahren, ohne dass die Optimierung unlösbar wird. In der Realität würde eine solche Kostenfunktion das Fahrzeug jedoch zu nah an die Pylonen heranführen was bei nur dem kleinsten Regelfehler, Rutschen, Abweichungen vom Fahrzeugmodell etc, dazu führen würde, dass sich der inertiale Fahrzeugzustand $\vec{x}_0$ bereits außerhalb der Beschränkungen befindet und damit keine Lösung mehr für das Optimierungsproblem gefunden werden kann. Um dieses Problem zu umgehen, wird eine neue Art der Kostenfunktion eingeführt welche die Ungleichheitsbedingung der Streckenbegrenzung ersetzt. Die elastische Kostenfunktion. Hier wird eine der oberen Funktionen durch einen Kostenanteil erweitert, der wächst, sobald sich das Fahrzeug vom Mittelpunkt der Fahrbahn nach außen hin bewegt. Das Verhältnis der beiden Kostenfunktionen wird über die Gewichtungsvariablen \(a\) und \(b\) gesteuert.\\
 $f(\vec{x}) = a (\sum_{1}^{N+1} v_i) + b(\sum_{1}^{N+1} g(\vec{d}_i))$  \\
 Die Funktion $g(\vec{x}_i)$ dient hier als Platzhalter für verschiedene Gewichtungsfunktionen. Die Distanz \(d\) vom Mittelpunkt der Strecke wird genauso wie bei der tangentialen Beschränkung durch eine Vektorprojektion berechnet.
 
@@ -702,12 +702,12 @@ Die daraus resultierenden Graphen sind zu Veranschaulichung in Abbildung \ref{fi
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=350pt]{Abbildungen/elastic_cost.png}
+	\input{Grafiken/costFunct.tex} 
 	\caption{Verschiedene Distanzmaße um das Verhalten der Trajektionsplanung zu beeinflussen.}
 	\label{fig:elasticCost}
 \end{figure}
 
-Die Idee hinter den Funktionen \ref{eq:distMeasure1} und \ref{eq:distMeasure2} ist, dass das Rennauto sich uneingeschränkt auf der ganzen Breite der Strecke bewegen kann ohne dass die Distanzfunktion eine größere Rolle spielt. Erst beim erreichen des Fahrbahnrandes werden die Kosten sehr schnell extrem Groß. Idealerweise also stellen diese Kostenfunktionen die tangentialen Begrenzungen ideal nach. 
+Die Idee hinter den Funktionen \ref{eq:distMeasure1} und \ref{eq:distMeasure2} ist, dass das Rennauto sich uneingeschränkt auf der ganzen Breite der Strecke bewegen kann, ohne dass die Distanzfunktion eine größere Rolle spielt. Erst beim Erreichen des Fahrbahnrandes werden die Kosten sehr schnell extrem groß. Idealerweise also stellen diese Kostenfunktionen die tangentialen Begrenzungen ideal nach. 
 
 
 
@@ -723,11 +723,11 @@ Um die Funktion des \ac{MPC}-Algorithmus verifizieren zu können wurde eine Simu
 \end{figure}
 
 \section{\acl{SFML}}
-Die Basis für die Simulation bildet die \emph{ \ac{SFML}} welche für die grafische Darstellung des Kurses, Rennauto, Prädiktionsschritte und Fahrzeuginformationen genutzt wird. Gleichzeitig zur Visualisierung stellt die Spieleengine auch sicher, dass die zeitlichen Abläufe eingehalten werden. Das Grundprinzip ist eine einzige unendlich laufende Schleife die mit einer vorher festgelegten Häufigkeit pro Sekunde (frames per second fps) ausgeführt wird. Benötigen die Berechnungen innerhalb dieser Schleife länger als das angegebenen $\Delta t = \frac{1}{fps}$ sinkt die Ausführungsrate, überschritten wird sie jedoch nie. Die Schritte die innerhalb dieser Schleife abgearbeitet werden sind zuerst das Abfragen möglicher Eingaben des Nutzers oder \emph{events} der einzelnen Objekte, z.b. eine Kollision. Im zweiten Schritt werden alle Berechnungen der eigentlichen Fahrzeugsimulation und \ac{MPC} ausgeführt und im letzten Schritt werden die grafische Elemente erstellt und Angezeigt. Wie für eine Spieleengine üblich befindet sich der Ursprung des Koordinatensystems in der linken oberen Ecke, die y-Achse ist daher entgegengesetzt zu dem in der Fahrzeugsimulation verwendeten Standardachsenaufbau orientiert. Zudem werden Distanzen in der Engine nur in Pixeln gemessen. Es wurden daher 2 Parameter eingeführt welche die Fenstergröße in Pixeln festlegen (in \(x\)- und  \(y\)-Richtung)
+Die Basis für die Simulation bildet die \emph{ \ac{SFML}} welche für die grafische Darstellung des Kurses, Rennauto, Prädiktionsschritte und Fahrzeuginformationen genutzt wird. Gleichzeitig zur Visualisierung stellt die Spieleengine auch sicher, dass die zeitlichen Abläufe eingehalten werden. Das Grundprinzip ist eine einzige unendlich laufende Schleife die mit einer vorher festgelegten Häufigkeit pro Sekunde (frames per second fps) ausgeführt wird. Benötigen die Berechnungen innerhalb dieser Schleife länger als das angegebenen $\Delta t = \frac{1}{fps}$ sinkt die Ausführungsrate, überschritten wird sie jedoch nie. Die Schritte, die innerhalb dieser Schleife abgearbeitet werden sind zuerst das Abfragen möglicher Eingaben des Nutzers oder \emph{events} der einzelnen Objekte, z.b. eine Kollision. Im zweiten Schritt werden alle Berechnungen der eigentlichen Fahrzeugsimulation und \ac{MPC} ausgeführt und im letzten Schritt werden die grafische Elemente erstellt und angezeigt. Wie für eine Spieleengine üblich befindet sich der Ursprung des Koordinatensystems in der linken oberen Ecke, die y-Achse ist daher entgegengesetzt zu dem in der Fahrzeugsimulation verwendeten Standardachsenaufbau orientiert. Zudem werden Distanzen in der Engine nur in Pixeln gemessen. Es wurden daher 2 Parameter eingeführt welche die Fenstergröße in Pixeln festlegen (in \(x\)- und  \(y\)-Richtung)
 und zusätzlich eine Angabe wie viel Metern dieser Pixelbereich jeweils entspricht. Die daraus resultierenden Verhältnisse \\
 $scaleX = \frac{windowSizeXinPixel}{windowSizeXinM}$ \\
 $scaleY = - \frac{windowSizeYinPixel}{windowSizeYinM}$ \\
-werden verwendet um alle Größenvehältnisse einheitlich in der Simulation zu halten und eine realistische Visualisierung zu gewährleisten. Durch die Parameter kann nun bequem die Größe des Bereichs, in dem der Rennkurs abgesteckt wird und die Fenstergröße, zur Darstellung der Simulation, angepasst werden. Zusätzlich wurde ein Offset eingeführt welcher die Null-Position der \(x\)- und \(y\)- Position im Koordinatensystem verschiebt. Damit kann der Ursprung des Koordinatensystems der Fahrzeugsimulation beliebig im Anzeigebereich verschoben werden. 
+werden verwendet, um alle Größenverhältnisse einheitlich in der Simulation zu halten und eine realistische Visualisierung zu gewährleisten. Durch die Parameter kann nun bequem die Größe des Bereichs, in dem der Rennkurs abgesteckt wird und die Fenstergröße, zur Darstellung der Simulation, angepasst werden. Zusätzlich wurde ein Offset eingeführt welcher die Null-Position der \(x\)- und \(y\)- Position im Koordinatensystem verschiebt. Damit kann der Ursprung des Koordinatensystems der Fahrzeugsimulation beliebig im Anzeigebereich verschoben werden. 
 Der Aufbau ist in dem Blockdiagramm \ref{fig:block_diagram_sim} nochmals zusammengefasst. 
 
 
@@ -740,21 +740,28 @@ Der Aufbau ist in dem Blockdiagramm \ref{fig:block_diagram_sim} nochmals zusamme
 
 
 \section{Trackdrive}
-Wie in der Einführung bereits erwähnt, ist das Ziel der Arbeit ein \ac{MPC}-Alogrithmus zu entwickeln mit dem die \emph{trackdrive} Disziplin möglichst schnell abgefahren werden kann. Die Grundvoraussetzung für diese Arbeit ist die bereits vollständig erstellte Karte des Rennkurses und eine Lokalisierung innerhalb dieser Karte. Die Updaterate für diese Positionsschätzung wird mit 20Hz angenommen. Das Ziel ist es also die Regelparameter mit einem $\Delta t$ von $\frac{1}{20} s$ für das Rennauto berechnen zu können.  Zum testen der Algorithmen wurde ein beliebiger Kurs definiert welcher sich an die Vorgaben des Regelwerkes hält und damit einen minimalen Kurvenradius von 9m, maximallänge einer Geraden von 80m und maximal 180° Spitzkurven besitzt.
+Wie in der Einführung bereits erwähnt, ist das Ziel der Arbeit ein \ac{MPC}-Alogrithmus zu entwickeln mit dem die \emph{trackdrive} Disziplin möglichst schnell abgefahren werden kann. Die Grundvoraussetzung für diese Arbeit ist die bereits vollständig erstellte Karte des Rennkurses und eine Lokalisierung innerhalb dieser Karte. Die Updaterate für diese Positionsschätzung wird mit 20Hz angenommen. Das Ziel ist es also die Regelparameter mit einem $\Delta t$ von $\frac{1}{20} s$ für das Rennauto berechnen zu können.  Zum Testen der Algorithmen wurde ein beliebiger Kurs definiert, welcher sich an die Vorgaben des Regelwerkes hält und damit einen minimalen Kurvenradius von 9m, Maximallänge einer Geraden von 80m und maximal 180° Spitzkurven besitzt.
 
 \chapter{Evaluierung}
-Im Folgenden Abschnitt werden zuerst die Fahrzeugmodelle mit Fahrsituationen evaluiert für die genaue Testdaten des High Octane Motorsports Rennautos aus dem Jahr 2017 bekannt sind. 
+Im folgenden Abschnitt werden zuerst die Fahrzeugmodelle mit Fahrsituationen evaluiert, für welche genaue Testdaten des High Octane Motorsports Rennautos aus dem Jahr 2017 bekannt sind. 
 Nachdem sichergestellt wurde dass die Modelle nahe genug der Realität entsprechen wurden die verschiedenen Kostenfunktionen untersucht. Dieser Teil der Arbeit geht fließend in die Untersuchung der Regelbarkeit des Rennautos über, wenn im MPC-Algorithmus nur ein kinematisches Modell verwendet wird.
 
 \section{Verifizierung der Fahrzeugmodelle}
 Ohne eine genaue Verifizierung der Plausibilität der implementierten Modelle ist keine systematische Untersuchung möglich. Hierfür wurden die zwei Disziplinen \text{acceleration} und \text{skidpad} gewählt und die besten gefahrenen Ergebnisse des Events 2017 in Hockenheim als Basis gewählt.
 \subsubsection*{Acceleration}
-In dieser Disziplin ist es das Ziel der Teams eine 75m lange, gerade Strecke in möglichst kurzer Zeit zurück zu legen.
-Es werden drei verschiedene longitudinale Konfigurationen des Fahrzeugmodells evaluiert. Zuerst das kinematische Modell in dem die maximale mittlere Beschleunigung aus den Fahrzeugdaten wie in \ref{long_acc_kin} beschrieben errechnet. Das zweite untersuchte Modell berechnet sich wie in \ref{long_dyn_engine} und berücksichtigt die Leistung des Motors und Maximalkraft welche die Reifen übertragen können.
+In dieser Disziplin ist es das Ziel der Teams eine 75m lange, gerade Strecke in möglichst kurzer Zeit zurückzulegen.
+Es werden drei verschiedene longitudinale Konfigurationen des Fahrzeugmodells evaluiert. Zuerst das kinematische Modell in dem die maximale mittlere Beschleunigung aus den Fahrzeugdaten wie in \ref{long_acc_kin} beschrieben errechnet wird. Das zweite untersuchte Modell basiert der Leistung des Motors und der maximal übertragbaren Kraft der reifen (\ref{long_dyn_engine}).
 Das genaueste Modell betrachtet zusätzlich noch Reibung und Luftwiederstand. 
 
-\input{Grafiken/accdec.tex}
 
+\begin{figure}
+	\centering
+	\input{Grafiken/accdec.tex} 
+	\caption{Beschleunigung für verschiedene longitudinale Modelle}
+	\label{fig:accdec}
+\end{figure}
+
+In der Grafik 
 
 \subsection{Kinematisches Modell constraint of beta}
 \section{Regelung verschiedener Modelle}
