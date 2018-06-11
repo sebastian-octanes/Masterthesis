@@ -20,6 +20,84 @@
 	NOTE = "Accessed on 2018-05-14"
 }
 
+
+@INPROCEEDINGS{GPS_Fusion,
+	author={M. Spcmgenberg and V. Calmettes and J. Y. Tourneref},
+	booktitle={2007 15th European Signal Processing Conference},
+	title={Fusion of GPS, INS and odometric data for automotive navigation},
+	year={2007},
+	volume={},
+	number={},
+	pages={886-890},
+	keywords={Global Positioning System;Kalman filters;accelerometers;distance measurement;inertial navigation;multipath channels;nonlinear filters;road vehicles;velocity measurement;GPS;INS;WSS;accelerometers;automotive navigation;common navigation system;global positioning system;ground vehicles;inertial navigation systems;inertial sensors;localization task;masking effect;measurement sources;multipath effect;odometric data;unscented Kalman filters;wheel speed sensors;Couplings;Global Positioning System;Mathematical model;Satellites;Sensors;Vehicles;Wheels},
+	doi={},
+	ISSN={},
+	month={Sept},}
+
+
+@Article{GPS_IMU_Fusion,
+	AUTHOR = {Wang, Shiyao and Deng, Zhidong and Yin, Gang},
+	TITLE = {An Accurate GPS-IMU/DR Data Fusion Method for Driverless Car Based on a Set of Predictive Models and Grid Constraints},
+	JOURNAL = {Sensors},
+	VOLUME = {16},
+	YEAR = {2016},
+	NUMBER = {3},
+	ARTICLE NUMBER = {280},
+	URL = {http://www.mdpi.com/1424-8220/16/3/280},
+	ISSN = {1424-8220},
+	ABSTRACT = {A high-performance differential global positioning system (GPS)  receiver with real time kinematics provides absolute localization for driverless cars. However, it is not only susceptible to multipath effect but also unable to effectively fulfill precise error correction in a wide range of driving areas. This paper proposes an accurate GPS–inertial measurement unit (IMU)/dead reckoning (DR) data fusion method based on a set of predictive models and occupancy grid constraints. First, we employ a set of autoregressive and moving average (ARMA) equations that have different structural parameters to build maximum likelihood models of raw navigation. Second, both grid constraints and spatial consensus checks on all predictive results and current measurements are required to have removal of outliers. Navigation data that satisfy stationary stochastic process are further fused to achieve accurate localization results. Third, the standard deviation of multimodal data fusion can be pre-specified by grid size. Finally, we perform a lot of field tests on a diversity of real urban scenarios. The experimental results demonstrate that the method can significantly smooth small jumps in bias and considerably reduce accumulated position errors due to DR. With low computational complexity, the position accuracy of our method surpasses existing state-of-the-arts on the same dataset and the new data fusion method is practically applied in our driverless car.},
+	DOI = {10.3390/s16030280}
+}
+
+@ARTICLE{CentreOfPercussion,
+	author = {{Kritayakirana}, K. and {Gerdes}, J.~C.},
+	title = "{Using the centre of percussion to design a steering controller for an autonomous race car}",
+	journal = {Vehicle System Dynamics, International Journal of Vehicle Mechanics and Mobility},
+	keywords = {autonomous racing, vehicle control at the limits of handling, state-space steering controller, centre of percussion, stability at the limits of handling, Lyapunov function},
+	year = 2012,
+	month = jan,
+	volume = 50,
+	pages = {33-51},
+	doi = {10.1080/00423114.2012.672842},
+	adsurl = {http://adsabs.harvard.edu/abs/2012VSD....50S..33K},
+	adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+@ARTICLE{MPC_Kinetic,
+	author = {Henrik Bey, Lukas Brunke, Grischa Gottschalg, Lukas Ortmann},
+	title = "{MPC for Trajectory Planning of Race Cars with Obstacle Avoidance}",
+	year = 2015,
+	month = December
+}
+
+@article{rc_car_1_43,
+	author = {Liniger Alexander and Domahidi Alexander and Morari Manfred},
+	title = {Optimization‐based autonomous racing of 1:43 scale RC cars},
+	journal = {Optimal Control Applications and Methods},
+	volume = {36},
+	number = {5},
+	pages = {628-647},
+	keywords = {autonomous racing, vehicle control, drift control, fast model predictive control, nonlinear model predictive control, nonlinear receding horizon control},
+	doi = {10.1002/oca.2123},
+	url = {https://onlinelibrary.wiley.com/doi/abs/10.1002/oca.2123},
+	eprint = {https://onlinelibrary.wiley.com/doi/pdf/10.1002/oca.2123},
+	abstract = {Summary This paper describes autonomous racing of RC race cars based on mathematical optimization. Using a dynamical model of the vehicle, control inputs are computed by receding horizon based controllers, where the objective is to maximize progress on the track subject to the requirement of staying on the track and avoiding opponents. Two different control formulations are presented. The first controller employs a two‐level structure, consisting of a path planner and a nonlinear model predictive controller (NMPC) for tracking. The second controller combines both tasks in one nonlinear optimization problem (NLP) following the ideas of contouring control. Linear time varying models obtained by linearization are used to build local approximations of the control NLPs in the form of convex quadratic programs (QPs) at each sampling time. The resulting QPs have a typical MPC structure and can be solved in the range of milliseconds by recent structure exploiting solvers, which is key to the real‐time feasibility of the overall control scheme. Obstacle avoidance is incorporated by means of a high‐level corridor planner based on dynamic programming, which generates convex constraints for the controllers according to the current position of opponents and the track layout. The control performance is investigated experimentally using 1:43 scale RC race cars, driven at speeds of more than 3 m/s and in operating regions with saturated rear tire forces (drifting). The algorithms run at 50 Hz sampling rate on embedded computing platforms, demonstrating the real‐time feasibility and high performance of optimization‐based approaches for autonomous racing. Copyright © 2014 John Wiley \& Sons, Ltd.}
+}
+
+@ARTICLE{MPC_Dynamic,
+	author = {GONÇALO COLLARES PEREIRA},
+	title = "{Model Predictive Control	for Autonomous Driving of
+	Over-Actuated Research Vehicle}",
+	year = 2016
+}
+
+@ARTICLE{MPC_Dynamic_Tire_Model,
+	author = {FLORIAN CURINGA},
+	title = "{Autonomous racing using
+	model predictive control}",
+	year = 2018
+}
+
 @MISC{Waymo:1,
 	HOWPUBLISHED = "\url{https://www.theregister.co.uk/2018/05/09/first_autonomous_vehicles/}",
 	TITLE = "First autonomous taxi in 2018 says Waymo",
@@ -166,6 +244,7 @@
 	doi={10.1109/ICCPCT.2017.8074380},
 	ISSN={},
 	month={April},}
+
 
 @article{carMPC,
 	author = { F. Borrelli , P. Falcone , T. Keviczky , J. Asgari , D. Hrovat  },

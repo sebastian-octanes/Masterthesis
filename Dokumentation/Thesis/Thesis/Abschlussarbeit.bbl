@@ -1,5 +1,15 @@
 \begin{thebibliography}{SMED10}
 
+\bibitem[AAM]{rc_car_1_43}
+Liniger Alexander, Domahidi Alexander, and Morari Manfred.
+\newblock Optimization‐based autonomous racing of 1:43 scale rc cars.
+\newblock {\em Optimal Control Applications and Methods}, 36(5):628--647.
+
+\bibitem[CUR18]{MPC_Dynamic_Tire_Model}
+FLORIAN CURINGA.
+\newblock {Autonomous racing using model predictive control}.
+\newblock 2018.
+
 \bibitem[Dan51]{dantzig51}
 G.~B. Dantzig.
 \newblock {\em {Maximization of a Linear Function of Variables Subject to
@@ -29,10 +39,22 @@ G.~Ganga and M.~M. Dharmana.
 \newblock In {\em 2017 International Conference on Circuit ,Power and Computing
   Technologies (ICCPCT)}, pages 1--6, April 2017.
 
+\bibitem[HB15]{MPC_Kinetic}
+Grischa Gottschalg Lukas~Ortmann Henrik~Bey, Lukas~Brunke.
+\newblock {MPC for Trajectory Planning of Race Cars with Obstacle Avoidance}.
+\newblock 2015.
+
 \bibitem[jul]{julDiff}
 Juliadiff.
 \newblock \url{http://www.juliadiff.org/}.
 \newblock Accessed on 2018-06-01.
+
+\bibitem[KG12]{CentreOfPercussion}
+K.~{Kritayakirana} and J.~C. {Gerdes}.
+\newblock {Using the centre of percussion to design a steering controller for
+  an autonomous race car}.
+\newblock {\em Vehicle System Dynamics, International Journal of Vehicle
+  Mechanics and Mobility}, 50:33--51, January 2012.
 
 \bibitem[KPSB15]{7225830}
 J.~Kong, M.~Pfeiffer, G.~Schildbach, and F.~Borrelli.
@@ -46,10 +68,22 @@ Hans~B. Pacejka and Egbert Bakker.
 \newblock The magic formula tyre model.
 \newblock {\em Vehicle System Dynamics}, 21(sup001):1--18, 1992.
 
+\bibitem[PER16]{MPC_Dynamic}
+GONÇALO~COLLARES PEREIRA.
+\newblock {Model Predictive Control for Autonomous Driving of Over-Actuated
+  Research Vehicle}.
+\newblock 2016.
+
 \bibitem[Raj11]{rajamani2011vehicle}
 R.~Rajamani.
 \newblock {\em Vehicle Dynamics and Control}.
 \newblock Mechanical Engineering Series. Springer US, 2011.
+
+\bibitem[SCT07]{GPS_Fusion}
+M.~Spcmgenberg, V.~Calmettes, and J.~Y. Tourneref.
+\newblock Fusion of gps, ins and odometric data for automotive navigation.
+\newblock In {\em 2007 15th European Signal Processing Conference}, pages
+  886--890, Sept 2007.
 
 \bibitem[SH16]{SEIF2016159}
 Heiko~G. Seif and Xiaolong Hu.
@@ -71,6 +105,12 @@ D.E. Seborg, D.A. Mellichamp, T.F. Edgar, and F.J. Doyle.
 Andrei Turkin and Aung Thu.
 \newblock Benchmarking python tools for automatic differentiation.
 \newblock {\em CoRR}, abs/1606.06311, 2016.
+
+\bibitem[WDY16]{GPS_IMU_Fusion}
+Shiyao Wang, Zhidong Deng, and Gang Yin.
+\newblock An accurate gps-imu/dr data fusion method for driverless car based on
+  a set of predictive models and grid constraints.
+\newblock {\em Sensors}, 16(3), 2016.
 
 \bibitem[WQ01]{BicycleModel}
 Danwei Wang and Feng Qi.

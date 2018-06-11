@@ -31,7 +31,23 @@
 %------------------------------------------------------------------
 
 \chapter{Autonomes Fahren}
-Das Jahr 2018 entwickelt sich immer mehr zum wichtigsten Jahr für autonome Fahrzeuge seit dem die Darpa im Jahr 2004 den Hype mit der \emph{Grand Challenge} ins Rollen brachte. 
+
+
+Obwohl es zum Zeitpunkt der Arbeit noch keine öffentliche, autonome Rennserie außerhalb der Formula Student gibt, ist das Interesse an den dafür benötigten Technologien sehr groß.
+Einen guten Rennfahrer zeichnet die Tatsache aus, dass er sein Fahrzeug in absoluten Grenzsituationen noch unter Kontrolle halten kann. Diese Eigenschaft ist nicht nur für autonome Rennautos wichtig, sondern ganz besonders auch für aktive Fahrassistenzsysteme welche kritische Fahrsituationen entschärfen können, wo ein ungeübter Fahrer keine Möglichkeit mehr hätte einen Unfall zu verhindern. Um einen guten Rennfahrer in Software nachstellen zu können, muss man drei Grundvoraussetzungen schaffen:
+\begin{itemize}
+	\item Gute Kenntnis der Umgebung (dem Rennkurs) und der eigenen Position darin, um vorausschauend Planen zu können.
+	\item Möglichst viel Wissen über das Verhalten des Fahrzeugs (Fahrzeugmodell).
+	\item Kurze Reaktionszeiten (\emph{muscle memory}).
+\end{itemize}
+
+Um die Position des Fahrzeugs genau bestimmen zu können werden verschiedene Sensortypen mit Hilfe von Filterverfahren fusioniert. Die Genauigkeit der Schätzung steigt, im Vergleich zu den einzelnen Messsystemen, durch die Kombination signifikant an [\cite{GPS_Fusion}, \cite{GPS_IMU_Fusion}]. 
+Um das Rennauto mit hoher Geschwindigkeit einen Rennkurs abfahren zu lassen, benötigt es ein Modell welches das dynamische Verhalten des Fahrzeugs abbilden kann. Erst dieses Wissen ermöglicht die Berechnung von Trajektorien, welche das Rennauto an die grenzen seiner Traktion bringt. Da die Modelle trotz möglichst genauer Abbildung der Fahreigenschaften trotzdem noch schnell berechenbar sein müssen, werden verschiedene Vereinfachungen angewandt. Die Ansätze variieren nach Komplexität und zu bewältigenden Fahrsituationen:\\
+Ein einfaches kinematischen Modell [\cite{MPC_Kinetic}], welches sehr schnell berechenbar ist, aber keine dynamischen Effekte berücksichtigt. \\
+Die Verwendung einer dynamischen Fahrzeugbeschreibung für mit linearen oder nichtlinearen Reifenkraftberechnungen [\cite{rc_car_1_43}, \cite{MPC_Dynamic}, \cite{MPC_Dynamic_Tire_Model}]. \\
+Ein anderer Ansatz ist es, nicht vom Schwerpunkt des Autos aus die Fahrzeugdynamik zu berechnen sondern sich den \emph{point of percussion} zu wählen, da hier die rotatorischen und translatorischen Kräfte hervorgerufen durch die Hinterreifen sich gegenseitig aufheben \cite{CentreOfPercussion}.
+Die Update-Geschwindigkeit hängt von der Geschwindigkeit, dem Kursverlauf, der Häufigkeit mit welcher die Positionsschätzung aktualisiert wird und anderen Faktoren ab. Sollte die Berechnungszeit für neue Steuerparameter 40-50ms nicht überschreiten und bewegt sich in der Regel zwischen 50 und 100 Hz [\cite]. 
+
 
 
 \section{Stand der Technik}
