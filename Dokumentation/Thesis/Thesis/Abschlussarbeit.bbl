@@ -1,9 +1,17 @@
-\begin{thebibliography}{SMED10}
+\newcommand{\etalchar}[1]{$^{#1}$}
+\begin{thebibliography}{WDG{\etalchar{+}}16}
 
 \bibitem[AAM]{rc_car_1_43}
 Liniger Alexander, Domahidi Alexander, and Morari Manfred.
 \newblock Optimization‐based autonomous racing of 1:43 scale rc cars.
 \newblock {\em Optimal Control Applications and Methods}, 36(5):628--647.
+
+\bibitem[AGT12]{6374146}
+C.~Athanasiadis, D.~Galanopoulos, and A.~Tefas.
+\newblock Progressive neural network training for the open racing car
+  simulator.
+\newblock In {\em 2012 IEEE Conference on Computational Intelligence and Games
+  (CIG)}, pages 116--123, Sept 2012.
 
 \bibitem[CUR18]{MPC_Dynamic_Tire_Model}
 FLORIAN CURINGA.
@@ -49,6 +57,13 @@ Juliadiff.
 \newblock \url{http://www.juliadiff.org/}.
 \newblock Accessed on 2018-06-01.
 
+\bibitem[KG10]{KRITAYAKIRANA2010548}
+Krisada Kritayakirana and J.~Christian Gerdes.
+\newblock Autonomous cornering at the limits: Maximizing a “g-g” diagram by
+  using feedforward trail-braking and throttle-on-exit.
+\newblock {\em IFAC Proceedings Volumes}, 43(7):548 -- 553, 2010.
+\newblock 6th IFAC Symposium on Advances in Automotive Control.
+
 \bibitem[KG12]{CentreOfPercussion}
 K.~{Kritayakirana} and J.~C. {Gerdes}.
 \newblock {Using the centre of percussion to design a steering controller for
@@ -85,12 +100,6 @@ M.~Spcmgenberg, V.~Calmettes, and J.~Y. Tourneref.
 \newblock In {\em 2007 15th European Signal Processing Conference}, pages
   886--890, Sept 2007.
 
-\bibitem[SH16]{SEIF2016159}
-Heiko~G. Seif and Xiaolong Hu.
-\newblock Autonomous driving in the icity—hd maps as a key challenge of the
-  automotive industry.
-\newblock {\em Engineering}, 2(2):159 -- 162, 2016.
-
 \bibitem[sim]{simplexWiki:1}
 Simplex verfahren.
 \newblock \url{https://de.wikipedia.org/wiki/Simplex-Verfahren}.
@@ -105,6 +114,19 @@ D.E. Seborg, D.A. Mellichamp, T.F. Edgar, and F.J. Doyle.
 Andrei Turkin and Aung Thu.
 \newblock Benchmarking python tools for automatic differentiation.
 \newblock {\em CoRR}, abs/1606.06311, 2016.
+
+\bibitem[Way]{Waymo:1}
+First autonomous taxi in 2018 says waymo.
+\newblock
+  \url{https://www.theregister.co.uk/2018/05/09/first_autonomous_vehicles/}.
+\newblock Accessed on 2018-05-15.
+
+\bibitem[WDG{\etalchar{+}}16]{Williams2016AggressiveDW}
+Grady Williams, Paul Drews, Brian Goldfain, James~M. Rehg, and Evangelos
+  Theodorou.
+\newblock Aggressive driving with model predictive path integral control.
+\newblock {\em 2016 IEEE International Conference on Robotics and Automation
+  (ICRA)}, pages 1433--1440, 2016.
 
 \bibitem[WDY16]{GPS_IMU_Fusion}
 Shiyao Wang, Zhidong Deng, and Gang Yin.

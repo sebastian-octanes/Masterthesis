@@ -30,70 +30,59 @@
 \setcounter{page}{1}   %1. Kapitel soll mit Seitenzahl 1 beginnen
 %------------------------------------------------------------------
 
-\chapter{Autonomes Fahren}
-
-
-Obwohl es zum Zeitpunkt der Arbeit noch keine öffentliche, autonome Rennserie außerhalb der Formula Student gibt, ist das Interesse an den dafür benötigten Technologien sehr groß.
-Einen guten Rennfahrer zeichnet die Tatsache aus, dass er sein Fahrzeug in absoluten Grenzsituationen noch unter Kontrolle halten kann. Diese Eigenschaft ist nicht nur für autonome Rennautos wichtig, sondern ganz besonders auch für aktive Fahrassistenzsysteme welche kritische Fahrsituationen entschärfen können, wo ein ungeübter Fahrer keine Möglichkeit mehr hätte einen Unfall zu verhindern. Um einen guten Rennfahrer in Software nachstellen zu können, muss man drei Grundvoraussetzungen schaffen:
-\begin{itemize}
-	\item Gute Kenntnis der Umgebung (dem Rennkurs) und der eigenen Position darin, um vorausschauend Planen zu können.
-	\item Möglichst viel Wissen über das Verhalten des Fahrzeugs (Fahrzeugmodell).
-	\item Kurze Reaktionszeiten (\emph{muscle memory}).
-\end{itemize}
-
-Um die Position des Fahrzeugs genau bestimmen zu können werden verschiedene Sensortypen mit Hilfe von Filterverfahren fusioniert. Die Genauigkeit der Schätzung steigt, im Vergleich zu den einzelnen Messsystemen, durch die Kombination signifikant an [\cite{GPS_Fusion}, \cite{GPS_IMU_Fusion}]. 
-Um das Rennauto mit hoher Geschwindigkeit einen Rennkurs abfahren zu lassen, benötigt es ein Modell welches das dynamische Verhalten des Fahrzeugs abbilden kann. Erst dieses Wissen ermöglicht die Berechnung von Trajektorien, welche das Rennauto an die grenzen seiner Traktion bringt. Da die Modelle trotz möglichst genauer Abbildung der Fahreigenschaften trotzdem noch schnell berechenbar sein müssen, werden verschiedene Vereinfachungen angewandt. Die Ansätze variieren nach Komplexität und zu bewältigenden Fahrsituationen:\\
-Ein einfaches kinematischen Modell [\cite{MPC_Kinetic}], welches sehr schnell berechenbar ist, aber keine dynamischen Effekte berücksichtigt. \\
-Die Verwendung einer dynamischen Fahrzeugbeschreibung für mit linearen oder nichtlinearen Reifenkraftberechnungen [\cite{rc_car_1_43}, \cite{MPC_Dynamic}, \cite{MPC_Dynamic_Tire_Model}]. \\
-Ein anderer Ansatz ist es, nicht vom Schwerpunkt des Autos aus die Fahrzeugdynamik zu berechnen sondern sich den \emph{point of percussion} zu wählen, da hier die rotatorischen und translatorischen Kräfte hervorgerufen durch die Hinterreifen sich gegenseitig aufheben \cite{CentreOfPercussion}.
-Die Update-Geschwindigkeit hängt von der Geschwindigkeit, dem Kursverlauf, der Häufigkeit mit welcher die Positionsschätzung aktualisiert wird und anderen Faktoren ab. Sollte die Berechnungszeit für neue Steuerparameter 40-50ms nicht überschreiten und bewegt sich in der Regel zwischen 50 und 100 Hz [\cite]. 
-
-
-
-\section{Stand der Technik}
-
-
-
-Gegen Ende des Jahres 2018, also nur wenigen Monaten nachdem diese Zeilen verfasst werden, wird Alphabets Tochterunternehmen Waymo die ersten voll autonomen (Level 5) Fahrzeuge als Taxis in Phoenix in Betrieb nehmen \cite{Waymo}. Dieser historische Moment wird eine Flut an neuen Assistenzsystem nach sich ziehen die in wenigen Jahren das Straßenbild verändern werden. \\
-Während sich die traditionellen Automobilhersteller aktuell auf Assistenzsysteme im Bereich von Level zwei und drei konzentrieren, wollen Unternehmen wie Google, GM und Uber alle Zwischenschritte überspringen und direkt voll autonom fahren um fahrerlose Taxiflotten aufzubauen. Dies ist nach aktuellem Stand der Technik jedoch nur kostengünstig und mit Rechnerplattformen welche in bestehende Fahrzeugkonzepte integrierbar sind realisierbar wenn die Fahrzeuge auf eine genaue Umgebungskarte zurückgreifen können. Erst mit Echtzeitupdates und bei einer Genauigkeit von +-10 cm des Kartenmaterials können Fahrzeug auch im innerstädtischen Verkehr autonom fahren \cite{SEIF2016159}. 
-Nicht nur im normalen Straßenverkehr ist ein möglichst genaues Wissen der Umgebung von Vorteil, auch bei autonomen Rennserien spielt die Kenntnis über den Rennkurs eine große Rolle. Kann das Fahrzeug nur auf Sicht fahren muss die Geschwindigkeit so gewählt werden, dass innerhalb der Sichtweite angehalten werden kann. Außerdem ist das berechnen einer idealen Trajektorie nur möglich wenn die gesamte Strecke bekannt ist.
-
-\section{Autonomes Rennfahren}
-
-
-Auch für normale Konsumer kann die Technik interessante Vorteile bieten. So ist es vorstellbar dass für Wochenendausflüge auf Rennstrecken die Fahrzeuge den Fahrern optimale Trajektorien auf dem Kurs direkt in der realen Situation vorfahren können. Ebenfalls ein wichtiges Einsatzkriterium ist das Vorausberechnen ob ein Fahrer die eigenen Fähigkeiten und/oder die des Autos in dem er fährt überschätzt. In diesem Fall kann das Fahrzeug eingreifen und schlimmeres Verhindern. Zudem ist es deutlich günstiger Grenzerfahrungen in einem autonom gesteuerten Fahrzeug zu erleben als einen professionellen Fahrer zu bezahlen der viele Jahre Erfahrung am Steuer gesammelt haben muss.
+\chapter{Einleitung}
+Neben neu aufkommenden Trends in der Automobilindustrie wie dem Elektroauto, Carsharing und dem aktuellen SUV-Boom, hat sich vor allem das autonome Auto in den letzten zwei Jahren mit dem Aufkommen von Teslas Autopilot stark in das Zentrum der Aufmerksamkeit von Firmen und Konsumer bewegt. Das Jahr 2018 markiert dabei einen ganz besonderen Meilenstein. 
+Ende des Jahres wird die Alphabet Tochter Waymo die ersten voll autonomen Taxis in Phönix für die Öffentlichkeit in Betrieb nehmen \cite{Waymo:1}. 
+Dies ist jedoch nur möglich, da Google im gesamten Gebiet in dem sie ihren Service anbieten werden eine hochgenaue Umgebungskarte in den Fahrzeugen hinterlegt. Sollen die Fahrzeuge in unbekannten Umgebungen agieren, müssen sowohl die Sensorsysteme, wie auch die Algorithmen noch deutlich weiterentwickelt werden, bevor autonome Autos auf Stufe 5 frei verfügbar sind.
+Diese Forschung wird nicht nur in den großen Automobilkonzernen betrieben. Bereits in der Schule aber vor allem im Studium gibt es immer mehr Projekte an denen die Studenten sich intensiv mit der Entwicklung autonomer Roboter und Fahrzeugplattformen beschäftigen. Ein solches Projekt ist der Formula Student Driverless Wettbewerb.
 
 \section{Formula Student Driverless}
-
-Die Formula Student ist ein Ingenieurswettbewerb für Studenten. Er hat seine Wurzeln in den USA im Jahre 1981 und wurde ab 1998 auch in Europa ausgetragen.
-Dass der Wettbewerb sehr Erfolgreich ist, machen nicht nur die inzwischen fast 700 Teams Weltweit \cite{FsWorldRank:1} deutlich, sondern auch die Anzahl der verschiedenen Events die überall auf der Welt im Sommer stattfinden. Seit dem Jahr 2017 gibt es neben der ursprünglichen Combustion-Klasse und der vor 10 Jahren eingeführten Electric-Klasse auch noch die Driverless-Klasse.
-In dieser wird von den Teams ein Altfahrzeug um ein Sensorsystem sowie Aktoren so erweitert, dass das Rennauto die Kurse autonom bestreiten kann.
-Der Wettbewerb ist unterteilt in Dynamische und Statische Events. In letzteren werden verschiedene Präsentationen von den Teams verlangt. Diese beziehen sich auf die technische Realisierung, Softwaredesign, Kostenaufstellung und ein Businessplan in dem die Teams ein Konzept erstellen müssen wie man das gebaute Fahrzeug über eine kleine Massenfertigung gewinnbringend verkaufen kann.
-
+Die Formula Student ist ein Ingenieurswettbewerb für Studenten. Er hat seine Wurzeln in den USA und wurde im Jahre 1981 das erste mal ausgetragen. Das Ziel des Wettbewerbes ist es im Verlauf eines Jahres ein eigenes Rennauto zu konzipieren, designen, fertigen und sich schlussendlich mit anderen Teams zu messen. Dass der Wettbewerb sehr erfolgreich ist, machen nicht nur die inzwischen fast 700 Teams weltweit \cite{FsWorldRank:1} deutlich, sondern auch die Anzahl der verschiedenen Events, die überall auf der Welt im Sommer stattfinden. Seit dem Jahr 2017 gibt es neben der ursprünglichen Combustion-Klasse und der vor 10 Jahren eingeführten Electric-Klasse auch noch die Driverless-Klasse.
+In dieser wird von den Teams ein Altfahrzeug um Sensoren und Aktoren so erweitert, dass das Rennauto die Kurse autonom bestreiten kann.
+Der Wettbewerb ist unterteilt in dynamische und statische Events. In letzteren werden verschiedene Präsentationen von den Teams verlangt. Diese beziehen sich auf die technische Realisierung, Softwaredesign, Kostenaufstellung und einen Businessplan.
 Die dynamischen Disziplinen, in denen das Fahrzeug selbstständig fährt, sind hierbei:
 \begin{itemize}
-	\item Acceleration \\ 75 Meter langer Beschleunigungsstreifen. Punkte werden nach der Zeit nicht nach der Endgeschwindigkeit vergeben.
-	\item Skidpad \\ eine liegende 8 bei der an der Engstelle eingefahren wird und jeweils 2 rechte und 2 linke Runden gefahren werden. Die zweite Runde wird jeweils gezählt. Die Abmaße sind exakt vorgegeben.
-	\item Trackdrive \\ ein bis zu 800 Meter langer Kurs mit maximal 80 Meter langen Geraden und Kurven mit minimalem Innenradius von 9 Metern. Es werden 11 Runden gefahren und die Teams erhalten im Vornherein keine Möglichkeit Messungen am Kurs vorzunehmen.
+	\item Acceleration, \\ ein 75 Meter langer Beschleunigungsstreifen. Punkte werden nach der Zeit nicht nach der Endgeschwindigkeit vergeben.
+	\item Skidpad, \\ eine liegende 8 bei der an der Engstelle eingefahren wird und jeweils zwei rechte und zwei linke Runden gefahren werden. Die zweite Runde wird jeweils gezählt. Die Abmaße sind exakt vorgegeben.
+	\item Trackdrive, \\ ein bis zu 800 Meter langer Kurs mit maximal 80 Meter langen Geraden und Kurven mit minimalem Innenradius von neun Metern. Es werden elf Runden gefahren und die Teams erhalten im Vornherein keine Möglichkeit Messungen am Kurs vorzunehmen.
 \end{itemize}
 
-Für diese Arbeit ist vorallem der Trackdrive von Interesse. Es wird davon ausgegangen dass das Fahrzeug bereits die erste Runde absolviert, und sich damit eine genaue Karte des Rennkurses erstellt hat. Die Messungen und Vergleiche beziehen sich damit auch immer auf einen Kurs der so (wenn auch nicht so kurz) in einem FS-Event für die Driverless Fahrzeuge vorkommen könnte.
- 
+Für die vorliegende Arbeit ist vor allem der Trackdrive von Interesse. Es wird davon ausgegangen, dass das Fahrzeug bereits die erste Runde absolviert und sich damit eine genaue Karte des Rennkurses erstellt hat. Die Messungen und Vergleiche beziehen sich damit auch immer auf einen Kurs, der so in einem FS-Event für die Driverless Fahrzeuge vorkommen könnte.
+
 \begin{figure}[hb!]
 	\centering
 	\includegraphics[width=270pt]{Abbildungen/amz-driverless-long.jpg}
 	\caption{Zürichs FS-Driverless Fahrzeug im Jahr 2017 während des Trackdrive}
 \end{figure}
 
-\section{Ziel der Arbeit}
+\section{Problemstellung}
+Im laufe dieser Arbeit soll ein Algorithmus entwickelt werden, der die Trajektionsplanung und Regelung eines Formula Student Driverless Racecars berechnet. Der dafür gewählte Ansatz ist \acl{MPC}. Es handelt sich dabei um ein Verfahren welches die Planung von Trajektorien und die Steuerung in einem Algorithmus vereint. Wie der Name schon sagt benötigt es hierfür ein Modell des zu kontrollierenden Systems mit dem daraufhin das zukünftige Verhalten vorausberechnet wird. Dieses wissen wird dann genutzt mit Hilfe einer Kostenfunktion die Steuerparameter so zu variieren, dass das Rennauto eine möglichst schnelle Rundenzeit erreicht.
+
+\chapter{Stand der Technik}
+Obwohl es zum Zeitpunkt der Arbeit noch keine öffentliche, autonome Rennserie außerhalb der Formula Student gibt, ist das Interesse an den dafür benötigten Technologien sehr groß.
+Einen guten Rennfahrer zeichnet die Tatsache aus, dass er sein Fahrzeug in absoluten Grenzsituationen noch unter Kontrolle halten kann. Diese Eigenschaft ist nicht nur für autonome Rennautos wichtig, sondern ganz besonders auch für aktive Fahrassistenzsysteme welche kritische Fahrsituationen entschärfen können, in denen ein ungeübter Fahrer einen Unfall nicht mehr verhindern kannu. Um einen guten Rennfahrer in Software nachstellen zu können, müssen drei Grundvoraussetzungen geschaffen werden:
+\begin{itemize}
+	\item Genaue Kenntnis der Umgebung (dem Rennkurs) und der eigenen Position.
+	\item Möglichst viel Wissen über das Verhalten des Fahrzeugs (Fahrzeugmodell).
+	\item Kurze Reaktionszeiten (\emph{muscle memory}).
+\end{itemize}
+
+Um die Position des Fahrzeugs genau bestimmen zu können werden verschiedene Sensortypen mit Hilfe von Filterverfahren fusioniert. Die Genauigkeit der Schätzung steigt, im Vergleich zu den einzelnen Messsystemen, durch die Kombination signifikant an \cite{GPS_Fusion}, \cite{GPS_IMU_Fusion}. 
+Um das Rennauto mit hoher Geschwindigkeit einen Rennkurs abfahren zu lassen, benötigt es ein Modell welches das dynamische Verhalten des Fahrzeugs abbilden kann. Erst dieses Wissen ermöglicht die Berechnung von Trajektorien, welche das Rennauto an die Grenzen seiner Traktion bringt. Da die Modelle die  Fahreigenschaften nicht nur möglichst genau Abbilden müssen, sodern auch schnell berechenbar sein müssen, werden verschiedene Vereinfachungen angewandt. Die Ansätze variieren nach Komplexität und zu bewältigenden Fahrsituationen:
+\begin{itemize}
+	\item Ein einfaches kinematischen Modell [\cite{MPC_Kinetic}], welches sehr schnell berechenbar ist, aber keine dynamischen Effekte berücksichtigt.
+	\item Die Verwendung einer dynamischen Fahrzeugbeschreibung mit linearem oder nichtlinearem Reifenmodell [\cite{rc_car_1_43}, \cite{MPC_Dynamic}, \cite{MPC_Dynamic_Tire_Model}].
+	\item Ein anderer Ansatz ist es, nicht vom Schwerpunkt des Autos aus die Fahrzeugdynamik zu berechnen, sondern den \emph{point of percussion} zu wählen. In diesem Punkt heben sich die rotatorischen und translatorischen Kräfte, hervorgerufen durch die Hinterreifen, gegenseitig auf \cite{CentreOfPercussion}.
+\end{itemize}
+
+Um ein mathematisches Fahrzeugmodell in einem realen Fahrzeug einsetzen zu können müssen die Parameter welche das System beschreiben möglichst genau bestimmt werden. Dies kann mit Hilfe einer linearen Regression sehr effizient und genau verwirklicht werden \cite{Williams2016AggressiveDW}. Die  Berechnungszeit für neue Steuerparameter sollte im Anwendungsfall eines autonomen Rennautos 40 bis 50ms nicht überschreiten und bewegt sich in der Regel zwischen 50 und 100 Hz \cite{rc_car_1_43}, \cite{Williams2016AggressiveDW}. 
+Sind die Grundvorraussetzungen geschaffen, gibt es unterschiedliche Ansätze ein Rennauto möglichst performant um einen Rennkurs fahren zu lassen. Eine Möglichkeit ist der Einsatz von neuronalen Netzen um geeignete Steuerparameter zu berechnen, wie vom Autor in \cite{6374146} beschrieben wurde. 
+Ein "g-g`` - Ansatz, wie in \cite{KRITAYAKIRANA2010548}, nutzt hinterlegte \emph{clothoid maps} um das Verhalten eines Rennfahrers nachzuahmen. Vor allem aber der auch in dieser Arbeit betrachtete \ac{MPC}-Algorithmus wird in einer Vielzahl von Arbeiten untersucht und verwendet. Der größte Unterschied ist hierbei, ob ein Ansatz verwendet wurde welcher die Trajektionsplanung und Regelung kombiniert \cite{rc_car_1_43} oder getrennt betrachtet \cite{MPC_Dynamic}, \cite{MPC_Dynamic_Tire_Model}.
 
 
 
 \chapter{Trajektionsplanung und Fahrzeugregelung}
-
 Um für das Fahrzeug ideale Trajektorien zu berechnen und gleichzeitig das Rennauto in Echtzeit zu regeln wurde ein Model Predictive Control Ansatz gewählt. Dieses Verfahren basiert auf der Optimierung eines nicht linearen Programms.
-
- 
  
 \section{Model Predictive Control}
 Bei \ac{MPC} handelt es sich um einen fortschrittlichen Algorithmus, mit dem sehr komplexe, multivariable Regelungsprobleme lösen lassen. Soll ein Prozess kontrolliert werden, welcher mehrere Ein- und Ausgänge besitzt und gleichzeitig Ungleich- und Gleichheitsbedingungen erfüllen werden müssen, ist \acs{MPC} ein mächtiges Werkzeug. Vorausgesetzt ein ausreichend genaues Modell des Prozesses vorhanden, können unter ausnutzen von Messungen und dem Modell zukünftige Zustände des Prozesses berechnet werden. Diese Information wird genutzt um die Eingangsparameter abhängig von dem gewünschten Verhalten, für zukünftige Steuerparameter, zu berechnen \cite{seborg2010process}. \\
@@ -221,7 +210,9 @@ Im Folgenden wir das Innere-Punkte-Lösungsverfahren für lineare, quadratische 
 	\label{fig:iterPointMethod}
 \end{figure}
 
-Um dieses Verfahren umzusetzen wird die Positivitätsbedingungen $x \geq 0$ der Standardform durch einen logarithmische Strafterm $-\mu \ln x_i $  ersetzt und in die Kostenfunktion integriert. Die daraus resultierende Funktion wird als Barrierefunktion bezeichnet und ist definiert als \\
+Um dieses Verfahren umzusetzen wird die Positivitätsbedingungen $x \geq 0$ der Standardform durch einen logarithmische Strafterm $-\mu \ln x_i $  ersetzt und in die Kostenfunktion integriert. 
+Der Faktor $\mu$ wird genutzt um die Gewichtung des Strafterms zu verändern.
+Die daraus resultierende Funktion wird als Barrierefunktion bezeichnet und ist definiert als \\
 $B(x,\mu) =  c\textsuperscript{T}x - \mu \sum_{i}^{n} \ln x_i$, mit $\mu > 0$. \\
 Das ursprüngliche Optimierungsproblem wird damit ersetzt durch 
 $min \{B(x,\mu) | Ax \leq b\}$.\\
@@ -617,6 +608,17 @@ An diesem Punkt kommt Jump ins Spiel. Jump ist eine Erweiterung für Julia mit d
 \end{figure}
 
 \chapter{MPC zur Trajektionsplanung und Regelung}
+
+Ein schneller Rennfahrer zeichnet sich dadurch aus, dass er genau abschätzen kann wie viel Kräfte die Reifen des Fahrzeugs auf die Straße übertragen können. Die Kunst liegt also darin möglichst in jeder Fahrsituation das gesamte Potential voll auszunutzen. Außerdem kann er sich dynamisch an Situationsänderungen auf der Strecke anpassen und versucht immer die Idealtrajektorie zu treffen. Die Definition dieser ist, möglichst viel Streckenlänge in der kleinstmöglichen Zeit zurück zu legen. Für eine Gerade oder eine einzige Kurve ist dies wie in Abbildung \ref{idealTrajektorie} dargestellt leicht zu Berechnen. Der so genannte Scheitelpunkt markiert hierbei den Punkt des geringste Radius und der kleinsten Geschwindigkeit. An diesem Punkt muss das Fahrzeug im besten Fall genau die Seitenbegrenzung tangieren. 
+Bei komplexeren Streckengefügen kann es jedoch von Vorteil sein eine Kurve eventuell nicht ideal auszufahren um im späteren Verlauf einen größeren Geschwindigkeitsgewinn in einer anderen Kurve einfahren zu können.
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=150pt]{Abbildungen/idealTrajektorie.png}
+	\caption{}
+	\label{fig:idealTrajektorie}
+\end{figure}
+
 Im Folgenden werden die Bestandteile des \acl{MPC}-Algorithmus zur Trajektionsplanung und Regelung für das Rennauto aufgeschlüsselt und veranschaulicht.\\
 
 Zu Beginn der Entwicklung hätte die Möglichkeit bestanden die Regelung der lateralen und longitudinalen Führung des Fahrzeuges zu trennen. 

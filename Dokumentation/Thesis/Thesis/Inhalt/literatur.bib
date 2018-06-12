@@ -84,12 +84,49 @@
 	abstract = {Summary This paper describes autonomous racing of RC race cars based on mathematical optimization. Using a dynamical model of the vehicle, control inputs are computed by receding horizon based controllers, where the objective is to maximize progress on the track subject to the requirement of staying on the track and avoiding opponents. Two different control formulations are presented. The first controller employs a two‐level structure, consisting of a path planner and a nonlinear model predictive controller (NMPC) for tracking. The second controller combines both tasks in one nonlinear optimization problem (NLP) following the ideas of contouring control. Linear time varying models obtained by linearization are used to build local approximations of the control NLPs in the form of convex quadratic programs (QPs) at each sampling time. The resulting QPs have a typical MPC structure and can be solved in the range of milliseconds by recent structure exploiting solvers, which is key to the real‐time feasibility of the overall control scheme. Obstacle avoidance is incorporated by means of a high‐level corridor planner based on dynamic programming, which generates convex constraints for the controllers according to the current position of opponents and the track layout. The control performance is investigated experimentally using 1:43 scale RC race cars, driven at speeds of more than 3 m/s and in operating regions with saturated rear tire forces (drifting). The algorithms run at 50 Hz sampling rate on embedded computing platforms, demonstrating the real‐time feasibility and high performance of optimization‐based approaches for autonomous racing. Copyright © 2014 John Wiley \& Sons, Ltd.}
 }
 
+@article{Williams2016AggressiveDW,
+	title={Aggressive driving with model predictive path integral control},
+	author={Grady Williams and Paul Drews and Brian Goldfain and James M. Rehg and Evangelos Theodorou},
+	journal={2016 IEEE International Conference on Robotics and Automation (ICRA)},
+	year={2016},
+	pages={1433-1440}
+}
+
+@article{KRITAYAKIRANA2010548,
+	title = "Autonomous Cornering at the Limits: Maximizing a “g-g” Diagram by Using Feedforward Trail-Braking and Throttle-on-Exit",
+	journal = "IFAC Proceedings Volumes",
+	volume = "43",
+	number = "7",
+	pages = "548 - 553",
+	year = "2010",
+	note = "6th IFAC Symposium on Advances in Automotive Control",
+	issn = "1474-6670",
+	doi = "https://doi.org/10.3182/20100712-3-DE-2013.00060",
+	url = "http://www.sciencedirect.com/science/article/pii/S1474667015368865",
+	author = "Krisada Kritayakirana and J. Christian Gerdes",
+	keywords = "Vehicle Dynamics, Autonomous Driving, Vehicle Dynamics Control,  diagram, Clothoid, Trail-Braking, Throttle-on-Exit"
+}
+
 @ARTICLE{MPC_Dynamic,
 	author = {GONÇALO COLLARES PEREIRA},
 	title = "{Model Predictive Control	for Autonomous Driving of
 	Over-Actuated Research Vehicle}",
 	year = 2016
 }
+
+@INPROCEEDINGS{6374146,
+	author={C. Athanasiadis and D. Galanopoulos and A. Tefas},
+	booktitle={2012 IEEE Conference on Computational Intelligence and Games (CIG)},
+	title={Progressive neural network training for the Open Racing Car Simulator},
+	year={2012},
+	volume={},
+	number={},
+	pages={116-123},
+	keywords={computer games;learning (artificial intelligence);neural nets;bot teachers;car racing controller;driving behavior;open racing car simulator;progressive neural network training;rule based decision driver;steering;Acceleration;Artificial neural networks;Biological neural networks;Games;Gears;Training},
+	doi={10.1109/CIG.2012.6374146},
+	ISSN={2325-4270},
+	month={Sept},}
+
 
 @ARTICLE{MPC_Dynamic_Tire_Model,
 	author = {FLORIAN CURINGA},
