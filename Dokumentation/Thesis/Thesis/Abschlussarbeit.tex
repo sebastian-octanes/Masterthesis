@@ -85,9 +85,9 @@ Ein "g-g`` - Ansatz, wie in \cite{KRITAYAKIRANA2010548}, nutzt hinterlegte \emph
 Um für das Fahrzeug ideale Trajektorien zu berechnen und gleichzeitig das Rennauto in Echtzeit zu regeln wurde ein Model Predictive Control Ansatz gewählt. Dieses Verfahren basiert auf der Optimierung eines nicht linearen Programms.
  
 \section{Model Predictive Control}
-Bei \ac{MPC} handelt es sich um einen fortschrittlichen Algorithmus, mit dem sehr komplexe, multivariable Regelungsprobleme lösen lassen. Soll ein Prozess kontrolliert werden, welcher mehrere Ein- und Ausgänge besitzt und gleichzeitig Ungleich- und Gleichheitsbedingungen erfüllen werden müssen, ist \acs{MPC} ein mächtiges Werkzeug. Vorausgesetzt ein ausreichend genaues Modell des Prozesses vorhanden, können unter ausnutzen von Messungen und dem Modell zukünftige Zustände des Prozesses berechnet werden. Diese Information wird genutzt um die Eingangsparameter abhängig von dem gewünschten Verhalten, für zukünftige Steuerparameter, zu berechnen \cite{seborg2010process}. \\
+Bei \ac{MPC} handelt es sich um einen fortschrittlichen Algorithmus, mit dem sehr komplexe, multivariable Regelungsprobleme lösen lassen. Er wird eingesetzt wenn ein Prozess kontrolliert werden soll, welcher mehrere Ein- und Ausgänge besitzt und gleichzeitig Ungleich- und Gleichheitsbedingungen erfüllen muss. Vorausgesetzt ein ausreichend genaues Modell des Prozesses vorhanden, können unter ausnutzen von Messungen des aktuellen Systemzustands und dem Modell zukünftige Zustände des Prozesses berechnet werden. Diese Information wird genutzt um die Eingangsparameter abhängig von dem gewünschten Verhalten, für zukünftige Steuerparameter, zu berechnen \cite{seborg2010process}. \\
 Einige wichtige Vorteile von \ac{MPC} sind: \\
-(1) das sehr gute annähern an Prozessgrenzen und damit ein hoher Durchsatz/Effizienz, (2) Einschränkungen der Eingangs- und Ausgangsgrößen werden berücksichtigt, (3) die Vorhersage des Fahrzeugzustands kann genutzt werden um mögliche Probleme frühzeitig zu detektieren.
+(1) das sehr gute Annähern an Prozessgrenzen und damit ein hoher Durchsatz/Effizienz, (2) Einschränkungen der Eingangs- und Ausgangsgrößen werden berücksichtigt, (3) die Vorhersage des Systemzustands kann genutzt werden um mögliche Probleme frühzeitig zu detektieren.
 Seit den späten 70ern bis in die frühen 2000er wurde \ac{MPC} vor allem in der Chemiebranche genutzt um die komplexen multivariablen Regelungsprozesse bei zum Beispiel der Ölraffinerie zu Steuern. Für diese Aufgabengebiete war \acl{MPC} hervorragend geeignet, da die Prozesse im Vergleich zu anderen Regelungsaufgaben sehr langsam sind und damit die geringe Rechenleistung der damaligen Zeit ausreichend war. 
 Gerade in den letzten Jahren, mit stark gestiegener Prozessorleistung, sind die Einsatzgebiete vielfältiger geworden. Auch die Steuerung hoch dynamischer Systeme wie Quadrocopter \cite{quadcopterMpc} oder Fahrzeugen \cite{carMPC} ist inzwischen möglich. 
 
@@ -103,23 +103,23 @@ Der systematische Ablauf eines \ac{MPC}- Algorithmus ist in Abbildung \ref{fig:m
 
 Die Funktion lässt sich in mehrere Schritte unterteilen:
 \begin{itemize}
-	\item Zustandsschätzung \\ Im ersten Schritt wird der aktuelle Zustand des Systems erfasst und als Ausgangspunkt für die Berechnung des Optimierungsproblems festgelegt.
-	\item Optimierung \\ In diesem Schritt werden die zukünftigen Zustände des Systems berechnet und welche Steuerparameter vonnöten sind um eine Kostenfunktion zu minimieren. Diese entspricht im industriellen Umfeld zum Beispiel einer Optimierung der Fertigungsrate, Kostenreduktion,  Temperatursteuerung, etc.
-	\item Steuerung \\ Die berechneten Steuerparameter werden auf dem realen System angewandt. Danach wird wieder beim ersten Schritt fortgefahren.   
+	\item Zustandsschätzung, \\ im ersten Schritt wird der aktuelle Zustand des Systems erfasst und als Ausgangspunkt für die Berechnung des Optimierungsproblems festgelegt.
+	\item Optimierung, \\ in diesem Schritt werden die zukünftigen Zustände des Systems berechnet und welche Steuerparameter vonnöten sind um eine Kostenfunktion zu minimieren. Diese entspricht im industriellen Umfeld zum Beispiel einer Optimierung der Fertigungsrate, Kostenreduktion,  Temperatursteuerung, etc.
+	\item Steuerung \\ Die berechneten Steuerparameter werden auf dem realen System angewandt. Danach wird wieder beim ersten Schritt begonnen.   
 \end{itemize}
 
 
-Die Mächtigkeit von \ac{MPC} basiert auf der Prädiktion des Systemverhaltens. Ein präzises Vorhersagen setzt daher eine möglichst gute Systembeschreibung voraus. Je genauer diese an die Realität heranreicht, desto weiter in die Zukunft können die Systemzustände berechnet werden. Außerdem kann das System näher an seine Systemgrenzen geführt werden. \\
+Die Mächtigkeit von \ac{MPC} basiert auf der Prädiktion des Systemverhaltens. Ein präzises Vorhersagen setzt daher eine möglichst gute Systembeschreibung voraus. Je genauer diese an die Realität heranreicht, desto weiter in die Zukunft können die Systemzustände berechnet werden. Außerdem kann der Prozess näher an seine Systemgrenzen geführt werden. \\
 Bei \acl{MPC} handelt es sich um ein sogenanntes \textit{finite-horizon} Verfahren, das heißt die Optimierung wird immer für einen bestimmten Zeitraum in die Zukunft durchgeführt $ [t_0, t_0 + T] $. Dieser Bereich \(T\) wird dann in \(k\) Schritte unterteilt, für die jeweils ein Prädiktionsschritt berechnet wird. Dieser geht aus dem vorherigen Zustand $k -1$ und den dazu gehörigen Steuergrößen hervor. Nachdem der Optimierer die für die Kostenfunktion idealen Steuergrößen für den gesamten Prädiktionsvektor berechnet hat, wird nur der \emph{erste} Steuerwert ausgewählt und zur Regelung im realen System eingesetzt. Der Zusammenhang aus Prädiktion und Kostenfunktion ist im Schaubild \ref{fig:mpcTheory} verdeutlicht.
 
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=350pt]{Abbildungen/mpcParadigm.png}
-	\caption{Funktionsprinzip von \ac{MPC}: Die Kostenfunktion ist die Reduktion der Distanz zur Referenztrajektorie. Durch das Modell kann das System so geregelt werden dass es nicht über die Zieltrajektorie hinaus schießt.}
+	\caption{Funktionsprinzip von \ac{MPC}: Die Kostenfunktion ist die Reduktion der Distanz zur Referenztrajektorie. Durch das Modell kann das System so geregelt werden, dass es nicht über die Zieltrajektorie hinaus schießt.}
 	\label{fig:mpcTheory}
 \end{figure}
 
-Wie bereits erwähnt wurde, berücksichtigt der \ac{MPC}-Ansatz auch Eingangs-, Ausgangs- und Zustandsbeschränkungen mit welchen man den Suchraum einschränkt. Diese sind im Falle eines Rennautos zum Beispiel die maximale Geschwindigkeit, Lenkeinschlag, Beschleunigung und Bremskraft. Ebenfalls ein sehr gutes Beispiel für eine Zustandsbeschränkung ist die Änderungsrate der Querbeschleunigung, welche ein direkter Indikator für den Komfort eines autonomen Fahrzeugs während der Fahrt darstellt.\\
+Wie bereits erwähnt wurde, berücksichtigt der \ac{MPC}-Ansatz auch Eingangs-, Ausgangs- und Zustandsbeschränkungen, mit welchen man den Suchraum einschränkt. Diese sind im Falle eines Rennautos zum Beispiel die maximale Geschwindigkeit, Lenkeinschlag, Beschleunigung und Bremskraft. Ebenfalls ein sehr gutes Beispiel für eine Zustandsbeschränkung ist die Änderungsrate der Querbeschleunigung, welche ein direkter Indikator für den Komfort eines autonomen Fahrzeugs während der Fahrt darstellt.\\
 
 Um den \textit{\acl{MPC}} Algorithmus für den Anwendungsfall eines Rennautos zu implementieren braucht man Folglich:
 \begin{itemize}
@@ -130,14 +130,10 @@ Auf beides wird in den nächsten Kapiteln eingegangen.
 
 
 
-
-
-
-
 \section{Optimierung}
-Das Konzept der Optimierung ist es, eine gegebene Funktion \(f(\vec{x})\), auch als Kostenfunktion bezeichnet, zu mini- oder maximieren. 
+Das Konzept der Optimierung ist es, eine gegebene Funktion \(f(\vec{x})\), auch als Kostenfunktion bezeichnet, zu mini-, oder maximieren. 
 Dies wird in einer Vielzahl von Anwendungsgebieten genutzt.
-Zum Beispiel zur Berechnung von Profit / Verlust in einem Betrieb, Geschwindigkeit oder Distanz in einem physikalischen Problem oder der erwartete \textit{return of investment} für eine Geldanlage.  
+Ein Beispiel ist die Berechnung von Profit / Verlust in einem Betrieb, Geschwindigkeit oder Distanz in einem physikalischen Problem oder der erwartete \textit{return of investment} für eine Geldanlage.  
 Die Bezeichnung lineare Programmierung bezieht sich auf die Lösung eines  Optimierungsproblems und hat nichts mit dem eigentlichen Programm zu tun.
 
 Die allgemeine mathematische Definition eines Optimierungsproblems ist
@@ -153,8 +149,8 @@ $h_j(\vec{x})= 0,$ $j= 1,2,...,m$\\
 \noindent\hspace*{22mm}%
 
 
-Der Eingabeparameter $\vec{x}$ sei aus $\Re \textsuperscript{n} $, das heißt, das Problem hängt von \(n\) Einflussparameter ab, die im Vektor $\vec{x}$ eingelagert sind. Die Zielfunktion $f:D \rightarrow \Re $ sei einmal stetig differenzierbar. Weiterhin sind die Nebenbedingungen in Ungleichheitsform $g_i:D \rightarrow \Re$ mit $1\leq i \leq p$ und in Gleichheitsform $h_j:D \rightarrow \Re$ mit $1\leq j \leq m$ gegeben.
-In dem \(f(\vec{x})\) durch \(-f(\vec{x})\) ersetzt wird, kann aus dem Minimierens, ein Maximierungsproblem gemacht werden.  
+Der Eingabeparameter $\vec{x}$ sei aus $\Re \textsuperscript{n} $, das heißt das Problem hängt von \(n\) Einflussparameter ab die im Vektor $\vec{x}$ eingelagert sind. Die Zielfunktion $f:D \rightarrow \Re $ sei einmal stetig differenzierbar. Weiterhin sind die Nebenbedingungen in Ungleichheitsform $g_i:D \rightarrow \Re$ mit $1\leq i \leq p$ und in Gleichheitsform $h_j:D \rightarrow \Re$ mit $1\leq j \leq m$ gegeben.
+In dem \(f(\vec{x})\) durch \(-f(\vec{x})\) ersetzt wird, kann ein Minimierungs in ein Maximierungsproblem umgeformt werden.  
 
 Ein Optimierungsproblem hat nicht immer eine Lösung. Die Ungleichungen, welche den Suchraum einschränken, können sich widersprechen (z.b. $x \leq 0 $ und $x > 0$). In diesem Fall gibt es keine Lösung. Außerdem kann das Problem unbeschränkt sein, was unendlich viele zulässige Lösungen zur Folge hätte und damit auch als nicht lösbar eingestuft wird. 
 
@@ -182,14 +178,14 @@ Besonders einfach veranschaulichen lässt sich die Lösung des Problems geometri
 	\label{fig:linOpt}
 \end{figure}
 
-Jede Ungleichung $a_i x \leq b_i$ teilt den Suchraum in zwei Hälften, eine mit zulässigen Punkten und eine ohne. Die Punkte auf der Grenze sind ebenfalls zulässig. Die Menge der Punkte welche alle Ungleichungen erfüllt, ist genau der Schnitt dieser Halbräume, also die Menge aller Punkte, die für jede Ungleichung in der jeweiligen zulässigen Hälfte des Raumes liegt. 
+Jede Ungleichung $a_i x_i \leq b_i$ teilt den Suchraum in zwei Hälften, eine mit zulässigen Punkten und eine ohne. Die Punkte auf der Grenze sind ebenfalls zulässig. Die Menge der Punkte welche alle Ungleichungen erfüllt, ist genau der Schnitt dieser Halbräume, also die Menge aller Punkte, die für jede Ungleichung in der jeweiligen zulässigen Hälfte des Raumes liegt. 
 Der Punkt, der die Kostenfunktion $c: x \rightarrow c\textsuperscript{T} x$ minimiert, liegt auf den Kanten der Ungleichungen und wird durch Verschiebung der Hyperebene $ \{x| c\textsuperscript{T} x = 0 \}$ in Richtung des Vektors \(c\) gefunden. 
 
 
 \subsection*{Lösungsverfahren}
 
 \subsection{Simplex - Verfahren}
-Obwohl zur Lösung der nichtlinearen Probleme die in dieser Arbeit berechnet werden müssen das Innere-Punkte-Verfahren genutzt wird, soll ein kurzer Überblick über das prominenteste Verfahren zum Lösen von linearen Programmen gegeben werden. Dies dient der Veranschaulichung im späteren Verlauf. Das Verfahren wurde 1947 von Dantzig \cite{dantzig51} entwickelt und nutzt die Eigenschaft, dass ein \textit{well behaved} (wenn das aufgestellte Problem der Standardform entspricht und lösbar ist) lineares Programm immer einen Knoten besitzt an dem sich Kanten verschiedener Ungleichheitsbedingungen treffen und die Kostenfunktion minimieren. Das Verfahren nutzt diesen Zustand aus in dem es sich iterativ von einem Eckpunkt zum nächsten Bewegt. 
+Ein kurzer Überblick über das prominenteste Verfahren zum Lösen von linearen Programmen, dem Simplex - Verfahren, soll ein besseres Verständnis für das danach aufgezeigte Innere-Punkte-Verfahren ermöglichen. Das Verfahren wurde 1947 von Dantzig \cite{dantzig51} entwickelt und nutzt die Eigenschaft, dass ein \textit{well behaved} (wenn das aufgestellte Problem der Standardform entspricht und lösbar ist) lineares Programm immer einen Knoten besitzt an dem sich Kanten verschiedener Ungleichheitsbedingungen treffen und die Kostenfunktion minimieren. Das Verfahren nutzt diesen Zustand aus in dem es sich iterativ von einem Eckpunkt zum nächsten Bewegt. Der Prozess der Optimierung ist Beispielhaft in der Abbildung  \ref{fig:splxMethod} für ein Polytop dargestellt.  
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=200pt]{Abbildungen/simplexMethod.png}
@@ -197,12 +193,12 @@ Obwohl zur Lösung der nichtlinearen Probleme die in dieser Arbeit berechnet wer
 	\label{fig:splxMethod}
 \end{figure}
 
-Die Richtung, welche gewählt wird, hängt von der Flanke (Ungleichung) ab welche die Kostenfunktion weiter minimiert. Kann keine weitere Flanke gefunden werden, welche die kosten weiter reduziert endet das Verfahren im Optimum. Da im schlechtesten Fall der Simplex-Algorithmus jeden Knotenpunkt ein mal besuchen muss, hat das Verfahren ein exponentielles Wachstum abhängig von der Dimension des Optimierungsproblems \cite{doi:10.1137/S0036144502414942}.Trotz dieser Problematik hat das Simplex-Verfahren in der Praxis eine sehr gute Laufzeit und kann für den wiederholten Aufruf einer nur leicht veränderten Optimierung (anpassen von Parametern nach dem letzten Aufruf) einen sogenannten Warmstart nutzen. Dieser Beschleunigt die Lösung ebenfalls deutlich \cite{simplexWiki:1}.\\
-Die Suche nach noch besseren Verfahren, dessen Komplexität nur Polynomial mit der Dimension anwächst, führte dann in den Jahren 1979 bis 1984 zur Entwicklung eines neuen Algorithmus welcher auch für nichtlineare Probleme genutzt werden kann.
+Die Richtung, welche gewählt wird, hängt von der Flanke (Ungleichung) ab, welche die Kostenfunktion weiter minimiert. Kann keine weitere Flanke gefunden werden, welche die kosten weiter reduziert, endet das Verfahren im Optimum. Da im schlechtesten Fall der Simplex-Algorithmus jeden Knotenpunkt ein mal besuchen muss, hat das Verfahren ein exponentielles Wachstum abhängig von der Dimension des Optimierungsproblems \cite{doi:10.1137/S0036144502414942}.Trotz dieser Problematik hat das Simplex-Verfahren in der Praxis eine sehr gute Laufzeit und kann für den wiederholten Aufruf einer nur leicht veränderten Optimierung (anpassen von Parametern nach dem letzten Aufruf) einen sogenannten Warmstart nutzen. Dieser Beschleunigt die Lösung ebenfalls deutlich \cite{simplexWiki:1}.\\
+Die Suche nach noch besseren Verfahren, deren Komplexität nur polynomial mit der Dimension anwächst, führte dann in den Jahren 1979 bis 1984 zur Entwicklung eines neuen Algorithmus welcher auch für nichtlineare Probleme genutzt werden kann.
 
 \subsection{Innere-Punkte-Verfahren} 
 \label{ipm} 
-Im Folgenden wir das Innere-Punkte-Lösungsverfahren für lineare, quadratische und nichtlineare Optimierungsprobleme kurz vorgestellt. Die Idee hinter dem Verfahren ist es, sich nicht mehr auf den Kanten zu bewegen, sondern immer im Inneren des erlaubten Bereiches. Diese Bewegung durch das Innere des Polytop ist in Abbildung \ref{fig:iterPointMethod} veranschaulicht.  
+Im Folgenden wir das Innere-Punkte-Lösungsverfahren für lineare, quadratische und nichtlineare Optimierungsprobleme kurz vorgestellt. Die Idee hinter dem Verfahren ist es, sich nicht mehr wie beim Simplex-Verfahren auf den Kanten zu bewegen, sondern immer im Inneren des erlaubten Bereiches. Diese Bewegung durch das Innere des Polytop ist in Abbildung \ref{fig:iterPointMethod} veranschaulicht.  
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=200pt]{Abbildungen/iterPointMethod.png}
@@ -216,7 +212,7 @@ Die daraus resultierende Funktion wird als Barrierefunktion bezeichnet und ist d
 $B(x,\mu) =  c\textsuperscript{T}x - \mu \sum_{i}^{n} \ln x_i$, mit $\mu > 0$. \\
 Das ursprüngliche Optimierungsproblem wird damit ersetzt durch 
 $min \{B(x,\mu) | Ax \leq b\}$.\\
-Wird \(\mu\) sehr klein (tendiert gegen \(0\) ) ist die Lösung des Barriereproblems die gleiche wie unser ursprüngliches Optimierungsproblem. Dies nutzt man aus, um von einem großen \(\mu\) als Startpunkt iterativ $B(x,\mu)$ zu optimieren und dann vor der nächsten Iteration \(\mu\) zu verkleinern.
+Wird \(\mu\) sehr klein (tendiert gegen \(0\) ), ist die Lösung des Barriereproblems die gleiche wie unser ursprüngliches Optimierungsproblem. Dies nutzt man aus, um von einem großen \(\mu\) als Startpunkt iterativ $B(x,\mu)$ zu optimieren und dann vor der nächsten Iteration \(\mu\) zu verkleinern.
 
 
 Der Strafterm $-\mu \ln x_i $ wird für $x$-Werte nahe an ihrer Grenze sehr groß was in dem Plot \ref{fig:iterPointLn} aufgezeigt wird. Das Ergebnis ist, dass die Lösungen des Barriereproblems, solange $\mu$ groß genug ist, von den Flächen des Polytop entfernt bleiben.
@@ -240,10 +236,10 @@ Ableitungen sind eine Grundvoraussetzung für viele numerische Algorithmen. Die 
 
 Ein möglicher Ansatz die Ableitung $\Delta{\tiny } f(x) = (\frac{\partial f}{\partial x_1} (x), ..., \frac{\partial f}{\partial x_n})$ der Funktion $f:\Re \textsuperscript{n} \rightarrow \Re $ zu berechnen ist \\
 $f'(x) \approx \frac{f(x+h) - f(h)}{h}$ mit $ h \rightarrow 0 $. \\
-Dieser Weg ist jedoch sehr ineffizient mit einer Laufzeit von $\mathcal{O}(n)$, zudem spielt hier der Rundungsfehler des \textit{float}-Datentyps mit in die Genauigkeit der Lösung \cite{julDiff}.
+Dieser Weg ist jedoch, mit einer Laufzeit von $\mathcal{O}(n)$, sehr ineffizient und besitzt zusätzlich Rundungsfehler \cite{julDiff}.
 
-Eine andere Möglichkeit wäre die Ableitung manuell zu berechnen, was jedoch für komplexere Systeme sehr aufwendig und vor allem fehleranfällig ist. Eine bessere Lösung ist die automatische Ableitung (\emph{automatic differentiation}). 
-Dieses System kann die Ableitung bis auf die maximal mögliche Genauigkeit eines \textit{float} berechnen. Zu der höheren Präzision kommt noch die deutlich bessere Laufzeit. Im Idealfall entspricht die Komplexität $\mathcal{O}(1)$. Um diese Vorteile nutzen zu können benötigt es jedoch ein genaues Wissen über die abzuleitende Funktion \(f(x)\), realisiert wird dies durch den Zugriff auf den Sourcecode der Methode oder durch ein überladen der Operatoren. Das Verfahren ist abhängig von den Möglichkeiten der Programmiersprache und welcher Ansatz bei der Implementierung der automatischen Ableitung verfolgt wurde. 
+Eine andere Möglichkeit ist die Ableitung manuell zu berechnen, was jedoch für komplexere Systeme sehr aufwendig und vor allem fehleranfällig ist. Eine bessere Lösung ist die automatische Ableitung (\emph{automatic differentiation}). 
+Dieses System kann die Ableitung bis auf die maximal mögliche Genauigkeit eines \textit{float} berechnen. Zu der höheren Präzision kommt noch die deutlich bessere Laufzeit. Im Idealfall entspricht die Komplexität $\mathcal{O}(1)$. Um diese Vorteile nutzen zu können benötigt es jedoch ein genaues Wissen über die abzuleitende Funktion \(f(x)\). Realisiert wird dies, durch den Zugriff auf den Sourcecode der Methode oder durch ein überladen der Operatoren. Das Verfahren ist abhängig von den Möglichkeiten der Programmiersprache und welcher Ansatz bei der Implementierung der automatischen Ableitung genutzt wurde. 
 
 
 \subsubsection*{Vorwärtsmodus}
@@ -631,7 +627,7 @@ Vorteile hierfür wären gewesen:
 \end{itemize}
 
 Die Vorteile werden aber mit dem Nachteil begleitet, dass bei einem Rennauto die longitudinale und laterale Bewegung des Fahrzeugs ganz signifikant miteinander verbunden sind. Durch die Trennung kann keine optimale Lösung mehr gefunden werden. 
-Zudem ist die Integration komplexer, da beide Regler gleichzeitig laufen, und ihre Berechnungen miteinander Austauschen müssen.
+Zudem ist die Integration komplexer, da beide Regler gleichzeitig laufen und ihre Berechnungen miteinander austauschen müssen.
 Aufgrund des Anwendungsszenarios wurde sich gegen den zweigeteilten Ansatz entschieden.
 
 
