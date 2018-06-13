@@ -5,23 +5,21 @@
 \contentsline {chapter}{\numberline {2}Stand der Technik}{4}{chapter.2}
 \contentsline {chapter}{\numberline {3}Trajektionsplanung und Fahrzeugregelung}{6}{chapter.3}
 \contentsline {section}{\numberline {3.1}Model Predictive Control}{6}{section.3.1}
-\contentsline {subsection}{\numberline {3.1.1}Funktion}{6}{subsection.3.1.1}
-\contentsline {section}{\numberline {3.2}Optimierung}{9}{section.3.2}
-\contentsline {subsection}{\numberline {3.2.1}Simplex - Verfahren}{11}{subsection.3.2.1}
+\contentsline {section}{\numberline {3.2}Optimierung}{8}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}Simplex - Verfahren}{10}{subsection.3.2.1}
 \contentsline {subsection}{\numberline {3.2.2}Innere-Punkte-Verfahren}{12}{subsection.3.2.2}
-\contentsline {subsection}{\numberline {3.2.3}Automatische Ableitung}{14}{subsection.3.2.3}
+\contentsline {subsection}{\numberline {3.2.3}Automatische Ableitung}{13}{subsection.3.2.3}
 \contentsline {section}{\numberline {3.3}Fahrzeugmodelle}{15}{section.3.3}
 \contentsline {subsection}{\numberline {3.3.1}Kinematisches Modell}{15}{subsection.3.3.1}
 \contentsline {subsection}{\numberline {3.3.2}Reifenmodell}{18}{subsection.3.3.2}
 \contentsline {subsection}{\numberline {3.3.3}Dynamisches Fahrzeugmodell}{22}{subsection.3.3.3}
-\contentsline {section}{\numberline {3.4}Programmiersprachen}{27}{section.3.4}
-\contentsline {subsection}{\numberline {3.4.1}Python}{27}{subsection.3.4.1}
-\contentsline {subsection}{\numberline {3.4.2}Julia}{28}{subsection.3.4.2}
-\contentsline {chapter}{\numberline {4}MPC zur Trajektionsplanung und Regelung}{31}{chapter.4}
-\contentsline {section}{\numberline {4.1}Fahrzeugmodell}{33}{section.4.1}
-\contentsline {section}{\numberline {4.2}Kostenfunktionen}{33}{section.4.2}
-\contentsline {section}{\numberline {4.3}Strecken,- und Positionsbeschr\IeC {\"a}nkung}{35}{section.4.3}
-\contentsline {subsubsection}{\numberline {4.3.0.1}Suchbereichsbeschr\IeC {\"a}nkung}{36}{subsubsection.4.3.0.1}
+\contentsline {section}{\numberline {3.4}Programmiersprachen}{26}{section.3.4}
+\contentsline {subsection}{\numberline {3.4.1}Python}{26}{subsection.3.4.1}
+\contentsline {subsection}{\numberline {3.4.2}Julia}{27}{subsection.3.4.2}
+\contentsline {chapter}{\numberline {4}MPC zur Trajektionsplanung und Regelung}{30}{chapter.4}
+\contentsline {section}{\numberline {4.1}Fahrzeugmodell}{32}{section.4.1}
+\contentsline {section}{\numberline {4.2}Kostenfunktionen}{32}{section.4.2}
+\contentsline {section}{\numberline {4.3}Strecken,- und Positionsbeschr\IeC {\"a}nkung}{34}{section.4.3}
 \contentsline {chapter}{\numberline {5}Simulationsumgebung}{39}{chapter.5}
 \contentsline {section}{\numberline {5.1}\acl {SFML}}{40}{section.5.1}
 \contentsline {section}{\numberline {5.2}Trackdrive}{40}{section.5.2}
@@ -37,5 +35,5 @@
 \contentsline {section}{\numberline {7.3}Zweispurmodell}{44}{section.7.3}
 \contentsline {section}{\numberline {7.4}Zusammenfassung}{44}{section.7.4}
 \contentsline {chapter}{\numberline {A}Anhang}{45}{appendix.A}
-\contentsline {chapter}{Abk\IeC {\"u}rzungsverzeichnis}{47}{chapter*.53}
-\contentsline {chapter}{Literaturverzeichnis}{48}{chapter*.54}
+\contentsline {chapter}{Abk\IeC {\"u}rzungsverzeichnis}{47}{chapter*.58}
+\contentsline {chapter}{Literaturverzeichnis}{48}{chapter*.59}

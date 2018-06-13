@@ -38,6 +38,12 @@ function getForwardTrackPoint(itpTrack, evalPoints, N)
     return [x1, y1]
 end
 
+function getForwardTrackPointBounds(itpLeftBound, itpRightBound, evalPoints, N)
+    x2, y2 = itpLeftBound[evalPoints[N] + 0.02, 1], itpLeftBound[evalPoints[N] + 0.02, 2]
+    x3, y3 = itpRightBound[evalPoints[N] + 0.02, 1], itpRightBound[evalPoints[N] + 0.02, 2]
+    return [x2, y2, x3, y3]
+end
+
 function getMidTrackPoints(itpTrack, evalPoints, N)
     midTrackPoints = []
     for i in 1:N

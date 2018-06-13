@@ -34,8 +34,8 @@ function init_MPC(mpc_struct, N_, dt, startPose, printLevel, max_speed, track_wi
      x = @variable(m, lbx[i] <= x[i = 1:(N+1)*8] <= ubx[i], start = start[i]) #set bounds and initial guess and create x-vector
      #defined in init to make change of objective functions possible without changing mpc_struct
      #call setforwardPoint before using the objective function
-     forwardDummy =[0,0]
-     z = @NLparameter(m, z[i=1:2] == forwardDummy[i])
+     forwardDummy =[0,0,0,0,0,0]
+     z = @NLparameter(m, z[i=1:6] == forwardDummy[i])
      mpc_struct.z = z
      trackPoints= ones(N*6)
      #define t here to be able to use softconstraints later
@@ -213,7 +213,7 @@ end
 
 
 #maximes the speed in every prediction point. Very good performing but more or less useless
-function define_objective(mpc_struct)
+function define_objective_max_speed(mpc_struct)
     m = mpc_struct.m
     x = mpc_struct.x
     N = mpc_struct.N
@@ -232,6 +232,27 @@ function define_objective_minimize_dist(mpc_struct)
     #@NLobjective(m, Min, sqrt((x[(N-1)*8 + 1]-0)^2 + (x[(N-1)*8 + 2]-10)^2))
     @NLobjective(m, Min, sqrt((x[(N-1)*8 + 1]- z[1])^2 + (x[(N-1)*8 + 2]-z[2])^2))
 
+    return mpc_struct
+end
+
+#maximizes the driven distance on the track by taking the minimize dist function computing the distance with a vector projection
+function define_objective_max_track_dist(mpc_struct)
+    m = mpc_struct.m
+    x = mpc_struct.x
+    N = mpc_struct.N
+    z = mpc_struct.z
+
+
+    #a2 = a - ((a*b)/(b*b))*b
+    #c = (ax * bx + ay *by)/(bx^2 + by^2)
+    #a2x = ax - c * bx
+    #a2y = ay - c * by
+    #dist = sqrt((a2x)^2 + (a2y)^2)
+
+    dist(ax, ay, bx, by) =  sqrt((ax - (ax * bx + ay *by)/(bx^2 + by^2)*bx)^2 + (ay - (ax * bx + ay *by)/(bx^2 + by^2)*by)^2)
+    JuMP.register(m, :dist, 4, dist, autodiff=true)
+    @NLexpression(m, min_dist , dist(x[N*8 + 1] - z[1], x[N*8 + 2] - z[2], z[3]- z[1], z[4] - z[2]))
+    @NLobjective(m, Min, min_dist)
     return mpc_struct
 end
 
@@ -295,6 +316,22 @@ function update_track_forward_point(mpc_struct, point)
      z = mpc_struct.z
      setvalue(z[1], point[1])
      setvalue(z[2], point[2])
+     return mpc_struct
+end
+
+#this function is used to update the point the minimize_dist cost function minimizes the distance to
+function update_track_forward_point_bounds(mpc_struct, point, track_points)
+     z = mpc_struct.z
+     #forward point
+     setvalue(z[1], point[1])
+     setvalue(z[2], point[2])
+     #corresponding left point
+     setvalue(z[3], track_points[1])
+     setvalue(z[4], track_points[2])
+     #corresponding right point
+     setvalue(z[5], track_points[3])
+     setvalue(z[6], track_points[4])
+
      return mpc_struct
 end
 

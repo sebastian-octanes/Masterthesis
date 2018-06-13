@@ -253,6 +253,8 @@ function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, 
     evalPoints = RaceCourse.getSplinePositions(itpTrack, stateVector, N)
     trackPoints = RaceCourse.getTrackPoints(itpTrack, itpLeftBound, itpRightBound, evalPoints, N)
     forwardPoint = RaceCourse.getForwardTrackPoint(itpTrack, evalPoints, N)
+    forwardPointBounds = RaceCourse.getForwardTrackPointBounds(itpLeftBound, itpRightBound, evalPoints, N)
+
     print("last TrackPoint", trackPoints)
     print("\nforwardPoint", forwardPoint)
     mpc_struct = MPCStruct(N, 0, 0, 0, 0, 0)
@@ -260,16 +262,17 @@ function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, 
     #mpc_struct = define_constraint_nonlinear_bycicle(mpc_struct)
     mpc_struct = define_constraint_kin_bycicle(mpc_struct)
     mpc_struct = define_constraint_start_pose(mpc_struct, startPose)
-    #mpc_struct = define_constraint_tangents(mpc_struct, trackPoints)
+    mpc_struct = define_constraint_tangents(mpc_struct, trackPoints)
     #mpc_struct = define_constraint_max_search_dist(mpc_struct, trackPoints)
     #mpc_struct = define_objective(mpc_struct)
     #mpc_struct = define_objective_middle(mpc_struct)
     #mpc_struct = define_objective_minimize_dist(mpc_struct)
-    mpc_struct = define_objective_minimize_dist_soft_const(mpc_struct,2, 1)
+    mpc_struct = define_objective_max_track_dist(mpc_struct)
+    #mpc_struct = define_objective_minimize_dist_soft_const(mpc_struct,2, 1)
     #mpc_struct = define_objective_minimize_dist_soft_const_ext(mpc_struct,10, 1)
 
-    mpc_struct = update_track_forward_point(mpc_struct, forwardPoint)
-
+    #mpc_struct = update_track_forward_point(mpc_struct, forwardPoint)
+    mpc_struct = update_track_forward_point_bounds(mpc_struct, forwardPoint, forwardPointBounds)
     return mpc_struct
 end
 
@@ -300,9 +303,9 @@ itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack4(trackWidth)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrackUUTurn(trackWidth)
 
 
-N = 10
+N = 40
 printLevel = 0
-dt = 0.1
+dt = 0.05
 max_speed = 20
 mpc_struct = initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed, trackWidth)
 event = Event()
@@ -352,7 +355,9 @@ while isopen(window)
     evalPoints = RaceCourse.getSplinePositions(itpTrack, stateVector, N)
     trackPoints = RaceCourse.getTrackPoints(itpTrack, itpLeftBound, itpRightBound, evalPoints, N)
     forwardPoint = RaceCourse.getForwardTrackPoint(itpTrack, evalPoints, N)
-    update_track_forward_point(mpc_struct, forwardPoint)
+    forwardPointBounds = RaceCourse.getForwardTrackPointBounds(itpLeftBound, itpRightBound, evalPoints, N)
+    #update_track_forward_point(mpc_struct, forwardPoint)
+    update_track_forward_point_bounds(mpc_struct, forwardPoint, forwardPointBounds)
     update_track_points(mpc_struct, trackPoints)
 
     #timer

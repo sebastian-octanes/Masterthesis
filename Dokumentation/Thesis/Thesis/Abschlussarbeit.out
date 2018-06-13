@@ -4,37 +4,35 @@
 \BOOKMARK [0][-]{chapter.2}{Stand der Technik}{}% 4
 \BOOKMARK [0][-]{chapter.3}{Trajektionsplanung und Fahrzeugregelung}{}% 5
 \BOOKMARK [1][-]{section.3.1}{Model Predictive Control}{chapter.3}% 6
-\BOOKMARK [2][-]{subsection.3.1.1}{Funktion}{section.3.1}% 7
-\BOOKMARK [1][-]{section.3.2}{Optimierung}{chapter.3}% 8
-\BOOKMARK [2][-]{subsection.3.2.1}{Simplex - Verfahren}{section.3.2}% 9
-\BOOKMARK [2][-]{subsection.3.2.2}{Innere-Punkte-Verfahren}{section.3.2}% 10
-\BOOKMARK [2][-]{subsection.3.2.3}{Automatische Ableitung}{section.3.2}% 11
-\BOOKMARK [1][-]{section.3.3}{Fahrzeugmodelle}{chapter.3}% 12
-\BOOKMARK [2][-]{subsection.3.3.1}{Kinematisches Modell}{section.3.3}% 13
-\BOOKMARK [2][-]{subsection.3.3.2}{Reifenmodell}{section.3.3}% 14
-\BOOKMARK [2][-]{subsection.3.3.3}{Dynamisches Fahrzeugmodell}{section.3.3}% 15
-\BOOKMARK [1][-]{section.3.4}{Programmiersprachen}{chapter.3}% 16
-\BOOKMARK [2][-]{subsection.3.4.1}{Python}{section.3.4}% 17
-\BOOKMARK [2][-]{subsection.3.4.2}{Julia}{section.3.4}% 18
-\BOOKMARK [0][-]{chapter.4}{MPC zur Trajektionsplanung und Regelung}{}% 19
-\BOOKMARK [1][-]{section.4.1}{Fahrzeugmodell}{chapter.4}% 20
-\BOOKMARK [1][-]{section.4.2}{Kostenfunktionen}{chapter.4}% 21
-\BOOKMARK [1][-]{section.4.3}{Strecken,- und Positionsbeschr\344nkung}{chapter.4}% 22
-\BOOKMARK [2][-]{subsubsection.4.3.0.1}{Suchbereichsbeschr\344nkung}{section.4.3}% 23
-\BOOKMARK [0][-]{chapter.5}{Simulationsumgebung}{}% 24
-\BOOKMARK [1][-]{section.5.1}{Simple and Fast Multimedia Library}{chapter.5}% 25
-\BOOKMARK [1][-]{section.5.2}{Trackdrive}{chapter.5}% 26
-\BOOKMARK [0][-]{chapter.6}{Evaluierung}{}% 27
-\BOOKMARK [1][-]{section.6.1}{Verifizierung der Fahrzeugmodelle}{chapter.6}% 28
-\BOOKMARK [2][-]{subsection.6.1.1}{Kinematisches Modell constraint of beta}{section.6.1}% 29
-\BOOKMARK [1][-]{section.6.2}{Regelung verschiedener Modelle}{chapter.6}% 30
-\BOOKMARK [2][-]{subsection.6.2.1}{Was hat beta f\374r einen Einfluss auf die Regelung?}{section.6.2}% 31
-\BOOKMARK [1][-]{section.6.3}{Kostenfunktionen}{chapter.6}% 32
-\BOOKMARK [0][-]{chapter.7}{Ausblick}{}% 33
-\BOOKMARK [1][-]{section.7.1}{Dynamisches Fahrzeugmodell im MPC}{chapter.7}% 34
-\BOOKMARK [1][-]{section.7.2}{Trajektionsregelung}{chapter.7}% 35
-\BOOKMARK [1][-]{section.7.3}{Zweispurmodell}{chapter.7}% 36
-\BOOKMARK [1][-]{section.7.4}{Zusammenfassung}{chapter.7}% 37
-\BOOKMARK [0][-]{appendix.A}{Anhang}{}% 38
-\BOOKMARK [0][-]{chapter*.53}{Abk\374rzungsverzeichnis}{}% 39
-\BOOKMARK [0][-]{chapter*.54}{Literaturverzeichnis}{}% 40
+\BOOKMARK [1][-]{section.3.2}{Optimierung}{chapter.3}% 7
+\BOOKMARK [2][-]{subsection.3.2.1}{Simplex - Verfahren}{section.3.2}% 8
+\BOOKMARK [2][-]{subsection.3.2.2}{Innere-Punkte-Verfahren}{section.3.2}% 9
+\BOOKMARK [2][-]{subsection.3.2.3}{Automatische Ableitung}{section.3.2}% 10
+\BOOKMARK [1][-]{section.3.3}{Fahrzeugmodelle}{chapter.3}% 11
+\BOOKMARK [2][-]{subsection.3.3.1}{Kinematisches Modell}{section.3.3}% 12
+\BOOKMARK [2][-]{subsection.3.3.2}{Reifenmodell}{section.3.3}% 13
+\BOOKMARK [2][-]{subsection.3.3.3}{Dynamisches Fahrzeugmodell}{section.3.3}% 14
+\BOOKMARK [1][-]{section.3.4}{Programmiersprachen}{chapter.3}% 15
+\BOOKMARK [2][-]{subsection.3.4.1}{Python}{section.3.4}% 16
+\BOOKMARK [2][-]{subsection.3.4.2}{Julia}{section.3.4}% 17
+\BOOKMARK [0][-]{chapter.4}{MPC zur Trajektionsplanung und Regelung}{}% 18
+\BOOKMARK [1][-]{section.4.1}{Fahrzeugmodell}{chapter.4}% 19
+\BOOKMARK [1][-]{section.4.2}{Kostenfunktionen}{chapter.4}% 20
+\BOOKMARK [1][-]{section.4.3}{Strecken,- und Positionsbeschr\344nkung}{chapter.4}% 21
+\BOOKMARK [0][-]{chapter.5}{Simulationsumgebung}{}% 22
+\BOOKMARK [1][-]{section.5.1}{Simple and Fast Multimedia Library}{chapter.5}% 23
+\BOOKMARK [1][-]{section.5.2}{Trackdrive}{chapter.5}% 24
+\BOOKMARK [0][-]{chapter.6}{Evaluierung}{}% 25
+\BOOKMARK [1][-]{section.6.1}{Verifizierung der Fahrzeugmodelle}{chapter.6}% 26
+\BOOKMARK [2][-]{subsection.6.1.1}{Kinematisches Modell constraint of beta}{section.6.1}% 27
+\BOOKMARK [1][-]{section.6.2}{Regelung verschiedener Modelle}{chapter.6}% 28
+\BOOKMARK [2][-]{subsection.6.2.1}{Was hat beta f\374r einen Einfluss auf die Regelung?}{section.6.2}% 29
+\BOOKMARK [1][-]{section.6.3}{Kostenfunktionen}{chapter.6}% 30
+\BOOKMARK [0][-]{chapter.7}{Ausblick}{}% 31
+\BOOKMARK [1][-]{section.7.1}{Dynamisches Fahrzeugmodell im MPC}{chapter.7}% 32
+\BOOKMARK [1][-]{section.7.2}{Trajektionsregelung}{chapter.7}% 33
+\BOOKMARK [1][-]{section.7.3}{Zweispurmodell}{chapter.7}% 34
+\BOOKMARK [1][-]{section.7.4}{Zusammenfassung}{chapter.7}% 35
+\BOOKMARK [0][-]{appendix.A}{Anhang}{}% 36
+\BOOKMARK [0][-]{chapter*.58}{Abk\374rzungsverzeichnis}{}% 37
+\BOOKMARK [0][-]{chapter*.59}{Literaturverzeichnis}{}% 38
