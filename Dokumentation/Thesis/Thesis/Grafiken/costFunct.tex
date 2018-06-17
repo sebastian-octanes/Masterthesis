@@ -1,0 +1,18 @@
+
+\begin{tikzpicture}
+\begin{axis}[
+width = 0.8\textwidth,
+xmin= -3,
+xmax= 3,
+ymax = 50,
+ylabel=Kosten,
+xlabel=Distanz von der Mitte in m]
+
+\addplot [color=red, mark=none, line width=0.5mm] table [x index=0, y index=1]{Data/costFunct.dat};
+\addplot [color=blue, mark=none, line width=0.5mm] table [x index=0, y index=2]{Data/costFunct.dat};
+\addplot [color=green, mark=none, line width=0.5mm] table [x index=0, y index=3]{Data/costFunct.dat};
+\addplot [color=orange, mark=none, line width=0.5mm] table [x index=0, y index=4]{Data/costFunct.dat};
+
+
+\end{axis}
+\end{tikzpicture}

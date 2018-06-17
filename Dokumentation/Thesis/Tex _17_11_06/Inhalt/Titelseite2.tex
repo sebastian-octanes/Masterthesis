@@ -1,0 +1,103 @@
+%Define our elements for our title page
+\makeatletter
+
+\renewcommand{\title}[1]{\gdef\@title{#1}}
+\newcommand{\artderarbeit}[1]{\gdef\@artderarbeit{#1}}
+\renewcommand{\author}[1]{\gdef\@author{#1}}
+\newcommand\@matrikelnummer{\relax}
+\newcommand{\matrikelnummer}[1]{\gdef\@matrikelnummer{#1}}
+\newcommand{\professor}[1]{\gdef\@professor{#1}}
+\newcommand\@studiengang{\relax}
+\newcommand{\studiengang}[1]{\gdef\@studiengang{#1}}
+\newcommand{\university}[1]{\gdef\@university{#1}}
+\newcommand{\faulogo}[1]{\gdef\@faulogo{Abbildungen/#1}}
+\newcommand{\likelogo}[1]{\gdef\@likelogo{Abbildungen/#1}}
+\newcommand{\submitdate}[1]{\gdef\@submitdate{#1}}
+\newcommand{\startdate}[1]{\gdef\@startdate{#1}}
+\newcommand{\declaration}[1]{\gdef\@declaration{#1}}
+\newcommand\@betreuerB{\relax}
+\newcommand{\betreuerB}[1]{\gdef\@betreuerB{#1}}
+\newcommand\@betreuerC{\relax}
+\newcommand{\betreuerC}[1]{\gdef\@betreuerC{#1}}
+\newcommand\@betreuerD{\relax}
+\newcommand{\betreuerD}[1]{\gdef\@betreuerD{#1}}
+ 
+%-----------------------------------------------------------------------
+% Title page definition.
+%-----------------------------------------------------------------------
+\newcommand{\titlep}{
+        \thispagestyle{empty}
+        \begin{titlepage}
+		\enlargethispage{4cm}
+%        \null
+		\vspace*{-2cm} 
+        \begin{center}
+{\rmfamily\large \textbf{ Friedrich-Alexander-Universität Erlangen-Nürnberg}}
+\vskip 1,4cm
+\begin{center}
+%\includegraphics[scale=0.80, natwidth=1024, natheight=200]{\@faulogo} \hfill
+\includegraphics[scale=0.80]{\@faulogo} \hfill
+\vskip .8cm
+{\large \bfseries Lehrstuhl für Informationstechnik\\(Schwerpunkt Kommunikationselektronik)}
+\vskip 1.2cm
+%\includegraphics[scale=0.40, natwidth=1024, natheight=200]{\@likelogo} \hfill
+\includegraphics[scale=0.40]{\@likelogo} \hfill
+\end{center}
+\vskip .3cm
+{\Large \@artderarbeit~mit dem Thema:\\}
+\vskip 1.7cm
+{\rmfamily\Large\bfseries\expandafter{\@title}}
+        \end{center}
+\vskip 1.5cm
+		
+\begin{table}[h!]
+	\flushleft
+%\setlength{\tabcolsep}{10pt}
+	\large
+\renewcommand{\arraystretch}{1,1}
+	\begin{tabular}{p{4cm}l}
+Bearbeiter     & {\rmfamily\large\expandafter{\@author}}\tabularnewline[.6ex]
+\ifthenelse{\equal{\@matrikelnummer}{\relax}}{} {Matrikelnr. & \textrm{\@matrikelnummer}\tabularnewline[.6ex]}
+\ifthenelse{\equal{\@studiengang}{\relax}}{}    {Studiengang & \textrm{\@studiengang}\tabularnewline[.6ex]}
+Betreuer  & {\rmfamily\large\expandafter{\@professor}}\tabularnewline[.6ex]
+                & \ifthenelse{\equal{\@betreuerB}{\relax}}{\vspace*{-0.6cm}}{\rmfamily\large{\@betreuerB}} \tabularnewline[.6ex]
+                & \ifthenelse{\equal{\@betreuerC}{\relax}}{\vspace*{-0.9cm}}{\rmfamily\large{\@betreuerC}}  \tabularnewline[.6ex]
+                & \ifthenelse{\equal{\@betreuerD}{\relax}}{\vspace*{-0.7cm}}{\rmfamily\large{\@betreuerD}} \tabularnewline[.6ex] Beginn         & {\rmfamily\large\expandafter{\@startdate}}\tabularnewline[.6ex]
+Ende           & {\rmfamily\large\expandafter{\@submitdate}}            
+	\end{tabular}
+\end{table}
+	        \vskip1cm
+        \end{titlepage}
+        \newpage}
+        \makeatother
+        
+ 
+
+
+%-----------------------------------------------------------------------
+% redefined \maketite
+%-----------------------------------------------------------------------
+\renewcommand{\maketitle}{%
+                \titlep
+	     }
+%-----------------------------------------------------------------------
+%  hier die eigenen Daten eintragen
+%----------------------------------------------------------------------
+    
+\title{Latex für Abschlussarbeiten} % Mussfeld
+\artderarbeit{Masterarbeit}         % Mussfeld
+\author{Name Student}               % Mussfeld
+\studiengang{Elektrotechnik-Elektronik-Informationstechnik}        % if Feld
+\matrikelnummer{1234545646}         % if Feld
+\faulogo{fau.png}                   % Mussfeld
+\likelogo{like.png}                 % Mussfeld
+\professor{Prof. Dr.-Ing. Jörn Thielecke}       % Mussfeld
+\betreuerB{Markus Hiller, M.\,Sc.}           % if Feld
+\betreuerC{Florian Particke, M.\,Sc.}              % if Feld
+%\betreuerD{Betreuer D}             % if Feld  u.U. auskommentieren 
+\startdate{01. Januar 2015}         % Mussfeld
+\submitdate{08. August 2016}        % Mussfeld
+
+% \maketitle
+
+\maketitle

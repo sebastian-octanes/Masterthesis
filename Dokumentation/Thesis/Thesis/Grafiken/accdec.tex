@@ -1,0 +1,23 @@
+
+\begin{tikzpicture}
+\begin{axis}[
+width = 0.8\textwidth,
+height = 0.6\textwidth,
+xmin= 0,
+xmax= 10,
+ymin= 0,
+ymax = 50,
+xlabel=Zeit in s,
+ylabel=Geschwindigkeit in $\frac{m}{s}$,
+legend pos=north east]
+\addplot [color=red, mark=none, line width=0.5mm] table [ y=$Q1$, x=P]{Data/accdec.dat};
+\addplot [color=blue, mark=none, line width=0.5mm] table [ y=$Q2$, x=P]{Data/accdec.dat};
+\addplot [color=green, mark=none, line width=0.5mm] table [ y=$Q3$, x=P]{Data/accdec.dat};
+\addplot [dashed, mark=none] coordinates {(4.55, 0) (4.55, 32.777)};
+\addplot [dashed, mark=none] coordinates {(3.4, 0) (3.4, 32.777)};
+\addlegendentry{kinematic model}
+\addlegendentry{dynamic model}
+\addlegendentry{enhanced model}
+
+\end{axis}
+\end{tikzpicture}

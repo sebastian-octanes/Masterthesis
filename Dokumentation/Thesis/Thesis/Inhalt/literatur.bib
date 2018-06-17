@@ -1,0 +1,328 @@
+% Encoding: UTF-8
+
+@article{SEIF2016159,
+	title = "Autonomous Driving in the iCity—HD Maps as a Key Challenge of the Automotive Industry",
+	journal = "Engineering",
+	volume = "2",
+	number = "2",
+	pages = "159 - 162",
+	year = "2016",
+	issn = "2095-8099",
+	doi = "https://doi.org/10.1016/J.ENG.2016.02.010",
+	url = "http://www.sciencedirect.com/science/article/pii/S2095809916309432",
+	author = "Heiko G. Seif and Xiaolong Hu",
+	keywords = "Autonomous driving, Traffic infrastructure, iCity, Car-to-X communication, Connected vehicle, HD maps"
+}
+
+@MISC{FsWorldRank:1,
+	HOWPUBLISHED = "\url{https://mazur-events.de/fs-world/}",
+	TITLE = "Formula Student - World Ranking Lists",
+	NOTE = "Accessed on 2018-05-14"
+}
+
+
+@INPROCEEDINGS{GPS_Fusion,
+	author={M. Spcmgenberg and V. Calmettes and J. Y. Tourneref},
+	booktitle={2007 15th European Signal Processing Conference},
+	title={Fusion of GPS, INS and odometric data for automotive navigation},
+	year={2007},
+	volume={},
+	number={},
+	pages={886-890},
+	keywords={Global Positioning System;Kalman filters;accelerometers;distance measurement;inertial navigation;multipath channels;nonlinear filters;road vehicles;velocity measurement;GPS;INS;WSS;accelerometers;automotive navigation;common navigation system;global positioning system;ground vehicles;inertial navigation systems;inertial sensors;localization task;masking effect;measurement sources;multipath effect;odometric data;unscented Kalman filters;wheel speed sensors;Couplings;Global Positioning System;Mathematical model;Satellites;Sensors;Vehicles;Wheels},
+	doi={},
+	ISSN={},
+	month={Sept},}
+
+
+@Article{GPS_IMU_Fusion,
+	AUTHOR = {Wang, Shiyao and Deng, Zhidong and Yin, Gang},
+	TITLE = {An Accurate GPS-IMU/DR Data Fusion Method for Driverless Car Based on a Set of Predictive Models and Grid Constraints},
+	JOURNAL = {Sensors},
+	VOLUME = {16},
+	YEAR = {2016},
+	NUMBER = {3},
+	ARTICLE NUMBER = {280},
+	URL = {http://www.mdpi.com/1424-8220/16/3/280},
+	ISSN = {1424-8220},
+	ABSTRACT = {A high-performance differential global positioning system (GPS)  receiver with real time kinematics provides absolute localization for driverless cars. However, it is not only susceptible to multipath effect but also unable to effectively fulfill precise error correction in a wide range of driving areas. This paper proposes an accurate GPS–inertial measurement unit (IMU)/dead reckoning (DR) data fusion method based on a set of predictive models and occupancy grid constraints. First, we employ a set of autoregressive and moving average (ARMA) equations that have different structural parameters to build maximum likelihood models of raw navigation. Second, both grid constraints and spatial consensus checks on all predictive results and current measurements are required to have removal of outliers. Navigation data that satisfy stationary stochastic process are further fused to achieve accurate localization results. Third, the standard deviation of multimodal data fusion can be pre-specified by grid size. Finally, we perform a lot of field tests on a diversity of real urban scenarios. The experimental results demonstrate that the method can significantly smooth small jumps in bias and considerably reduce accumulated position errors due to DR. With low computational complexity, the position accuracy of our method surpasses existing state-of-the-arts on the same dataset and the new data fusion method is practically applied in our driverless car.},
+	DOI = {10.3390/s16030280}
+}
+
+@ARTICLE{CentreOfPercussion,
+	author = {{Kritayakirana}, K. and {Gerdes}, J.~C.},
+	title = "{Using the centre of percussion to design a steering controller for an autonomous race car}",
+	journal = {Vehicle System Dynamics, International Journal of Vehicle Mechanics and Mobility},
+	keywords = {autonomous racing, vehicle control at the limits of handling, state-space steering controller, centre of percussion, stability at the limits of handling, Lyapunov function},
+	year = 2012,
+	month = jan,
+	volume = 50,
+	pages = {33-51},
+	doi = {10.1080/00423114.2012.672842},
+	adsurl = {http://adsabs.harvard.edu/abs/2012VSD....50S..33K},
+	adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+@ARTICLE{MPC_Kinetic,
+	author = {Henrik Bey, Lukas Brunke, Grischa Gottschalg, Lukas Ortmann},
+	title = "{MPC for Trajectory Planning of Race Cars with Obstacle Avoidance}",
+	year = 2015,
+	month = December
+}
+
+@article{rc_car_1_43,
+	author = {Liniger Alexander and Domahidi Alexander and Morari Manfred},
+	title = {Optimization‐based autonomous racing of 1:43 scale RC cars},
+	journal = {Optimal Control Applications and Methods},
+	volume = {36},
+	number = {5},
+	pages = {628-647},
+	keywords = {autonomous racing, vehicle control, drift control, fast model predictive control, nonlinear model predictive control, nonlinear receding horizon control},
+	doi = {10.1002/oca.2123},
+	url = {https://onlinelibrary.wiley.com/doi/abs/10.1002/oca.2123},
+	eprint = {https://onlinelibrary.wiley.com/doi/pdf/10.1002/oca.2123},
+	abstract = {Summary This paper describes autonomous racing of RC race cars based on mathematical optimization. Using a dynamical model of the vehicle, control inputs are computed by receding horizon based controllers, where the objective is to maximize progress on the track subject to the requirement of staying on the track and avoiding opponents. Two different control formulations are presented. The first controller employs a two‐level structure, consisting of a path planner and a nonlinear model predictive controller (NMPC) for tracking. The second controller combines both tasks in one nonlinear optimization problem (NLP) following the ideas of contouring control. Linear time varying models obtained by linearization are used to build local approximations of the control NLPs in the form of convex quadratic programs (QPs) at each sampling time. The resulting QPs have a typical MPC structure and can be solved in the range of milliseconds by recent structure exploiting solvers, which is key to the real‐time feasibility of the overall control scheme. Obstacle avoidance is incorporated by means of a high‐level corridor planner based on dynamic programming, which generates convex constraints for the controllers according to the current position of opponents and the track layout. The control performance is investigated experimentally using 1:43 scale RC race cars, driven at speeds of more than 3 m/s and in operating regions with saturated rear tire forces (drifting). The algorithms run at 50 Hz sampling rate on embedded computing platforms, demonstrating the real‐time feasibility and high performance of optimization‐based approaches for autonomous racing. Copyright © 2014 John Wiley \& Sons, Ltd.}
+}
+
+@article{Williams2016AggressiveDW,
+	title={Aggressive driving with model predictive path integral control},
+	author={Grady Williams and Paul Drews and Brian Goldfain and James M. Rehg and Evangelos Theodorou},
+	journal={2016 IEEE International Conference on Robotics and Automation (ICRA)},
+	year={2016},
+	pages={1433-1440}
+}
+
+@article{KRITAYAKIRANA2010548,
+	title = "Autonomous Cornering at the Limits: Maximizing a “g-g” Diagram by Using Feedforward Trail-Braking and Throttle-on-Exit",
+	journal = "IFAC Proceedings Volumes",
+	volume = "43",
+	number = "7",
+	pages = "548 - 553",
+	year = "2010",
+	note = "6th IFAC Symposium on Advances in Automotive Control",
+	issn = "1474-6670",
+	doi = "https://doi.org/10.3182/20100712-3-DE-2013.00060",
+	url = "http://www.sciencedirect.com/science/article/pii/S1474667015368865",
+	author = "Krisada Kritayakirana and J. Christian Gerdes",
+	keywords = "Vehicle Dynamics, Autonomous Driving, Vehicle Dynamics Control,  diagram, Clothoid, Trail-Braking, Throttle-on-Exit"
+}
+
+@ARTICLE{MPC_Dynamic,
+	author = {GONÇALO COLLARES PEREIRA},
+	title = "{Model Predictive Control	for Autonomous Driving of
+	Over-Actuated Research Vehicle}",
+	year = 2016
+}
+
+@INPROCEEDINGS{6374146,
+	author={C. Athanasiadis and D. Galanopoulos and A. Tefas},
+	booktitle={2012 IEEE Conference on Computational Intelligence and Games (CIG)},
+	title={Progressive neural network training for the Open Racing Car Simulator},
+	year={2012},
+	volume={},
+	number={},
+	pages={116-123},
+	keywords={computer games;learning (artificial intelligence);neural nets;bot teachers;car racing controller;driving behavior;open racing car simulator;progressive neural network training;rule based decision driver;steering;Acceleration;Artificial neural networks;Biological neural networks;Games;Gears;Training},
+	doi={10.1109/CIG.2012.6374146},
+	ISSN={2325-4270},
+	month={Sept},}
+
+
+@ARTICLE{MPC_Dynamic_Tire_Model,
+	author = {FLORIAN CURINGA},
+	title = "{Autonomous racing using
+	model predictive control}",
+	year = 2018
+}
+
+@MISC{Waymo:1,
+	HOWPUBLISHED = "\url{https://www.theregister.co.uk/2018/05/09/first_autonomous_vehicles/}",
+	TITLE = "First autonomous taxi in 2018 says Waymo",
+	NOTE = "Accessed on 2018-05-15"
+}
+
+@INPROCEEDINGS{BicycleModel,
+	author={Danwei Wang and Feng Qi},
+	booktitle={Proceedings 2001 ICRA. IEEE International Conference on Robotics and Automation (Cat. No.01CH37164)},
+	title={Trajectory planning for a four-wheel-steering vehicle},
+	year={2001},
+	volume={4},
+	number={},
+	pages={3320-3325 vol.4},
+	keywords={kinematics;path planning;position control;road vehicles;four-wheel-steering vehicle;steering planning;trajectory planning;vehicle kinematics;velocity planning;Automotive engineering;Axles;Kinematics;Path planning;Remotely operated vehicles;Technology planning;Torque;Trajectory;Vehicle driving;Wheels},
+	doi={10.1109/ROBOT.2001.933130},
+	ISSN={1050-4729},
+	month={},}
+
+@book{rajamani2011vehicle,
+	title={Vehicle Dynamics and Control},
+	author={Rajamani, R.},
+	isbn={9781461414339},
+	lccn={2011940692},
+	series={Mechanical Engineering Series},
+	url={https://books.google.de/books?id=cZJFDox4KuUC},
+	year={2011},
+	publisher={Springer US}
+}
+
+@INPROCEEDINGS{7225830,
+	author={J. Kong and M. Pfeiffer and G. Schildbach and F. Borrelli},
+	booktitle={2015 IEEE Intelligent Vehicles Symposium (IV)},
+	title={Kinematic and dynamic vehicle models for autonomous driving control design},
+	year={2015},
+	volume={},
+	number={},
+	pages={1094-1099},
+	keywords={control system synthesis;kinematics;predictive control;road traffic control;road vehicles;vehicle dynamics;MPC;autonomous driving control design;discretization effect;dynamic vehicle models;forecast error statistics;kinematic vehicle models;model predictive control;model-based control design;simple kinematic bicycle model;windy road;Bicycles;Kinematics;Predictive models;Tires;Trajectory;Vehicle dynamics},
+	doi={10.1109/IVS.2015.7225830},
+	ISSN={1931-0587},
+	month={June},}
+
+
+@article{magicFormula,
+	author = { Hans B.   Pacejka  and  Egbert   Bakker },
+	title = {THE MAGIC FORMULA TYRE MODEL},
+	journal = {Vehicle System Dynamics},
+	volume = {21},
+	number = {sup001},
+	pages = {1-18},
+	year  = {1992},
+	publisher = {Taylor & Francis},
+	doi = {10.1080/00423119208969994},
+	
+	URL = { 
+	https://doi.org/10.1080/00423119208969994
+	
+	},
+	eprint = { 
+	https://doi.org/10.1080/00423119208969994
+	
+	}	
+}
+
+@MISC{LineareOptimierung:1,
+	HOWPUBLISHED = "\url{https://de.wikipedia.org/wiki/Lineare_Optimierung}",
+	TITLE = "Lineare Optimierung",
+	NOTE = "Accessed on 2018-05-28"
+}
+
+
+@MISC{InnerePunkteVerfahren:1,
+	HOWPUBLISHED = "\url{https://de.wikipedia.org/wiki/Innere-Punkte-Verfahren}",
+	TITLE = "Innere-Punkte_Verfahren",
+	NOTE = "Accessed on 2018-05-28"
+}
+
+@MISC{NichtlineareOptimierung:1,
+	HOWPUBLISHED = "\url{https://de.wikipedia.org/wiki/Nichtlineare_Optimierung}",
+	TITLE = "Nichtlineare Optimierung",
+	NOTE = "Accessed on 2018-05-28"
+}
+
+
+@article{doi:10.1137/S0036144502414942,
+	author = {Anders Forsgren and Philip E. Gill and Margaret H. Wright},
+	title = {Interior Methods for Nonlinear Optimization},
+	journal = {SIAM Review},
+	volume = {44},
+	number = {4},
+	pages = {525-597},
+	year = {2002},
+	doi = {10.1137/S0036144502414942},
+	
+	URL = { 
+	https://doi.org/10.1137/S0036144502414942
+	
+	},
+	eprint = { 
+	https://doi.org/10.1137/S0036144502414942
+	}	
+}
+
+@inbook{dantzig51,
+	address = {New York},
+	author = {Dantzig, G. B.},
+	chapter = {XXI},
+	citeulike-article-id = {576839},
+	keywords = {lp, pivot},
+	posted-at = {2006-04-05 13:55:08},
+	priority = {0},
+	publisher = {Wiley},
+	title = {{Maximization of a Linear Function of Variables Subject to Linear Inequalities, in Activity Analysis of Production and Allocation}},
+	year = {1951}
+}
+
+
+@MISC{simplexWiki:1,
+	HOWPUBLISHED = "\url{https://de.wikipedia.org/wiki/Simplex-Verfahren}",
+	TITLE = "Simplex Verfahren",
+	NOTE = "Accessed on 2018-05-31"
+}
+
+@book{seborg2010process,
+	title={Process Dynamics and Control},
+	author={Seborg, D.E. and Mellichamp, D.A. and Edgar, T.F. and Doyle, F.J.},
+	isbn={9780470128671},
+	lccn={2010000779},
+	url={https://books.google.de/books?id=\_PQ42kOvtfwC},
+	year={2010},
+	publisher={John Wiley \& Sons}
+}
+
+@INPROCEEDINGS{quadcopterMpc,
+	author={G. Ganga and M. M. Dharmana},
+	booktitle={2017 International Conference on Circuit ,Power and Computing Technologies (ICCPCT)},
+	title={MPC controller for trajectory tracking control of quadcopter},
+	year={2017},
+	volume={},
+	number={},
+	pages={1-6},
+	keywords={attitude control;autonomous aerial vehicles;control system synthesis;helicopters;linear systems;predictive control;three-term control;trajectory control;vehicle dynamics;LMPC;Linear MPC;MPC controller;MPC techniques;Model Predictive control;PID controller;clear-cut performance criterion;control law computation;dynamic equations;kinematic equations;quadcopter;state constraints;trajectory tracking control;trajectory tracking problem;Acceleration;Angular velocity;Brushless DC motors;Computers;Mathematical model;Trajectory tracking;Vehicle dynamics;MPC;Model;PID;Quadrotor;Trajectory Tracking},
+	doi={10.1109/ICCPCT.2017.8074380},
+	ISSN={},
+	month={April},}
+
+
+@article{carMPC,
+	author = { F. Borrelli , P. Falcone , T. Keviczky , J. Asgari , D. Hrovat  },
+	title = {MPC-based approach to active steering for autonomous vehicle systems },
+	journal = {International Journal of Vehicle Autonomous Systems (IJVAS)},
+	volume = {3},
+	number = {2/3/4},
+	year  = {2005},
+	publisher = {INDERSCIENCE},
+	URL = { 
+	https://www.inderscienceonline.com/doi/abs/10.1504/IJVAS.2005.008237	
+	},
+	
+}
+
+@MISC{Casadi:1,
+	HOWPUBLISHED = "\url{https://github.com/casadi/casadi/wiki}",
+	TITLE = "Casadi",
+	NOTE = "Accessed on 2018-05-30"
+}
+
+
+
+@article{DBLP:journals/corr/TurkinT16,
+	author    = {Andrei Turkin and
+	Aung Thu},
+	title     = {Benchmarking Python Tools for Automatic Differentiation},
+	journal   = {CoRR},
+	volume    = {abs/1606.06311},
+	year      = {2016},
+	url       = {http://arxiv.org/abs/1606.06311},
+	archivePrefix = {arXiv},
+	eprint    = {1606.06311},
+	timestamp = {Wed, 07 Jun 2017 14:42:43 +0200},
+	biburl    = {https://dblp.org/rec/bib/journals/corr/TurkinT16},
+	bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@MISC{julDiff,
+	HOWPUBLISHED = "\url{http://www.juliadiff.org/}",
+	TITLE = "JuliaDiff",
+	NOTE = "Accessed on 2018-06-01"
+}
+
