@@ -292,10 +292,10 @@ function define_objective_minimize_dist_soft_const_ext(mpc_struct, a, b)
     @NLexpression(m, min_dist, sqrt((x[(N-1)*8 + 1]- z[1])^2 + (x[(N-1)*8 + 2]-z[2])^2))
 
 
-    alpha = 10
+    alpha = 2
 
-    k1 = trackWidth/0.5
-    k2 = trackWidth/0.5
+    k1 = - trackWidth/2.0
+    k2 =   trackWidth/2.0
     alpha2 = 2/ (8*(trackWidth/4)^7)
     dist(xX, xY, x0X, x0Y, x1X, x1Y) =  abs((xX - x0X)*(x1X - x0X) + (xY - x0Y)*(x1Y - x0Y)) / sqrt((x1X - x0X)^2 + (x1Y - x0Y)^2)
     #cost(xX, xY, x0X, x0Y, x1X, x1Y) = alpha2 * dist_val1(xX, xY, x0X, x0Y, x1X, x1Y)^2
@@ -303,7 +303,7 @@ function define_objective_minimize_dist_soft_const_ext(mpc_struct, a, b)
 
     JuMP.register(m, :dist, 6, dist, autodiff=true)
     JuMP.register(m, :cost, 6, cost, autodiff=true)
-    @NLexpression(m, soft_constraint, sum(cost(x[(i+1)*8 + 1], x[(i+1)*8 + 2], t[i*6 + 1], t[i*6 + 2], t[i*6 + 3], t[i*6 + 4]) for i in 2:5:N))
+    @NLexpression(m, soft_constraint, sum(cost(x[(i+1)*8 + 1], x[(i+1)*8 + 2], t[i*6 + 1], t[i*6 + 2], t[i*6 + 3], t[i*6 + 4]) for i in 2:2:N-1))
 
     #a= 10
     #b = 1

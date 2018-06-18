@@ -243,7 +243,6 @@ function mapKeyToCarControl(keys, res, N)
     res
 end
 
-
 function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed, trackWidth)
     stateVector = []
     start_=[startPose.x, startPose.y, startPose.x_d, startPose.psi, 0, 0, 0, 0]

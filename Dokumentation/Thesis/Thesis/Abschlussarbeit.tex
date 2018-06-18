@@ -377,8 +377,8 @@ Die Parameter, welche für die \textit{Magic Formula} benötigt werden, wurden v
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=250pt]{Abbildungen/pacejka.png}
-	\caption{Tire Model}
+	\input{Grafiken/tireModel.tex} 
+	\caption{Reifenmodell}
 	\label{fig:pacejka}
 \end{figure}
 
@@ -859,7 +859,44 @@ Die Differenz zwischen den beiden Kostenfunktionen, welche die Distanz zu einem 
 \section{Regelung des dynamischen Modells im Rennkurs}
 In der Realität ist das kinematische Modell nur für geringe Geschwindigkeiten genau genug die Bewegung des Fahrzeugs zu Modellieren. Im Folgenden wird deswegen das Modell im Simulator durch ein dynamische Fahrzeugmodell mit berechneten Reifenkräften ersetzt und evaluiert, wie gut sich das deutlich komplexere System mit dem weiterhin sehr einfachen kinematischen Modell im \ac{MPC}-Algorithmus regeln lässt. 
 Zuerst wird untersucht, ab welchen Geschwindigkeiten die Abweichung zwischen den Modellen signifikant wird. Danach werden die einzelnen elastischen Begrenzung auf ihre Fähigkeit getestet das dynamische Modell auf dem Kurs zu halten und welche Rundenzeiten sie ermöglichen. Im letzten Schritt wird zusätzlich noch untersucht welchen Einfluss $\beta_{max}$ auf die Regelfähigkeit des Algorithmus hat und ob sie sich durch verändern der Werte verbessern lässt. 
-\subsection{Differenz der Modelle}
+\subsection{Modellfehler}
+Um zu verdeutlichen, warum für hohe Geschwindigkeiten ein kinematisches Modell nicht mehr ausreichend ist, werden im folgenden die Modellfehler betrachtet. 
+
+\subsubsection*{Orientierung}
+Bei einer rein longitudinalen oder konstanten lateralen Bewegung ist, wie im vorherigen Kapitel schon gezeigt wurde, die Differenz der einzelnen Fahrzeugmodelle nicht groß. Bei dynamischeren Szenarien werden die Unterschiede dahingegen deutlich sichtbar. Im Plot \ref{fig:modelDiffOrient} ist für ein oszillierenden Lenkwinkel die Änderung der Orientierung geplottet. Erst ohne longitudinale Beschleunigung und im zweiten Plot mit maximaler Beschleunigung zusätzlich zur Lenkwinkeländerung 
+
+\begin{figure}
+	\centering
+	\input{Grafiken/modelDiffOrient.tex} 
+	\caption{}
+	\label{fig:modelDiffOrient}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\input{Grafiken/modelDiffOrientMaxAcc.tex} 
+	\caption{}
+	\label{fig:modelDiffOrientMaxAcc}
+\end{figure}
+
+
+\subsubsection*{Position}
+
+
+\begin{figure}
+	\centering
+	\input{Grafiken/modelDiffPos.tex} 
+	\caption{[links] Die zurückgelegte Trajektorie für den gleichen Input des Lenkwinkels wie in \ref{fig:modelDiffOrient} und einer Geschwindigkeit von 30 m/s. [rechts] Die Abweichung der Position zwischen den einzelnen Modellen und verschiedenen initialen Geschwindigkeiten. Keine Beschleunigung.}
+	\label{fig:modelDiffPos}
+\end{figure}
+
+
+\begin{figure}
+	\centering
+	\input{Grafiken/modelDiffPosMaxAcc.tex} 
+	\caption{[links] Die zurückgelegte Trajektorie für den gleichen Input des Lenkwinkels wie in \ref{fig:modelDiffOrient} und einer Geschwindigkeit von 30 m/s. [rechts] Die Abweichung der Position zwischen den einzelnen Modellen und verschiedenen initialen Geschwindigkeiten. Maximale Beschleunigung.}
+	\label{fig:modelDiffPosMaxAcc}
+\end{figure}
 
 \subsection{Elastische Beschränkung}
 \subsubsection*{Berechnungszeit in Ipopt}

@@ -1,0 +1,17 @@
+\begin{tikzpicture}
+\begin{axis}[
+width = 0.8\textwidth,
+height = 0.5\textwidth,
+xlabel=Schräglaufwinkel in rad,
+ylabel=Laterale Seitenkraft in kN,
+legend pos=north west]
+
+\addplot [color=blue, line width=0.5mm] table [x index=0, y index=1]{Data/tireModel.dat};
+\addplot [color=green,line width=0.5mm] table [x index=0, y index=2]{Data/tireModel.dat};
+
+\addlegendentry{lin. Reifenmodell};
+\addlegendentry{nichtlin. Reifenmodell};
+
+
+\end{axis}
+\end{tikzpicture}

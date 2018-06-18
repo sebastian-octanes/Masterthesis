@@ -29,14 +29,14 @@
 \contentsline {subsection}{\numberline {6.2.1}Pr\IeC {\"a}diktionshorizont}{45}{subsection.6.2.1}
 \contentsline {subsection}{\numberline {6.2.2}Kostenfunktionen}{45}{subsection.6.2.2}
 \contentsline {section}{\numberline {6.3}Regelung des dynamischen Modells im Rennkurs}{47}{section.6.3}
-\contentsline {subsection}{\numberline {6.3.1}Differenz der Modelle}{48}{subsection.6.3.1}
+\contentsline {subsection}{\numberline {6.3.1}Modellfehler}{48}{subsection.6.3.1}
 \contentsline {subsection}{\numberline {6.3.2}Elastische Beschr\IeC {\"a}nkung}{48}{subsection.6.3.2}
 \contentsline {subsection}{\numberline {6.3.3}Einfluss der Geschwindigkeit und Beta Max}{48}{subsection.6.3.3}
-\contentsline {chapter}{\numberline {7}Ausblick}{49}{chapter.7}
-\contentsline {section}{\numberline {7.1}Dynamisches Fahrzeugmodell im MPC}{49}{section.7.1}
-\contentsline {section}{\numberline {7.2}Trajektionsregelung}{49}{section.7.2}
-\contentsline {section}{\numberline {7.3}Zweispurmodell}{49}{section.7.3}
-\contentsline {section}{\numberline {7.4}Zusammenfassung}{49}{section.7.4}
-\contentsline {chapter}{\numberline {A}Anhang}{50}{appendix.A}
-\contentsline {chapter}{Abk\IeC {\"u}rzungsverzeichnis}{52}{chapter*.64}
-\contentsline {chapter}{Literaturverzeichnis}{53}{chapter*.65}
+\contentsline {chapter}{\numberline {7}Ausblick}{52}{chapter.7}
+\contentsline {section}{\numberline {7.1}Dynamisches Fahrzeugmodell im MPC}{52}{section.7.1}
+\contentsline {section}{\numberline {7.2}Trajektionsregelung}{52}{section.7.2}
+\contentsline {section}{\numberline {7.3}Zweispurmodell}{52}{section.7.3}
+\contentsline {section}{\numberline {7.4}Zusammenfassung}{52}{section.7.4}
+\contentsline {chapter}{\numberline {A}Anhang}{53}{appendix.A}
+\contentsline {chapter}{Abk\IeC {\"u}rzungsverzeichnis}{55}{chapter*.71}
+\contentsline {chapter}{Literaturverzeichnis}{56}{chapter*.72}

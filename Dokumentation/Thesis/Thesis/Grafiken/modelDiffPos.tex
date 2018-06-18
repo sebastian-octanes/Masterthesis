@@ -1,0 +1,36 @@
+\begin{tikzpicture}
+\begin{axis}[
+width = 0.5\textwidth,
+xlabel= x-Position in m,
+ylabel= y-Position in m,
+legend pos=north west]
+\addplot [color=red, mark=none, line width=0.5mm] table [x index=0, y index=1]{Data/modelDiffTrajNoAcc.dat};
+\addplot [color=blue, mark=none, line width=0.5mm] table [x index=2, y index=3]{Data/modelDiffTrajNoAcc.dat};
+\addplot [color=green, mark=none, line width=0.5mm] table [x index=4, y index=5]{Data/modelDiffTrajNoAcc.dat};
+
+\addlegendentry{kinematisch};
+\addlegendentry{kinematisch};
+\addlegendentry{K.K};
+
+\end{axis}
+\end{tikzpicture}% NO EMPTY LINE HERE!!!! 
+\begin{tikzpicture}
+\begin{axis}[
+width = 0.5\textwidth,
+xmin= 0,
+xmax = 30,
+ymin= 0,
+ymax=16,
+xlabel= Geschwindigkeit in m/s,
+ylabel= Abweichung in m,
+legend pos=north west]
+\addplot [color=red, mark=none, line width=0.5mm] table [x index=0, y index=1]{Data/modelDiffPositionNoAcc.dat};
+\addplot [color=blue, mark=none, line width=0.5mm] table [x index=0, y index=2]{Data/modelDiffPositionNoAcc.dat};
+\addplot [color=green, mark=none, line width=0.5mm] table [x index=0, y index=3]{Data/modelDiffPositionNoAcc.dat};
+
+\addlegendentry{kinematisch-dynamisch};
+\addlegendentry{kinematisch-kamsch};
+\addlegendentry{dynamisch-kamsch};
+
+\end{axis}
+\end{tikzpicture}

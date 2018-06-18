@@ -344,8 +344,8 @@ function dyn_model_kamCircle(carPose, carControl, dt)
     Fby = pacejka_tire_model_complex(slip_angle_b, false)
 
     #recalculate the Force the car distributes on both wheels by using the kammsch circle
-    Fbdiff = F_max - fabs(Fbx)
-    Ffdiff = F_max - fabs(Ffx)
+    Fbdiff = F_max - abs(Fbx)
+    Ffdiff = F_max - abs(Ffx)
     if(Fby >= 0 && Fby > Fbdiff)
         Fby = Fbdiff
     end
