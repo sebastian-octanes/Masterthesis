@@ -42,10 +42,10 @@ function extract_orientation(kin)
 end
 
 #speed = 1:1:30
-speed = [30]
+speed = [10]
 t = 0:.05:2
 dt = 0.05
-controlVectorThrottle = 0*t
+controlVectorThrottle = 10*t
 controlVectorSteer = sin.(2π*t) * (30.0/180.0)*pi
 #controlVectorSteer = t* (30.0/180.0)*pi
 
@@ -95,20 +95,14 @@ for i in speed
 
 
     areas = 5*ones(speed)
-    subplot(411)
+    subplot(211)
     scatter(t, controlVectorSteer, s=areas,alpha=1.0)
     grid()
 
-    subplot(412)
-    #x,y = extract_trajektory(kin)
+    subplot(212)
+
     scatter(t, phi_kin, s=areas, alpha=1.0)
-
-    subplot(413)
-    #x,y = extract_trajektory(dyn_base)
     scatter(t, phi_dyn, s=areas, alpha=1.0)
-
-    subplot(414)
-    #x,y = extract_trajektory(dyn_kamsch)
     scatter(t, phi_kamsch, s=areas, alpha=1.0)
 
 

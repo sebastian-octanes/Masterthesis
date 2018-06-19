@@ -57,10 +57,10 @@ for i in 1:max_steps
     stateVectorKin =  VehicleModel.kin_bycicle_model(stateVectorKin, carControl, dt)
     kin_long_speed = vcat(kin_long_speed, stateVectorKin.x_d)
 
-    stateVectorNonLinear_Enhanced_Long =  VehicleModel.dyn_model_enhanced_long(stateVectorNonLinear_Enhanced_Long, carControl, dt)
+    stateVectorNonLinear_Enhanced_Long =  VehicleModel.dyn_model_base(stateVectorNonLinear_Enhanced_Long, carControl, dt)
     dyn_long_speed = vcat(dyn_long_speed, stateVectorNonLinear_Enhanced_Long.x_d)
 
-    stateVectorNonLinear_Cplx_Long =  VehicleModel.dyn_model_cplx_long(stateVectorNonLinear_Cplx_Long, carControl, dt)
+    stateVectorNonLinear_Cplx_Long =  VehicleModel.dyn_model_long(stateVectorNonLinear_Cplx_Long, carControl, dt)
     dyn_long_cplx_speed = vcat(dyn_long_cplx_speed, stateVectorNonLinear_Cplx_Long.x_d)
 
 end
@@ -85,9 +85,9 @@ title("Driver Input")
 subplot(212)
 =#
 
-open("outputFiles/accdec.txt", "w") do io
-    writedlm(io, [lin kin_long_speed dyn_long_speed  dyn_long_cplx_speed])
-end
+#open("outputFiles/accdec.txt", "w") do io
+#    writedlm(io, [lin kin_long_speed dyn_long_speed  dyn_long_cplx_speed])
+#end
 
 ax = gca()
 xlabel("Time Steps")

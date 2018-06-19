@@ -332,7 +332,7 @@ itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack4(trackWidth)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrackUUTurn(trackWidth)
 
 
-N = 40
+N = 30
 printLevel = 0
 dt = 0.05
 max_speed = 20
@@ -373,8 +373,9 @@ while isopen(window)
     #stateVector = mapKeyToCarControl(keys, stateVector, N)
 
     #predict last point and compute next state with vehicle model
-    realCarStateVector = VehicleModel.computeCarStepDynModelLong(realCarStateVector, res, dt)
-    #realCarStateVector = VehicleModel.computeCarStepKinModel(realCarStateVector, res, dt)
+	#realCarStateVector = VehicleModel.computeCarStepKinModel(realCarStateVector, res, dt)
+    realCarStateVector = VehicleModel.computeCarStepDynModelBase(realCarStateVector, res, dt)
+	#realCarStateVector = VehicleModel.computeCarStepDynKamsch(realCarStateVector, res, dt)
     #print("\n\nres", res[1:8])
     #print("\nSteer Angle: $(res[8])   Throttle:  $(res[7])")
     print("\npsi: $(realCarStateVector.psi)    y_d:  $(realCarStateVector.y_d)   psi_d: $(realCarStateVector.psi_d)\n")

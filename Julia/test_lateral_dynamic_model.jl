@@ -281,14 +281,14 @@ scaleY = windowSizeY/windowSizeMeterY
 positionOffsetMeterX = 20
 positionOffsetMeterY = 25
 
-radius = 15
+radius = 10.625
 trackWidth = 3
 
 keys = KeyControls(0,0,0,0,0)
 startPose = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
 
 #define which racecourse should be used
-itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(10.625, 3, 11, 0)
+itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(radius, 3, 11, 0)
 
 N = 20
 printLevel = 0
@@ -327,7 +327,8 @@ while isopen(window)
     res = mapKeyToCarControl(keys, res, N)
 
     #realCarStateVector = VehicleModel.computeCarStepKinModel(realCarStateVector, res, dt)
-    realCarStateVector = VehicleModel.computeCarStepDynModelLong(realCarStateVector, res, dt)
+    realCarStateVector = VehicleModel.computeCarStepDynModelBase(realCarStateVector, res, dt)
+    #realCarStateVector = VehicleModel.computeCarStepDynKamsch(realCarStateVector, res, dt)
 
     stateVector = VehicleModel.createNewStateVector(res, realCarStateVector, dt, N)
     update_start_point_from_pose(mpc_struct, realCarStateVector)
@@ -344,6 +345,7 @@ while isopen(window)
     end
     #if abs(realCarStateVector.x) < trackWidth/2 && abs(realCarStateVector.y) < 0.4 && lapTimeActive
     if(steps > 50 && RaceCourse.computeDistToTrackStartX(itpTrack, itpLeftBound, realCarStateVector) < trackWidth/2.0)
+        println("hit")
         if(RaceCourse.computeDistToTrackStartY(realCarStateVector) < 3 && realCarStateVector.y > 0.0)
             println("\nlap_time_steps:", steps * dt)
             restart(clock)

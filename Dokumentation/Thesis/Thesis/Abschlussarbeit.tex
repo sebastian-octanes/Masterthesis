@@ -324,9 +324,9 @@ wird dies über die Einschränkung des Schwimmwinkel (und damit gleichzeitig des
 
 \subsection{Reifenmodell}
 \label{tireModel}
-Da der Reifen der einzige Kontaktpunkt zwischen Fahrbahn und Fahrzeug ist,  beeinflussen er das Fahrverhalten maßgeblich. Aufgabe des Reifens ist es, sämtliche Kräfte und Momente zu übertragen, um eine optimale Straßenlage zu erzielen. Demzufolge ist der Reifen das Bauteil, welches die Fahrleistungen am stärksten einschränkt.
+Da der Reifen der einzige Kontaktpunkt zwischen Fahrbahn und Fahrzeug ist,  beeinflussen er das Fahrverhalten maßgeblich. Aufgabe des Reifens ist es, sämtliche Kräfte und Momente zu übertragen und eine optimale Straßenlage zu gewährleisten. Demzufolge ist der Reifen das Bauteil, welches die Fahrleistungen des Rennautos am stärksten einschränkt.
 
-Die Kräfte, welche ein Reifen auf die Straße übertragen kann, hängen von dem Schräglaufwinkel, Schlupf und der Radlast ab. Die Radlast \(F_z\) berechnet sich aus der Normalkraft und der Radlastverteilung und wird im folgenden als konstant angesehen.
+Die Kräfte, welche ein Reifen auf die Straße übertragen kann, hängen vom Schräglaufwinkel, Schlupf und der Radlast ab. Die Radlast \(F_z\) berechnet sich aus der Normalkraft und der Radlastverteilung und wird im folgenden als konstant angesehen.
 Die Seitenführungskraft \(F_y\) wirkt bei einer Kurvenfahrt der Fliehkraft entgegen und hält das Fahrzeug auf der Spur solange ein Kräftegleichgewicht besteht. Als Schräglaufwinkel bezeichnet man den von der Radmittelebene \(\delta\) (Lenkwinkel) und der Bewegungsrichtung \(\theta_{vf}\) des Fahrzeugs eingeschlossenen Winkel (siehe Abbildung \ref{fig:linLat}). Dieser ist notwendig, damit der Reifen eine Seitenkraft aufbauen kann. \\
 
 \begin{equation}
@@ -845,7 +845,7 @@ Das genaueste Modell betrachtet zusätzlich noch Reibung und Luftwiderstand.
 	\label{fig:accdec}
 \end{figure}
 
-In der Grafik \ref{fig:accdec} wird deutlich, wie stark sich die einzelnen Modelle, obwohl sie sich auf das gleiche Fahrzeug beziehen voneinander unterscheiden. Für alle Modelle wird 7.5 s lang maximal beschleunigt und danach 2.5 s mit maximaler Kraft gebremst. Das Fahrzeug besitzt eine Maximalgeschwindigkeit von 118 kmh, welche durch die Übersetzung im Getriebe herrührt. Das kinematische Modell trifft mit seiner durchschnittlichen Beschleunigung exakt die gefahrenen Testwerte. Da aber die dynamischen Modelle eine größere Anfangsbeschleunigung haben und vom kinematischen Model, hinterlegt im MPC, geregelt werden, wird die Beschleunigung im kinematischen Modell so angepasst, dass es die gleiche Anfangssteigung besitzt.
+In der Grafik \ref{fig:accdec} wird deutlich, wie stark sich die einzelnen Modelle, obwohl sie sich auf das gleiche Fahrzeug beziehen voneinander unterscheiden. Für alle Modelle wird 7.5 s lang maximal beschleunigt und danach 2.5 s mit maximaler Kraft gebremst. Das Fahrzeug besitzt eine Maximalgeschwindigkeit von 118 kmh, welche durch die Übersetzung im Getriebe herrührt. Das kinematische Modell trifft mit seiner durchschnittlichen Beschleunigung exakt die gefahrenen Testwerte. Da aber die dynamischen Modelle eine größere Anfangsbeschleunigung haben und vom kinematischen Model, hinterlegt im MPC, geregelt werden, wird die Beschleunigung im kinematischen Modell so angepasst, dass es die gleiche Anfangssteigung besitzt. Die Steigung beträgt 12 $\frac{m}{s}$. 
 
 \subsubsection*{Skidpad}
 In dieser Disziplin fährt das Fahrzeug eine liegende 8. Der limitierende Faktor ist hier also die maximale Querbeschleunigung welche das Rennauto noch auf dem Kurs hält. In der Simulation wird vereinfacht von einem Rundkurs, welcher in Abbildung \ref{fig:roundCourse} dargestellt wird, mit dem Außendurchmesser von 21.25 m ausgegangen. Ob die Begrenzung der Querbeschleunigung \ref{betaMax} mit der Simulation übereinstimmt kann durch die Zentripetalkraft, welche wirkt, überprüft werden.
@@ -906,7 +906,7 @@ Die Differenz zwischen den beiden Kostenfunktionen, welche die Distanz zu einem 
 Um zu verdeutlichen, warum für hohe Geschwindigkeiten ein kinematisches Modell nicht mehr ausreichend ist, werden im folgenden die Modellfehler betrachtet. 
 
 \subsection{Orientierung}
-Bei einer rein longitudinalen oder konstanten lateralen Bewegung ist, wie im vorherigen Kapitel schon gezeigt wurde, die Differenz der einzelnen Fahrzeugmodelle nicht groß. Bei dynamischeren Szenarien, werden die Unterschiede dahingegen deutlich sichtbar. Im Plot \ref{fig:modelDiffOrient} ist für ein oszillierenden Lenkwinkel die Änderung der Orientierung veranschaulicht. Zuerst wird die Bewegung ohne jegliche longitudinale Beschleunigung betrachtet \ref{fig:modelDiffOrient} und anschließend mit maximaler möglicher Beschleunigung \ref{fig:modelDiffOrientMaxAcc}.
+Bei einer rein longitudinalen oder konstanten lateralen Bewegung ist, wie im vorherigen Kapitel schon gezeigt wurde, die Differenz der einzelnen Fahrzeugmodelle nicht groß. Bei dynamischeren Szenarien werden die Unterschiede dahingegen deutlich sichtbar. In der Darstellung \ref{fig:modelDiffOrient} ist für ein oszillierenden Lenkwinkel die Änderung der Orientierung veranschaulicht. Zuerst wird die Bewegung ohne jegliche longitudinale Beschleunigung betrachtet und anschließend mit maximaler möglicher Beschleunigung .
 
 \begin{figure}
 	\centering
@@ -915,7 +915,7 @@ Bei einer rein longitudinalen oder konstanten lateralen Bewegung ist, wie im vor
 	\label{fig:modelDiffOrient}
 \end{figure}
 Der Unterschied welcher sofort ins Auge fällt ist die zeitliche Differenz, in dem das kinematische und das dynamische Modell die maximale Orientierung erreichen.
-Die Differenz ist auf das Rotationsmoment des Fahrzeugs zurückzuführen welches im rein geometrischen Modell nicht beachtet wird. Es führt dazu, dass nach dem erreichen der Nullstellung des Lenkwinkels das Fahrzeug noch einen kurzen Moment weiter dreht. Dies ist auch der Grund, warum der Spitzenwert der Orientierungen unterschiedlich sind.  
+Die Differenz ist auf das Rotationsmoment des Fahrzeugs zurückzuführen, welches im rein geometrischen Modell nicht beachtet wird. Es führt dazu, dass nach dem erreichen der Nullstellung des Lenkwinkels das Fahrzeug noch einen kurzen Moment weiter dreht. Dies ist auch der Grund, warum der Spitzenwert der Orientierungen unterschiedlich sind.  
 Die Differenz zwischen dem dynamischen und mit Kamschen Kreis erweiterte Fahrzeugmodell ist bei nicht vorhandener Beschleunigung nur gering.  
 
 \begin{figure}
@@ -930,21 +930,6 @@ Dies ändert sich, sobald eine zusätzliche longitudinale Kraft durch den Motor 
 \subsection{Position}
 
 Um den Einfluss der verschiedenen Modelle nochmals zu visualisieren, wird zusätzlich die gefahrene Trajektorie betrachtet. In der Abbildung \ref{fig:modelDiffPos} [links] sind diese sowohl für 5 $\frac{m}{s}$ als auch 30 $\frac{m}{s}$ dargestellt. 
-
-\begin{figure}
-	\centering
-	\input{Grafiken/modelDiffPos.tex} 
-	\caption{[links] Die zurückgelegte Trajektorie für den gleichen Input des Lenkwinkels wie in \ref{fig:modelDiffOrient} und einer Geschwindigkeit von 30 m/s. [rechts] Die Abweichung der Position zwischen den einzelnen Modellen und verschiedenen initialen Geschwindigkeiten. Keine Beschleunigung.}
-	\label{fig:modelDiffPos}
-\end{figure}
-
-
-\begin{figure}
-	\centering
-	\input{Grafiken/modelDiffPosMaxAcc.tex} 
-	\caption{[links] Die zurückgelegte Trajektorie für den gleichen Input des Lenkwinkels wie in \ref{fig:modelDiffOrient} und einer Geschwindigkeit von 30 m/s. [rechts] Die Abweichung der Position zwischen den einzelnen Modellen und verschiedenen initialen Geschwindigkeiten. Maximale Beschleunigung.}
-	\label{fig:modelDiffPosMaxAcc}
-\end{figure}
 
 \subsection{Reifenmodelle}
 Das Reifenmodell welches bis zu diesem Punkt in der Arbeit verwendet wurde entspricht dem genauen \emph{Magic Model}. Im folgenden soll nun kurz untersucht werden, was für einen Unterschied bezüglich der Rechenzeit die drei verschiedenen Modelle haben und wie groß deren Auswirkung auf das Verhalten des Fahrzeugs ist.
