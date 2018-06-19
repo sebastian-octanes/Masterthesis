@@ -45,7 +45,7 @@ end
 speed = [30]
 t = 0:.05:2
 dt = 0.05
-controlVectorThrottle = 10*t
+controlVectorThrottle = 0*t
 controlVectorSteer = sin.(2π*t) * (30.0/180.0)*pi
 #controlVectorSteer = t* (30.0/180.0)*pi
 
@@ -61,7 +61,6 @@ dyn_kamsch = []
 for i in speed
     stateVectorKin= VehicleModel.CarPose(0,0,i,0, 0, 0)
     stateVectorDyn_Base = VehicleModel.CarPose(0,0,i,0, 0, 0)
-    stateVectorDyn_LongExt = VehicleModel.CarPose(0,0,i,0, 0, 0)
     stateVectorDyn_KamCircle = VehicleModel.CarPose(0,0,i,0, 0, 0)
 
     kin = []
@@ -94,10 +93,28 @@ for i in speed
     dist_dyn_kamsch = vcat(dist_dyn_kamsch, dist)
     phi_kamsch = extract_orientation(dyn_kamsch)
 
+
+    areas = 5*ones(speed)
+    subplot(411)
+    scatter(t, controlVectorSteer, s=areas,alpha=1.0)
+    grid()
+
+    subplot(412)
+    #x,y = extract_trajektory(kin)
+    scatter(t, phi_kin, s=areas, alpha=1.0)
+
+    subplot(413)
+    #x,y = extract_trajektory(dyn_base)
+    scatter(t, phi_dyn, s=areas, alpha=1.0)
+
+    subplot(414)
+    #x,y = extract_trajektory(dyn_kamsch)
+    scatter(t, phi_kamsch, s=areas, alpha=1.0)
+
+
 end
 
 #=
-areas = 5*ones(speed)
 
 scatter(speed, dist_kin_dyn, s=areas,alpha=1.0)
 scatter(speed, dist_kin_kamsch, s=areas,alpha=1.0)
@@ -105,6 +122,7 @@ scatter(speed, dist_dyn_kamsch, s=areas,alpha=1.0)
 grid()
 =#
 
+#=
 x_k,y_k = extract_trajektory(kin)
 x_d,y_d = extract_trajektory(dyn_base)
 x_ka,y_ka = extract_trajektory(dyn_kamsch)
@@ -114,21 +132,20 @@ open("outputFiles/modelDiffTrajMaxAcc.txt", "w") do io
     writedlm(io, [x_k y_k x_d y_d x_ka y_ka])
 end
 
+=#
 
 #=
-    subplot(411)
+    subplot(211)
+    areas = 5*ones(speed)
     scatter(t, controlVectorSteer, s=areas,alpha=1.0)
     grid()
 
-    subplot(412)
+    subplot(212)
     x,y = extract_trajektory(kin)
     scatter(x, y, s=areas, alpha=1.0)
-
-    subplot(413)
     x,y = extract_trajektory(dyn_base)
-    scatter(x, y, s=areas, alpha=1.0)
-
-    subplot(414)
+    #scatter(x, y, s=areas, alpha=1.0)
     x,y = extract_trajektory(dyn_kamsch)
     scatter(x, y, s=areas, alpha=1.0)
+
     =#

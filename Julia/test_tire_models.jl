@@ -16,6 +16,7 @@ y3= []
 
 for i in lin
     y1 = vcat(y1, VehicleModel.pacejka_tire_model_linear(i, true)/1000.0)
+    y2 = vcat(y2, VehicleModel.pacejka_tire_model(i, true)/1000.0)
     y3 = vcat(y3, VehicleModel.pacejka_tire_model_complex(i, true)/1000.0)
 end
 
@@ -25,7 +26,7 @@ open("outputFiles/tireModel.txt", "w") do io
 end
 
 plot(lin,y1, label="linear")
-#plot(lin,y2, label="simplified ")
+plot(lin,y2, label="simplified ")
 plot(lin,y3, label="exact")
 grid()
 legend(loc="lower right",fancybox="true")

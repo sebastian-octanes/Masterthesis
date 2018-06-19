@@ -56,7 +56,7 @@ Für die vorliegende Arbeit ist vor allem der Trackdrive von Interesse. Es wird 
 \end{figure}
 
 \section{Problemstellung}
-Im laufe dieser Arbeit soll ein Algorithmus entwickelt werden, der die Trajektionsplanung und Regelung eines Formula Student Driverless Racecars berechnet. Der dafür gewählte Ansatz ist \acl{MPC}. Es handelt sich dabei um ein Verfahren welches die Planung von Trajektorien und die Steuerung des Rennautos in einem Algorithmus vereint. Wie der Name schon sagt benötigt es hierfür ein Modell des zu kontrollierenden Systems mit dem daraufhin das zukünftige Verhalten vorausberechnet werden kann. Dieses Wissen wird genutzt um mit Hilfe einer Kostenfunktion die Steuerparameter so zu variieren, dass das Rennauto eine möglichst schnelle Rundenzeit erreicht.
+Im laufe dieser Arbeit soll ein Algorithmus entwickelt werden, der die Trajektorienplanung und Regelung eines Formula Student Driverless Racecars berechnet. Der dafür gewählte Ansatz ist \acl{MPC}. Es handelt sich dabei um ein Verfahren welches die Planung von Trajektorien und die Steuerung des Rennautos in einem Algorithmus vereint. Wie der Name schon sagt benötigt es hierfür ein Modell des zu kontrollierenden Systems mit dem daraufhin das zukünftige Verhalten vorausberechnet werden kann. Dieses Wissen wird genutzt um mit Hilfe einer Kostenfunktion die Steuerparameter so zu variieren, dass das Rennauto eine möglichst schnelle Rundenzeit erreicht.
 
 \chapter{Stand der Technik}
 Obwohl es zum Zeitpunkt der Arbeit noch keine öffentliche, autonome Rennserie außerhalb der Formula Student gibt, ist das Interesse an den dafür benötigten Technologien sehr groß.
@@ -70,14 +70,15 @@ Einen guten Rennfahrer zeichnet die Tatsache aus, dass er sein Fahrzeug in absol
 Um die Position des Fahrzeugs genau bestimmen zu können werden verschiedene Sensortypen mit Hilfe von Filterverfahren fusioniert. Die Genauigkeit der Schätzung steigt, im Vergleich zu den einzelnen Messsystemen, durch die Kombination signifikant an \cite{GPS_Fusion}, \cite{GPS_IMU_Fusion}. 
 Um das Rennauto mit hoher Geschwindigkeit einen Rennkurs abfahren zu lassen, benötigt es ein Modell, welches das dynamische Verhalten des Fahrzeugs abbilden kann. Erst dieses Wissen ermöglicht die Berechnung von Trajektorien, welche das Rennauto an die Grenzen seiner Traktion bringt. Da die Modelle die  Fahreigenschaften nicht nur möglichst genau abbilden müssen, sondern auch schnell berechenbar sein müssen, werden verschiedene Vereinfachungen angewandt. Die Ansätze variieren nach Komplexität und zu bewältigenden Fahrsituationen:
 \begin{itemize}
-	\item Ein einfaches kinematisches Modell [\cite{MPC_Kinetic}], welches sehr schnell berechenbar ist, aber keine dynamischen Effekte berücksichtigt.
-	\item Die Verwendung einer dynamischen Fahrzeugbeschreibung mit linearem oder nichtlinearem Reifenmodell [\cite{rc_car_1_43}, \cite{MPC_Dynamic}, \cite{MPC_Dynamic_Tire_Model}].
+	\item Ein einfaches kinematisches Modell \cite{MPC_Kinetic}, welches sehr schnell berechenbar ist, aber keine dynamischen Effekte berücksichtigt.
+	\item Die Verwendung einer dynamischen Fahrzeugbeschreibung mit linearem oder nichtlinearem Reifenmodell \cite{rc_car_1_43}, \cite{MPC_Dynamic}, \cite{MPC_Dynamic_Tire_Model}.
+	\item Ein sehr genaues Zweispurmodell welches zehn Freiheitsgrade betrachtet und sogar das Einfedern des Fahrzeugs berücksichtigt \cite{doi:10.1137/S0036144502414942} \\
 	\item Ein anderer Ansatz ist es, nicht vom Schwerpunkt des Autos aus die Fahrzeugdynamik zu berechnen, sondern den \emph{point of percussion} zu wählen. In diesem Punkt heben sich die rotatorischen und translatorischen Kräfte, hervorgerufen durch die Hinterreifen, gegenseitig auf \cite{CentreOfPercussion}.
 \end{itemize}
 
 Um ein mathematisches Fahrzeugmodell in einem realen Fahrzeug einsetzen zu können, müssen die Parameter, welche das System beschreiben möglichst genau bestimmt werden. Dies kann mit Hilfe einer linearen Regression sehr effizient und genau verwirklicht werden \cite{Williams2016AggressiveDW}. Die  Berechnungszeit für neue Steuerparameter sollte im Anwendungsfall eines autonomen Rennautos 40 bis 50 ms nicht überschreiten und bewegt sich in der Regel zwischen 50 und 100 Hz \cite{rc_car_1_43}, \cite{Williams2016AggressiveDW}. 
 Sind die Grundvorraussetzungen geschaffen, gibt es unterschiedliche Ansätze ein Rennauto möglichst performant um einen Rennkurs fahren zu lassen. Eine Möglichkeit ist der Einsatz von neuronalen Netzen um geeignete Steuerparameter zu berechnen, wie vom Autor in \cite{6374146} beschrieben wurde. 
-Ein "g-g`` - Ansatz, wie in \cite{KRITAYAKIRANA2010548}, nutzt ein Diagramm von lateralen(g) zu longitudinalen(g) Kräften, abhängig von verschiedenen Euler Spiralen um das Verhalten eines Rennfahrers zu Simulieren. Vor allem aber der in dieser Arbeit betrachtete \ac{MPC}-Algorithmus wird in einer Vielzahl von Arbeiten untersucht und verwendet. 
+Ein "g-g`` - Ansatz, wie in \cite{KRITAYAKIRANA2010548}, nutzt ein Diagramm von lateralen(g) zu longitudinalen(g) Kräften, abhängig von verschiedenen Euler Spiralen um das Verhalten eines Rennfahrers zu Simulieren.  Vor allem aber der in dieser Arbeit betrachtete \ac{MPC}-Algorithmus wird in einer Vielzahl von Arbeiten untersucht und verwendet. 
 Die Unterschiede bei den Verfahren beziehen sich auf die getrennte Berechnung von Trajektorie und Regelung, Trennung von longitudinalem und lateralem Regler \cite{MPC_Dynamic}, \cite{MPC_Dynamic_Tire_Model} oder kombinierter Betrachtung \cite{rc_car_1_43}.
 
 
@@ -181,7 +182,7 @@ Jede Ungleichung $a_i x \leq b_i$ teilt den Suchraum in zwei Hälften, eine mit 
 
 \subsection*{Lösungsverfahren}
 
-\subsection{Simplex - Verfahren}
+\subsection{Simplex-Verfahren}
 Bei der in dieser Arbeit zu lösenden Optimierung, handelt es sich um ein nichtlineares Problem. Um ein besseres Verständnis für das Lösungsverfahren zu bekommen, welches hierfür genutzt wird, soll zuerst das Simplex-Verfahren kurz vorgestellt werden. Das Verfahren wurde 1947 von Dantzig \cite{dantzig51} entwickelt und nutzt die Eigenschaft, dass ein \textit{well behaved} (wenn das aufgestellte Problem der Standardform entspricht und lösbar ist) lineares Programm immer einen Knoten besitzt an dem sich Kanten verschiedener Ungleichheitsbedingungen treffen und die Kostenfunktion minimieren. Das Verfahren nutzt diesen Zustand aus, in dem es sich iterativ von einem Eckpunkt zum nächsten bewegt. 
 \begin{figure}[ht!]
 	\centering
@@ -353,27 +354,71 @@ F_{yr} = C_\alpha \alpha_r
 
 Am Schaubild \ref{fig:pacejka} lässt sich dieser Bereich zwischen -1.5° und 1.5° sehr gut erkennen. Für größere Schräglaufwinkel kann kein linearer Verlauf mehr angenommen werden und es muss eine genauere Approximation des Kräfte gewählt werden. Hierfür wird die sogenannte \textit{Magic Formula}  \cite{magicFormula} verwendet. Dabei handelt es sich um eine mathematische Gleichung die sehr gut Messkurven approximiert welche auf Testständen gemessen werden.
 Es wurde 1993 von Pacejka und Bakker entwickelt und eignet sich sowohl für die Berechnung der longitudinalen wie auch der lateralen Kräfte. Bei Eingabe des Schräglaufwinkels in \(x\) erhält man die lateral auf die Straße wirkende Kraft \(F_y\). 
+
 \begin{equation}
-F_y = D\sin[C\arctan{Bx - E(Bx - \arctan(Bx))}]
-\label{eq:magicF}
+F_y =  D\sin(C\arctan(Bx - E(Bx - \arctan(Bx))))  \label{eq:magicF} \\
 \end{equation}
 
-Die Parameter, welche für die \textit{Magic Formula} benötigt werden, wurden vom High Octane Motorsports e.V. zur Verfügung gestellt.
+Die Gleichung hängt von den Faktoren C,B und E ab. 
+\begin{eqnarray}
+C =& 1 + (1-(\frac{2}{\pi} \arcsin(\frac{y}{D}))) \\
+B =& \frac{\tan(beta)}{C*D} \\
+E =& \frac{ B * x_m - \tan(\frac{pi}{2 C})}{B*x_m - \arctan(B*x_m)}
+\end{eqnarray}
+
+
+Diese werden abhängig von den folgenden Parametern berechnet.
+
+\begin{itemize}
+	\item $D$ \\	
+	Die maximale Kraft welche der Reifen im höchsten Punkt übertragen kann.
+	\item $beta$\\
+	Die Steigung im linearen Bereich. 
+	\item $xm$ \\
+	Der Punkt in $rad$ an dem der Punkt der maximalen Kraft vorliegt.
+	\item $y_a$ \\
+	Die maximale Kraft gegen welche die Kurve für große Schräglaufwinkel tendiert. 
+\end{itemize}
+
+Diese ändern sich mit der Normalkraft, welche das Fahrzeug auf die Straße presst. Ist diese Konstant wie in unserem Fall, müssen die Werte nur ein mal berechnet werden und bleiben danach gleich. Sie unterscheiden sich jedoch für das vordere $(.)_r$ und hintere Rad $(.)_r$. Werden in einem komplexeren Modell auch die aerodynamischen Abtriebskräfte und die Steigung der Straße berücksichtigt ändern sich $D$, $beta$, $xm$ und $y_a$ mit jeder Veränderung der Normalkraft, was die Neuberechnung von C,B und E zur Folge hat. Zur besseren Veranschaulichung ist in der Zeichnung \ref{fig:tireModelParamete} dargestellt, welchen Einfluss die einzelnen Werte auf die Kurve der Reifenkräfte haben. 
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=350pt]{Abbildungen/tireModelParameter.jpg}
+	\caption{Parameter im Reifenmodell(Platzhalter)}
+	\label{fig:tireModelParameter}
+\end{figure}
+ 
+Zusätzlich zu dem ursprünglichen Reifenmodell gibt es zwei Vereinfachungen, welche jeweils weniger Rechenaufwand erzeugen, dafür jedoch in ihrer Genauigkeit eingeschränkt sind. Die Modelle basieren weiterhin auf den oben beschriebenen Parametern B,C und D. Die Gleichungen sind
+\begin{equation}
+	F_y = D\sin(C\arctan(Bx))
+\end{equation} 
+und eine lineare Version 
+\begin{equation}
+	F_y = C * x 
+\end{equation} 
+welche mit $|F_y| <= F_{max} $ die Maximalkraft beschränkt. Nicht weiter spezifiziert, wird im Folgenden davon ausgegangen, dass das genauste Modell Verwendung findet. Die Parameter, welche für die \textit{Magic Formula} benötigt werden, wurden vom High Octane Motorsports e.V. zur Verfügung gestellt.
 
 \begin{table}[]
 	\centering
-	\begin{tabular}{l|l}
+	\begin{tabular}{l|l|l}
 		\hline
-		Parameter	& Wert \\ \hline
-		\(B\)	&  0.71 \\
-		\(C\)	&  1.41 \\
-		\(D\)	&  1.00 \\
-		\(E\)	& -0.20 \\
-
+		Parameter	&  Wert  & Einheit \\ \hline
+		\(D_f\)		&  2984 & N \\
+		\(D_r\)		&  3274 & N \\
+		\(x_{mf}\)	&  0.25 & rad \\
+		\(x_{mr}\)	&  0.37 & rad \\
+		\(y_{af}\)	&  2952 & N \\
+ 		\(y_{ar}\)	&  3270 & N \\
+		\(beta_{f}\)	&  $\frac{\pi}{1.9}$ & rad \\
+		\(beta_{r}\)	&  $\frac{\pi}{1.9}$ & rad \\
+		
 	\end{tabular}
 	\caption{Magic Formula Parameter}
 	\label{tireParam}
 \end{table}
+
+
 
 \begin{figure}[ht!]
 	\centering
@@ -382,11 +427,14 @@ Die Parameter, welche für die \textit{Magic Formula} benötigt werden, wurden v
 	\label{fig:pacejka}
 \end{figure}
 
+\subsubsection*{Kammscher Kreis}
+
 Ähnlich wie bei \(F_y\) wird auch die Kraft welche das Fahrzeug in Längsrichtung beschleunigt \(F_x\) durch den Schlupf berechnet. Dieser hängt direkt von der Geschwindigkeit und Raddrehzahl ab. 
 Da für die Bestimmung dieser jedoch eine Motorsimulation vonnöten wäre, wird \(F_x\) direkt aus der Motorleistung, Reibung und Luftwiderstand berechnet (siehe Abschnitt \ref{dynModel}) und durch \(F_{max}\) begrenzt. \(F_{max}\) entspricht der maximalen Kraft, die der Reifen übertragen kann.\\
 \begin{equation}
 F_x <= F_{max}
 \end{equation}
+
 Der Zusammenhang zwischen lateraler und longitudinaler Kraft wird über den \textit{Kammschen Kreis} modelliert (siehe Schaubild \ref{fig:kamKreis}). Dieser schränkt die wirkenden Kräfte so ein, dass die Hypotenuse aus \(F_x\) und \(F_y\) sich maximal auf einem Einheitskreis bewegen kann. Der Radius entspricht maximalen Kraft welche die Reifen übertragen können (\(F_{max}\)).
 
 \begin{eqnarray}
@@ -536,7 +584,7 @@ Die zur Berechnung verwendeten Fahrzeugparameter wurden für das zum Verfassen d
 		\(l_b\)	&	1.99 & m \\
 		\(r\)	&	0.2 & m \\
 		\(m\)	&  	163 & kg\\
-		\(I\)	&  	1000 & kgm\textsuperscript{2}\\
+		\(I\)	&  	1700 & kgm\textsuperscript{2}\\
 		\(A_f\)	&  	1.5 & m\textsuperscript{2}\\
 		\(P_{engine}\) &  40,5 & kW\\
 		\(C_d\)	&  	1.5 & - \\
@@ -602,7 +650,7 @@ Jump ist eine Erweiterung für Julia mit der sich mathematische Probleme modelli
 Die Syntax welche Jump für die Definition der Probleme vorsieht ähnelt der standardmäßigen mathematischen Definition, was die Anwendung intuitiv gestaltet. Zudem ist die Dokumentation sehr ausführlich.
 
 
-\chapter{MPC zur Trajektionsplanung und Regelung}
+\chapter{MPC zur Trajektorienplanung und Regelung}
 
 Ein schneller Rennfahrer zeichnet sich dadurch aus, dass er genau abschätzen kann wie viel Kräfte die Reifen des Fahrzeugs auf die Straße übertragen können. Die Kunst liegt also darin, möglichst in jeder Fahrsituation das gesamte Potential voll auszunutzen. Außerdem kann er sich dynamisch an Änderungen der Streckeverhältnisse anpassen und versucht immer die Idealtrajektorie zu treffen. Die Definition dieser ist, möglichst viel Streckenlänge in der kleinstmöglichen Zeit zurückzulegen. Für eine Gerade oder eine einzige Kurve ist dies, wie in Abbildung \ref{fig:idealTrajektorie} dargestellt, leicht zu berechnen. Der so genannte Scheitelpunkt markiert hierbei den Punkt des geringste Radius und der kleinsten Geschwindigkeit. An diesem Punkt muss das Fahrzeug im besten Fall genau die Seitenbegrenzung tangieren. 
 Bei komplexeren Streckengefügen kann es jedoch von Vorteil sein, eine Kurve eventuell nicht ideal auszufahren um im späteren Verlauf einen größeren Geschwindigkeitsgewinn in einer anderen Kurve einfahren zu können.
@@ -737,7 +785,7 @@ Mögliche Graphen der Gleichungen sind zu Veranschaulichung in Abbildung \ref{fi
 \begin{figure}[ht!]
 	\centering
 	\input{Grafiken/costFunct.tex} 
-	\caption{Verschiedene Distanzmaße um das Verhalten der Trajektionsplanung zu beeinflussen.}
+	\caption{Verschiedene Distanzmaße um das Verhalten der Trajektorienplanung zu beeinflussen.}
 	\label{fig:elasticCost}
 \end{figure}
 
@@ -773,7 +821,7 @@ Der Aufbau ist in dem Blockdiagramm \ref{fig:block_diagram_sim} nochmals zusamme
 \end{figure}
 
 
-\section{Trackdrive}
+\section{Virtueller Rennkurs}
 Wie in der Einführung bereits erwähnt, ist das Ziel der Arbeit ein \ac{MPC}-Alogrithmus zu entwickeln mit dem die \emph{trackdrive} Disziplin möglichst schnell abgefahren werden kann. Die Grundvoraussetzung für diese Arbeit ist die bereits vollständig erstellte Karte des Rennkurses und eine Lokalisierung innerhalb dieser Karte. Die Updaterate für diese Positionsschätzung wird mit 20 Hz angenommen. Das Ziel ist es also die Regelparameter mit einem $\Delta t$ von $\frac{1}{20} s$ für das Rennauto berechnen zu können.  Zum Testen der Algorithmen wurde ein beliebiger Kurs definiert, welcher sich an die Vorgaben des Regelwerkes hält und damit einen minimalen Kurvenradius von 9 m, Maximallänge einer Geraden von 80m und maximal 180° Spitzkurven besitzt.
 
 \chapter{Evaluierung}
@@ -806,8 +854,8 @@ $ \omega = 2 \pi f$ \\
 $ v = r * \omega $\\
 $a = \frac{v^2}{r}$\\
 
-Für das in der Simulationsumgebung hinterlegtes kinematisches Modell ist die gemessene Rundenzeit 4.65 s. Daraus lässt sich eine Durchschnittsgeschwindigkeit $ v= 13.9 \frac{m}{s}$ berechnen, was einer Querbeschleunigung von $a = 19.37 \frac{m}{s}$ entspricht. Das im Fahrzeugmodell hinterlegte $a_{max}$ ist mit 19.62  also sehr nah an dem in der Simulation erfahrenen werten. Die Differenz zu der schnellsten gemessenen Runde mit dem echten Fahrzeug (7.5 s) lässt sich dadurch erklären, dass der MPC-Algorithmus die ideale Stellgrößen berechnet und damit auch einen idealen Rundkurs abfährt. Zudem wurde die maximal gemessene Querbeschleunigung des Fahrzeugs als $a_max$ gewählt, dies kann in der Realität nicht durchgängig gehalten werden kann.
-Für das dynamische Fahrzeugmodell wurde eine minimale Rundenzeit 4.45 s gemessen.  Die damit erhaltene maximale Querbeschleunigung ist nur 5  größer als die des kinematischen Models.  
+Für das in der Simulationsumgebung hinterlegtes kinematisches Modell ist die gemessene Rundenzeit 4.65 s. Daraus lässt sich eine Durchschnittsgeschwindigkeit $ v= 13.9 \frac{m}{s}$ berechnen, was einer Querbeschleunigung von $a = 19.37 \frac{m}{s}$ entspricht. Das im Fahrzeugmodell hinterlegte $a_{max}$ ist mit 19.62  also sehr nah an dem in der Simulation erfahrenen werten. Die Differenz zu der schnellsten gemessenen Runde mit dem echten Fahrzeug (7.5 s) lässt sich dadurch erklären, dass der MPC-Algorithmus die ideale Stellgrößen berechnet und damit auch einen idealen Rundkurs abfährt. Zudem wurde die maximal gemessene Querbeschleunigung des Fahrzeugs als $a_{max}$ gewählt, dies kann in der Realität nicht durchgängig gehalten werden kann.
+Für das dynamische Fahrzeugmodell wurde eine minimale Rundenzeit 4.45 s gemessen.  Die damit erhaltene maximale Querbeschleunigung ist nur fünf Prozent größer als die des kinematischen Models. Zum Vergleich, die schnellste gefahrene Runde im Deutschen Event der Formula Student waren 5.7 Sekunden.
 
 \begin{figure}
 	\centering
@@ -854,16 +902,11 @@ Gemessen wurde sowohl die erste und zweite Runde, da in der ersten Runde die Anf
 Das Verhalten der Kostenfunktion, welche die Geschwindigkeit maximiert, mit längerer vorrausprädiktion immer langsamer zu werden, lässt sich mit dem Wissen über den Kurs erklären. Desto weiter in die Zukunft der Optimierer schauen kann, desto mehr fängt er an Kurven voll auszufahren, also den zurückgelegten Weg länger zu planen. Dadurch kann zwar die Geschwindigkeit erhöht werden, die Rundenzeit leider allerdings deutlich darunter. 
 Die Differenz zwischen den beiden Kostenfunktionen, welche die Distanz zu einem Punkt bzw die gefahrene Streckendistanz maximieren, ist sehr klein und auch bei geringeren Horizontlängen bereits sehr gut. Betrachtet man jedoch zusätzlich die Berechnungszeit setzt sich die Kostenfunktion zur maximierung der Streckendistanz deutlich als die Beste ab.
 
-
-
-\section{Regelung des dynamischen Modells im Rennkurs}
-In der Realität ist das kinematische Modell nur für geringe Geschwindigkeiten genau genug die Bewegung des Fahrzeugs zu Modellieren. Im Folgenden wird deswegen das Modell im Simulator durch ein dynamische Fahrzeugmodell mit berechneten Reifenkräften ersetzt und evaluiert, wie gut sich das deutlich komplexere System mit dem weiterhin sehr einfachen kinematischen Modell im \ac{MPC}-Algorithmus regeln lässt. 
-Zuerst wird untersucht, ab welchen Geschwindigkeiten die Abweichung zwischen den Modellen signifikant wird. Danach werden die einzelnen elastischen Begrenzung auf ihre Fähigkeit getestet das dynamische Modell auf dem Kurs zu halten und welche Rundenzeiten sie ermöglichen. Im letzten Schritt wird zusätzlich noch untersucht welchen Einfluss $\beta_{max}$ auf die Regelfähigkeit des Algorithmus hat und ob sie sich durch verändern der Werte verbessern lässt. 
-\subsection{Modellfehler}
+\section{Modellfehler}
 Um zu verdeutlichen, warum für hohe Geschwindigkeiten ein kinematisches Modell nicht mehr ausreichend ist, werden im folgenden die Modellfehler betrachtet. 
 
-\subsubsection*{Orientierung}
-Bei einer rein longitudinalen oder konstanten lateralen Bewegung ist, wie im vorherigen Kapitel schon gezeigt wurde, die Differenz der einzelnen Fahrzeugmodelle nicht groß. Bei dynamischeren Szenarien werden die Unterschiede dahingegen deutlich sichtbar. Im Plot \ref{fig:modelDiffOrient} ist für ein oszillierenden Lenkwinkel die Änderung der Orientierung geplottet. Erst ohne longitudinale Beschleunigung und im zweiten Plot mit maximaler Beschleunigung zusätzlich zur Lenkwinkeländerung 
+\subsection{Orientierung}
+Bei einer rein longitudinalen oder konstanten lateralen Bewegung ist, wie im vorherigen Kapitel schon gezeigt wurde, die Differenz der einzelnen Fahrzeugmodelle nicht groß. Bei dynamischeren Szenarien, werden die Unterschiede dahingegen deutlich sichtbar. Im Plot \ref{fig:modelDiffOrient} ist für ein oszillierenden Lenkwinkel die Änderung der Orientierung veranschaulicht. Zuerst wird die Bewegung ohne jegliche longitudinale Beschleunigung betrachtet \ref{fig:modelDiffOrient} und anschließend mit maximaler möglicher Beschleunigung \ref{fig:modelDiffOrientMaxAcc}.
 
 \begin{figure}
 	\centering
@@ -871,6 +914,9 @@ Bei einer rein longitudinalen oder konstanten lateralen Bewegung ist, wie im vor
 	\caption{}
 	\label{fig:modelDiffOrient}
 \end{figure}
+Der Unterschied welcher sofort ins Auge fällt ist die zeitliche Differenz, in dem das kinematische und das dynamische Modell die maximale Orientierung erreichen.
+Die Differenz ist auf das Rotationsmoment des Fahrzeugs zurückzuführen welches im rein geometrischen Modell nicht beachtet wird. Es führt dazu, dass nach dem erreichen der Nullstellung des Lenkwinkels das Fahrzeug noch einen kurzen Moment weiter dreht. Dies ist auch der Grund, warum der Spitzenwert der Orientierungen unterschiedlich sind.  
+Die Differenz zwischen dem dynamischen und mit Kamschen Kreis erweiterte Fahrzeugmodell ist bei nicht vorhandener Beschleunigung nur gering.  
 
 \begin{figure}
 	\centering
@@ -879,9 +925,11 @@ Bei einer rein longitudinalen oder konstanten lateralen Bewegung ist, wie im vor
 	\label{fig:modelDiffOrientMaxAcc}
 \end{figure}
 
+Dies ändert sich, sobald eine zusätzliche longitudinale Kraft durch den Motor erzeugt wird. Diese Situation ist in Abbildung \ref{fig:modelDiffOrientMaxAcc} aufgezeigt. Der erste Punkt welcher ins Auge fällt, ist die nicht vorhandene Änderung zwischen kinematischem und dynamischem Modell (welches nicht durch den Kammschen Kreis erweitert ist). Da die Kräfte nicht eingeschränkt werden, sind beide Kurven vom Verlauf gleich dem Fall ohne Beschleunigung. Die Trajektorie des um den Kammschen Kreis erweiterte Modell unterscheidet sich nun jedoch signifikant. Die Kraft welche lateral wirkt, wird durch die longitudinale Kraft eingeschränkt und verringert daher das rotatorische Moment. Diese Situation ist jedem bekannt, der in seiner Freizeit Kart fährt. Das Einbremsen in eine Kurve geschieht meist bei fast gerade Lenkradstellung und in der Kurve direkt wird kaum gebremst um ein wegrutschen zu verhindern.
 
-\subsubsection*{Position}
+\subsection{Position}
 
+Um den Einfluss der verschiedenen Modelle nochmals zu visualisieren, wird zusätzlich die gefahrene Trajektorie betrachtet. In der Abbildung \ref{fig:modelDiffPos} [links] sind diese sowohl für 5 $\frac{m}{s}$ als auch 30 $\frac{m}{s}$ dargestellt. 
 
 \begin{figure}
 	\centering
@@ -898,6 +946,21 @@ Bei einer rein longitudinalen oder konstanten lateralen Bewegung ist, wie im vor
 	\label{fig:modelDiffPosMaxAcc}
 \end{figure}
 
+\subsection{Reifenmodelle}
+Das Reifenmodell welches bis zu diesem Punkt in der Arbeit verwendet wurde entspricht dem genauen \emph{Magic Model}. Im folgenden soll nun kurz untersucht werden, was für einen Unterschied bezüglich der Rechenzeit die drei verschiedenen Modelle haben und wie groß deren Auswirkung auf das Verhalten des Fahrzeugs ist.
+
+
+
+\subsection{Longitudinale Modelle}
+
+
+\section{Regelung des dynamischen Modells im Rennkurs}
+In der Realität ist das kinematische Modell nur für geringe Geschwindigkeiten genau genug die Bewegung des Fahrzeugs zu Modellieren. Im Folgenden wird deswegen das Modell im Simulator durch ein dynamische Fahrzeugmodell mit berechneten Reifenkräften ersetzt. Das Ziel ist zu evaluieren, wie gut sich das deutlich komplexere System mit dem weiterhin sehr einfachen kinematischen Modell im \ac{MPC}-Algorithmus regeln lässt.
+Zuerst wird untersucht, welchen Einfluss die Geschwindigkeit und Beschleunigung auf die drei Modelle, kinematisch, dynamisch und dynamisch mit Kammschen Kreis haben. 
+Danach werden die einzelnen elastischen Begrenzung auf ihre Fähigkeit getestet das dynamische Modell auf dem Kurs zu halten und welche Rundenzeiten sie ermöglichen. Im letzten Schritt wird zusätzlich noch untersucht welchen Einfluss $\beta_{max}$ auf die Regelfähigkeit des Algorithmus hat und ob sie sich durch verändern der Werte verbessern lässt. 
+
+
+
 \subsection{Elastische Beschränkung}
 \subsubsection*{Berechnungszeit in Ipopt}
 
@@ -907,8 +970,9 @@ Die Idee hinter dem verändern von $\beta_{max}$ ist die geringere Kurvengeschwi
 
 \chapter[Ausblick]{Zusammenfassung und Ausblick}
 \section{Dynamisches Fahrzeugmodell im MPC}
-\section{Trajektionsregelung}
 \section{Zweispurmodell}
+\section{Trajektorienplanung}
+
 \section{Zusammenfassung}
 
 

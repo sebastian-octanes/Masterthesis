@@ -262,7 +262,7 @@ function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, 
     mpc_struct = define_constraint_start_pose(mpc_struct, startPose)
     mpc_struct = define_constraint_tangents(mpc_struct, trackPoints)
     #mpc_struct = define_constraint_max_search_dist(mpc_struct, trackPoints)
-    mpc_struct = define_objective(mpc_struct)
+    mpc_struct = define_objective_max_speed(mpc_struct)
     #mpc_struct = define_objective_middle(mpc_struct)
     #mpc_struct = define_objective_minimize_dist(mpc_struct)
     #mpc_struct = define_objective_minimize_dist_soft_const(mpc_struct,2, 1)
@@ -288,7 +288,8 @@ keys = KeyControls(0,0,0,0,0)
 startPose = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
 
 #define which racecourse should be used
-itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(15.25, 3, 16, 0)
+#itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(15.25, 3, 16, 0)
+itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(10.625, 3, 11, 0)
 
 N = 12
 printLevel = 0

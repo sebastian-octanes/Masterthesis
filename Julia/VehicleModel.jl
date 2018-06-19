@@ -29,7 +29,8 @@ max_long_acc = 7.2   #m/s**2 longitudinal acceleration max
 max_throttle = 10   #used for the mpc
 max_long_dec = 13   #m/s**2 longitudinal deceleration max
 min_throttle = 10   #used for the mpc minus is added in the mpc
-max_lat_acc = 20  # 2g lateral acceleration
+max_lat_acc = 2 *9.81  # 2g lateral acceleration
+#max_lat_acc = 0.5 *9.81  # 2g lateral acceleration
 max_steering_angle = (30.0/180.0)*pi #
 
 
@@ -93,6 +94,12 @@ function createNewStateVector(sV, realCarStateVector, dt, N) # sV für stateVect
     return sV
 end
 
+function computeCarStepDynKamsch(carPose, res,  dt)
+        carControls = CarControls(res[7], res[8])
+        cP = dyn_model_kamCircle(carPose, carControls, dt)
+    return cP
+end
+
 function computeCarStepDynModelBase(carPose, res,  dt)
         carControls = CarControls(res[7], res[8])
         cP = dyn_model_base(carPose, carControls, dt)
@@ -114,7 +121,7 @@ end
 
 function kin_bycicle_model(carPose, carControl, dt)
     beta = atan((lr/(lf + lr)) * tan(carControl.phi))
-    max_beta =  atan(1.0/2 * (lf + lr) * max_lat_acc / carPose.x_d^2)
+    max_beta =  atan(1.0/2 * (lf + lr) * max_lat_acc / sqrt(carPose.x_d^2 + carPose.y_d^2)^2)
     if (beta >= 0)
         beta = min(beta, max_beta)
     else
@@ -172,96 +179,6 @@ function dyn_model_base(carPose, carControl, dt)
     carPoseNew = CarPose(x_new, y_new, xd_new, psi_new, yd_new, psid_new)
     return carPoseNew
 end
-
-
-#this model enhances the standard "model_base"  by incorporating the power in kw of the vehicle
-#slowing the acceleration capability of the car with increasing speed
-function dyn_model_enhanced_long(carPose, carControl, dt)
-    slip_angle_f = carControl.phi- atan((carPose.y_d + lf * carPose.psi_d)/ carPose.x_d)
-    slip_angle_b =    - atan((carPose.y_d - lf * carPose.psi_d)/ carPose.x_d)
-
-    #as car can only accelerate forward or break in simulation that decreases complexity for the if case
-    if(carControl.throttle > 0)
-        power = P_Engine * carControl.throttle/10.0
-        Fbx   = power /abs(carPose.x_d)
-        if(Fbx > VehicleModel.F_long_max)
-            Fbx = VehicleModel.F_long_max
-        end
-    else
-        Fbx = VehicleModel.F_long_max * carControl.throttle/10.0
-    end
-    #base model from here
-    #Ffy = Df * slip_angle_f / xmf
-    #Fby = Db * slip_angle_b / xmb
-    Ffy = pacejka_tire_model_linear(slip_angle_f, true)
-    Fby = pacejka_tire_model_linear(slip_angle_b, false)
-
-    x_new = carPose.x + dt * (carPose.x_d * cos(carPose.psi) - carPose.y_d *sin(carPose.psi))
-    y_new = carPose.y + dt * (carPose.x_d * sin(carPose.psi) + carPose.y_d *cos(carPose.psi))
-
-    xd_new = carPose.x_d + dt * (Fbx -Ffy * sin(carControl.phi) + mass * carPose.y_d * carPose.psi_d)*(1.0/mass)
-    #base from here
-    psi_new = carPose.psi + dt * carPose.psi_d
-    yd_new = carPose.y_d + dt * (Fby + Ffy * cos(carControl.phi) - mass * carPose.x_d * carPose.psi_d)*(1.0 / mass)
-    psid_new = carPose.psi_d + dt * (lf*Ffy*cos(carControl.phi) - lr*Fby)/I
-
-    if(xd_new < 0.1)
-        xd_new = 0.1
-    end
-    if(xd_new >= max_speed)
-        xd_new = max_speed - 0.001
-    end
-    carPoseNew = CarPose(x_new, y_new, xd_new, psi_new, yd_new, psid_new)
-    return carPoseNew
-end
-
-#this model enhances the standard "enhanced_long" model by incorporating the friction and air resistance
-
-function dyn_model_cplx_long(carPose, carControl, dt)
-    slip_angle_f = carControl.phi- atan((carPose.y_d + lf * carPose.psi_d)/ carPose.x_d)
-    slip_angle_b =    - atan((carPose.y_d - lf * carPose.psi_d)/ carPose.x_d)
-
-    #this part is enhanced compared to enhanced_long
-    Faero = 1/2.0 * rho * Cd * Af * carPose.x_d^2
-	Fzf   = mass*g*lf / (lf + lr)
-	Fzr   = mass*g*lr / (lf + lr)
-	Rxf   = mu * Fzf
-	Rxr   = mu * Fzr
-    #as car can only accelerate forward or break in simulation that decreases complexity for the if case
-    if(carControl.throttle > 0)
-        power = P_Engine * carControl.throttle/10.0
-        Fbx   = power /abs(carPose.x_d)
-        if(Fbx > VehicleModel.F_long_max)
-            Fbx = VehicleModel.F_long_max
-        end
-    else
-        Fbx = VehicleModel.F_long_max * carControl.throttle/10.0
-    end
-    #base model from here
-    #Ffy = Df * slip_angle_f / xmf
-    #Fby = Db * slip_angle_b / xmb
-    Ffy = pacejka_tire_model_linear(slip_angle_f, true)
-    Fby = pacejka_tire_model_linear(slip_angle_b, false)
-
-    x_new = carPose.x + dt * (carPose.x_d * cos(carPose.psi) - carPose.y_d *sin(carPose.psi))
-    y_new = carPose.y + dt * (carPose.x_d * sin(carPose.psi) + carPose.y_d *cos(carPose.psi))
-    #this part is enhanced compared to enhanced_long
-    xd_new = carPose.x_d + dt * (Fbx -Rxf -Rxr -Faero -Ffy * sin(carControl.phi) + mass * carPose.y_d * carPose.psi_d)*(1.0/mass)
-    #base from here
-    psi_new = carPose.psi + dt * carPose.psi_d
-    yd_new = carPose.y_d + dt * (Fby + Ffy * cos(carControl.phi) - mass * carPose.x_d * carPose.psi_d)*(1.0 / mass)
-    psid_new = carPose.psi_d + dt * (lf*Ffy*cos(carControl.phi) - lr*Fby)/I
-
-    if(xd_new < 0.1)
-        xd_new = 0.1
-    end
-    if(xd_new >= max_speed)
-        xd_new = max_speed - 0.001
-    end
-    carPoseNew = CarPose(x_new, y_new, xd_new, psi_new, yd_new, psid_new)
-    return carPoseNew
-end
-
 
 
 function dyn_model_enhanced_lat(carPose, carControl, dt)
@@ -326,6 +243,95 @@ function dyn_model_enhanced_lat_cmplx(carPose, carControl, dt)
     carPoseNew = CarPose(x_new, y_new, xd_new, psi_new, yd_new, psid_new)
     return carPoseNew
 end
+
+#this model enhances the standard "model_base"  by incorporating the power in kw of the vehicle
+#slowing the acceleration capability of the car with increasing speed
+function dyn_model_enhanced_long(carPose, carControl, dt)
+    slip_angle_f = carControl.phi- atan((carPose.y_d + lf * carPose.psi_d)/ carPose.x_d)
+    slip_angle_b =               - atan((carPose.y_d - lf * carPose.psi_d)/ carPose.x_d)
+
+    #as car can only accelerate forward or break in simulation that decreases complexity for the if case
+    if(carControl.throttle > 0)
+        power = P_Engine * carControl.throttle/10.0
+        Fbx   = power /abs(sqrt(carPose.x_d^2 + carPose.y_d^2))
+        if(Fbx > VehicleModel.F_long_max)
+            Fbx = VehicleModel.F_long_max
+        end
+    else
+        Fbx = VehicleModel.F_long_max * carControl.throttle/10.0
+    end
+    #base model from here
+    #Ffy = Df * slip_angle_f / xmf
+    #Fby = Db * slip_angle_b / xmb
+    Ffy = pacejka_tire_model_linear(slip_angle_f, true)
+    Fby = pacejka_tire_model_linear(slip_angle_b, false)
+
+    x_new = carPose.x + dt * (carPose.x_d * cos(carPose.psi) - carPose.y_d *sin(carPose.psi))
+    y_new = carPose.y + dt * (carPose.x_d * sin(carPose.psi) + carPose.y_d *cos(carPose.psi))
+
+    xd_new = carPose.x_d + dt * (Fbx -Ffy * sin(carControl.phi) + mass * carPose.y_d * carPose.psi_d)*(1.0/mass)
+    #base from here
+    psi_new = carPose.psi + dt * carPose.psi_d
+    yd_new = carPose.y_d + dt * (Fby + Ffy * cos(carControl.phi) - mass * carPose.x_d * carPose.psi_d)*(1.0 / mass)
+    psid_new = carPose.psi_d + dt * (lf*Ffy*cos(carControl.phi) - lr*Fby)/I
+
+    if(xd_new < 0.1)
+        xd_new = 0.1
+    end
+    if(xd_new >= max_speed)
+        xd_new = max_speed - 0.001
+    end
+    carPoseNew = CarPose(x_new, y_new, xd_new, psi_new, yd_new, psid_new)
+    return carPoseNew
+end
+
+#this model enhances the standard "enhanced_long" model by incorporating the friction and air resistance
+
+function dyn_model_cplx_long(carPose, carControl, dt)
+    slip_angle_f = carControl.phi- atan((carPose.y_d + lf * carPose.psi_d)/ carPose.x_d)
+    slip_angle_b =               - atan((carPose.y_d - lf * carPose.psi_d)/ carPose.x_d)
+
+    #this part is enhanced compared to enhanced_long
+    Faero = 1/2.0 * rho * Cd * Af * carPose.x_d^2
+	Fzf   = mass*g*lf / (lf + lr)
+	Fzr   = mass*g*lr / (lf + lr)
+	Rxf   = mu * Fzf
+	Rxr   = mu * Fzr
+    #as car can only accelerate forward or break in simulation that decreases complexity for the if case
+    if(carControl.throttle > 0)
+        power = P_Engine * carControl.throttle/10.0
+        Fbx   = power /abs(carPose.x_d)
+        if(Fbx > VehicleModel.F_long_max)
+            Fbx = VehicleModel.F_long_max
+        end
+    else
+        Fbx = VehicleModel.F_long_max * carControl.throttle/10.0
+    end
+    #base model from here
+    #Ffy = Df * slip_angle_f / xmf
+    #Fby = Db * slip_angle_b / xmb
+    Ffy = pacejka_tire_model_linear(slip_angle_f, true)
+    Fby = pacejka_tire_model_linear(slip_angle_b, false)
+
+    x_new = carPose.x + dt * (carPose.x_d * cos(carPose.psi) - carPose.y_d *sin(carPose.psi))
+    y_new = carPose.y + dt * (carPose.x_d * sin(carPose.psi) + carPose.y_d *cos(carPose.psi))
+    #this part is enhanced compared to enhanced_long
+    xd_new = carPose.x_d + dt * (Fbx -Rxf -Rxr -Faero -Ffy * sin(carControl.phi) + mass * carPose.y_d * carPose.psi_d)*(1.0/mass)
+    #base from here
+    psi_new = carPose.psi + dt * carPose.psi_d
+    yd_new = carPose.y_d + dt * (Fby + Ffy * cos(carControl.phi) - mass * carPose.x_d * carPose.psi_d)*(1.0 / mass)
+    psid_new = carPose.psi_d + dt * (lf*Ffy*cos(carControl.phi) - lr*Fby)/I
+
+    if(xd_new < 0.1)
+        xd_new = 0.1
+    end
+    if(xd_new >= max_speed)
+        xd_new = max_speed - 0.001
+    end
+    carPoseNew = CarPose(x_new, y_new, xd_new, psi_new, yd_new, psid_new)
+    return carPoseNew
+end
+
 
 function dyn_model_kamCircle(carPose, carControl, dt)
     slip_angle_f = carControl.phi- atan((carPose.y_d + lf * carPose.psi_d)/ carPose.x_d)

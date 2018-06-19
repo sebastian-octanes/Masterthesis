@@ -26,7 +26,7 @@ class CostFunction:
     
     def cost_func0(self, x):
         #alpha = 2/(8*(self.track.track_width/8.0)**7)
-	alpha = 5        
+	alpha = 4        
 	return alpha *(x)**2
     
     def cost_func1(self, x):
@@ -43,7 +43,7 @@ class CostFunction:
 
 
     def cost_func2(self, x):
-        alpha = 1
+        alpha = 0.99
         k1 = 2.5
         k2 = -2.5
         return math.fabs(alpha/(k1 - x) + alpha/(k2 - x))

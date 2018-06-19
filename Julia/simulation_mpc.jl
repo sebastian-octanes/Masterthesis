@@ -243,6 +243,36 @@ function mapKeyToCarControl(keys, res, N)
     res
 end
 
+
+function compute_soft_const_diff(stateVector, trackPoints, N)
+    trackWidth = 4
+
+    alpha = 30
+    alpha2 = 0.5
+    k1 = -2.0
+    k2 = 2.0
+    k12 = 2.0
+    k22 = -2.0
+    for i in 0:N -1
+        x,y = stateVector[i*8 + 1] , stateVector[i*8 + 2]
+        mx, my = trackPoints[i*6 + 1], trackPoints[i*6 + 2]
+        tx, ty = trackPoints[i*6 + 3], trackPoints[i*6 + 4]
+        dist = ((x - mx)*(tx - mx) + (y - my)*(ty - my)) / sqrt((tx - mx)^2 + (ty - my)^2)
+        cost = e^(alpha*(k1 + abs(dist))) #+ e^(-alpha*(k2 + dist))
+        cost2 = abs(alpha2/(k12 - dist) + alpha2/(k22 - dist))
+
+        println("stateVector[i].x: $(stateVector[i*8 + 1])   stateVector[i].y: $(stateVector[i*8 + 2])")
+        println("trackPoints[i].mx: $(trackPoints[i*6 + 1])   trackPoints[i].my: $(trackPoints[i*6 + 2])")
+        println("trackPoints[i].tx: $(trackPoints[i*6 + 3])   trackPoints[i].ty: $(trackPoints[i*6 + 4])")
+        println("dist $i :  $dist")
+        println("cost $i :  $cost")
+        println("cost2 $i :  $cost2")
+        println("\n")
+    end
+    println("\n")
+end
+
+
 function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed, trackWidth)
     stateVector = []
     start_=[startPose.x, startPose.y, startPose.x_d, startPose.psi, 0, 0, 0, 0]
@@ -261,14 +291,14 @@ function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, 
     #mpc_struct = define_constraint_nonlinear_bycicle(mpc_struct)
     mpc_struct = define_constraint_kin_bycicle(mpc_struct)
     mpc_struct = define_constraint_start_pose(mpc_struct, startPose)
-    mpc_struct = define_constraint_tangents(mpc_struct, trackPoints)
+    #mpc_struct = define_constraint_tangents(mpc_struct, trackPoints)
     #mpc_struct = define_constraint_max_search_dist(mpc_struct, trackPoints)
     #mpc_struct = define_objective(mpc_struct)
     #mpc_struct = define_objective_middle(mpc_struct)
     #mpc_struct = define_objective_minimize_dist(mpc_struct)
-    mpc_struct = define_objective_max_track_dist(mpc_struct)
+    #mpc_struct = define_objective_max_track_dist(mpc_struct)
     #mpc_struct = define_objective_minimize_dist_soft_const(mpc_struct,2, 1)
-    #mpc_struct = define_objective_minimize_dist_soft_const_ext(mpc_struct,10, 1)
+    mpc_struct = define_objective_minimize_dist_soft_const_ext(mpc_struct,10, 1)
 
     #mpc_struct = update_track_forward_point(mpc_struct, forwardPoint)
     mpc_struct = update_track_forward_point_bounds(mpc_struct, forwardPoint, forwardPointBounds)

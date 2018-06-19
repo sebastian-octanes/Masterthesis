@@ -6,37 +6,41 @@
 \contentsline {chapter}{\numberline {3}Grundlagen}{6}{chapter.3}
 \contentsline {section}{\numberline {3.1}Model Predictive Control}{6}{section.3.1}
 \contentsline {section}{\numberline {3.2}Optimierung}{9}{section.3.2}
-\contentsline {subsection}{\numberline {3.2.1}Simplex - Verfahren}{11}{subsection.3.2.1}
+\contentsline {subsection}{\numberline {3.2.1}Simplex-Verfahren}{11}{subsection.3.2.1}
 \contentsline {subsection}{\numberline {3.2.2}Innere-Punkte-Verfahren}{12}{subsection.3.2.2}
 \contentsline {subsection}{\numberline {3.2.3}Automatische Ableitung}{14}{subsection.3.2.3}
 \contentsline {section}{\numberline {3.3}Fahrzeugmodelle}{15}{section.3.3}
 \contentsline {subsection}{\numberline {3.3.1}Kinematisches Modell}{15}{subsection.3.3.1}
 \contentsline {subsection}{\numberline {3.3.2}Reifenmodell}{18}{subsection.3.3.2}
-\contentsline {subsection}{\numberline {3.3.3}Dynamisches Fahrzeugmodell}{22}{subsection.3.3.3}
-\contentsline {section}{\numberline {3.4}Programmiersprachen}{26}{section.3.4}
-\contentsline {subsection}{\numberline {3.4.1}Python}{26}{subsection.3.4.1}
-\contentsline {subsection}{\numberline {3.4.2}Julia}{27}{subsection.3.4.2}
-\contentsline {chapter}{\numberline {4}MPC zur Trajektionsplanung und Regelung}{30}{chapter.4}
-\contentsline {section}{\numberline {4.1}Fahrzeugmodell}{32}{section.4.1}
-\contentsline {section}{\numberline {4.2}Kostenfunktionen}{32}{section.4.2}
-\contentsline {section}{\numberline {4.3}Strecken-, und Positionsbeschr\IeC {\"a}nkung}{34}{section.4.3}
-\contentsline {chapter}{\numberline {5}Simulationsumgebung}{39}{chapter.5}
-\contentsline {section}{\numberline {5.1}\acl {SFML}}{40}{section.5.1}
-\contentsline {section}{\numberline {5.2}Trackdrive}{40}{section.5.2}
-\contentsline {chapter}{\numberline {6}Evaluierung}{42}{chapter.6}
-\contentsline {section}{\numberline {6.1}Verifizierung der Fahrzeugmodelle}{42}{section.6.1}
-\contentsline {section}{\numberline {6.2}Regelung des kinematischen Modells im Rennkurs}{44}{section.6.2}
-\contentsline {subsection}{\numberline {6.2.1}Pr\IeC {\"a}diktionshorizont}{45}{subsection.6.2.1}
-\contentsline {subsection}{\numberline {6.2.2}Kostenfunktionen}{45}{subsection.6.2.2}
-\contentsline {section}{\numberline {6.3}Regelung des dynamischen Modells im Rennkurs}{47}{section.6.3}
-\contentsline {subsection}{\numberline {6.3.1}Modellfehler}{48}{subsection.6.3.1}
-\contentsline {subsection}{\numberline {6.3.2}Elastische Beschr\IeC {\"a}nkung}{48}{subsection.6.3.2}
-\contentsline {subsection}{\numberline {6.3.3}Einfluss der Geschwindigkeit und Beta Max}{48}{subsection.6.3.3}
-\contentsline {chapter}{\numberline {7}Ausblick}{52}{chapter.7}
-\contentsline {section}{\numberline {7.1}Dynamisches Fahrzeugmodell im MPC}{52}{section.7.1}
-\contentsline {section}{\numberline {7.2}Trajektionsregelung}{52}{section.7.2}
-\contentsline {section}{\numberline {7.3}Zweispurmodell}{52}{section.7.3}
-\contentsline {section}{\numberline {7.4}Zusammenfassung}{52}{section.7.4}
-\contentsline {chapter}{\numberline {A}Anhang}{53}{appendix.A}
-\contentsline {chapter}{Abk\IeC {\"u}rzungsverzeichnis}{55}{chapter*.71}
-\contentsline {chapter}{Literaturverzeichnis}{56}{chapter*.72}
+\contentsline {subsection}{\numberline {3.3.3}Dynamisches Fahrzeugmodell}{23}{subsection.3.3.3}
+\contentsline {section}{\numberline {3.4}Programmiersprachen}{28}{section.3.4}
+\contentsline {subsection}{\numberline {3.4.1}Python}{28}{subsection.3.4.1}
+\contentsline {subsection}{\numberline {3.4.2}Julia}{29}{subsection.3.4.2}
+\contentsline {chapter}{\numberline {4}MPC zur Trajektorienplanung und Regelung}{32}{chapter.4}
+\contentsline {section}{\numberline {4.1}Fahrzeugmodell}{34}{section.4.1}
+\contentsline {section}{\numberline {4.2}Kostenfunktionen}{34}{section.4.2}
+\contentsline {section}{\numberline {4.3}Strecken-, und Positionsbeschr\IeC {\"a}nkung}{36}{section.4.3}
+\contentsline {chapter}{\numberline {5}Simulationsumgebung}{41}{chapter.5}
+\contentsline {section}{\numberline {5.1}\acl {SFML}}{42}{section.5.1}
+\contentsline {section}{\numberline {5.2}Virtueller Rennkurs}{42}{section.5.2}
+\contentsline {chapter}{\numberline {6}Evaluierung}{44}{chapter.6}
+\contentsline {section}{\numberline {6.1}Verifizierung der Fahrzeugmodelle}{44}{section.6.1}
+\contentsline {section}{\numberline {6.2}Regelung des kinematischen Modells im Rennkurs}{46}{section.6.2}
+\contentsline {subsection}{\numberline {6.2.1}Pr\IeC {\"a}diktionshorizont}{47}{subsection.6.2.1}
+\contentsline {subsection}{\numberline {6.2.2}Kostenfunktionen}{47}{subsection.6.2.2}
+\contentsline {section}{\numberline {6.3}Modellfehler}{49}{section.6.3}
+\contentsline {subsection}{\numberline {6.3.1}Orientierung}{50}{subsection.6.3.1}
+\contentsline {subsection}{\numberline {6.3.2}Position}{51}{subsection.6.3.2}
+\contentsline {subsection}{\numberline {6.3.3}Reifenmodelle}{53}{subsection.6.3.3}
+\contentsline {subsection}{\numberline {6.3.4}Longitudinale Modelle}{53}{subsection.6.3.4}
+\contentsline {section}{\numberline {6.4}Regelung des dynamischen Modells im Rennkurs}{53}{section.6.4}
+\contentsline {subsection}{\numberline {6.4.1}Elastische Beschr\IeC {\"a}nkung}{53}{subsection.6.4.1}
+\contentsline {subsection}{\numberline {6.4.2}Einfluss der Geschwindigkeit und Beta Max}{53}{subsection.6.4.2}
+\contentsline {chapter}{\numberline {7}Ausblick}{55}{chapter.7}
+\contentsline {section}{\numberline {7.1}Dynamisches Fahrzeugmodell im MPC}{55}{section.7.1}
+\contentsline {section}{\numberline {7.2}Zweispurmodell}{55}{section.7.2}
+\contentsline {section}{\numberline {7.3}Trajektorienplanung}{55}{section.7.3}
+\contentsline {section}{\numberline {7.4}Zusammenfassung}{55}{section.7.4}
+\contentsline {chapter}{\numberline {A}Anhang}{56}{appendix.A}
+\contentsline {chapter}{Abk\IeC {\"u}rzungsverzeichnis}{58}{chapter*.71}
+\contentsline {chapter}{Literaturverzeichnis}{59}{chapter*.72}

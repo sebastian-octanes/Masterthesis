@@ -66,8 +66,8 @@ function define_constraint_kin_bycicle(mpc_struct)
               #x[(i + 1)*8 + 3] - (x[i * 8 + 3] + x[8*i + 7]*dt) == 0
               x[(i + 1)*8 + 3] - (x[i * 8 + 3] + x_dd*dt) == 0
               x[(i + 1)*8 + 4] - (x[i * 8 + 4] + x[8*i + 3]*dt / lr*sin(atan(lr/(lf + lr) * tan(x[i*8 + 8])))) == 0
-              atan(0.5 * (lf + lr) * VehicleModel.max_long_acc / x[i*8 + 3]^2) - atan(lr/(lf + lf) * tan(x[i*8 + 8])) >= 0  #max_beta - beta
-              atan(0.5 * (lf + lr) * VehicleModel.max_long_acc / x[i*8 + 3]^2) + atan(lr/(lf + lf) * tan(x[i*8 + 8])) >= 0  #max_beta + beta
+              atan(0.5 * (lf + lr) * VehicleModel.max_lat_acc / x[i*8 + 3]^2) - atan(lr/(lf + lf) * tan(x[i*8 + 8])) >= 0  #max_beta - beta
+              atan(0.5 * (lf + lr) * VehicleModel.max_lat_acc / x[i*8 + 3]^2) + atan(lr/(lf + lf) * tan(x[i*8 + 8])) >= 0  #max_beta + beta
          end)
     end
     return mpc_struct
@@ -292,15 +292,17 @@ function define_objective_minimize_dist_soft_const_ext(mpc_struct, a, b)
     @NLexpression(m, min_dist, sqrt((x[(N-1)*8 + 1]- z[1])^2 + (x[(N-1)*8 + 2]-z[2])^2))
 
 
-    alpha = 2
-
+    alpha = 6
     k1 = - trackWidth/2.0
     k2 =   trackWidth/2.0
-    alpha2 = 2/ (8*(trackWidth/4)^7)
-    dist(xX, xY, x0X, x0Y, x1X, x1Y) =  abs((xX - x0X)*(x1X - x0X) + (xY - x0Y)*(x1Y - x0Y)) / sqrt((x1X - x0X)^2 + (x1Y - x0Y)^2)
-    #cost(xX, xY, x0X, x0Y, x1X, x1Y) = alpha2 * dist_val1(xX, xY, x0X, x0Y, x1X, x1Y)^2
     cost(xX, xY, x0X, x0Y, x1X, x1Y) = exp(alpha*(k1 + dist(xX, xY, x0X, x0Y, x1X, x1Y)))
 
+    #k1 =  trackWidth/2.0
+    #k2 =  -trackWidth/2.0
+    #alpha2 = 0.99
+    #cost(xX, xY, x0X, x0Y, x1X, x1Y) = abs(alpha2/(k1 - dist(xX, xY, x0X, x0Y, x1X, x1Y)) + alpha2/(k2 - dist(xX, xY, x0X, x0Y, x1X, x1Y)))
+
+    dist(xX, xY, x0X, x0Y, x1X, x1Y) =  abs((xX - x0X)*(x1X - x0X) + (xY - x0Y)*(x1Y - x0Y)) / sqrt((x1X - x0X)^2 + (x1Y - x0Y)^2)
     JuMP.register(m, :dist, 6, dist, autodiff=true)
     JuMP.register(m, :cost, 6, cost, autodiff=true)
     @NLexpression(m, soft_constraint, sum(cost(x[(i+1)*8 + 1], x[(i+1)*8 + 2], t[i*6 + 1], t[i*6 + 2], t[i*6 + 3], t[i*6 + 4]) for i in 2:2:N-1))

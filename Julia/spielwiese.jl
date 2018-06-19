@@ -243,24 +243,30 @@ function mapKeyToCarControl(keys, res, N)
     res
 end
 
+
 function compute_soft_const_diff(stateVector, trackPoints, N)
     trackWidth = 4
 
     alpha = 30
+    alpha2 = 0.5
     k1 = -2.0
     k2 = 2.0
-
+    k12 = 2.0
+    k22 = -2.0
     for i in 0:N -1
         x,y = stateVector[i*8 + 1] , stateVector[i*8 + 2]
         mx, my = trackPoints[i*6 + 1], trackPoints[i*6 + 2]
         tx, ty = trackPoints[i*6 + 3], trackPoints[i*6 + 4]
         dist = ((x - mx)*(tx - mx) + (y - my)*(ty - my)) / sqrt((tx - mx)^2 + (ty - my)^2)
         cost = e^(alpha*(k1 + abs(dist))) #+ e^(-alpha*(k2 + dist))
+        cost2 = abs(alpha2/(k12 - dist) + alpha2/(k22 - dist))
+
         println("stateVector[i].x: $(stateVector[i*8 + 1])   stateVector[i].y: $(stateVector[i*8 + 2])")
         println("trackPoints[i].mx: $(trackPoints[i*6 + 1])   trackPoints[i].my: $(trackPoints[i*6 + 2])")
         println("trackPoints[i].tx: $(trackPoints[i*6 + 3])   trackPoints[i].ty: $(trackPoints[i*6 + 4])")
         println("dist $i :  $dist")
         println("cost $i :  $cost")
+        println("cost2 $i :  $cost2")
         println("\n")
     end
     println("\n")
@@ -326,10 +332,10 @@ itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack4(trackWidth)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrackUUTurn(trackWidth)
 
 
-N = 40
+N = 30
 printLevel = 0
 dt = 0.05
-max_speed = 20
+max_speed = 5
 mpc_struct = initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed, trackWidth)
 event = Event()
 window = RenderWindow("test", windowSizeX, windowSizeY)
@@ -367,7 +373,8 @@ while isopen(window)
     #stateVector = mapKeyToCarControl(keys, stateVector, N)
 
     #predict last point and compute next state with vehicle model
-    realCarStateVector = VehicleModel.computeCarStepDynModelLong(realCarStateVector, res, dt)
+    #realCarStateVector = VehicleModel.computeCarStepDynModelLong(realCarStateVector, res, dt)
+    realCarStateVector = VehicleModel.computeCarStepDynModelBase(realCarStateVector, res, dt)
     #realCarStateVector = VehicleModel.computeCarStepKinModel(realCarStateVector, res, dt)
     #print("\n\nres", res[1:8])
     #print("\nSteer Angle: $(res[8])   Throttle:  $(res[7])")
@@ -382,7 +389,7 @@ while isopen(window)
     #update_track_forward_point(mpc_struct, forwardPoint)
     update_track_forward_point_bounds(mpc_struct, forwardPoint, forwardPointBounds)
     update_track_points(mpc_struct, trackPoints)
-    compute_soft_const_diff(stateVector, trackPoints, N)
+
     #timer
     steps = steps + 1
     if abs(realCarStateVector.x) > 5
