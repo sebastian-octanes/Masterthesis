@@ -845,7 +845,7 @@ Das genaueste Modell betrachtet zusätzlich noch Reibung und Luftwiderstand.
 In der Grafik \ref{fig:accdec} wird deutlich, wie stark sich die einzelnen Modelle, obwohl sie sich auf das gleiche Fahrzeug beziehen, voneinander unterscheiden. Für alle Modelle wird fünf Sekunden lang maximal beschleunigt und danach 2.5 s mit maximaler Kraft gebremst. Das Fahrzeug besitzt eine Maximalgeschwindigkeit von 118 kmh, welche durch die Übersetzung im Getriebe herrührt. Das kinematische Modell trifft mit seiner durchschnittlichen Beschleunigung exakt die gefahrenen Testwerte. Da aber die dynamischen Modelle eine größere Anfangsbeschleunigung haben und vom kinematischen Model, hinterlegt im MPC, geregelt werden, wird die Beschleunigung im kinematischen Modell so angepasst, dass es die gleiche Anfangssteigung besitzt. Die Steigung beträgt 24 $\frac{m}{s^2}$. Das longitudinale Modell mit Strömungswiderstand und Reibung ist bei den gemessenen Zeiten sehr nah an der Realität. Bei einem perfekten Start, bei dem der Schlupf möglichst genau die optimalen 30 Prozent trifft, ist mit dem realen Rennauto eine Beschleunigung von 3.9 s realistisch.
 
 \section{Skidpad}
-In dieser Disziplin fährt das Fahrzeug eine liegende 8. Der limitierende Faktor ist hier also die maximale Querbeschleunigung welche das Rennauto noch auf dem Kurs hält. In der Simulation wird vereinfacht von einem Rundkurs, welcher in Abbildung \ref{fig:roundCourse} dargestellt wird, mit dem Außendurchmesser von 21.25 m ausgegangen. Ob die Begrenzung der Querbeschleunigung \ref{betaMax} mit der Simulation übereinstimmt kann durch die Zentripetalkraft, welche wirkt, überprüft werden.
+In dieser Disziplin fährt das Fahrzeug eine liegende 8. Der limitierende Faktor ist hier also die maximale Querbeschleunigung, welche das Rennauto noch auf dem Kurs hält. In der Simulation wird vereinfacht von einem Rundkurs, welcher in Abbildung \ref{fig:roundCourse} dargestellt wird, mit dem Außendurchmesser von 21.25 m ausgegangen. Ob die Begrenzung der Querbeschleunigung \ref{betaMax} mit der Simulation übereinstimmt, kann durch die wirekende Zentripetalkraft überprüft werden.
 \begin{eqnarray}
 	 \omega = 2 \pi f \\
 	 v = r * \omega \\
@@ -867,7 +867,7 @@ Um nachzuvollziehen, wodurch diese niedrige Rundenzeit entsteht, wurde überprü
 Dieses deutlich dynamischere Szenario hängt nicht nur von den lateralen Kräften ab welche das Fahrzeug auf der Strecke halten und wie im Fall des Skidpad konstant sind, sondern ganz besonders auch vom Trägheitsmoment. 
 
 \section{Orientierung}
-In der Darstellung \ref{fig:modelDiffOrient} ist für ein oszillierenden Lenkwinkel die Änderung der Orientierung veranschaulicht. Es werden vier verschiedenen Geschwindigkeiten 7, 14, 21 und 28 $\frac{m}{s}$ ohne jegliche longitudinale Beschleunigung getestet. Dies soll zu einem guten Überblick über den gesamten Geschwindigkeitsbereich dienen.
+In der Darstellung \ref{fig:modelDiffOrient} ist die Änderung der Orientierung für einen oszillierenden Lenkwinkel veranschaulicht. Es werden vier verschiedenen Geschwindigkeiten 7, 14, 21 und 28 $\frac{m}{s}$ ohne jegliche longitudinale Beschleunigung getestet. Dies soll einen guten Überblick über den gesamten Geschwindigkeitsbereich ermöglichen.
 
 \begin{figure}
 	\centering
@@ -879,7 +879,7 @@ In der Darstellung \ref{fig:modelDiffOrient} ist für ein oszillierenden Lenkwin
 Zuerst wird das Verhalten des kinematischen Modells betrachtet. Bei der geringsten Geschwindigkeit von 7 $\frac{m}{s}$ folgt die Orientierung noch genau dem Lenkwinkel nach und erreicht damit den Maximalwert im Nulldurchgang der Sinusfunktion des Lenkwinkels. Mit höheren Geschwindigkeiten begrenzt jedoch immer stärker die Beschränkung der maximalen Querbeschleunigung. Bei 14 $\frac{m}{s}$ ist dies deutlich zu erkennen, der Anfangspunkt der Kurve ist noch leicht abgerundet. Dies ist bei 21 und 28 $\frac{m}{s}$ nicht mehr der Fall. Ab der Geschwindigkeit von 14 $\frac{m}{s}$ begrenzt die maximale Querbeschleunigung auch immer stärker die maximal erreichte Orientierung. 
 
 Das Verhalten des dynamischen Modells und das des um den Kammschen Kreis erweiterten sind in diesem Anwendungsfall genau gleich. Dies ist darauf zurückzuführen, dass keinerlei longitudinale Kraft an den Reifen anliegt. Die vom Reifen zu übertragenden Kräfte bewegen sich daher nur auf der x-Achse und erfahren keine Einschränkung. 
-Das Verhalten der dynamischen Modelle bei den unterschiedlichen Geschwindigkeiten ist nicht direkt aus den Gleichungen nachvollziehbar. Aus dem Verlauf der Diagramme wird jedoch deutlich, dass das Trägheitsmoment dazu führt, dass die maximale Orientierung deutlich dem kinematischen Modell und damit dem Lenkwinkel nacheilt. Ebenfalls ist ersichtlich wie das Fahrzeugmodell bei höheren Geschwindigkeiten immer mehr zum Übersteuern neigt und die maximale Orientierung immer weiter steigt.  
+Das Verhalten der dynamischen Modelle bei den unterschiedlichen Geschwindigkeiten ist nicht direkt aus den Gleichungen nachvollziehbar. Aus dem Verlauf der Diagramme wird jedoch deutlich, dass das Trägheitsmoment dazu führt, dass die maximale Orientierung deutlich dem kinematischen Modell und damit dem Lenkwinkel nacheilt. Ebenfalls ersichtlich ist, wie das Fahrzeugmodell bei höheren Geschwindigkeiten immer mehr zum Übersteuern neigt und die maximale Orientierung immer weiter steigt.  
 
 \begin{figure}
 	\centering
@@ -890,11 +890,11 @@ Das Verhalten der dynamischen Modelle bei den unterschiedlichen Geschwindigkeite
 
 
 Wird nun das gleiche Szenario aber für eine zusätzliche longitudinale Beschleunigung betrachtet, ergibt sich ein gänzlich neues Bild \ref{fig:modelDiffOrientMaxAcc}.
-Zuerst lohnt sich nochmals der Blick auf das kinematische Modell. Hier ist nun sehr gut zu sehen, wie mit zunehmender Geschwindigkeit die Kurve immer weniger rund ist und durch die maximale Querbeschleunigung begrenzt wird. Das Verhalten der beiden dynamischen Modelle ist in diesem Szenario nicht mehr kongruent. Für 7 $\frac{m}{s}$ ist die große Differenz klar durch die eingeschränkten lateralen Kräfte durch den Kammschen Kreis ersichtlich. Dass die Differenz bei dem letzten Diagramm mit 28 $\frac{m}{s}$ nahezu verschwindet ist darauf zurück zu führen, dass $F_x$ durch die Gleichung \ref{long_dyn_engine} mit zunehmender Geschwindigkeit immer kleiner wird. 
+Zuerst lohnt sich nochmals der Blick auf das kinematische Modell. Hier ist nun sehr gut zu sehen, wie mit zunehmender Geschwindigkeit die Kurve immer weniger rund ist und durch die maximale Querbeschleunigung begrenzt wird. Das Verhalten der beiden dynamischen Modelle ist in diesem Szenario nicht mehr kongruent. Für 7 $\frac{m}{s}$ ist die große Differenz klar durch die eingeschränkten lateralen Kräfte durch den Kammschen Kreis ersichtlich. Dass die Differenz bei dem letzten Diagramm mit 28 $\frac{m}{s}$ nahezu verschwindet, ist darauf zurück zu führen, dass $F_x$ welches mit der Gleichung \ref{long_dyn_engine} berechnet wird, mit zunehmender Geschwindigkeit immer kleiner wird. 
 
 
 \section{Reifenmodelle}
-Das Reifenmodell welches bis zu diesem Punkt in der Arbeit verwendet wurde entspricht dem genauen \emph{Magic Model}. Im folgenden soll nun kurz untersucht werden, was für einen Auswirkung die drei verschiedenen Modelle auf das Fahrzeugverhalten haben. Auch für diese Untersuchung wird eine Sinuswelle als Eingabe für den Lenkwinkel des Modells gewählt.
+Das Reifenmodell, welches bis zu diesem Punkt in der Arbeit verwendet wurde, entspricht dem genauesten \emph{magic model}. Im folgenden soll nun kurz untersucht werden, was für einen Auswirkung die drei verschiedenen Modelle auf das Fahrzeugverhalten haben. Auch für diese Untersuchung wird eine Sinuswelle als Eingabe für den Lenkwinkel des Modells gewählt.
 
 
 \begin{figure}
@@ -904,7 +904,7 @@ Das Reifenmodell welches bis zu diesem Punkt in der Arbeit verwendet wurde entsp
 	\label{fig:modelDiffTires}
 \end{figure}
 
-Die Differenz der Modelle ist deutlich erkennbar, ob es einen Einfluss auf die Regelung gibt wird im späteren Verlauf im Kapitel \ref{dynModelcontrol} näher untersucht. Generell lässt sich jedoch sagen, ist das einsparen von Rechenzeit nicht das oberste Ziel, sollte immer das genaueste Reifenmodell verwendet werden. Wie schon im Kapitel \ref{tireModel} angedeutet, hängt beim dynamischen Modell das Verhalten sehr stark von den Reifenkräfte ab und sollte daher möglichst genau abgebildet werden. Soll trotzdem viel Rechenleistung gespart werden, entspricht das lineare Modell einer guten Alternative zum vereinfachten \emph{magic model}. Es liefert eine gute Annäherung und ist zudem noch weniger Komplex. Dies gilt jedoch nur der Fall für Rennreifen. Diese können über einen großen Bereich des Schräglaufwinkels hohe Seitenkräfte übertragen. Normale Straßenreifen brechen deutlich stärker nach dem Erreichen ihrer maximalen Seitenkraft ein. 
+Die Differenz der Modelle ist deutlich erkennbar, ob es einen Einfluss auf die Regelung gibt, wird im späteren Verlauf im Kapitel \ref{dynModelcontrol} näher untersucht. Generell lässt sich jedoch sagen, ist das Einsparen von Rechenzeit nicht das oberste Ziel, sollte immer das genaueste Reifenmodell verwendet werden. Wie schon im Kapitel \ref{tireModel} angedeutet, hängt beim dynamischen Modell das Verhalten sehr stark von den Reifenkräften ab und sollte daher möglichst genau abgebildet werden. Soll trotzdem viel Rechenleistung gespart werden, entspricht das lineare Modell einer guten Alternative zum vereinfachten \emph{magic model}. Es liefert eine gute Annäherung und ist zudem noch weniger Komplex. Dies gilt jedoch nur der Fall für Rennreifen. Diese können über einen großen Bereich des Schräglaufwinkels hohe Seitenkräfte übertragen. Normale Straßenreifen brechen deutlich stärker nach dem Erreichen ihrer maximalen Seitenkraft ein und werden daher nicht gut durch das linearisierte Modell repräsentiert. 
 
 
 \section{Longitudinale Modelle}
@@ -913,17 +913,17 @@ Die Differenz der Modelle ist deutlich erkennbar, ob es einen Einfluss auf die R
 
 
 \chapter{Regelung des kinematischen Modells}
-In diesem Kapitel wird untersucht mit welcher Kostenfunktion die besten Rundenzeiten erreicht werden können. Zudem wir erprobt, wie groß der Einfluss des Vorhersagehorizontes auf die gefahrene Zeit ist. Um dies tun zu können, muss zuerst die mindestens erforderliche länge des Prädiktionshorizontes gefunden werden. In einem Szenario im öffentlichen Verkehr muss der Horizont immer mindestens so lang sein, dass eine Vollbremsung von der aktuellen Geschwindgkeit durchgeführt werden kann, bevor das Fahrzeug das Ende des Horizont erreicht hat. Auf dem Rennkurs ist dies nicht nötig, da nicht davon auszugehen ist, dass sich plötzlich Hindernisse auf der Strecke befinden (bei Formula Student Driverless befindet sich immer nur ein Fahrzeug auf der Strecke). Da im Simulator und im \ac{MPC} das gleiche Fahrzeugmodell hinterlegt ist, wird die tangentiale Beschränkung genutzt um das Rennauto daran zu hindern die Strecke zu verlassen.
+In diesem Kapitel wird untersucht, mit welcher Kostenfunktion die besten Rundenzeiten erreicht werden können. Zudem wir erprobt, wie groß der Einfluss des Vorhersagehorizontes auf die gefahrene Zeit ist. Um dies tun zu können, muss zuerst die mindestens erforderliche Länge des Prädiktionshorizontes gefunden werden. In einem Szenario im öffentlichen Verkehr muss der Horizont immer mindestens so lang sein, dass eine Vollbremsung von der aktuellen Geschwindigkeit durchgeführt werden kann, bevor das Fahrzeug das Ende des Horizontes erreicht hat. Auf dem Rennkurs ist dies nicht nötig, da nicht davon auszugehen ist, dass sich plötzlich Hindernisse auf der Strecke befinden (bei Formula Student Driverless befindet sich immer nur ein Fahrzeug auf der Strecke). Da im Simulator und im \ac{MPC} das gleiche Fahrzeugmodell hinterlegt ist, wird die tangentiale Beschränkung genutzt, um das Rennauto daran zu hindern die Strecke zu verlassen.
 
 \section{Prädiktionshorizont} 
-Um die Mindestlänge zu finden, wurde die Fahrsituation nachgestellt, welche nach Regelwerk den stärksten Bremsvorgang und Querbeschleunigung erzeugt. Eine 80 m lange Gerade mit zwei angehängten 180 Grad Kurven mit 9 m Innenradius. Das Ergebnis ist ein Prädiktionsvektor von 17 Schritten für den die geringste Geschwindigkeit in der kurve 36.72 kmh gemessen wurde. Die höchste auf der geraden erreichte Geschwindigkeit beträgt 85.32 kmh was einer Differenz von 48.6 kmh entspricht. Mit der im kinematischen Model hinterlegten maximalen Verzögerung kann das Fahrzeug in einer Sekunde 47.2 kmh abbremsen. Die 17 Zeitschritte entsprechen 0.85 s. Der Zusammenhang aus Bremsleistung und maximaler Kurvengeschwindigkeit ist also klar ersichtlich. 
+Muss neu berechnet werden da sich das Modell geändert hat. Irgendwas zwischen 15 und 20.
 
 \section{Kostenfunktionen}
 Mit der Information wie groß der geringsten Prädiktionshorizont sein muss, wird nun untersucht wie die unterschiedlichen Kostenfunktionen gegeneinander abschneiden. Um eine gute Vergleichbarkeit zu erhalten, wird ein zufälliger Rennkurs erstellt auf dem die Messungen durchgeführt werden. 
 
 \subsection{Laufzeit}
 Zuerst wird die Berechnungszeit für alle drei Kostenfunktionen verglichen. 
-Die Geschwindigkeit wurde auf 7 $\frac{m}{s}$ limitiert um auch kleinere Horizonte testen zu können. Die Ergebnisse der Messung sind im Benchmark \ref{fig:computeCost} visualisiert. Bei einigen Kostenfunktionen dauert die  Berechnung des initialen Optimierungsvektor im Vergleich zu allen darauf folgenden Schritten extrem lange. Dies liegt an dem so genannten \emph{hot start}. Solange die Parameter der Beschränkungen (neue Tangenten und neue Startposition) nicht signifikant verändert werden, findet der Optimierer in aufeinander folgenden Schritten sehr schnell eine passende Lösung. Dies kann man sich wie in einem Schieberegister vorstellen, in dem die Lösung einen Schritt nach links verschoben wird und nur für den letzten Schritt eine neue Lösung gesucht werden muss. Aus diesem Grund wurden auch Messungen erstellt die erst anfangen, wenn der \emph{hot start} durchgeführt wird. Die Berechnungszeit der $max_dist"$ Funktion den anderen beiden überlegen. Die ersten Schritte werden nahezu mit der gleichen Geschwindigkeit berechnet wie der Rest, sie besitzt zusammen mit der $min_dist$ Kostenfunktion die beste Laufzeit und skaliert auch deutlich besser mit den Prädiktionsschritten als die $max_speed$ Funktion.
+Die Geschwindigkeit wurde auf 7 $\frac{m}{s}$ limitiert um auch kleinere Horizonte testen zu können. Die Ergebnisse der Messung sind im Benchmark \ref{fig:computeCost} visualisiert. Bei einigen Kostenfunktionen dauert die  Berechnung des initialen Optimierungsvektor im Vergleich zu allen darauf folgenden Schritten extrem lange. Dies liegt an dem sogenannten \emph{hot start}. Solange die Parameter der Beschränkungen (neue Tangenten und neue Startposition) nicht signifikant verändert werden, findet der Optimierer in aufeinander folgenden Schritten sehr schnell eine passende Lösung. Dies kann man sich wie in einem Schieberegister vorstellen, in dem die Lösung einen Schritt nach links verschoben wird und nur für den letzten Schritt eine neue Lösung gesucht werden muss. Aus diesem Grund wurden auch Messungen erstellt die erst anfangen, wenn der \emph{hot start} durchgeführt wird. Die Berechnungszeit der $max_dist"$ Funktion den anderen beiden überlegen. Die ersten Schritte werden nahezu mit der gleichen Geschwindigkeit berechnet wie der Rest, sie besitzt zusammen mit der $min_dist$ Kostenfunktion die beste Laufzeit und skaliert auch deutlich besser mit den Prädiktionsschritten als die $max_speed$ Funktion.
 
 
 \begin{figure}
@@ -933,7 +933,7 @@ Die Geschwindigkeit wurde auf 7 $\frac{m}{s}$ limitiert um auch kleinere Horizon
 	\label{fig:computeCost}
 \end{figure}
 
-Im späteren Verlauf wird die Verwendung der elastischen Begrenzungen nötig. Um eine Vorauswahl zu treffen welche Kostenfunktionen hierfür in Betracht gezogen werden sollen, wird im Folgenden die gleichen Messung wie für die normalen Kostenfunktionen durchgeführt. Die Messungen werden mit dem kinematischen Modell im Simulator vorgenommen, um möglichst gute Vergleichbarkeit zu erhalten.
+Im späteren Verlauf wird die Verwendung der elastischen Begrenzungen nötig. Um eine Vorauswahl zu treffen, welche Kostenfunktionen hierfür in Betracht gezogen werden sollen, wird im Folgenden die gleiche Messung wie für die normalen Kostenfunktionen durchgeführt. Die Messungen werden mit dem kinematischen Modell im Simulator vorgenommen, um möglichst gute Vergleichbarkeit zu erhalten.
 
 \begin{figure}
 	\centering
@@ -942,7 +942,7 @@ Im späteren Verlauf wird die Verwendung der elastischen Begrenzungen nötig. Um
 	\label{fig:computeCostSoftConst}
 \end{figure}
 
-Die Auswahl der möglichen Kostenfunktionen ist schnell getroffen. Die e-Funktion und die quadratische-Funktion haben eine deutlich bessere Laufzeit und lassen sogar die einfacheren Kostenfunktionen aus der vorherigen Messung hinter sich. Dies ist darauf zurück zu führen, dass keine tangentialen Beschränkungen mehr vorhanden sind und damit das \ac{MPC}-Problem eine geringere Komplexität aufweist.
+Die Auswahl der möglichen Kostenfunktionen ist schnell getroffen. Die e-Funktion und die quadratische-Funktion haben eine deutlich bessere Laufzeit und lassen sogar die einfacheren Kostenfunktionen aus der vorherigen Messung hinter sich. Dies ist darauf zurückzuführen, dass keine tangentialen Beschränkungen mehr vorhanden sind und damit das \ac{MPC}-Problem eine geringere Komplexität aufweist.
 
 
 \subsection{Rundenzeit}
@@ -963,16 +963,16 @@ Die Differenz zwischen den beiden Kostenfunktionen, welche die Distanz zu einem 
 \newpage
 \chapter{Regelung des dynamischen Modells}
 \label{dynModelcontrol}
-In der Realität ist das kinematische Modell nur für geringe Geschwindigkeiten genau genug die Bewegung des Fahrzeugs zu Modellieren. Im Folgenden wird deswegen das Modell im Simulator durch das dynamische Fahrzeugmodell mit berechneten Reifenkräften ersetzt. Das Ziel ist zu evaluieren, wie gut sich das deutlich komplexere System mit dem weiterhin im \ac{MPC}-Algorithmus hinterlegte, sehr einfache kinematischen Modell, regeln lässt.
+In der Realität ist das kinematische Modell nur für geringe Geschwindigkeiten genau genug die Bewegung des Fahrzeugs zu modellieren. Im Folgenden wird deswegen das Modell im Simulator durch das dynamische Fahrzeugmodell mit berechneten Reifenkräften ersetzt. Das Ziel ist zu evaluieren, wie gut sich das deutlich komplexere System mit dem weiterhin im \ac{MPC}-Algorithmus hinterlegte, sehr einfache kinematischen Modell, regeln lässt.
 Die deutlichen Unterschiede der Modelle wurden bereits im Kapitel \ref{modelError} evaluiert und für diesen Abschnitt, wird nun von dem Fahrzeugmodell ausgegangen, welches Reibung und Luftwiderstand berücksichtigt, durch den Kammschen Kreis erweitert wird und die Reifenkräfte mit dem genausten \emph{magic model} errechnet.
 
 \section{Elastische Beschränkung}
-Im Folgenden wird nun untersucht, wie der Parameter für die maximale Querbeschleunigung im \ac{MPC}, die maximale Geschwindigkeit und die beiden Variablen welche die Gewichtung in der elastischen Beschränkung definieren gewählt werden müssen, um die beste Performance des Rennautos zu erhalten. Besonderes Augenmerk soll darauf liegen, möglichst nicht vom Kurs abzukommen, da dies im Wettbewerb mit hohen Punktstrafen versehen ist.
+Im Folgenden wird nun untersucht, wie der Parameter für die maximale Querbeschleunigung im \ac{MPC}, die maximale Geschwindigkeit und die beiden Variablen, welche die Gewichtung in der elastischen Beschränkung definieren gewählt werden müssen, um die beste Performance des Rennautos zu erhalten. Besonderes Augenmerk soll darauf liegen, möglichst nicht vom Kurs abzukommen, da dies im Wettbewerb mit hohen Punktstrafen versehen ist.
 
-Betrachtet werden im Folgenden nur die Kostenfunktionen welche die Distanz zur Mitte der Fahrbahn Quadratisch oder über die e-Funktion in die Kosten eingehen lassen. Sie haben mit Abstand die beste Echtzeitfähigkeit.
+Betrachtet werden im Folgenden nur die Kostenfunktionen welche die Distanz zur Mitte der Fahrbahn quadratisch oder über die e-Funktion in die Kosten eingehen lassen. Sie haben mit Abstand die beste Echtzeitfähigkeit.
 
 \subsection{E-Funktion}
-Hier werden dann vermutlich zwei 3-Dimensionale Plots stehen für die sowohl die Rundenzeit wie auch die distanz Außerhalb des Tacks abhängig von beta Max und dem Verhältnis a/b untersucht. 
+Weiß noch nicht genau wie ich das hier evaluieren soll. Beta max hat einen großen Einfluss, aber auch a und b und max_speed. Maximale Zeit oder zurück gelegter Weg außerhalb des Kurses? 2D oder 3D plots? ... 
 
 \subsection{Quadratische Funktion}
 

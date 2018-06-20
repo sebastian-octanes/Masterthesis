@@ -32,17 +32,17 @@
 \contentsline {chapter}{\numberline {7}Regelung des kinematischen Modells}{53}{chapter.7}
 \contentsline {section}{\numberline {7.1}Pr\IeC {\"a}diktionshorizont}{53}{section.7.1}
 \contentsline {section}{\numberline {7.2}Kostenfunktionen}{53}{section.7.2}
-\contentsline {subsection}{\numberline {7.2.1}Laufzeit}{54}{subsection.7.2.1}
+\contentsline {subsection}{\numberline {7.2.1}Laufzeit}{53}{subsection.7.2.1}
 \contentsline {subsection}{\numberline {7.2.2}Rundenzeit}{55}{subsection.7.2.2}
 \contentsline {chapter}{\numberline {8}Regelung des dynamischen Modells}{57}{chapter.8}
 \contentsline {section}{\numberline {8.1}Elastische Beschr\IeC {\"a}nkung}{57}{section.8.1}
 \contentsline {subsection}{\numberline {8.1.1}E-Funktion}{57}{subsection.8.1.1}
-\contentsline {subsection}{\numberline {8.1.2}Quadratische Funktion}{57}{subsection.8.1.2}
-\contentsline {chapter}{\numberline {9}Ausblick}{58}{chapter.9}
-\contentsline {section}{\numberline {9.1}Dynamisches Fahrzeugmodell im MPC}{58}{section.9.1}
-\contentsline {section}{\numberline {9.2}Zweispurmodell}{58}{section.9.2}
-\contentsline {section}{\numberline {9.3}Trajektorienplanung}{58}{section.9.3}
-\contentsline {section}{\numberline {9.4}Zusammenfassung}{58}{section.9.4}
-\contentsline {chapter}{\numberline {A}Anhang}{59}{appendix.A}
-\contentsline {chapter}{Abk\IeC {\"u}rzungsverzeichnis}{61}{chapter*.66}
-\contentsline {chapter}{Literaturverzeichnis}{62}{chapter*.67}
+\contentsline {subsection}{\numberline {8.1.2}Quadratische Funktion}{58}{subsection.8.1.2}
+\contentsline {chapter}{\numberline {9}Ausblick}{59}{chapter.9}
+\contentsline {section}{\numberline {9.1}Dynamisches Fahrzeugmodell im MPC}{59}{section.9.1}
+\contentsline {section}{\numberline {9.2}Zweispurmodell}{59}{section.9.2}
+\contentsline {section}{\numberline {9.3}Trajektorienplanung}{59}{section.9.3}
+\contentsline {section}{\numberline {9.4}Zusammenfassung}{59}{section.9.4}
+\contentsline {chapter}{\numberline {A}Anhang}{60}{appendix.A}
+\contentsline {chapter}{Abk\IeC {\"u}rzungsverzeichnis}{62}{chapter*.66}
+\contentsline {chapter}{Literaturverzeichnis}{63}{chapter*.67}
