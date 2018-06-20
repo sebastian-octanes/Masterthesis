@@ -22,24 +22,26 @@
 \BOOKMARK [0][-]{chapter.5}{Simulationsumgebung}{}% 22
 \BOOKMARK [1][-]{section.5.1}{Simple and Fast Multimedia Library}{chapter.5}% 23
 \BOOKMARK [1][-]{section.5.2}{Virtueller Rennkurs}{chapter.5}% 24
-\BOOKMARK [0][-]{chapter.6}{Evaluierung}{}% 25
-\BOOKMARK [1][-]{section.6.1}{Verifizierung der Fahrzeugmodelle}{chapter.6}% 26
-\BOOKMARK [1][-]{section.6.2}{Regelung des kinematischen Modells im Rennkurs}{chapter.6}% 27
-\BOOKMARK [2][-]{subsection.6.2.1}{Pr\344diktionshorizont}{section.6.2}% 28
-\BOOKMARK [2][-]{subsection.6.2.2}{Kostenfunktionen}{section.6.2}% 29
-\BOOKMARK [1][-]{section.6.3}{Modellfehler}{chapter.6}% 30
-\BOOKMARK [2][-]{subsection.6.3.1}{Orientierung}{section.6.3}% 31
-\BOOKMARK [2][-]{subsection.6.3.2}{Position}{section.6.3}% 32
-\BOOKMARK [2][-]{subsection.6.3.3}{Reifenmodelle}{section.6.3}% 33
-\BOOKMARK [2][-]{subsection.6.3.4}{Longitudinale Modelle}{section.6.3}% 34
-\BOOKMARK [1][-]{section.6.4}{Regelung des dynamischen Modells im Rennkurs}{chapter.6}% 35
-\BOOKMARK [2][-]{subsection.6.4.1}{Elastische Beschr\344nkung}{section.6.4}% 36
-\BOOKMARK [2][-]{subsection.6.4.2}{Einfluss der Geschwindigkeit und Beta Max}{section.6.4}% 37
-\BOOKMARK [0][-]{chapter.7}{Ausblick}{}% 38
-\BOOKMARK [1][-]{section.7.1}{Dynamisches Fahrzeugmodell im MPC}{chapter.7}% 39
-\BOOKMARK [1][-]{section.7.2}{Zweispurmodell}{chapter.7}% 40
-\BOOKMARK [1][-]{section.7.3}{Trajektorienplanung}{chapter.7}% 41
-\BOOKMARK [1][-]{section.7.4}{Zusammenfassung}{chapter.7}% 42
-\BOOKMARK [0][-]{appendix.A}{Anhang}{}% 43
-\BOOKMARK [0][-]{chapter*.71}{Abk\374rzungsverzeichnis}{}% 44
-\BOOKMARK [0][-]{chapter*.72}{Literaturverzeichnis}{}% 45
+\BOOKMARK [0][-]{chapter.6}{Modellfehler}{}% 25
+\BOOKMARK [1][-]{section.6.1}{Acceleration}{chapter.6}% 26
+\BOOKMARK [1][-]{section.6.2}{Skidpad}{chapter.6}% 27
+\BOOKMARK [1][-]{section.6.3}{Orientierung}{chapter.6}% 28
+\BOOKMARK [1][-]{section.6.4}{Reifenmodelle}{chapter.6}% 29
+\BOOKMARK [1][-]{section.6.5}{Longitudinale Modelle}{chapter.6}% 30
+\BOOKMARK [0][-]{chapter.7}{Regelung des kinematischen Modells}{}% 31
+\BOOKMARK [1][-]{section.7.1}{Pr\344diktionshorizont}{chapter.7}% 32
+\BOOKMARK [1][-]{section.7.2}{Kostenfunktionen}{chapter.7}% 33
+\BOOKMARK [2][-]{subsection.7.2.1}{Laufzeit}{section.7.2}% 34
+\BOOKMARK [2][-]{subsection.7.2.2}{Rundenzeit}{section.7.2}% 35
+\BOOKMARK [0][-]{chapter.8}{Regelung des dynamischen Modells}{}% 36
+\BOOKMARK [1][-]{section.8.1}{Elastische Beschr\344nkung}{chapter.8}% 37
+\BOOKMARK [2][-]{subsection.8.1.1}{E-Funktion}{section.8.1}% 38
+\BOOKMARK [2][-]{subsection.8.1.2}{Quadratische Funktion}{section.8.1}% 39
+\BOOKMARK [0][-]{chapter.9}{Ausblick}{}% 40
+\BOOKMARK [1][-]{section.9.1}{Dynamisches Fahrzeugmodell im MPC}{chapter.9}% 41
+\BOOKMARK [1][-]{section.9.2}{Zweispurmodell}{chapter.9}% 42
+\BOOKMARK [1][-]{section.9.3}{Trajektorienplanung}{chapter.9}% 43
+\BOOKMARK [1][-]{section.9.4}{Zusammenfassung}{chapter.9}% 44
+\BOOKMARK [0][-]{appendix.A}{Anhang}{}% 45
+\BOOKMARK [0][-]{chapter*.66}{Abk\374rzungsverzeichnis}{}% 46
+\BOOKMARK [0][-]{chapter*.67}{Literaturverzeichnis}{}% 47

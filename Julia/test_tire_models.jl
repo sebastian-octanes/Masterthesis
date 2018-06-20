@@ -9,7 +9,7 @@ include("smallMPC.jl")
 
 
 
-lin = linspace(-1, 1, 101)
+lin = linspace(-2, 2, 101)
 y1= []
 y2= []
 y3= []

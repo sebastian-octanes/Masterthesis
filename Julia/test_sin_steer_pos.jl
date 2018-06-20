@@ -108,8 +108,15 @@ for i in speed
 
 end
 
+    x_k,y_k = extract_trajektory(kin)
+    x_d,y_d = extract_trajektory(dyn_base)
+    x_ka,y_ka = extract_trajektory(dyn_kamsch)
 
-
+#=
+    open("outputFiles/modelDiffTrajMaxAcc.txt", "w") do io
+        writedlm(io, [x_k y_k x_d y_d x_ka y_ka])
+    end
+=#
     subplot(311)
     areas = 5*ones(speed)
     scatter(t, controlVectorSteer, s=areas,alpha=1.0)

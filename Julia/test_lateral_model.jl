@@ -291,7 +291,7 @@ startPose = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(15.25, 3, 16, 0)
 itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(10.625, 3, 11, 0)
 
-N = 12
+N = 10
 printLevel = 0
 dt = 0.05
 max_speed = 100

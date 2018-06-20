@@ -258,7 +258,7 @@ end
 
 #adds a softconstraint to the minimize dist function that tries to keep the distance to the middle of the track minimal
 #doesn't have a good performance but functions
-function define_objective_minimize_dist_soft_const(mpc_struct, a = 6, b = 1)
+function define_objective_minimize_dist_soft_const_lin(mpc_struct, a = 6, b = 1)
     m = mpc_struct.m
     x = mpc_struct.x
     N = mpc_struct.N
@@ -268,9 +268,31 @@ function define_objective_minimize_dist_soft_const(mpc_struct, a = 6, b = 1)
     #@NLobjective(m, Min, sqrt((x[(N-1)*8 + 1]-0)^2 + (x[(N-1)*8 + 2]-10)^2))
     @NLexpression(m, min_dist, sqrt((x[(N-1)*8 + 1]- z[1])^2 + (x[(N-1)*8 + 2]-z[2])^2))
 
-    dist(xX, xY, x0X, x0Y, x1X, x1Y) =  ((xX - x0X)*(x1X - x0X) + (xY - x0Y)*(x1Y - x0Y)) / sqrt((x1X - x0X)^2 + (x1Y - x0Y)^2)
+    dist(xX, xY, x0X, x0Y, x1X, x1Y) =  abs((xX - x0X)*(x1X - x0X) + (xY - x0Y)*(x1Y - x0Y)) / sqrt((x1X - x0X)^2 + (x1Y - x0Y)^2)
     JuMP.register(m, :dist, 6, dist, autodiff=true)
-    @NLexpression(m, soft_constraint, sum(abs(dist(x[(i+1)*8 + 1], x[(i+1)*8 + 2], t[i*6 + 1], t[i*6 + 2], t[i*6 + 3], t[i*6 + 4])) for i in 2:5:N))
+    @NLexpression(m, soft_constraint, sum(dist(x[(i+1)*8 + 1], x[(i+1)*8 + 2], t[i*6 + 1], t[i*6 + 2], t[i*6 + 3], t[i*6 + 4]) for i in 2:5:N))
+
+    #set a and b according how strongly you want to follow you point ahead of you and how important it is to stay in the middle of the road
+    #at a=6 it pretty much hits the track boundary
+    @NLobjective(m, Min, a* min_dist + b*soft_constraint)
+    return mpc_struct
+end
+
+function define_objective_minimize_dist_soft_const_quad(mpc_struct, a = 6, b = 1)
+    m = mpc_struct.m
+    x = mpc_struct.x
+    N = mpc_struct.N
+    z = mpc_struct.z
+    t = mpc_struct.t
+    #z defined in init so to change objective functions without changing the mpc_struct possible
+    #@NLobjective(m, Min, sqrt((x[(N-1)*8 + 1]-0)^2 + (x[(N-1)*8 + 2]-10)^2))
+    @NLexpression(m, min_dist, sqrt((x[(N-1)*8 + 1]- z[1])^2 + (x[(N-1)*8 + 2]-z[2])^2))
+
+    alpha = 4
+
+    dist(xX, xY, x0X, x0Y, x1X, x1Y) =  abs((xX - x0X)*(x1X - x0X) + (xY - x0Y)*(x1Y - x0Y)) / sqrt((x1X - x0X)^2 + (x1Y - x0Y)^2)
+    JuMP.register(m, :dist, 6, dist, autodiff=true)
+    @NLexpression(m, soft_constraint, sum(alpha * dist(x[(i+1)*8 + 1], x[(i+1)*8 + 2], t[i*6 + 1], t[i*6 + 2], t[i*6 + 3], t[i*6 + 4])^2 for i in 2:5:N))
 
     #set a and b according how strongly you want to follow you point ahead of you and how important it is to stay in the middle of the road
     #at a=6 it pretty much hits the track boundary
@@ -297,10 +319,33 @@ function define_objective_minimize_dist_soft_const_ext(mpc_struct, a, b)
     k2 =   trackWidth/2.0
     cost(xX, xY, x0X, x0Y, x1X, x1Y) = exp(alpha*(k1 + dist(xX, xY, x0X, x0Y, x1X, x1Y)))
 
-    #k1 =  trackWidth/2.0
-    #k2 =  -trackWidth/2.0
-    #alpha2 = 0.99
-    #cost(xX, xY, x0X, x0Y, x1X, x1Y) = abs(alpha2/(k1 - dist(xX, xY, x0X, x0Y, x1X, x1Y)) + alpha2/(k2 - dist(xX, xY, x0X, x0Y, x1X, x1Y)))
+    dist(xX, xY, x0X, x0Y, x1X, x1Y) =  abs((xX - x0X)*(x1X - x0X) + (xY - x0Y)*(x1Y - x0Y)) / sqrt((x1X - x0X)^2 + (x1Y - x0Y)^2)
+    JuMP.register(m, :dist, 6, dist, autodiff=true)
+    JuMP.register(m, :cost, 6, cost, autodiff=true)
+    @NLexpression(m, soft_constraint, sum(cost(x[(i+1)*8 + 1], x[(i+1)*8 + 2], t[i*6 + 1], t[i*6 + 2], t[i*6 + 3], t[i*6 + 4]) for i in 2:2:N-1))
+
+    #a= 10
+    #b = 1
+    @NLobjective(m, Min, a*min_dist + b*soft_constraint)
+    return mpc_struct
+end
+
+function define_objective_minimize_dist_soft_const_alpha(mpc_struct, a, b)
+    m = mpc_struct.m
+    x = mpc_struct.x
+    N = mpc_struct.N
+    z = mpc_struct.z
+    t = mpc_struct.t
+    #z defined in init so to change objective functions without changing the mpc_struct possible
+    #@NLobjective(m, Min, sqrt((x[(N-1)*8 + 1]-0)^2 + (x[(N-1)*8 + 2]-10)^2))
+    @NLexpression(m, min_dist, sqrt((x[(N-1)*8 + 1]- z[1])^2 + (x[(N-1)*8 + 2]-z[2])^2))
+
+
+
+    k1 =  trackWidth/2.0
+    k2 =  -trackWidth/2.0
+    alpha2 = 0.99
+    cost(xX, xY, x0X, x0Y, x1X, x1Y) = abs(alpha2/(k1 - dist(xX, xY, x0X, x0Y, x1X, x1Y)) + alpha2/(k2 - dist(xX, xY, x0X, x0Y, x1X, x1Y)))
 
     dist(xX, xY, x0X, x0Y, x1X, x1Y) =  abs((xX - x0X)*(x1X - x0X) + (xY - x0Y)*(x1Y - x0Y)) / sqrt((x1X - x0X)^2 + (x1Y - x0Y)^2)
     JuMP.register(m, :dist, 6, dist, autodiff=true)
@@ -312,6 +357,7 @@ function define_objective_minimize_dist_soft_const_ext(mpc_struct, a, b)
     @NLobjective(m, Min, a*min_dist + b*soft_constraint)
     return mpc_struct
 end
+
 
 #this function is used to update the point the minimize_dist cost function minimizes the distance to
 function update_track_forward_point(mpc_struct, point)

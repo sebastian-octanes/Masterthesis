@@ -12,7 +12,7 @@ include("smallMPC.jl")
 
 #create manual input
 #res vector for maximal acceleration
-n1, n2, n3 = 150, 65, 0
+n1, n2, n3 = 100, 65, 0
 tmp =  [10,0]
 tmp2 = [-10,0]
 tmp3 = [0,-VehicleModel.max_steering_angle]
@@ -39,6 +39,8 @@ dt = 0.05
 
 #average acceleration
 stateVectorKin= VehicleModel.CarPose(0,0,0.1,0, 0, 0)
+#altered acceleration for dynamic model
+stateVectorKin2= VehicleModel.CarPose(0,0,0.1,0, 0, 0)
 #motor power and tire force
 stateVectorNonLinear_Enhanced_Long = VehicleModel.CarPose(0,0,0.1,0, 0, 0)
 #friction and air resistance
@@ -48,8 +50,10 @@ stateVectorNonLinear_Cplx_Long = VehicleModel.CarPose(0,0,0.1,0, 0, 0)
 
 
 kin_long_speed = []
+kin_long_speed2 = []
 dyn_long_speed = []
 dyn_long_cplx_speed = []
+
 
 for i in 1:max_steps
     carControl = VehicleModel.CarControls(controlVectorThrottle[i], controlVectorSteer[i])
@@ -62,6 +66,9 @@ for i in 1:max_steps
 
     stateVectorNonLinear_Cplx_Long =  VehicleModel.dyn_model_long(stateVectorNonLinear_Cplx_Long, carControl, dt)
     dyn_long_cplx_speed = vcat(dyn_long_cplx_speed, stateVectorNonLinear_Cplx_Long.x_d)
+
+    stateVectorKin2 =  VehicleModel.kin_bycicle_model_tmp(stateVectorKin2, carControl, dt)
+    kin_long_speed2 = vcat(kin_long_speed2, stateVectorKin2.x_d)
 
 end
 
@@ -85,9 +92,9 @@ title("Driver Input")
 subplot(212)
 =#
 
-#open("outputFiles/accdec.txt", "w") do io
-#    writedlm(io, [lin kin_long_speed dyn_long_speed  dyn_long_cplx_speed])
-#end
+open("outputFiles/accdec.txt", "w") do io
+    writedlm(io, [lin kin_long_speed2 dyn_long_speed  dyn_long_cplx_speed kin_long_speed])
+end
 
 ax = gca()
 xlabel("Time Steps")
@@ -95,6 +102,7 @@ ylabel("Speed in m/s")
 title("Orientation of Car")
 
 scatter(lin,dyn_long_speed,s=areas,alpha=1.0)
+scatter(lin,kin_long_speed2,s=areas,alpha=1.0)
 scatter(lin,kin_long_speed,s=areas,alpha=1.0)
 scatter(lin,dyn_long_cplx_speed,s=areas,alpha=1.0)
 

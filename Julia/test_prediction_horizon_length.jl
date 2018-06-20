@@ -1,4 +1,4 @@
-using SFML
+sing SFML
 using PyPlot
 include("RaceCourse.jl")
 include("VehicleModel.jl")

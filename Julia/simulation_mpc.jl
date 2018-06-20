@@ -335,7 +335,7 @@ itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack4(trackWidth)
 N = 30
 printLevel = 0
 dt = 0.05
-max_speed = 20
+max_speed = 10
 mpc_struct = initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed, trackWidth)
 event = Event()
 window = RenderWindow("test", windowSizeX, windowSizeY)
@@ -374,8 +374,8 @@ while isopen(window)
 
     #predict last point and compute next state with vehicle model
 	#realCarStateVector = VehicleModel.computeCarStepKinModel(realCarStateVector, res, dt)
-    realCarStateVector = VehicleModel.computeCarStepDynModelBase(realCarStateVector, res, dt)
-	#realCarStateVector = VehicleModel.computeCarStepDynKamsch(realCarStateVector, res, dt)
+    #realCarStateVector = VehicleModel.computeCarStepDynModelBase(realCarStateVector, res, dt)
+	realCarStateVector = VehicleModel.computeCarStepDynKamsch(realCarStateVector, res, dt)
     #print("\n\nres", res[1:8])
     #print("\nSteer Angle: $(res[8])   Throttle:  $(res[7])")
     print("\npsi: $(realCarStateVector.psi)    y_d:  $(realCarStateVector.y_d)   psi_d: $(realCarStateVector.psi_d)\n")

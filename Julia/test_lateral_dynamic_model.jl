@@ -265,7 +265,8 @@ function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, 
     #mpc_struct = define_objective(mpc_struct)
     #mpc_struct = define_objective_middle(mpc_struct)
     #mpc_struct = define_objective_minimize_dist(mpc_struct)
-    mpc_struct = define_objective_minimize_dist_soft_const(mpc_struct,10, 1)
+    mpc_struct = define_objective_minimize_dist_soft_const_ext(mpc_struct,10, 1)
+
     mpc_struct = update_track_forward_point(mpc_struct, forwardPoint)
 
     return mpc_struct
@@ -327,8 +328,8 @@ while isopen(window)
     res = mapKeyToCarControl(keys, res, N)
 
     #realCarStateVector = VehicleModel.computeCarStepKinModel(realCarStateVector, res, dt)
-    realCarStateVector = VehicleModel.computeCarStepDynModelBase(realCarStateVector, res, dt)
-    #realCarStateVector = VehicleModel.computeCarStepDynKamsch(realCarStateVector, res, dt)
+    #realCarStateVector = VehicleModel.computeCarStepDynModelBase(realCarStateVector, res, dt)
+    realCarStateVector = VehicleModel.computeCarStepDynKamsch(realCarStateVector, res, dt)
 
     stateVector = VehicleModel.createNewStateVector(res, realCarStateVector, dt, N)
     update_start_point_from_pose(mpc_struct, realCarStateVector)
@@ -344,7 +345,8 @@ while isopen(window)
         lapTimeActive = true
     end
     #if abs(realCarStateVector.x) < trackWidth/2 && abs(realCarStateVector.y) < 0.4 && lapTimeActive
-    if(steps > 50 && RaceCourse.computeDistToTrackStartX(itpTrack, itpLeftBound, realCarStateVector) < trackWidth/2.0)
+    #println("dist_tmp", RaceCourse.computeDistToTrackStartX(itpTrack, itpLeftBound, realCarStateVector) )
+    if(steps > 50 && RaceCourse.computeDistToTrackStartX(itpTrack, itpLeftBound, realCarStateVector) < trackWidth)
         println("hit")
         if(RaceCourse.computeDistToTrackStartY(realCarStateVector) < 3 && realCarStateVector.y > 0.0)
             println("\nlap_time_steps:", steps * dt)

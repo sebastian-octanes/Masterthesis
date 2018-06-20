@@ -54,41 +54,46 @@ dist_kin_dyn= []
 dist_kin_kamsch=[]
 dist_dyn_kamsch=[]
 
+kin = []
+dyn_base = []
+dyn_kamsch = []
 
 for i in speed
-    stateVectorDynBase = VehicleModel.CarPose(0,0,i,0, 0, 0)
-    stateVectorDynLatEnh= VehicleModel.CarPose(0,0,i,0, 0, 0)
-    stateVectorDynLatCplx = VehicleModel.CarPose(0,0,i,0, 0, 0)
+    println("speed", i)
+    stateVectorDyn_Base= VehicleModel.CarPose(0,0,i,0, 0, 0)
+    stateVectorDyn_Simple = VehicleModel.CarPose(0,0,i,0, 0, 0)
+    stateVectorDyn_Lin = VehicleModel.CarPose(0,0,i,0, 0, 0)
+    stateVectorDyn_Long = VehicleModel.CarPose(0,0,i,0, 0, 0)
 
-    base = []
-    enh = []
-    cplx = []
+    dyn_base = []
+    dyn_simple = []
+    dyn_lin = []
+    dyn_long = []
 
     for j in range(1,1,size(t)[1])
 
         carControl = VehicleModel.CarControls(controlVectorThrottle[j], controlVectorSteer[j])
 
-        stateVectorDynBase =  VehicleModel.dyn_model_base(stateVectorDynBase, carControl, dt)
-        base = vcat(base, stateVectorDynBase)
+        stateVectorDyn_Base =  VehicleModel.dyn_model_base(stateVectorDyn_Base, carControl, dt)
+        dyn_base = vcat(dyn_base, stateVectorDyn_Base)
 
-        stateVectorDynLatEnh =  VehicleModel.dyn_model_enhanced_lat(stateVectorDynLatEnh, carControl, dt)
-        enh = vcat(enh, stateVectorDynLatEnh)
+        stateVectorDyn_Simple =  VehicleModel.dyn_model_lat_simple(stateVectorDyn_Simple, carControl, dt)
+        dyn_simple = vcat(dyn_simple, stateVectorDyn_Simple)
 
-        stateVectorDynLatCplx =  VehicleModel.dyn_model_enhanced_lat_cmplx(stateVectorDynLatCplx, carControl, dt)
-        cplx = vcat(cplx, stateVectorDynLatCplx)
+        stateVectorDyn_Lin =  VehicleModel.dyn_model_lat_lin(stateVectorDyn_Lin, carControl, dt)
+        dyn_lin = vcat(dyn_lin, stateVectorDyn_Lin)
+
+        stateVectorDyn_Long =  VehicleModel.dyn_model_lat_lin(stateVectorDyn_Long, carControl, dt)
+        dyn_long = vcat(dyn_long, stateVectorDyn_Long)
     end
 
-    #dist = compute_distance(kin, dyn_base)
-    #dist_kin_dyn = vcat(dist_kin_dyn, dist)
-    phi_base = extract_orientation(base)
+    phi_base = extract_orientation(dyn_base)
 
-    #dist = compute_distance(kin, dyn_kamsch)
-    #dist_kin_kamsch = vcat(dist_kin_kamsch, dist)
-    phi_enh = extract_orientation(enh)
+    phi_simple = extract_orientation(dyn_simple)
 
-    #dist = compute_distance(dyn_base, dyn_kamsch)
-    #dist_dyn_kamsch = vcat(dist_dyn_kamsch, dist)
-    phi_cplx = extract_orientation(cplx)
+    phi_lin = extract_orientation(dyn_lin)
+
+    phi_long = extract_orientation(dyn_long)
 
 
     areas = 5*ones(speed)
@@ -97,45 +102,14 @@ for i in speed
     grid()
 
     subplot(212)
+
     scatter(t, phi_base, s=areas, alpha=1.0)
-    #scatter(t, phi_enh, s=areas, alpha=1.0)
-    scatter(t, phi_cplx, s=areas, alpha=1.0)
+    #scatter(t, phi_simple, s=areas, alpha=1.0)
+    #scatter(t, phi_lin, s=areas, alpha=1.0)
+    scatter(t, phi_long, s=areas, alpha=1.0)
 
+    open("outputFiles/modelDiffTires.txt", "w") do io
+        writedlm(io, [t controlVectorSteer phi_base phi_simple phi_lin])
+    end
 
 end
-
-#=
-
-scatter(speed, dist_kin_dyn, s=areas,alpha=1.0)
-scatter(speed, dist_kin_kamsch, s=areas,alpha=1.0)
-scatter(speed, dist_dyn_kamsch, s=areas,alpha=1.0)
-grid()
-=#
-
-#=
-x_k,y_k = extract_trajektory(kin)
-x_d,y_d = extract_trajektory(dyn_base)
-x_ka,y_ka = extract_trajektory(dyn_kamsch)
-
-
-open("outputFiles/modelDiffTrajMaxAcc.txt", "w") do io
-    writedlm(io, [x_k y_k x_d y_d x_ka y_ka])
-end
-
-=#
-
-#=
-    subplot(211)
-    areas = 5*ones(speed)
-    scatter(t, controlVectorSteer, s=areas,alpha=1.0)
-    grid()
-
-    subplot(212)
-    x,y = extract_trajektory(kin)
-    scatter(x, y, s=areas, alpha=1.0)
-    x,y = extract_trajektory(dyn_base)
-    scatter(x, y, s=areas, alpha=1.0)
-    x,y = extract_trajektory(dyn_kamsch)
-    scatter(x, y, s=areas, alpha=1.0)
-
-    =#

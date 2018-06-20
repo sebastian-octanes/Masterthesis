@@ -282,11 +282,17 @@ max_speed = 7
 spline_pos = []
 
 avg_time = []
+avg_time_without_init = []
 time_total = 0
-lin = [ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]
+time_total_without_init = 0
+#lin = [ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]
+lin = [ 10, 20]
 for i in lin
     N = convert(UInt16, i)
+    count = 0
     printLevel = 0
+    time_total = 0
+    time_total_without_init = 0
     mpc_struct = initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel,max_speed, trackWidth)
 
         #create CircularBuffer for tracking Vehicle Path
@@ -320,6 +326,7 @@ for i in lin
         res, status =  solve_MPC(mpc_struct)
         time = toc()
         time_total += time
+        time_total_without_init += time
         res = mapKeyToCarControl(keys, res, N)
 
         #predict last point and compute next state with vehicle model
@@ -338,10 +345,15 @@ for i in lin
         steps = steps + 1
 
         dist = abs(RaceCourse.computeDistToTrackBoarder(itpTrack, itpLeftBound, realCarStateVector))
-
-        if(steps >= 400)
+        if(steps == 40 && count == 0)
+            steps = 0
+            count = 1
+            time_total_without_init = 0;
+        end
+        if(steps >= 200)
             print(avg_time)
-            avg_time =  vcat(avg_time, time_total / steps)
+            avg_time =  vcat(avg_time, time_total / (steps + 40))
+            avg_time_without_init = vcat(avg_time, time_total_without_init / steps)
             break
         end
         #add position to carPathBuffer
@@ -367,6 +379,7 @@ for i in lin
 end
 
 print("avg_time", avg_time)
+print("avg_time_without_init", avg_time_without_init)
 #x = linspace(10, 10 + t -1, t)
 areas = 10*ones(lin)
 scatter(lin,avg_time,s=areas,alpha=1.0)
