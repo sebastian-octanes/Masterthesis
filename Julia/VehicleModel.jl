@@ -6,7 +6,7 @@ lr  = 0.9
 lb  = 1.99   #width of car
 Af  = 0.6    #0.6 laut chip
 rad = 0.2    #radius of tires in m
-mass = 220   #car + driver
+mass = 230   #car + driver
 I  = 1700    # kgm²
 
 #values for longitudinal computation
@@ -18,8 +18,8 @@ Cf      = 70000  #N/rad
 Cb      = 70000  #N/rad
 mu	    = 0.0027   #roll resistance
 g       = 9.81   #earth gravity
-F_long_max = 2700   # 3000N for car
-F_max   = 2700 # 3000N for every wheel
+F_long_max = 3000   # 3000N for car
+F_max   = 3000 # 3000N for every wheel
 
 #values to limit car_parameters for mpc
 min_speed = 0.001
@@ -31,8 +31,7 @@ max_long_dec = 13   #m/s**2 longitudinal deceleration max
 min_throttle = 10   #used for the mpc minus is added in the mpc
 #max_lat_acc = 2 *9.81  # 2g lateral acceleration
 max_lat_acc = 3.0 *9.81  # 2g lateral acceleration
-max_steering_angle = (30.0/180.0)*pi #
-
+max_steering_angle = (30.0/180.0)*pi #2
 
 #tire model
 Df   = 2984.0 #N
@@ -164,7 +163,12 @@ function dyn_model_base(carPose, carControl, dt)
     #lat
     Ffy = 2 * pacejka_tire_model_complex(slip_angle_f, true)
     Fby = 2 * pacejka_tire_model_complex(slip_angle_b, false)
-
+    if(Ffy > 2 * VehicleModel.F_max)
+        Ffy = 2 * VehicleModel.F_max
+    end
+    if(Fby > 2 * VehicleModel.F_max)
+        Fby = 2 * VehicleModel.F_max
+    end
     #long
     if(carControl.throttle > 0)
         power = P_Engine * carControl.throttle/10.0
@@ -305,6 +309,7 @@ function dyn_model_kamCircle(carPose, carControl, dt)
 
     Fb = sqrt(Fbx^2 + Fby^2)
     if(Fb > 2 * VehicleModel.F_long_max)
+        println("kamsch")
         alpha = atan2(Fbx, Fby)
         Fbx = sin(alpha) * VehicleModel.F_long_max * 2
         Fby = cos(alpha) * VehicleModel.F_long_max * 2

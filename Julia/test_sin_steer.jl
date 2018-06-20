@@ -45,7 +45,7 @@ end
 speed = [10]
 t = 0:.05:2
 dt = 0.05
-controlVectorThrottle = 10*t
+controlVectorThrottle = 0*t
 controlVectorSteer = sin.(2π*t) * (30.0/180.0)*pi
 #controlVectorSteer = t* (30.0/180.0)*pi
 

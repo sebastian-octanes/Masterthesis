@@ -260,12 +260,12 @@ function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, 
     #mpc_struct = define_constraint_dyn_bycicle(mpc_struct)
     mpc_struct = define_constraint_kin_bycicle(mpc_struct)
     mpc_struct = define_constraint_start_pose(mpc_struct, startPose)
-    mpc_struct = define_constraint_tangents(mpc_struct, trackPoints)
+    #mpc_struct = define_constraint_tangents(mpc_struct, trackPoints)
     #mpc_struct = define_constraint_max_search_dist(mpc_struct, trackPoints)
     #mpc_struct = define_objective(mpc_struct)
     #mpc_struct = define_objective_middle(mpc_struct)
-    mpc_struct = define_objective_minimize_dist(mpc_struct)
-    #mpc_struct = define_objective_minimize_dist_soft_const(mpc_struct,2, 1)
+    #mpc_struct = define_objective_minimize_dist(mpc_struct)
+    mpc_struct = define_objective_minimize_dist_soft_const(mpc_struct,10, 1)
     mpc_struct = update_track_forward_point(mpc_struct, forwardPoint)
 
     return mpc_struct
@@ -290,10 +290,10 @@ startPose = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
 #define which racecourse should be used
 itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(radius, 3, 11, 0)
 
-N = 20
+N = 15
 printLevel = 0
 dt = 0.05
-max_speed = 60
+max_speed = 30
 mpc_struct = initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed, trackWidth)
 event = Event()
 window = RenderWindow("test", windowSizeX, windowSizeY)
