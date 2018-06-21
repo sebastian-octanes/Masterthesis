@@ -4,7 +4,7 @@
 width = 0.8\textwidth,
 height = 0.6\textwidth,
 ymin = 0,
-ymax = 2.0,
+ymax = 1.5,
 xmin = 0,
 xmax= 120,
 xlabel=Prädiktionsschritte,
@@ -19,10 +19,8 @@ legend pos=north east]
 \addplot [color=green, dashed, mark=none, line width=0.5mm] table [x index=0, y index=6]{Data/costFunctCompTimeSoftConst.dat};
 \addplot [color=green, mark=none, line width=0.5mm] table [x index=0, y index=5]{Data/costFunctCompTimeSoftConst.dat};
 
-\addplot [color=black, dashed, mark=none, line width=0.5mm] table [x index=0, y index=8]{Data/costFunctCompTimeSoftConst.dat};
-\addplot [color=black, mark=none, line width=0.5mm] table [x index=0, y index=7]{Data/costFunctCompTimeSoftConst.dat};
 
-\addplot [dashed, mark=none] coordinates {(0, 0.05) (110, 0.05)};
+\addplot [dashed, mark=none] coordinates {(0, 0.05) (120, 0.05)};
 
 \addlegendentry{e-Funktion};
 \addlegendentry{e-Funktion ohne init};
@@ -33,8 +31,7 @@ legend pos=north east]
 \addlegendentry{alpha-Funktion};
 \addlegendentry{alpha-Funktion ohne init};
 
-\addlegendentry{lin-Funktion};
-\addlegendentry{lin-Funktion ohne init};
+
 
 \end{axis}
 \end{tikzpicture}

@@ -710,7 +710,12 @@ $f(\vec{X}) =  \sum_{1}^{N+1} v_i$ \\
 Die Berechnung startet nicht beim $0$ten Schritt, da dieser dem aktuellen Zustand entspricht und der Optimierer keinen Einfluss mehr auf diesen hat. Die Idee hinter dieser Funktion ist, dass sie einfach zu berechnen ist und im Vorhersagehorizont eine möglichst schnelle Trajektorie entsteht.
 
 \subsubsection*{Zielpunkt Distanzminimierung}
-Für diese Kostenfunktion wird vor den letzten Prädiktionsschritt ein virtuelles Ziel definiert und die Distanz des $N+1$ Schrittes zu diesem Ziel minimiert. Der Optimierer wird also versuchen Steuerparameter zu finden die ihn möglichst schnell auf dieses Ziel zu fahren lassen. Das virtuelle Ziel wird nach jedem Update wieder so neu positioniert, dass das Rennauto den Punkt niemals erreichen kann und damit konstant schnell weiter fährt. Eine bildliche Darstellung der Kostenfunktion ist in Abbildung \ref{fig:costGoalDist} zu sehen. 
+Für diese Kostenfunktion wird vor den letzten Prädiktionsschritt ein virtuelles Ziel definiert und die Distanz des $N+1$ Schrittes zu diesem Ziel minimiert. Der Optimierer wird also versuchen Steuerparameter zu finden die ihn möglichst schnell auf dieses Ziel zu fahren lassen. Das virtuelle Ziel wird nach jedem Update wieder so neu positioniert, dass das Rennauto den Punkt niemals erreichen kann und damit konstant schnell weiter fährt. Die Distanz, in der das virtuelle Ziel platziert wird, wird durch die maximale Geschwindigkeit und die Anzahl der Prädiktionsschritte berechnet. 
+\begin{equation}
+	d_{goal} = \sum_{0}^{N}{v_{max} * \Delta t}
+\end{equation}
+
+Eine bildliche Darstellung der Kostenfunktion ist in Abbildung \ref{fig:costGoalDist} zu sehen. 
 
 \begin{figure}[ht!]
 	\centering
@@ -775,7 +780,6 @@ Die Funktion $g(d)$ dient als Platzhalter für verschiedene Gewichtungsfunktione
 
 \begin{eqnarray}
 	g(d) = &\alpha d^2 \\
-	g(d) = &\alpha |d|\\
 	g(d) = &e^{\alpha (k_1 + d)} + e^{-\alpha(k_2 + d)} \label{eq:distMeasure1}\\
 	g(d) = &|\frac{\alpha}{k_1-d} + \frac{\alpha}{k_2 - d}| \label{eq:distMeasure2}
 \end{eqnarray}
@@ -944,6 +948,7 @@ Im späteren Verlauf wird die Verwendung der elastischen Begrenzungen nötig. Um
 
 Die Auswahl der möglichen Kostenfunktionen ist schnell getroffen. Die e-Funktion und die quadratische-Funktion haben eine deutlich bessere Laufzeit und lassen sogar die einfacheren Kostenfunktionen aus der vorherigen Messung hinter sich. Dies ist darauf zurückzuführen, dass keine tangentialen Beschränkungen mehr vorhanden sind und damit das \ac{MPC}-Problem eine geringere Komplexität aufweist.
 
+Die deutlich höhere Ausführungszeit ist bei der alpha-Funktion darauf zurück zu führen, dass jeweils auf der Rückseite der Erhöhung die Kosten wieder gegen Null Fallen. Der Optimierer muss also einen sehr großes Suchraum betrachten. Es werden auch mögliche Trajektorien evaluiert, welche die hohen Kosten für 2-3 Schritte in Kauf nehmen und anschließend das Rennauto außerhalb des Kurses steuern. Diese Situation kann nachgestellt werden, in dem das Kostenverhältnis zu Gunsten der elastischen Beschränkung angepasst wird woraufhin das Fahrzeug den Kurs verlässt. Der lineare 
 
 \subsection{Rundenzeit}
 Um die Qualität der Kostenfunktionen einschätzen zu können wird im folgenden Untersucht, wie schnell die einzelnen Rundenzeiten abhängig von den Prädiktionsschritten für jede einzelne Funktion ist.
@@ -964,15 +969,68 @@ Die Differenz zwischen den beiden Kostenfunktionen, welche die Distanz zu einem 
 \chapter{Regelung des dynamischen Modells}
 \label{dynModelcontrol}
 In der Realität ist das kinematische Modell nur für geringe Geschwindigkeiten genau genug die Bewegung des Fahrzeugs zu modellieren. Im Folgenden wird deswegen das Modell im Simulator durch das dynamische Fahrzeugmodell mit berechneten Reifenkräften ersetzt. Das Ziel ist zu evaluieren, wie gut sich das deutlich komplexere System mit dem weiterhin im \ac{MPC}-Algorithmus hinterlegte, sehr einfache kinematischen Modell, regeln lässt.
-Die deutlichen Unterschiede der Modelle wurden bereits im Kapitel \ref{modelError} evaluiert und für diesen Abschnitt, wird nun von dem Fahrzeugmodell ausgegangen, welches Reibung und Luftwiderstand berücksichtigt, durch den Kammschen Kreis erweitert wird und die Reifenkräfte mit dem genausten \emph{magic model} errechnet.
+Die deutlichen Unterschiede der Modelle wurden bereits im Kapitel \ref{modelError} evaluiert. Für diesen Abschnitt, wird nun von dem Fahrzeugmodell ausgegangen, welches Reibung und Luftwiderstand berücksichtigt, durch den Kammschen Kreis erweitert wird und die Reifenkräfte mit dem genausten \emph{magic model} errechnet.
+
+\section{Maximale Querbeschleunigung und Prädiktionshorizont}
+Zuerst wird ermittelt, bis zu welcher maximalen Querbeschleunigung das Rennauto stabil im Rennkurs geregelt werden kann. Um diesen Wert zu finden, wurde die elastische Beschräunkung basierend auf der e-Funktion gewählt und ein sehr hoher Kostenfaktor eingestellt um sicherzustellen, dass das Fahrzeug nicht den Kurs verlässt um die Strecke abzukürzen. Erst wenn der Regler die Kontrolle verliert und das Fahrzeug nicht mehr auf dem Rennkurs halten kann ist die maximal mögliche Querbeschleunigung erreicht.
+
+\subsection{Dynamisches Modell}
+Für dieses Anwendugnszenario wird zuerst das dynamische Modell evaluiert um eine Vergleich zum Modell, welches durch den Kammschen Kreis erweitert wurde anstellen zu können.
+Der in Abbildung \ref{fig:betaMax} dargestellte Graph zeigt den Zusammenhang aus maximaler Querbeschleunigung und Prädiktionsschritten an. Die beste erreichte Zeit 11.6 s ist entgegen der Erwartung für einen sehr kurzen Horizont von 20 Schritten erreicht worden. Dies hängt vermutlich damit zusammen, dass bei einem großen Prädiktionshorizont die Bahn des Rennautos sehr nah an den Streckenbegrenzungen vorbei führt. Dadurch sind höhere Geschwindigkeiten in engen Kurven möglich. Das dynamische Modell schießt jedoch deutlich öfter über die geplante Trajektorie hinaus als bei einem kurzen Horizont. Die ideale Querbeschleunigung für den \ac{MPC}-Regler liegt bei $1.4 g$.  
+  
+\begin{figure}
+	\centering
+	\input{Grafiken/betaMaxN.tex} 
+	\caption{}
+	\label{fig:betaMaxN}
+\end{figure}
+
+Die Rundenzeiten wurden jeweils für die zweite Runde gemessen.
+
+Nachdem die erste Messung nur recht grob durchgeführt wurde, ist in der Grafik \ref{fig:betaMaxFine} der Bereich von 20-30 Prädiktionsschritten genauer untersucht worden.
+
+\begin{figure}
+	\centering
+	\input{Grafiken/betaMaxFine.tex} 
+	\caption{}
+	\label{fig:betaMaxFine}
+\end{figure}
+
+\subsection{Kammsches Modell}
+
+Die beste Rundenzeit welche für das dynamische Modell mit hinterlegtem Kammschen Kreis erreicht wurde, liegt bei 11.65 Sekunden. Dieser Wert wurde für einen Prädiktionshorizont von 21 Schritten bei der maximalen Querbeschleunigung von 1.2g erreicht. Dieses Ergebnis überrascht im Hinblick auf die deutlichen Unterschiede der Modelle. Das dynamische Modell welches in Situationen, in denen stark beschleunigt und gebremst wird deutlich höhere Kräfte übertragen kann, kann sich in der schnellsten Runde nur einen Zeitschritt mit 0.05 s absetzen. Dieses Ergebnis entsteht dadurch, dass durch das hinterlegte kinematische Modell und die Beschränkung der Querbeschleunigung der Regler sehr früh das Bremsen anfängt, um in der Kurve möglichst nah an der inneren Kurve zu bleiben. Die wirkenden Kräfte sind dadurch in der Grenzsituation beim Einfahren in die Kurve so klein, dass die Maximalkräfte welche durch den Kammschen Kreis beschränkt werden, nur geringfügig auftreten.
+\begin{figure}
+	\centering
+	\input{Grafiken/betaMaxFineKam.tex} 
+	\caption{}
+	\label{fig:betaMaxFineKam}
+\end{figure}
+
+\section{Einfluss des Reifenmodells}
+Der Einfluss des Reifenmodells soll auch kurz untersucht werden. Hierfür wird die Grenzsituation, welche im vorherigen Abschnitt gefunden wurde, gewählt, um die Auswirkung der verschiedenen Reifenkräfte zu überprüfen.
+
+
+\begin{figure}
+	\centering
+	\input{Grafiken/tireModelDiff.tex} 
+	\caption{}
+	\label{fig:tireModelDiff}
+\end{figure}
+
+Das Ergebnis der Messung entspricht dem erwarteten Ergebnis. Die Gleichung welche das Ursprüngliche \emph{magic model} vereinfacht, fällt nach dem Erreichen seines Maximalwertes für die lateralen Kräfte deutlich stärker ab als die beiden anderen Modelle (siehe \ref{fig:pacejka}). Dieser Umstand macht sich auch bei den Rundenzeiten bemerkbar, das Fahrzeugmodell welches auf das vereinfachte Reifenmodell zurückgreift ist durchgängig langsamer als die anderen beiden. Da nur in dem Fall der Rennreifen die linearisierte Version gute Ergebnisse liefert, ist davon abzuraten nicht das genauste Reifenmodell welches zur Verfügung steht zu nutzen.    
+
+
+\section{Regelfrequenz}
+Abschließend soll noch eine Betrachtung durchgeführt werden, ob eine höhere Aktualisierungsrate die Stabilität des Systems erhöht. Um dies zu überprüfen wird eine Parameterauswahl getroffen, in der das Rennauto beginnt auszubrechen. Bei Abweichungen des Fahrzeugs von der erwarteten Trajektorie sollte mit einer höheren Aktualisierungsrate weniger Zeit bis zu einer neu geplanten Trajektorie vergehen. Unabhängig davon, kann ein Fahrzeug, welches zu schnell in die Kurve fährt und nicht genug laterale Kräfte übertragen kann um auf der Kreisbahn zu bleiben, auch durch die schneller geplante Trajektorie nicht auf dem Kurs gehalten werden. 
 
 \section{Elastische Beschränkung}
-Im Folgenden wird nun untersucht, wie der Parameter für die maximale Querbeschleunigung im \ac{MPC}, die maximale Geschwindigkeit und die beiden Variablen, welche die Gewichtung in der elastischen Beschränkung definieren gewählt werden müssen, um die beste Performance des Rennautos zu erhalten. Besonderes Augenmerk soll darauf liegen, möglichst nicht vom Kurs abzukommen, da dies im Wettbewerb mit hohen Punktstrafen versehen ist.
-
-Betrachtet werden im Folgenden nur die Kostenfunktionen welche die Distanz zur Mitte der Fahrbahn quadratisch oder über die e-Funktion in die Kosten eingehen lassen. Sie haben mit Abstand die beste Echtzeitfähigkeit.
+Mit dem idealen Prädiktionshorizon und der maximalen Querbeschleunigung können nun die idealen Parameter für die Kostenfunktion gesucht werden. Betrachtet werden die Rundenzeiten, ob das Rennauto den Kurs verlassen hat (abbruch) und wie sich die Rechenzeit verändert.
 
 \subsection{E-Funktion}
-Weiß noch nicht genau wie ich das hier evaluieren soll. Beta max hat einen großen Einfluss, aber auch a und b und max_speed. Maximale Zeit oder zurück gelegter Weg außerhalb des Kurses? 2D oder 3D plots? ... 
+
+
+
+Weiß noch nicht genau wie ich das hier evaluieren soll. Beta max hat einen großen Einfluss, aber auch a und b und max speed. Maximale Zeit oder zurück gelegter Weg außerhalb des Kurses? 2D oder 3D plots? ... 
 
 \subsection{Quadratische Funktion}
 
@@ -980,11 +1038,14 @@ Weiß noch nicht genau wie ich das hier evaluieren soll. Beta max hat einen gro�
 
 
 \chapter[Ausblick]{Zusammenfassung und Ausblick}
-\section{Dynamisches Fahrzeugmodell im MPC}
-\section{Zweispurmodell}
-\section{Trajektorienplanung}
-
 \section{Zusammenfassung}
+Dieses Kapitel erhält zunächst einige Worte zu den möglichen Verbesserungen des Simulators und vor allem des \ac{MPC}-Algorithmus. 
+\section{Ausblick}
+\subsection{Dynamisches Fahrzeugmodell im MPC}
+In dieser Arbeit wurde untersucht, unter welchen Bedingungen ein autonomes Rennauto mit einem \acl{MPC} Algorithmus geregelt werden kann. Das für das Fahrzeug hinterlegte Modell, welches zur Prädiktion zukünftiger Systemzustände genutzt wird, entspricht einem stark vereinfachten kinematischen Modell. Trotz dieser Einschränkung sind bereits hohe Geschwindigkeiten gut kontrollierbar. 
+\subsection{Zweispurmodell}
+\subsubsection{Trajektorienplanung}
+
 
 
 

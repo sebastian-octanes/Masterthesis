@@ -1,0 +1,16 @@
+\begin{tikzpicture}
+\begin{axis}[
+view/h=40,
+colorbar horizontal,
+xlabel=$x$, ylabel=$y$,
+unbounded coords=jump,
+y dir=reverse,
+x dir=reverse,
+xlabel= Prädiktionsschritte,
+ylabel= Querbeschleunigung in g,
+zlabel= Rundenzeit
+]
+\addplot3[surf,mesh/ordering=y varies, shader=interp]  table [x index=0, y index=1, z index=3] {Data/testBetaMax.dat};
+\end{axis}
+\end{tikzpicture}
+

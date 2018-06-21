@@ -286,7 +286,7 @@ function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, 
 
     print("last TrackPoint", trackPoints)
     print("\nforwardPoint", forwardPoint)
-    mpc_struct = MPCStruct(N, 0, 0, 0, 0, 0)
+    mpc_struct = MPCStruct(N, 0, 0, 0, 0, 0,0)
     mpc_struct = init_MPC(mpc_struct, N, dt, startPose, printLevel, max_speed, trackWidth)
     #mpc_struct = define_constraint_nonlinear_bycicle(mpc_struct)
     mpc_struct = define_constraint_kin_bycicle(mpc_struct)
@@ -335,7 +335,7 @@ itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack4(trackWidth)
 N = 30
 printLevel = 0
 dt = 0.05
-max_speed = 10
+max_speed = 20
 mpc_struct = initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed, trackWidth)
 event = Event()
 window = RenderWindow("test", windowSizeX, windowSizeY)

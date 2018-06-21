@@ -238,16 +238,16 @@ function initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel,
     trackPoints = RaceCourse.getTrackPoints(itpTrack, itpLeftBound, itpRightBound, evalPoints, N)
     forwardPoint = RaceCourse.getForwardTrackPoint(itpTrack, evalPoints, N)
 
-    mpc_struct = MPCStruct(N, 0, 0, 0, 0, 0)
+    mpc_struct = MPCStruct(N, 0, 0, 0, 0, 0, 0)
     mpc_struct = init_MPC(mpc_struct, N, dt, startPose, printLevel, max_speed, trackWidth)
     #mpc_struct = define_constraint_nonlinear_bycicle(mpc_struct)
     mpc_struct = define_constraint_kin_bycicle(mpc_struct)
     mpc_struct = define_constraint_start_pose(mpc_struct, startPose)
 
-    mpc_struct = define_objective_minimize_dist_soft_const_lin(mpc_struct,0.5, 1)
+    #mpc_struct = define_objective_minimize_dist_soft_const_lin(mpc_struct,0.5, 1)
     #mpc_struct = define_objective_minimize_dist_soft_const_quad(mpc_struct,1, 1)
     #mpc_struct = define_objective_minimize_dist_soft_const_alpha(mpc_struct,1, 2)
-    #mpc_struct = define_objective_minimize_dist_soft_const_ext(mpc_struct,1, 1)
+    mpc_struct = define_objective_minimize_dist_soft_const_ext(mpc_struct,1, 1)
 
     mpc_struct = update_track_forward_point(mpc_struct, forwardPoint)
 
@@ -292,7 +292,7 @@ lin = [70]
 for i in lin
     N = convert(UInt16, i)
     count = 0
-    printLevel = 0
+    printLevel = 3
     time_total = 0
     time_total_without_init = 0
     mpc_struct = initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel,max_speed, trackWidth)
@@ -346,7 +346,7 @@ for i in lin
         #timer
         steps = steps + 1
 
-        dist = abs(RaceCourse.computeDistToTrackBoarder(itpTrack, itpLeftBound, realCarStateVector))
+        dist = abs(RaceCourse.computeDistToTrackBorder(itpTrack, itpLeftBound, realCarStateVector))
         if(steps == 20 && count == 0)
             steps = 0
             count = 1
@@ -366,7 +366,7 @@ for i in lin
         setpositioncar(carSprite, carPose, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY)
         drawRaceCourse2(window, RaceTrackLeftSprite, RaceTrackRightSprite)
         # draw tangents for future points
-        createTangent(stateVector, itpTrack, itpLeftBound, itpRightBound, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window)
+        #createTangent(stateVector, itpTrack, itpLeftBound, itpRightBound, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window)
         #draw carPathBuffer
         createCarPathPoint(carPathBuffer, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window)
         #draw predicted movement of car

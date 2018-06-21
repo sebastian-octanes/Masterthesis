@@ -11,6 +11,7 @@ mutable struct MPCStruct
     startPose  #startpose
     t     #tangential points and midtrackPoints
     z     #point ahead of search vector to minimize distance to it
+    beta_max
 end
 
 
@@ -45,8 +46,46 @@ function init_MPC(mpc_struct, N_, dt, startPose, printLevel, max_speed, track_wi
      mpc_struct.m = m
      mpc_struct.x = x
      mpc_struct.N = N
+     mpc_struct.beta_max = VehicleModel.max_lat_acc
     return mpc_struct
 end
+
+function init_MPC(mpc_struct, N_, dt, startPose, printLevel, max_speed, track_width, beta)
+     "init_MPC_beta"
+     m = Model(solver = IpoptSolver(tol=1e-1, print_level = printLevel, max_iter= 500))
+     N = N_
+
+     lbx = []
+     ubx = []
+     start = []
+
+     lbx_ = [-Inf, -Inf, VehicleModel.min_speed, -Inf, -Inf, -Inf,  -VehicleModel.min_throttle, -VehicleModel.max_steering_angle]
+     ubx_ = [ Inf,  Inf, max_speed,               Inf,  Inf,  Inf,   VehicleModel.max_throttle,  VehicleModel.max_steering_angle]
+     start_=[startPose.x, startPose.y, startPose.x_d, startPose.psi, startPose.y_d, startPose.psi_d, 0, 0]
+     for i in 0:N
+          lbx = vcat(lbx, lbx_) #add lower bounds to vector
+          ubx = vcat(ubx, ubx_) #add upper bounds to vector
+          start = vcat(start, start_) #add initial guess to vector
+     end
+
+     x = @variable(m, lbx[i] <= x[i = 1:(N+1)*8] <= ubx[i], start = start[i]) #set bounds and initial guess and create x-vector
+     #defined in init to make change of objective functions possible without changing mpc_struct
+     #call setforwardPoint before using the objective function
+     forwardDummy =[0,0,0,0,0,0]
+     z = @NLparameter(m, z[i=1:6] == forwardDummy[i])
+     mpc_struct.z = z
+     trackPoints= ones(N*6)
+     #define t here to be able to use softconstraints later
+     t = @NLparameter(m, t[i=1:N*6] == trackPoints[i])
+     mpc_struct.t = t
+
+     mpc_struct.m = m
+     mpc_struct.x = x
+     mpc_struct.N = N
+     mpc_struct.beta_max = beta
+    return mpc_struct
+end
+
 
 function define_constraint_kin_bycicle(mpc_struct)
     x = mpc_struct.x
@@ -66,8 +105,8 @@ function define_constraint_kin_bycicle(mpc_struct)
               #x[(i + 1)*8 + 3] - (x[i * 8 + 3] + x[8*i + 7]*dt) == 0
               x[(i + 1)*8 + 3] - (x[i * 8 + 3] + x_dd*dt) == 0
               x[(i + 1)*8 + 4] - (x[i * 8 + 4] + x[8*i + 3]*dt / lr*sin(atan(lr/(lf + lr) * tan(x[i*8 + 8])))) == 0
-              atan(0.5 * (lf + lr) * VehicleModel.max_lat_acc / x[i*8 + 3]^2) - atan(lr/(lf + lf) * tan(x[i*8 + 8])) >= 0  #max_beta - beta
-              atan(0.5 * (lf + lr) * VehicleModel.max_lat_acc / x[i*8 + 3]^2) + atan(lr/(lf + lf) * tan(x[i*8 + 8])) >= 0  #max_beta + beta
+              atan(0.5 * (lf + lr) * mpc_struct.beta_max / x[i*8 + 3]^2) - atan(lr/(lf + lf) * tan(x[i*8 + 8])) >= 0  #max_beta - beta
+              atan(0.5 * (lf + lr) * mpc_struct.beta_max / x[i*8 + 3]^2) + atan(lr/(lf + lf) * tan(x[i*8 + 8])) >= 0  #max_beta + beta
          end)
     end
     return mpc_struct

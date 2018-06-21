@@ -95,7 +95,7 @@ function getSplinePositions(itpBound, stateVector, N)
     return ret
 end
 
-function computeDistToTrackBoarder(itpTrack, itpLeftBound, carPose)
+function computeDistToTrackBorder(itpTrack, itpLeftBound, carPose)
     x, y = carPose.x, carPose.y
     indx = getSplinePosition(itpTrack, carPose.x, carPose.y)
     x0, y0 = itpTrack[indx, 1], itpTrack[indx, 2]

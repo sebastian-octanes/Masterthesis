@@ -351,7 +351,6 @@ function dyn_model_kamCircle(carPose, carControl, dt)
 
     Fb = sqrt(Fbx^2 + Fby^2)
     if(Fb > 2 * VehicleModel.F_max_back)
-        println("kamsch")
         alpha = atan2(Fbx, Fby)
         Fbx = sin(alpha) * VehicleModel.F_long_max * 2
         Fby = cos(alpha) * VehicleModel.F_long_max * 2
@@ -469,7 +468,6 @@ function dyn_model_final(carPose, carControl, dt)
 
     Fb = sqrt(Fbx^2 + Fby^2)
     if(Fb > 2 * VehicleModel.F_max_back)
-        println("kamsch")
         alpha = atan2(Fbx, Fby)
         Fbx = sin(alpha) * VehicleModel.F_long_max * 2
         Fby = cos(alpha) * VehicleModel.F_long_max * 2
