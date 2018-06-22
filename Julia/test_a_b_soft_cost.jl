@@ -252,7 +252,8 @@ function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, 
     #mpc_struct = define_objective_minimize_dist(mpc_struct)
     #mpc_struct = define_objective_max_track_dist(mpc_struct)
     #mpc_struct = define_objective_minimize_dist_soft_const(mpc_struct,2, 1)
-    mpc_struct = define_objective_minimize_dist_soft_const_ext(mpc_struct,a, b)
+    mpc_struct = define_objective_minimize_dist_soft_const_quad(mpc_struct,a, b)
+    #mpc_struct = define_objective_minimize_dist_soft_const_ext(mpc_struct,a, b)
 
     #mpc_struct = update_track_forward_point(mpc_struct, forwardPoint)
     mpc_struct = update_track_forward_point_bounds(mpc_struct, forwardPoint, forwardPointBounds)
@@ -287,7 +288,7 @@ itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack4(trackWidth)
 
 printLevel = 0
 dt = 0.05
-max_speed = 30
+max_speed = 15
 
 event = Event()
 window = RenderWindow("test", windowSizeX, windowSizeY)
@@ -300,24 +301,18 @@ set_framerate_limit(window, convert(Int64, 1 / dt))
 
 #create CircularBuffer for tracking Vehicle Path
 carPathBuffer = CircularBuffer{VehicleModel.CarState}(400)
-beta = 0.5:0.1:1.5
-n = [70]
-#n = [10,20,30,40,50,60]
-lap_time1 = []
-lap_time2 = []
-n_out = []
-beta_out = []
+b_out = []
 lap_time_out1 = []
 lap_time_out2 = []
 count = 0
-    for b in beta
-        percent = count/(size(n)[1]* size(beta)[1])
-        println("percent: ",percent)
+N = 30
+beta = 0.4
+bValues = 0.5:0.5:4.0
+for b in bValues
         count = count + 1
-        n_out = vcat(n_out, N)
-        beta_out = vcat(beta_out, b)
+        b_out = vcat(b_out, b)
         #set_framerate_limit(window, 2)
-        mpc_struct = initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed, trackWidth, b * 9.81, 1, 1)
+        mpc_struct = initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed, trackWidth, beta * 9.81, 10, b)
         laps = 1
         clock = Clock()
         #lapTimeActive needed for timer
@@ -360,7 +355,7 @@ count = 0
                 lapTimeActive = true
             end
 
-            if(RaceCourse.computeDistToTrackBorder(itpTrack, itpLeftBound, realCarStateVector) > (trackWidth/2.0 + 0.2))
+            if(abs(RaceCourse.computeDistToTrackBorder(itpTrack, itpLeftBound, realCarStateVector)) > (trackWidth/2.0 + 0.2))
                 println("outside of course", RaceCourse.computeDistToTrackBorder(itpTrack, itpLeftBound, realCarStateVector))
                 if(laps == 1)
                     lap_time_out1 = vcat(lap_time_out1, 0.0)
@@ -409,10 +404,9 @@ count = 0
             display(window)
             clear(window, SFML.white)
         end
-    end
+end
 
-println("n_out", n_out)
-println("beta_out", beta_out)
+
 println("lap_time_out1", lap_time_out1)
 println("lap_time_out2", lap_time_out2)
 

@@ -252,7 +252,7 @@ function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, 
     #mpc_struct = define_objective_minimize_dist(mpc_struct)
     #mpc_struct = define_objective_max_track_dist(mpc_struct)
     #mpc_struct = define_objective_minimize_dist_soft_const(mpc_struct,2, 1)
-    mpc_struct = define_objective_minimize_dist_soft_const_ext(mpc_struct,a, b)
+    mpc_struct = define_objective_minimize_dist_soft_const_ext(mpc_struct,1, 10)
 
     #mpc_struct = update_track_forward_point(mpc_struct, forwardPoint)
     mpc_struct = update_track_forward_point_bounds(mpc_struct, forwardPoint, forwardPointBounds)
@@ -302,20 +302,29 @@ set_framerate_limit(window, convert(Int64, 100))
 carPathBuffer = CircularBuffer{VehicleModel.CarState}(400)
 
 N = 25
-Dt = 0.01:0.02:0.05
-beta = 1.4:0.1:1.4
+Dt = 0.01:0.01:0.06
+beta = 1.7:0.05:1.75
 dt_out = []
+n_out = []
 beta_out = []
 lap_time_out1 = []
 lap_time_out2 = []
 count = 0
+avg_time = []
+avg_time_counter = 0
+time_total = 0
+time_total_without_init = 0
 for dt in Dt
+    time_total = 0
+    avg_time_counter = 0
+
     for b in beta
         N = convert(Int64,  floor((25*0.05) / dt))
         percent = count/(size(Dt)[1]* size(beta)[1])
         println("percent: ",percent)
         count = count + 1
-        dt_out = vcat(dt_out, N)
+        n_out = vcat(n_out, N)
+        dt_out = vcat(dt_out, dt)
         beta_out = vcat(beta_out, b)
         #set_framerate_limit(window, 2)
         mpc_struct = initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed, trackWidth, b * 9.81, 1, 1)
@@ -334,13 +343,18 @@ for dt in Dt
                 end
             end
             keys = checkkeys()
-            res, status = solve_MPC(mpc_struct)
+            tic()
+            res, status =  solve_MPC(mpc_struct)
+            time = toc()
+            time_total += time
+            avg_time_counter = avg_time_counter +1
             res = mapKeyToCarControl(keys, res, N)
             #print("\n\nres", res[1:8])
             #stateVector = mapKeyToCarControl(keys, stateVector, N)
 
             #predict last point and compute next state with vehicle model
             #realCarStateVector = VehicleModel.computeCarStepDynFinal(realCarStateVector, res, dt)
+            #realCarStateVector = VehicleModel.computeCarStepKinModel(realCarStateVector, res, dt)
             realCarStateVector = VehicleModel.computeCarStepDynModelBase(realCarStateVector, res, dt)
             #realCarStateVector = VehicleModel.computeCarStepDynModelLatLin(realCarStateVector, res, dt)
             #realCarStateVector = VehicleModel.computeCarStepDynModelLatSimple(realCarStateVector, res, dt)
@@ -371,12 +385,13 @@ for dt in Dt
                 elseif(laps == 2)
                     lap_time_out2 = vcat(lap_time_out2, 0.0)
                 end
-                break;
+                break
             end
             #if abs(realCarStateVector.x) < trackWidth/2 && abs(realCarStateVector.y) < 0.4 && lapTimeActive
             if(steps > 50 && RaceCourse.computeDistToTrackStartX(itpTrack, itpLeftBound, realCarStateVector) < trackWidth/2.0)
                 if(RaceCourse.computeDistToTrackStartY(realCarStateVector) < 2 && realCarStateVector.y > 0.0)
                     println("\nlap_time_steps:", steps * dt)
+                    println("lap", laps)
                     restart(clock)
 
                     if(laps == 1)
@@ -384,8 +399,8 @@ for dt in Dt
                     elseif(laps == 2)
                         lap_time_out2 = vcat(lap_time_out2, steps * dt)
                     end
-                    laps = laps + 1
                     steps = 0
+                    laps = laps + 1
                     lapTimeActive = false
 
                     if(laps >= 3)
@@ -413,6 +428,7 @@ for dt in Dt
             clear(window, SFML.white)
         end
     end
+    avg_time =  vcat(avg_time, time_total / (avg_time_counter + 20))
 end
 
 println("dt_out", dt_out)
@@ -420,7 +436,12 @@ println("beta_out", beta_out)
 println("lap_time_out1", lap_time_out1)
 println("lap_time_out2", lap_time_out2)
 
+println("avg_time", avg_time)
 
 open("outputFiles/updateRate.dat", "w") do io
-    writedlm(io, [dt_out beta_out lap_time_out1 lap_time_out2])
+    writedlm(io, [dt_out n_out beta_out lap_time_out1 lap_time_out2])
+end
+
+open("outputFiles/updateRateTimeMeasure.dat", "w") do io
+    writedlm(io, [Dt avg_time])
 end

@@ -32,9 +32,9 @@
 
 \chapter{Einleitung}
 Neben neu aufkommenden Trends in der Automobilindustrie, wie dem Elektroauto, Carsharing und dem aktuellen SUV-Boom, hat sich vor allem das autonome Auto in den letzten zwei Jahren mit dem Aufkommen von Teslas Autopilot stark in das Zentrum der Aufmerksamkeit von Firmen und Konsumenten bewegt. Das Jahr 2018 markiert dabei einen ganz besonderen Meilenstein. 
-Ende des Jahres wird die Alphabet Tochter Waymo die ersten voll autonomen Taxis in Phönix für die Öffentlichkeit in Betrieb nehmen \cite{Waymo:1}. 
-Dies ist jedoch nur möglich, da Google im gesamten Gebiet in dem sie ihren Service anbieten werden eine hochgenaue Umgebungskarte in den Fahrzeugen hinterlegt. Sollen die Fahrzeuge in unbekannten Umgebungen agieren, müssen sowohl die Sensorsysteme, wie auch die Algorithmen noch deutlich weiterentwickelt werden, bevor autonome Autos auf Stufe 5 frei verfügbar sind. Die Unterteilung dieser Level wurde von der Bundesanstalt für Straßenwesen zur Klassifizierung von selbst fahrenden Autos erstellt. Die Spanne geht von Stufe 0, keinerlei Assistenz beim fahren, bis Stufe 5, Vollautomatisierung. In diesen Fahrzeugen ist dann auch kein Lenkrad mehr vorgesehen. 
-Die Forschung um dieses Ziel zu erreichen, wird nicht nur in den großen Automobilkonzernen betrieben. Bereits in der Schule aber vor allem an Universitäten und Hochschulen gibt es immer mehr Projekte an denen die Studenten sich intensiv mit der Entwicklung autonomer Roboter und Fahrzeugplattformen beschäftigen. Ein solches Projekt ist der Formula Student Driverless Wettbewerb.
+Ende des Jahres wird die Alphabet-Tochter Waymo die ersten vollautonomen Taxis in Phönix für die Öffentlichkeit in Betrieb nehmen \cite{Waymo:1}. 
+Dies ist jedoch nur möglich, da Google im gesamten Gebiet, in dem sie ihren Service anbieten werden, eine hochgenaue Umgebungskarte in den Fahrzeugen hinterlegt. Sollen die Fahrzeuge in unbekannten Umgebungen agieren, müssen sowohl die Sensorsysteme, wie auch die Algorithmen noch deutlich weiterentwickelt werden, bevor autonome Autos auf Stufe 5 frei verfügbar sind. Die Unterteilung dieser Level wurde von der Bundesanstalt für Straßenwesen zur Klassifizierung von selbst fahrenden Autos erstellt \cite{BASt5L}. Die Spanne geht von Stufe 0, keinerlei Assistenz beim Fahren, bis Stufe 5, Vollautomatisierung. In diesen Fahrzeugen ist dann auch kein Lenkrad mehr vorgesehen. 
+Die Forschung um dieses Ziel zu erreichen, wird nicht nur in den großen Automobilkonzernen betrieben. Bereits in der Schule aber vor allem an Universitäten und Hochschulen gibt es immer mehr Projekte an denen die Studenten sich intensiv mit der Entwicklung autonomer Roboter und Fahrzeugplattformen beschäftigen. Ein solches Projekt ist der \ac{FS} Driverless Wettbewerb.
 
 \section{Formula Student Driverless}
 Die Formula Student ist ein Ingenieurswettbewerb für Studenten. Er hat seine Wurzeln in den USA und wurde im Jahre 1981 das erste mal ausgetragen. Das Ziel des Wettbewerbes ist es, im Verlauf eines Jahres ein eigenes Rennauto zu konzipieren, designen, fertigen und sich schlussendlich mit anderen Teams zu messen. Dass der Wettbewerb sehr erfolgreich ist, machen nicht nur die inzwischen fast 700 Teams weltweit \cite{FsWorldRank:1} deutlich, sondern auch die Anzahl der verschiedenen Events, die überall auf der Welt im Sommer stattfinden. Seit dem Jahr 2017 gibt es neben der ursprünglichen Combustion-Klasse und der vor 10 Jahren eingeführten Electric-Klasse auch noch die Driverless-Klasse.
@@ -42,21 +42,22 @@ In dieser wird von den Teams ein Altfahrzeug mit Sensoren und Aktoren so erweite
 Der Wettbewerb ist unterteilt in dynamische und statische Disziplinen. In letzteren werden verschiedene Präsentationen von den Teams verlangt. Diese beziehen sich auf die technische Realisierung, Softwaredesign, Kostenaufstellung und einen Businessplan.
 Die dynamischen Disziplinen, in denen das Fahrzeug selbstständig fährt, sind:
 \begin{itemize}
-	\item Acceleration \\ Ein 75 Meter langer Beschleunigungsstreifen. Punkte werden nach der Zeit nicht nach der Endgeschwindigkeit vergeben.
-	\item Skidpad \\ Eine liegende 8 bei der an der Engstelle eingefahren wird und jeweils zwei rechte und zwei linke Runden gefahren werden. Die zweite Runde geht jeweils in die Zeitmessung ein. Die Abmaße sind exakt vorgegeben.
+	\item Acceleration \\ Ein 75 Meter langer Beschleunigungsstreifen. Punkte werden nach der Zeit, nicht nach der Endgeschwindigkeit vergeben.
+	\item Skidpad \\ Eine liegende 8, bei der an der Engstelle eingefahren wird und jeweils zwei rechte und zwei linke Runden gefahren werden. Die zweite Runde geht jeweils in die Zeitmessung ein. Die Abmaße sind exakt vorgegeben.
 	\item Trackdrive \\ Ein bis zu 800 Meter langer Kurs mit maximal 80 Meter langen Geraden und Kurven mit minimalem Innenradius von neun Metern. Es werden elf Runden gefahren und die Teams erhalten im Vornherein keine Möglichkeit Messungen am Kurs vorzunehmen.
 \end{itemize}
 
-Für die vorliegende Arbeit ist vor allem der Trackdrive von Interesse. Es wird davon ausgegangen, dass das Fahrzeug bereits die erste Runde absolviert und sich damit eine genaue Karte des Rennkurses erstellt hat. Die Messungen und Vergleiche beziehen sich damit auch immer auf einen Kurs, der so in einem FS-Event für die Driverless Fahrzeuge vorkommen könnte.
+Für die vorliegende Arbeit ist vor allem der Trackdrive von Interesse. Es wird davon ausgegangen, dass das Fahrzeug bereits die erste Runde absolviert und sich damit eine genaue Karte des Rennkurses erstellt hat. Die Messungen und Vergleiche beziehen sich damit auch immer auf einen Kurs, der so in einem \ac{FS}-Event für die Driverless-Fahrzeuge vorkommen könnte.
 
 \begin{figure}[hb!]
 	\centering
 	\includegraphics[width=270pt]{Abbildungen/amz-driverless-long.jpg}
-	\caption{Zürichs FS-Driverless Fahrzeug im Jahr 2017 während des Trackdrive}
+	\caption{Zürichs \ac{FS}-Driverless-Fahrzeug im Jahr 2017 während des Trackdrive}
 \end{figure}
 
 \section{Problemstellung}
-Im laufe dieser Arbeit soll ein Algorithmus entwickelt werden, der die Trajektorienplanung und Regelung eines Formula Student Driverless Racecars berechnet. Der dafür gewählte Ansatz ist \acl{MPC}. Es handelt sich dabei um ein Verfahren welches die Planung von Trajektorien und die Steuerung des Rennautos in einem Algorithmus vereint. Wie der Name schon sagt benötigt es hierfür ein Modell des zu kontrollierenden Systems mit dem daraufhin das zukünftige Verhalten vorausberechnet werden kann. Dieses Wissen wird genutzt um mit Hilfe einer Kostenfunktion die Steuerparameter so zu variieren, dass das Rennauto eine möglichst schnelle Rundenzeit erreicht.
+Im Laufe dieser Arbeit soll ein Algorithmus entwickelt werden, der die Trajektorienplanung und Regelung eines \ac{FS} Driverless Racecars berechnet. Der dafür gewählte Ansatz ist \acl{MPC}. Es handelt sich dabei um ein Verfahren welches die Planung von Trajektorien und die Steuerung des Rennautos in einem Algorithmus vereint. Wie der Name schon sagt, benötigt es hierfür ein Modell des zu kontrollierenden Systems, mit dem daraufhin das zukünftige Verhalten vorausberechnet werden kann. Dieses Wissen wird genutzt um mit Hilfe einer Kostenfunktion die Steuerparameter so zu variieren, dass das Rennauto eine möglichst schnelle Rundenzeit erreicht. In der Arbeit wird untersucht wie groß die Unterschiede zwischen einem rein geometrischen Fahrzeugmodell und einem um Reifenkräfte erweiterten, für hohe Geschwindigkeiten realistischeren, Modell sind. Zudem wird evaluiert, unter welchen Einschränkungen der \ac{MPC}-Ansatz mit hinterlegtem kinematischen Modell ein dynamisches Modell im Simulator steuern kann. Das ziel ist also eine möglichst niedrige Rundenzeit zu erfahren unter der Vorraussetzung dass das Fahrzeug immer auf dem Kurs bleibt.
+
 
 \chapter{Stand der Technik}
 Obwohl es zum Zeitpunkt der Arbeit noch keine öffentliche, autonome Rennserie außerhalb der Formula Student gibt, ist das Interesse an den dafür benötigten Technologien sehr groß.
@@ -64,39 +65,42 @@ Einen guten Rennfahrer zeichnet die Tatsache aus, dass er sein Fahrzeug in absol
 \begin{itemize}
 	\item Genaue Kenntnis der Umgebung (dem Rennkurs) und der eigenen Position.
 	\item Möglichst viel Wissen über das Verhalten des Fahrzeugs (Fahrzeugmodell).
-	\item Kurze Reaktionszeiten (\emph{muscle memory}).
+	\item Kurze Reaktionszeiten (engl.: muscle memory).
 \end{itemize}
 
-Um die Position des Fahrzeugs genau bestimmen zu können werden verschiedene Sensortypen mit Hilfe von Filterverfahren fusioniert. Die Genauigkeit der Schätzung steigt, im Vergleich zu den einzelnen Messsystemen, durch die Kombination signifikant an \cite{GPS_Fusion}, \cite{GPS_IMU_Fusion}. 
-Um das Rennauto mit hoher Geschwindigkeit einen Rennkurs abfahren zu lassen, benötigt es ein Modell, welches das dynamische Verhalten des Fahrzeugs abbilden kann. Erst dieses Wissen ermöglicht die Berechnung von Trajektorien, welche das Rennauto an die Grenzen seiner Traktion bringt. Da die Modelle die  Fahreigenschaften nicht nur möglichst genau abbilden müssen, sondern auch schnell berechenbar sein müssen, werden verschiedene Vereinfachungen angewandt. Die Ansätze variieren nach Komplexität und zu bewältigenden Fahrsituationen:
+Um die Position des Fahrzeugs genau bestimmen zu können, werden verschiedene Sensortypen mit Hilfe von Filterverfahren fusioniert. Die Genauigkeit der Schätzung steigt im Vergleich zu den einzelnen Messsystemen durch die Kombination signifikant an \cite{GPS_Fusion}, \cite{GPS_IMU_Fusion}. 
+Um das Rennauto mit hoher Geschwindigkeit einen Rennkurs abfahren zu lassen, benötigt es ein Modell, welches das dynamische Verhalten des Fahrzeugs abbilden kann. Erst dieses Wissen ermöglicht die Berechnung von Trajektorien, welche das Rennauto an die Grenzen seiner Traktion bringt. Es muss dabei ein guter Kompromiss aus Komplexität (Rechenaufwand) und Genauigkeit der Abbildung gefunden werden.
+Eine sehr genaue Systembeschreibung ermöglicht das berechnen präziserer Trajektorien, ist dies jedoch nicht mehr in Echtzeit berechenbar, kann das Modell nicht verwendet werden.
+Die Ansätze variieren nach Komplexität und zu bewältigenden Fahrsituationen:
 \begin{itemize}
-	\item Ein einfaches kinematisches Modell \cite{MPC_Kinetic}, welches sehr schnell berechenbar ist, aber keine dynamischen Effekte berücksichtigt.
-	\item Die Verwendung einer dynamischen Fahrzeugbeschreibung mit linearem oder nichtlinearem Reifenmodell \cite{rc_car_1_43}, \cite{MPC_Dynamic}, \cite{MPC_Dynamic_Tire_Model}.
+	\item Ein einfaches kinematisches Modell \cite{MPC_Kinetic}, basierend auf einem Einspursystem, welches sehr schnell berechenbar ist, aber keine dynamischen Effekte berücksichtigt.
+	\item Die Verwendung einer dynamischen Fahrzeugbeschreibung welche das Einspurmodell um ein lineares oder nichtlineares Reifenmodell erweitert \cite{rc_car_1_43}, \cite{MPC_Dynamic}, \cite{MPC_Dynamic_Tire_Model}.
 	\item Ein sehr genaues Zweispurmodell welches zehn Freiheitsgrade betrachtet und sogar das Einfedern des Fahrzeugs berücksichtigt \cite{doi:10.1137/S0036144502414942} \\
-	\item Ein anderer Ansatz ist es, nicht vom Schwerpunkt des Autos aus die Fahrzeugdynamik zu berechnen, sondern den \emph{point of percussion} zu wählen. In diesem Punkt heben sich die rotatorischen und translatorischen Kräfte, hervorgerufen durch die Hinterreifen, gegenseitig auf \cite{CentreOfPercussion}.
+
 \end{itemize}
 
-Um ein mathematisches Fahrzeugmodell in einem realen Fahrzeug einsetzen zu können, müssen die Parameter, welche das System beschreiben möglichst genau bestimmt werden. Dies kann mit Hilfe einer linearen Regression sehr effizient und genau verwirklicht werden \cite{Williams2016AggressiveDW}. Die  Berechnungszeit für neue Steuerparameter sollte im Anwendungsfall eines autonomen Rennautos 40 bis 50 ms nicht überschreiten und bewegt sich in der Regel zwischen 50 und 100 Hz \cite{rc_car_1_43}, \cite{Williams2016AggressiveDW}. 
+Um ein mathematisches Fahrzeugmodell in einem realen Fahrzeug einsetzen zu können, müssen die Parameter, welche das System beschreiben, möglichst genau bestimmt werden. Dies kann mit Hilfe einer linearen Regression sehr effizient und genau verwirklicht werden \cite{Williams2016AggressiveDW}. Die Aktualisierungszeit für neue Steuerparameter sollte im Anwendungsfall eines autonomen Rennautos zwischen 20 und 100 Hz liegen, je nachdem wie schnell das Fahrzeug fahren soll \cite{rc_car_1_43}, \cite{Williams2016AggressiveDW}. 
+\newline
 Sind die Grundvorraussetzungen geschaffen, gibt es unterschiedliche Ansätze ein Rennauto möglichst performant um einen Rennkurs fahren zu lassen. Eine Möglichkeit ist der Einsatz von neuronalen Netzen um geeignete Steuerparameter zu berechnen, wie vom Autor in \cite{6374146} beschrieben wurde. 
-Ein "g-g`` - Ansatz, wie in \cite{KRITAYAKIRANA2010548}, nutzt ein Diagramm von lateralen(g) zu longitudinalen(g) Kräften, abhängig von verschiedenen Euler Spiralen um das Verhalten eines Rennfahrers zu Simulieren.  Vor allem aber der in dieser Arbeit betrachtete \ac{MPC}-Algorithmus wird in einer Vielzahl von Arbeiten untersucht und verwendet. 
+Ein \glqq g-g\grqq-Ansatz, wie in \cite{KRITAYAKIRANA2010548}, nutzt ein Diagramm von lateralen (g) zu longitudinalen (g) Kräften, abhängig von verschiedenen Euler Spiralen um das Verhalten eines Rennfahrers zu simulieren. Vor allem aber der in dieser Arbeit betrachtete \ac{MPC}-Algorithmus wird in einer Vielzahl von Arbeiten untersucht und verwendet. 
 Die Unterschiede bei den Verfahren beziehen sich auf die getrennte Berechnung von Trajektorie und Regelung, Trennung von longitudinalem und lateralem Regler \cite{MPC_Dynamic}, \cite{MPC_Dynamic_Tire_Model} oder kombinierter Betrachtung \cite{rc_car_1_43}.
 
 
 \chapter{Grundlagen}
-Um für das Fahrzeug ideale Trajektorien zu berechnen und gleichzeitig das Rennauto in Echtzeit zu regeln wurde der Model Predictive Control Ansatz gewählt. Dieses Verfahren basiert auf der Optimierung eines nicht linearen Programms.
+Um für das Fahrzeug ideale Trajektorien zu berechnen und gleichzeitig das Rennauto in Echtzeit zu regeln wurde der \ac{MPC}-Ansatz gewählt. Dieses Verfahren basiert auf der Optimierung eines nichtlinearen Programms.
  
 \section{Model Predictive Control}
-Bei \ac{MPC} handelt es sich um einen Algorithmus, mit dem sich sehr komplexe, multivariable Regelungsprobleme lösen lassen. Er besitzt seine Stärken vor allem dort, wo Prozesse mit mehreren Ein-, und Ausgängen kontrolliert werden sollen und dabei verschiedene Beschränkungen eingehalten werden müssen. Vorausgesetzt es ist ein ausreichend genaues Modell des Prozesses vorhanden, können unter ausnutzen von Messungen und dem Modell zukünftige Zustände des Prozesses berechnet werden. Diese Information wird genutzt um die Eingangsparameter abhängig von dem gewünschten zukünftigen Verhalten des Prozesses, zu berechnen \cite{seborg2010process}. \\
+Bei \ac{MPC} handelt es sich um einen Algorithmus, mit dem sich komplexe, multivariable Regelungsprobleme lösen lassen. Er eignet sich für Prozesse mit mehreren Ein-, und Ausgängen die klar definierten Beschränkungen unterliegen. Vorausgesetzt es ist ein ausreichend genaues Modell des Prozesses vorhanden, können mit dem Einbeziehen des aktuellen Systemzustands zukünftige Zustände des Prozesses berechnet werden. Diese Information wird genutzt um die Eingangsparameter abhängig von dem gewünschten zukünftigen Verhalten des Prozesses, zu berechnen \cite{seborg2010process}. \\
 Einige wichtige Vorteile von \ac{MPC} sind: 
 \begin{itemize}
-	\item Das sehr gute annähern an Prozessgrenzen und damit ein hoher Durchsatz/Effizienz.
+	\item Das sehr gute annähern an Prozessgrenzen und damit ein hoher Durchsatz/Effizienz. Ein Rennauto versucht zum Beispiel den Kurs bis an die Bande auszunutzen um die höchste Kurvengeschwindigkeit fahren zu können.
 	\item Einschränkungen der Eingangs- und Ausgangsgrößen werden berücksichtigt.
-	\item Die Vorhersage des Fahrzeugzustands kann genutzt werden um mögliche Probleme frühzeitig zu detektieren.
+	\item Die Vorhersage des Systemzustands kann genutzt werden, um mögliche Probleme frühzeitig zu detektieren. Zum Beispiel kann bei einer Blockade der Fahrbahn frühzeitig ermittelt werden ob eine Notbremsung eingeleitet werden muss.
 \end{itemize}
-Seit den späten 1970ern bis in die frühen 2000er wurde \ac{MPC} vor allem in der Chemiebranche genutzt um die komplexen multivariablen Regelungsprozesse , zum Beispiel in der Ölraffinerie, zu steuern. Für diese Aufgabengebiete war \acl{MPC} hervorragend geeignet, da die Prozesse im Vergleich zu anderen Regelungsaufgaben sehr langsam sind und damit die geringe Rechenleistung der damaligen Zeit ausreichend war. 
+Seit den späten 1970ern bis in die frühen 2000er wurde \ac{MPC} vor allem in der Chemiebranche genutzt, um die komplexen multivariablen Regelungsprozesse, zum Beispiel in einer Ölraffinerie, zu steuern. Für diese Aufgabengebiete war \ac{MPC} hervorragend geeignet, da die Prozesse im Vergleich zu anderen Regelungsaufgaben sehr langsam sind und damit die geringe Rechenleistung der damaligen Zeit ausreichend war. 
 Gerade in den letzten Jahren, mit stark gestiegener Prozessorleistung, sind die Einsatzgebiete vielfältiger geworden. Auch die Steuerung hoch dynamischer Systeme wie Quadrocopter \cite{quadcopterMpc} oder Fahrzeugen \cite{carMPC} ist inzwischen möglich. 
 
-\subsection*{Funktion}
+\subsection*{Funktionsweise}
 Der systematische Ablauf eines \ac{MPC}- Algorithmus ist in Abbildung \ref{fig:mpcBlock} aufgezeigt.  
 
   \begin{figure}[ht!]
@@ -109,38 +113,37 @@ Der systematische Ablauf eines \ac{MPC}- Algorithmus ist in Abbildung \ref{fig:m
 Die Funktion lässt sich in drei Schritte unterteilen:
 \begin{itemize}
 	\item Zustandsschätzung \\ Im ersten Schritt wird der aktuelle Zustand des Systems erfasst und als Ausgangspunkt für die Berechnung des Optimierungsproblems festgelegt.
-	\item Optimierung \\ In diesem Schritt werden die zukünftigen Zustände des Systems berechnet und welche Steuerparameter vonnöten sind um eine Kostenfunktion zu minimieren. Diese entspricht im industriellen Umfeld zum Beispiel einer Optimierung der Fertigungsrate, Kostenreduktion,  Temperatursteuerung, etc.
+	\item Optimierung \\ In diesem Schritt werden die zukünftigen Zustände des Systems berechnet und welche Steuerparameter vonnöten sind, um eine Kostenfunktion zu minimieren. Diese entspricht im industriellen Umfeld zum Beispiel einer Optimierung der Fertigungsrate, Kostenreduktion,  Temperatursteuerung, etc.
 	\item Steuerung \\ Die berechneten Steuerparameter werden auf dem realen System angewandt. Danach wird wieder beim ersten Schritt fortgefahren.   
 \end{itemize}
 
 
-Die Mächtigkeit von \ac{MPC} basiert auf der Prädiktion des Systemverhaltens. Ein präzises Vorhersagen setzt daher eine möglichst gute Systembeschreibung voraus. Je genauer diese an die Realität heranreicht, desto weiter in die Zukunft können die Systemzustände berechnet werden. Zudem kann das System näher an seine Systemgrenzen geführt werden. \\
-Bei \acl{MPC} handelt es sich um ein sogenanntes \textit{finite-horizon} Verfahren, das heißt, die Optimierung wird immer für einen bestimmten Zeitraum in die Zukunft durchgeführt $ [t_0, t_0 + T] $. Dieser Bereich \(T\) wird dann in \(k\) Schritte unterteilt, für die jeweils ein Prädiktionsschritt berechnet wird. Dieser geht aus dem vorherigen Zustand $k -1$ und den dazu gehörigen Steuergrößen hervor. Nachdem der Optimierer die für eine Kostenfunktion idealen Steuergrößen für den gesamten Prädiktionsvektor berechnet hat, wird nur der \emph{erste} Steuerwert ausgewählt und zur Regelung im realen System eingesetzt. Der Zusammenhang aus Prädiktion und Kostenfunktion ist im Schaubild \ref{fig:mpcTheory} verdeutlicht. Für jeden Schritt im Vorhersage Horizont wird der Steuerparameter berechnet, welcher den Systemzustand möglichst schnell der vorgegebenen Trajektorie annähert. Das wissen über das zu steuernde System hilft dafür die passenden Steuerparameter zu finden und frühzeitig genug die Amplitude so anzupassen dass kein Übersteuern entsteht. Es wird also deutlich, dass ein \ac{MPC}-Algorithmus sehr gut an die Systemgrenzen regeln kann.
+Die Stärke des \ac{MPC}-Ansatzes basiert auf der Prädiktion des Systemverhaltens. Ein präzises Vorhersagen setzt eine möglichst gute Systembeschreibung voraus. Je genauer diese an die Realität heranreicht, desto weiter in die Zukunft können die Systemzustände, ohne große Abweichung von der Realität, berechnet werden. Zudem kann das System näher an seine Systemgrenzen geführt werden. \\
+Bei \ac{MPC} handelt es sich um ein Verfahren welches immer einen feste Zeit in die Zukunft plant. Die Optimierung wird also immer für einen bestimmten Zeitraum $ [t_0, t_0 + T] $ durchgeführt . Dieser Bereich \(T\) wird dann in \(k\) Schritte unterteilt, für die jeweils ein Prädiktionsschritt berechnet wird. Dieser geht aus dem Zustand des vorherigen Schrittes $k -1$ und den dazu gehörigen Steuergrößen hervor. Nachdem der Optimierer die für eine Kostenfunktion idealen Steuergrößen für den gesamten Prädiktionsvektor berechnet hat, wird nur der \emph{erste} Steuerwert ausgewählt und zur Regelung im realen System eingesetzt. Der Zusammenhang aus Prädiktion und Kostenfunktion ist im Schaubild \ref{fig:mpcTheory} verdeutlicht. Für jeden Schritt im Vorhersagehorizont wird der Steuerparameter berechnet, welcher den Systemzustand möglichst schnell der vorgegebenen Trajektorie annähert. Das Wissen über das zu steuernde System hilft, dafür die passenden Steuerparameter zu finden und frühzeitig genug die Amplitude so anzupassen, dass kein Übersteuern entsteht. 
 
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=350pt]{Abbildungen/mpcParadigm.png}
-	\caption{Funktionsprinzip von \ac{MPC}: Die Kostenfunktion ist die Reduktion der Distanz zur Referenztrajektorie. Durch das Modell kann das System so geregelt werden dass es nicht über die Zieltrajektorie hinaus schießt.}
+	\caption{Funktionsprinzip von \ac{MPC}: Die Kostenfunktion ist die Reduktion der Distanz zur Referenztrajektorie. Durch das Wissen über das hinterlegte Modell können die Kosten sehr schnell minimiert werden ohne die Beschränkungen zu verletzen.}
 	\label{fig:mpcTheory}
 \end{figure}
 
-Wie bereits ausgeführt wurde, berücksichtigt der \ac{MPC}-Ansatz auch Eingangs-, Ausgangs- und Zustandsbeschränkungen mit welchen man den Suchraum einschränkt. Diese sind im Falle eines Rennautos zum Beispiel die maximale Geschwindigkeit, Lenkeinschlag, Beschleunigung und Bremskraft. Ebenfalls ein sehr gutes Beispiel für eine Zustandsbeschränkung ist die Änderungsrate der Querbeschleunigung, welche ein direkter Indikator für den Komfort eines autonomen Fahrzeugs während der Fahrt darstellt.\\
+Wie bereits ausgeführt wurde, berücksichtigt der \ac{MPC}-Ansatz auch Eingangs-, Ausgangs- und Zustandsbeschränkungen, mit welchen man den Suchraum einschränkt. Diese sind im Falle eines Rennautos zum Beispiel die maximale Geschwindigkeit, Lenkeinschlag, Beschleunigung und Bremskraft. Ebenfalls ein sehr gutes Beispiel für eine Zustandsbeschränkung ist die Reisequalität in einem normalen Straßenauto. ruckartiges Anfahren und allgemein plötzliche änderung der laterale wie longitudinale Beschleunigung trübt bei einem autonomen Fahrzeug das Fahrgefühl. Eine Möglichkeit diesem Problem zu begegnen ist die Begrenzung der Änderungsrate der Beschleunigung des Fahrzeugs.\\
 
-Um den \textit{\acl{MPC}} Algorithmus für den Anwendungsfall eines Rennautos zu implementieren, braucht man Folglich ein Fahrzeugmodell und einen Optimierungsalgorithmus. Auf beides wird in den nächsten Kapiteln eingegangen.
+Das Grundgerüst des \ac{MPC}-Ansatz bildet der Optimierer, der die optimale Lösung für die gewünschte Kostenfunktion sucht. Im Folgenden wird daher auf die Funktionsweise von diesem eingegangen.
 
 
 \section{Optimierung}
-Das Konzept der Optimierung besteht darin, eine gegebene Funktion \(f(\vec{x})\), auch als Kostenfunktion bezeichnet, zu mini- oder zu maximieren. 
+Das Ziel der Optimierung besteht darin, eine gegebene Funktion \(f(\vec{x})\), auch als Kostenfunktion bezeichnet, zu mini- oder zu maximieren. 
 Dies wird in einer Vielzahl von Anwendungsgebieten genutzt.
-Zur Berechnung von Profit / Verlust in einem Betrieb, Geschwindigkeit oder Distanz in einem physikalischen Problem oder der erwartete \textit{return of investment} für eine Geldanlage.  
-Die Bezeichnung lineare Programmierung bezieht sich auf die Lösung eines  Optimierungsproblems und hat nichts mit dem eigentlichen Programm zu tun.
-
+Zur Berechnung von Profit bzw. Verlust in einem Betrieb, Geschwindigkeit oder Distanz in einem physikalischen Problem oder die erwartete Kapitalrendite für eine Geldanlage.  
+Die Bezeichnung lineare Programmierung bezieht sich auf die Lösung eines linearen  Optimierungsproblems und hat nichts mit dem eigentlichen Programm zu tun. 
 Die allgemeine mathematische Definition eines Optimierungsproblems ist
 
-$minimize$  
+\text{minimize}  
 \noindent\hspace*{3mm}%
 $f(\vec{x}) $ \\
-$subject$  $to$ 
+\text{subject to} 
 \noindent\hspace*{3mm}%
 $g_i(\vec{x})$ $\leq$ $0,$ $i=1,2,...,p$  \\
 \noindent\hspace*{22mm}%
@@ -148,12 +151,12 @@ $h_j(\vec{x})= 0,$ $j= 1,2,...,m$\\
 \noindent\hspace*{22mm}%
 
 
-Der Eingabeparameter $\vec{x}$ sei aus $\Re \textsuperscript{n} $, das heißt, das Problem hängt von \(n\) Einflussparameter ab, die im Vektor $\vec{x}$ eingelagert sind. Die Zielfunktion $f:D \rightarrow \Re $ sei einmal stetig differenzierbar. Weiterhin sind die Nebenbedingungen in Ungleichheitsform $g_i:D \rightarrow \Re$ mit $1\leq i \leq p$ und in Gleichheitsform $h_j:D \rightarrow \Re$ mit $1\leq j \leq m$ gegeben.
-Wird \(f(\vec{x})\) durch \(-f(\vec{x})\) ersetzt, wird aus dem Mini-, ein Maximierungsproblem.  
+Der Eingabeparameter $\vec{x}$ sei aus $\mathbb{R} \textsuperscript{n} $, das heißt, das Problem hängt von \(n\) Einflussparameter ab. Die Zielfunktion $f:D \rightarrow \mathbb{R} $ sei einmal stetig differenzierbar. Weiterhin sind die Nebenbedingungen in Ungleichheitsform $g_i:D \rightarrow \mathbb{R}$ mit $1\leq i \leq p$ und in Gleichheitsform $h_j:D \rightarrow \!R$ mit $1\leq j \leq m$ gegeben.
+Wird \(f(\vec{x})\) durch \(-f(\vec{x})\) ersetzt, wird aus dem Mini- ein Maximierungsproblem. Der Unterschied zu einem nichtlinearen Programm ist nur, dass mindestens eine der Gleichungen des Optimierungsproblem nichtlinear ist.
 
-Ein Optimierungsproblem hat nicht immer eine Lösung. Die Ungleichungen, welche den Suchraum einschränken, können sich widersprechen (z.b. $x \leq 0 $ und $x > 0$). In diesem Fall gibt es keine Lösung. Außerdem kann das Problem unbeschränkt sein, was unendlich viele zulässige Lösungen zur Folge hätte und damit auch als nicht lösbar eingestuft wird. 
+Ein Optimierungsproblem hat nicht immer eine Lösung. Die Ungleichungen, welche den Suchraum einschränken, können sich widersprechen ($x \leq 0 $ und $x > 0$). In diesem Fall gibt es keine Lösung. Außerdem kann das Problem unbeschränkt sein. Soll zum Beispiel eine Optimierungsvariable minimiert werden, diese nach unten aber nicht beschränkt ist, kann keine Lösung gefunden werden. 
 
-Ein lineares Programm (alle Funktionen sind linear) lässt sich in Matrixschreibweise darstellen. Es besteht aus $A \in \Re \textsuperscript{m,n}$ und zwei Vektoren $b \in \Re \textsuperscript{m,1}$ und $c \in \Re \textsuperscript{1,n}$. \\
+Ein Optimierungsproblem lässt sich in Matrixschreibweise darstellen. Es besteht aus $A \in \mathbb{R} \textsuperscript{m,n}$ und zwei Vektoren $b \in \mathbb{R} \textsuperscript{m,1}$ und $c \in \mathbb{R} \textsuperscript{1,n}$. \\
 
 \[ \left( \begin{array}{cccc}
 a_{11} x_1 + & ... & + a_{1n} x_n & \leq b_1 \\   	
@@ -166,7 +169,7 @@ a_{m1} x_1 + & ... & + a_{mn} x_n & \leq b_m \\
 Das Optimierungsverfahren sucht eine Lösung für den Vektor \(\vec{x}\) welcher sowohl die linearen Bedingungen erfüllt, als auch die Zielfunktion 
 $cx=c_1 x_1 + ... + c_n x_n$ minimiert.
 Die Kurzschreibweise für dieses Gleichungssystem ist: \\
-$min \{ c\textsuperscript{T}x | Ax \leq b, x \geq 0 \}$
+\text{min} $\{ c\textsuperscript{T}x | Ax \leq b, x \geq 0 \}$
 
 Besonders einfach veranschaulichen lässt sich die Lösung des Problems geometrisch im zweidimensionalen Raum, so dargestellt in Abbildung \ref*{fig:linOpt}.
 
@@ -177,7 +180,7 @@ Besonders einfach veranschaulichen lässt sich die Lösung des Problems geometri
 	\label{fig:linOpt}
 \end{figure}
 
-Jede Ungleichung $a_i x \leq b_i$ teilt den Suchraum in zwei Hälften, eine mit zulässigen Punkten und eine ohne. Die Punkte auf der Grenze sind ebenfalls zulässig. Die Menge der Punkte welche alle Ungleichungen erfüllt, ist genau der Schnitt dieser Halbräume. Dieser Bereich ist in Abbildung \ref{fig:linOpt} blau dargestellt. Der Punkt, der die Kostenfunktion $c: x \rightarrow c\textsuperscript{T} x$ minimiert, liegt auf den Kanten der Ungleichungen und wird durch Verschiebung der Hyperebene $ \{x| c\textsuperscript{T} x = 0 \}$ in Richtung des Vektors \(c\) gefunden. Nachdem das Optimierungsproblem aufgestellt ist, gibt es verschiedene Ansätze dieses zu berechnen.
+Jede Ungleichung $a_i x \leq b_i$ teilt den Suchraum in zwei Hälften, eine mit zulässigen Punkten und eine ohne. Die Punkte auf der Grenze sind ebenfalls zulässig. Die Menge der Punkte, welche alle Ungleichungen erfüllt, ist genau der Schnitt dieser Halbräume. Dieser Bereich ist in Abbildung \ref{fig:linOpt} blau dargestellt. Der Punkt, der die Kostenfunktion $c: x \rightarrow c\textsuperscript{T} x$ minimiert, liegt auf den Kanten der Ungleichungen und wird durch Verschiebung der Hyperebene (siehe \ref{fig:linOpt}) $ \{x| c\textsuperscript{T} x = 0 \}$ in Richtung des Vektors \(c\) gefunden. Nachdem das Optimierungsproblem aufgestellt ist, gibt es verschiedene Ansätze dieses zu berechnen.
 
 
 \subsection*{Lösungsverfahren}
@@ -797,7 +800,7 @@ Die Idee hinter den Funktionen \ref{eq:distMeasure1} und \ref{eq:distMeasure2} i
 
 
 
-\chapter{Simulationsumgebung}
+\section{Simulationsumgebung}
 Um die Funktion des \ac{MPC}-Algorithmus verifizieren zu können wurde eine Simulationsumgebung entwickelt. Der Aufbau ist dreigeteilt. Eine Fahrzeugsimulation welche mit austauschbaren Fahrzeugmodellen die Bewegung des Rennautos abhängig von Steuereingaben und einem $\Delta t$ berechnet. Der Regelanteil in Form des \ac{MPC} und eine Visualisierung auf Basis einer Spieleengine welche auch die zeitlichen Abläufe kontrolliert. 
 
 
@@ -808,7 +811,7 @@ Um die Funktion des \ac{MPC}-Algorithmus verifizieren zu können wurde eine Simu
 	\label{fig:jumpDiagram}
 \end{figure}
 
-\section{\acl{SFML}}
+\subsection{\acl{SFML}}
 Die Basis für die Simulation bildet die \emph{ \ac{SFML}} welche für die grafische Darstellung des Kurses, Rennauto, Prädiktionsschritte und Fahrzeuginformationen genutzt wird. Gleichzeitig zur Visualisierung stellt die Spieleengine auch sicher, dass die zeitlichen Abläufe eingehalten werden. Das Grundprinzip ist eine einzige unendlich laufende Schleife die mit einer vorher festgelegten Häufigkeit pro Sekunde (frames per second fps) ausgeführt wird. Benötigen die Berechnungen innerhalb dieser Schleife länger als das angegebenen $\Delta t = \frac{1}{fps}$ sinkt die Ausführungsrate, überschritten wird sie jedoch nie. Die Schritte, die innerhalb dieser Schleife abgearbeitet werden sind zuerst das Abfragen möglicher Eingaben des Nutzers oder \emph{events} der einzelnen Objekte, z.b. eine Kollision. Im zweiten Schritt werden alle Berechnungen der eigentlichen Fahrzeugsimulation und \ac{MPC} ausgeführt und im letzten Schritt werden die grafische Elemente erstellt und angezeigt. Wie für eine Spieleengine üblich, befindet sich der Ursprung des Koordinatensystems in der linken oberen Ecke, die y-Achse ist daher entgegengesetzt zu dem in der Fahrzeugsimulation verwendeten Standardachsenaufbau orientiert. Zudem werden Distanzen in der Engine nur in Pixeln gemessen. Es wurden daher 2 Parameter eingeführt welche die Fenstergröße in Pixeln festlegen (in \(x\)- und  \(y\)-Richtung)
 und zusätzlich eine Angabe wie viel Metern dieser Pixelbereich jeweils entspricht. Die daraus resultierenden Verhältnisse \\
 $scaleX = \frac{windowSizeXinPixel}{windowSizeXinM}$ \\
@@ -825,7 +828,7 @@ Der Aufbau ist in dem Blockdiagramm \ref{fig:block_diagram_sim} nochmals zusamme
 \end{figure}
 
 
-\section{Virtueller Rennkurs}
+\subsection{Virtueller Rennkurs}
 Wie in der Einführung bereits erwähnt, ist das Ziel der Arbeit ein \ac{MPC}-Alogrithmus zu entwickeln mit dem die \emph{trackdrive} Disziplin möglichst schnell abgefahren werden kann. Die Grundvoraussetzung für diese Arbeit ist die bereits vollständig erstellte Karte des Rennkurses und eine Lokalisierung innerhalb dieser Karte. Die Updaterate für diese Positionsschätzung wird mit 20 Hz angenommen. Das Ziel ist es also die Regelparameter mit einem $\Delta t$ von $\frac{1}{20} s$ für das Rennauto berechnen zu können.  Zum Testen der Algorithmen wurde ein beliebiger Kurs definiert, welcher sich an die Vorgaben des Regelwerkes hält und damit einen minimalen Kurvenradius von 9 m, Maximallänge einer Geraden von 80m und maximal 180° Spitzkurven besitzt.
 
 \chapter{Modellfehler}
@@ -1022,20 +1025,26 @@ Das Ergebnis der Messung entspricht dem erwarteten Ergebnis. Die Gleichung welch
 
 \section{Regelfrequenz}
 Abschließend soll noch eine Betrachtung durchgeführt werden, ob eine höhere Aktualisierungsrate die Stabilität des Systems erhöht. Um dies zu überprüfen wird eine Parameterauswahl getroffen, in der das Rennauto beginnt auszubrechen. Bei Abweichungen des Fahrzeugs von der erwarteten Trajektorie sollte mit einer höheren Aktualisierungsrate weniger Zeit bis zu einer neu geplanten Trajektorie vergehen. Unabhängig davon, kann ein Fahrzeug, welches zu schnell in die Kurve fährt und nicht genug laterale Kräfte übertragen kann um auf der Kreisbahn zu bleiben, auch durch die schneller geplante Trajektorie nicht auf dem Kurs gehalten werden. 
+Um eine gute Vergleichbarkeit zu erzielen, wird für jedes $\Delta t$ die Anzahl der Prädiktionsschritte angepasst, alle Messungen beziehen sich also auf einen gleich langen vorausplanten Horizont. Wenn der Zeitwert welcher Vorausprädiziert werden soll keinen ganzen Teiler für das betrachtete $\Delta t$ besitzt, wurde der nächst mögliche Wert gewählt.
 
-\section{Elastische Beschränkung}
-Mit dem idealen Prädiktionshorizon und der maximalen Querbeschleunigung können nun die idealen Parameter für die Kostenfunktion gesucht werden. Betrachtet werden die Rundenzeiten, ob das Rennauto den Kurs verlassen hat (abbruch) und wie sich die Rechenzeit verändert.
-
-\subsection{E-Funktion}
-
-
-
-Weiß noch nicht genau wie ich das hier evaluieren soll. Beta max hat einen großen Einfluss, aber auch a und b und max speed. Maximale Zeit oder zurück gelegter Weg außerhalb des Kurses? 2D oder 3D plots? ... 
-
-\subsection{Quadratische Funktion}
+\begin{figure}
+	\centering
+	\input{Grafiken/deltaTMaxB.tex} 
+	\caption{}
+	\label{fig:deltaTMaxB}
+\end{figure}
 
 
+\section{Quadratische Funktion}
+Die Idee hinter der quadratischen Funktion ist, dass das Rennauto etwas mehr in der Mitte der Spur bleibt und daher im besten Fall auch bei höheren Geschwindigkeiten noch kontrollierbarer bleibt. Da es jedoch keinen abrupten Kostenanstieg an den Kursgrenzen gibt, muss evaluiert werden für welchen Faktor $\alpha$ und das Verhältnis aus a und b der Regler die besten Rundenzeiten liefert ohne den Kurs zu verlassen. Für $N$ wurde ein konstanter Wert von 25 Schritten mit einem $\Delta t$ von 0.05s gewählt. In den Messungen hat sich der Ansatz nicht bestätigen lassen. Die Trajektorien werden immer möglichst in der Mitte des Kurses angelegt, bei aufeinander folgenden Kurven, in denen das dynamische Modell stark vom kinematischen abweicht, verliert das Fahrzeug dadurch sehr schnell die Kontrolle. Auch geringe Querbeschleunigungen ändern an diesem Problem nichts, da die maximale Geschwindigkeit des Fahrzeugs nicht eingeschränkt ist. Die Folge daraus ist, dass das Rennauto mit zu hohen Geschwindigkeiten in die Kurven einfährt. Ohne ein genaueres Fahrzeugmodell im \ac{MPC}-Algorithmus ist eine Regelung des Rennautos, trotz der schnellen Berechnugnszeit, mit dieser Kostenfunktion nicht  zu empfehlen.
+Die problematische Stelle im Kurs ist schematisch für die zwei verschiedenen Verhalten für die quadratische und die exponentielle Kostenfunktion dargestellt. 
 
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=350pt]{Abbildungen/quadraticCostFunction.png}
+	\caption{Platzhalter}
+	\label{fig:quadraticCostFunct}
+\end{figure}
 
 \chapter[Ausblick]{Zusammenfassung und Ausblick}
 \section{Zusammenfassung}
@@ -1044,7 +1053,7 @@ Dieses Kapitel erhält zunächst einige Worte zu den möglichen Verbesserungen d
 \subsection{Dynamisches Fahrzeugmodell im MPC}
 In dieser Arbeit wurde untersucht, unter welchen Bedingungen ein autonomes Rennauto mit einem \acl{MPC} Algorithmus geregelt werden kann. Das für das Fahrzeug hinterlegte Modell, welches zur Prädiktion zukünftiger Systemzustände genutzt wird, entspricht einem stark vereinfachten kinematischen Modell. Trotz dieser Einschränkung sind bereits hohe Geschwindigkeiten gut kontrollierbar. 
 \subsection{Zweispurmodell}
-\subsubsection{Trajektorienplanung}
+\subsection{Trajektorienplanung}
 
 
 

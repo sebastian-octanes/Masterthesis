@@ -13,6 +13,12 @@ C.~Athanasiadis, D.~Galanopoulos, and A.~Tefas.
 \newblock In {\em 2012 IEEE Conference on Computational Intelligence and Games
   (CIG)}, pages 116--123, Sept 2012.
 
+\bibitem[BAS]{BASt5L}
+Rechtsfolgen zunehmender fahrzeugautomatisierung.
+\newblock
+  \url{https://www.bast.de/BASt_2017/DE/Publikationen/Foko/2013-2012/2012-11.html}.
+\newblock Accessed on 2018-06-22.
+
 \bibitem[CUR18]{MPC_Dynamic_Tire_Model}
 FLORIAN CURINGA.
 \newblock {Autonomous racing using model predictive control}.
@@ -63,13 +69,6 @@ Krisada Kritayakirana and J.~Christian Gerdes.
   using feedforward trail-braking and throttle-on-exit.
 \newblock {\em IFAC Proceedings Volumes}, 43(7):548 -- 553, 2010.
 \newblock 6th IFAC Symposium on Advances in Automotive Control.
-
-\bibitem[KG12]{CentreOfPercussion}
-K.~{Kritayakirana} and J.~C. {Gerdes}.
-\newblock {Using the centre of percussion to design a steering controller for
-  an autonomous race car}.
-\newblock {\em Vehicle System Dynamics, International Journal of Vehicle
-  Mechanics and Mobility}, 50:33--51, January 2012.
 
 \bibitem[KPSB15]{7225830}
 J.~Kong, M.~Pfeiffer, G.~Schildbach, and F.~Borrelli.

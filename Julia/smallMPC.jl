@@ -327,7 +327,7 @@ function define_objective_minimize_dist_soft_const_quad(mpc_struct, a = 6, b = 1
     #@NLobjective(m, Min, sqrt((x[(N-1)*8 + 1]-0)^2 + (x[(N-1)*8 + 2]-10)^2))
     @NLexpression(m, min_dist, sqrt((x[(N-1)*8 + 1]- z[1])^2 + (x[(N-1)*8 + 2]-z[2])^2))
 
-    alpha = 4
+    alpha = 20
 
     dist(xX, xY, x0X, x0Y, x1X, x1Y) =  abs((xX - x0X)*(x1X - x0X) + (xY - x0Y)*(x1Y - x0Y)) / sqrt((x1X - x0X)^2 + (x1Y - x0Y)^2)
     JuMP.register(m, :dist, 6, dist, autodiff=true)
