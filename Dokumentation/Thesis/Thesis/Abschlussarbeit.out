@@ -12,16 +12,16 @@
 \BOOKMARK [2][-]{subsection.3.3.1}{Kinematisches Modell}{section.3.3}% 12
 \BOOKMARK [2][-]{subsection.3.3.2}{Reifenmodell}{section.3.3}% 13
 \BOOKMARK [2][-]{subsection.3.3.3}{Dynamisches Fahrzeugmodell}{section.3.3}% 14
-\BOOKMARK [1][-]{section.3.4}{Programmiersprachen}{chapter.3}% 15
-\BOOKMARK [2][-]{subsection.3.4.1}{Python}{section.3.4}% 16
-\BOOKMARK [2][-]{subsection.3.4.2}{Julia}{section.3.4}% 17
-\BOOKMARK [0][-]{chapter.4}{MPC zur Trajektorienplanung und Regelung}{}% 18
-\BOOKMARK [1][-]{section.4.1}{Fahrzeugmodell}{chapter.4}% 19
-\BOOKMARK [1][-]{section.4.2}{Kostenfunktionen}{chapter.4}% 20
-\BOOKMARK [1][-]{section.4.3}{Strecken-, und Positionsbeschr\344nkung}{chapter.4}% 21
-\BOOKMARK [1][-]{section.4.4}{Simulationsumgebung}{chapter.4}% 22
-\BOOKMARK [2][-]{subsection.4.4.1}{Simple and Fast Multimedia Library}{section.4.4}% 23
-\BOOKMARK [2][-]{subsection.4.4.2}{Virtueller Rennkurs}{section.4.4}% 24
+\BOOKMARK [0][-]{chapter.4}{MPC zur Trajektorienplanung und Regelung}{}% 15
+\BOOKMARK [1][-]{section.4.1}{Fahrzeugmodell}{chapter.4}% 16
+\BOOKMARK [1][-]{section.4.2}{Kostenfunktionen}{chapter.4}% 17
+\BOOKMARK [1][-]{section.4.3}{Strecken-, und Positionsbeschr\344nkung}{chapter.4}% 18
+\BOOKMARK [1][-]{section.4.4}{Programmiersprachen}{chapter.4}% 19
+\BOOKMARK [2][-]{subsection.4.4.1}{Python}{section.4.4}% 20
+\BOOKMARK [2][-]{subsection.4.4.2}{Julia}{section.4.4}% 21
+\BOOKMARK [1][-]{section.4.5}{Simulationsumgebung}{chapter.4}% 22
+\BOOKMARK [2][-]{subsection.4.5.1}{Simple and Fast Multimedia Library}{section.4.5}% 23
+\BOOKMARK [2][-]{subsection.4.5.2}{Virtueller Rennkurs}{section.4.5}% 24
 \BOOKMARK [0][-]{chapter.5}{Modellfehler}{}% 25
 \BOOKMARK [1][-]{section.5.1}{Acceleration}{chapter.5}% 26
 \BOOKMARK [1][-]{section.5.2}{Skidpad}{chapter.5}% 27
@@ -31,21 +31,22 @@
 \BOOKMARK [0][-]{chapter.6}{Regelung des kinematischen Modells}{}% 31
 \BOOKMARK [1][-]{section.6.1}{Pr\344diktionshorizont}{chapter.6}% 32
 \BOOKMARK [1][-]{section.6.2}{Kostenfunktionen}{chapter.6}% 33
-\BOOKMARK [2][-]{subsection.6.2.1}{Laufzeit}{section.6.2}% 34
-\BOOKMARK [2][-]{subsection.6.2.2}{Rundenzeit}{section.6.2}% 35
-\BOOKMARK [0][-]{chapter.7}{Regelung des dynamischen Modells}{}% 36
-\BOOKMARK [1][-]{section.7.1}{Maximale Querbeschleunigung und Pr\344diktionshorizont}{chapter.7}% 37
-\BOOKMARK [2][-]{subsection.7.1.1}{Dynamisches Modell}{section.7.1}% 38
-\BOOKMARK [2][-]{subsection.7.1.2}{Kammsches Modell}{section.7.1}% 39
-\BOOKMARK [1][-]{section.7.2}{Einfluss des Reifenmodells}{chapter.7}% 40
-\BOOKMARK [1][-]{section.7.3}{Regelfrequenz}{chapter.7}% 41
-\BOOKMARK [1][-]{section.7.4}{Quadratische Funktion}{chapter.7}% 42
-\BOOKMARK [0][-]{chapter.8}{Ausblick}{}% 43
-\BOOKMARK [1][-]{section.8.1}{Zusammenfassung}{chapter.8}% 44
-\BOOKMARK [1][-]{section.8.2}{Ausblick}{chapter.8}% 45
-\BOOKMARK [2][-]{subsection.8.2.1}{Dynamisches Fahrzeugmodell im MPC}{section.8.2}% 46
-\BOOKMARK [2][-]{subsection.8.2.2}{Zweispurmodell}{section.8.2}% 47
-\BOOKMARK [2][-]{subsection.8.2.3}{Trajektorienplanung}{section.8.2}% 48
-\BOOKMARK [0][-]{appendix.A}{Anhang}{}% 49
-\BOOKMARK [0][-]{chapter*.73}{Abk\374rzungsverzeichnis}{}% 50
-\BOOKMARK [0][-]{chapter*.74}{Literaturverzeichnis}{}% 51
+\BOOKMARK [2][-]{subsection.6.2.1}{Verifizierung der Funktionen}{section.6.2}% 34
+\BOOKMARK [2][-]{subsection.6.2.2}{Laufzeit}{section.6.2}% 35
+\BOOKMARK [2][-]{subsection.6.2.3}{Rundenzeit}{section.6.2}% 36
+\BOOKMARK [0][-]{chapter.7}{Regelung des dynamischen Modells}{}% 37
+\BOOKMARK [1][-]{section.7.1}{Maximale Querbeschleunigung und Pr\344diktionshorizont}{chapter.7}% 38
+\BOOKMARK [2][-]{subsection.7.1.1}{Dynamisches Modell}{section.7.1}% 39
+\BOOKMARK [2][-]{subsection.7.1.2}{Kammsches Modell}{section.7.1}% 40
+\BOOKMARK [1][-]{section.7.2}{Einfluss des Reifenmodells}{chapter.7}% 41
+\BOOKMARK [1][-]{section.7.3}{Regelfrequenz}{chapter.7}% 42
+\BOOKMARK [1][-]{section.7.4}{Quadratische Funktion}{chapter.7}% 43
+\BOOKMARK [0][-]{chapter.8}{Ausblick}{}% 44
+\BOOKMARK [1][-]{section.8.1}{Zusammenfassung}{chapter.8}% 45
+\BOOKMARK [1][-]{section.8.2}{Ausblick}{chapter.8}% 46
+\BOOKMARK [2][-]{subsection.8.2.1}{Dynamisches Fahrzeugmodell im MPC}{section.8.2}% 47
+\BOOKMARK [2][-]{subsection.8.2.2}{Zweispurmodell}{section.8.2}% 48
+\BOOKMARK [2][-]{subsection.8.2.3}{Trajektorienplanung}{section.8.2}% 49
+\BOOKMARK [0][-]{appendix.A}{Anhang}{}% 50
+\BOOKMARK [0][-]{chapter*.73}{Abk\374rzungsverzeichnis}{}% 51
+\BOOKMARK [0][-]{chapter*.74}{Literaturverzeichnis}{}% 52
