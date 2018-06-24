@@ -30,7 +30,7 @@ max_long_acc = 24   #m/s**2 longitudinal acceleration max
 max_throttle = 10   #used for the mpc
 max_long_dec = 25   #m/s**2 longitudinal deceleration max
 min_throttle = 10   #used for the mpc minus is added in the mpc
-max_lat_acc = 1 *9.81  # 2g lateral acceleration
+max_lat_acc = 2*9.81  # 2g lateral acceleration
 #max_lat_acc = 3.5 *9.81  # 2g lateral acceleration
 max_steering_angle = (30.0/180.0)*pi #2
 

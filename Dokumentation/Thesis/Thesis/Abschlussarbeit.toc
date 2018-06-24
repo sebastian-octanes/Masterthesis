@@ -17,37 +17,36 @@
 \contentsline {section}{\numberline {4.1}Fahrzeugmodell}{31}{section.4.1}
 \contentsline {section}{\numberline {4.2}Kostenfunktionen}{31}{section.4.2}
 \contentsline {section}{\numberline {4.3}Strecken-, und Positionsbeschr\IeC {\"a}nkung}{33}{section.4.3}
-\contentsline {section}{\numberline {4.4}Programmiersprachen}{38}{section.4.4}
-\contentsline {subsection}{\numberline {4.4.1}Python}{38}{subsection.4.4.1}
-\contentsline {subsection}{\numberline {4.4.2}Julia}{38}{subsection.4.4.2}
-\contentsline {section}{\numberline {4.5}Simulationsumgebung}{41}{section.4.5}
-\contentsline {subsection}{\numberline {4.5.1}\acl {SFML}}{42}{subsection.4.5.1}
-\contentsline {subsection}{\numberline {4.5.2}Virtueller Rennkurs}{43}{subsection.4.5.2}
-\contentsline {chapter}{\numberline {5}Modellfehler}{45}{chapter.5}
-\contentsline {section}{\numberline {5.1}Acceleration}{45}{section.5.1}
-\contentsline {section}{\numberline {5.2}Skidpad}{46}{section.5.2}
-\contentsline {section}{\numberline {5.3}Orientierung}{47}{section.5.3}
-\contentsline {section}{\numberline {5.4}Reifenmodelle}{51}{section.5.4}
-\contentsline {section}{\numberline {5.5}Longitudinale Modelle}{52}{section.5.5}
-\contentsline {chapter}{\numberline {6}Regelung des kinematischen Modells}{53}{chapter.6}
-\contentsline {section}{\numberline {6.1}Pr\IeC {\"a}diktionshorizont}{53}{section.6.1}
-\contentsline {section}{\numberline {6.2}Kostenfunktionen}{53}{section.6.2}
-\contentsline {subsection}{\numberline {6.2.1}Verifizierung der Funktionen}{53}{subsection.6.2.1}
-\contentsline {subsection}{\numberline {6.2.2}Laufzeit}{54}{subsection.6.2.2}
-\contentsline {subsection}{\numberline {6.2.3}Rundenzeit}{56}{subsection.6.2.3}
-\contentsline {chapter}{\numberline {7}Regelung des dynamischen Modells}{58}{chapter.7}
-\contentsline {section}{\numberline {7.1}Maximale Querbeschleunigung und Pr\IeC {\"a}diktionshorizont}{58}{section.7.1}
-\contentsline {subsection}{\numberline {7.1.1}Dynamisches Modell}{58}{subsection.7.1.1}
-\contentsline {subsection}{\numberline {7.1.2}Kammsches Modell}{59}{subsection.7.1.2}
-\contentsline {section}{\numberline {7.2}Einfluss des Reifenmodells}{60}{section.7.2}
-\contentsline {section}{\numberline {7.3}Regelfrequenz}{62}{section.7.3}
-\contentsline {section}{\numberline {7.4}Quadratische Funktion}{62}{section.7.4}
-\contentsline {chapter}{\numberline {8}Ausblick}{65}{chapter.8}
-\contentsline {section}{\numberline {8.1}Zusammenfassung}{65}{section.8.1}
-\contentsline {section}{\numberline {8.2}Ausblick}{65}{section.8.2}
-\contentsline {subsection}{\numberline {8.2.1}Dynamisches Fahrzeugmodell im MPC}{65}{subsection.8.2.1}
-\contentsline {subsection}{\numberline {8.2.2}Zweispurmodell}{65}{subsection.8.2.2}
-\contentsline {subsection}{\numberline {8.2.3}Trajektorienplanung}{65}{subsection.8.2.3}
-\contentsline {chapter}{\numberline {A}Anhang}{66}{appendix.A}
-\contentsline {chapter}{Abk\IeC {\"u}rzungsverzeichnis}{68}{chapter*.73}
-\contentsline {chapter}{Literaturverzeichnis}{69}{chapter*.74}
+\contentsline {chapter}{\numberline {5}Simulationsumgebung}{39}{chapter.5}
+\contentsline {section}{\numberline {5.1}Python}{39}{section.5.1}
+\contentsline {subsection}{\numberline {5.1.1}Julia}{40}{subsection.5.1.1}
+\contentsline {section}{\numberline {5.2}\acl {SFML}}{43}{section.5.2}
+\contentsline {section}{\numberline {5.3}Virtueller Rennkurs}{44}{section.5.3}
+\contentsline {chapter}{\numberline {6}Modellfehler}{46}{chapter.6}
+\contentsline {section}{\numberline {6.1}Acceleration}{46}{section.6.1}
+\contentsline {section}{\numberline {6.2}Skidpad}{47}{section.6.2}
+\contentsline {section}{\numberline {6.3}Orientierung}{49}{section.6.3}
+\contentsline {section}{\numberline {6.4}Reifenmodelle}{52}{section.6.4}
+\contentsline {section}{\numberline {6.5}Longitudinale Modelle}{53}{section.6.5}
+\contentsline {chapter}{\numberline {7}Regelung des kinematischen Modells}{54}{chapter.7}
+\contentsline {section}{\numberline {7.1}Pr\IeC {\"a}diktionshorizont}{54}{section.7.1}
+\contentsline {section}{\numberline {7.2}Kostenfunktionen}{54}{section.7.2}
+\contentsline {subsection}{\numberline {7.2.1}Verifizierung der Funktionen}{54}{subsection.7.2.1}
+\contentsline {subsection}{\numberline {7.2.2}Laufzeit}{55}{subsection.7.2.2}
+\contentsline {subsection}{\numberline {7.2.3}Rundenzeit}{57}{subsection.7.2.3}
+\contentsline {chapter}{\numberline {8}Regelung des dynamischen Modells}{59}{chapter.8}
+\contentsline {section}{\numberline {8.1}Maximale Querbeschleunigung und Pr\IeC {\"a}diktionshorizont}{59}{section.8.1}
+\contentsline {subsection}{\numberline {8.1.1}Dynamisches Modell}{59}{subsection.8.1.1}
+\contentsline {subsection}{\numberline {8.1.2}Kammsches Modell}{60}{subsection.8.1.2}
+\contentsline {section}{\numberline {8.2}Einfluss des Reifenmodells}{61}{section.8.2}
+\contentsline {section}{\numberline {8.3}Regelfrequenz}{63}{section.8.3}
+\contentsline {section}{\numberline {8.4}Quadratische Funktion}{63}{section.8.4}
+\contentsline {chapter}{\numberline {9}Ausblick}{66}{chapter.9}
+\contentsline {section}{\numberline {9.1}Zusammenfassung}{66}{section.9.1}
+\contentsline {section}{\numberline {9.2}Ausblick}{66}{section.9.2}
+\contentsline {subsection}{\numberline {9.2.1}Dynamisches Fahrzeugmodell im MPC}{66}{subsection.9.2.1}
+\contentsline {subsection}{\numberline {9.2.2}Zweispurmodell}{66}{subsection.9.2.2}
+\contentsline {subsection}{\numberline {9.2.3}Trajektorienplanung}{66}{subsection.9.2.3}
+\contentsline {chapter}{\numberline {A}Anhang}{67}{appendix.A}
+\contentsline {chapter}{Abk\IeC {\"u}rzungsverzeichnis}{69}{chapter*.74}
+\contentsline {chapter}{Literaturverzeichnis}{70}{chapter*.75}

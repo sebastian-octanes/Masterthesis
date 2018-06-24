@@ -255,18 +255,18 @@ function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, 
     forwardPoint = RaceCourse.getForwardTrackPoint(itpTrack, evalPoints, N)
     print("last TrackPoint", trackPoints)
     print("\nforwardPoint", forwardPoint)
-    mpc_struct = MPCStruct(N, 0, 0, 0, 0, 0)
+    mpc_struct = MPCStruct(N, 0, 0, 0, 0, 0, 0)
     mpc_struct = init_MPC(mpc_struct, N, dt, startPose, printLevel, max_speed, trackWidth)
-
     #mpc_struct = define_constraint_nonlinear_bycicle(mpc_struct)
     mpc_struct = define_constraint_kin_bycicle(mpc_struct)
     mpc_struct = define_constraint_start_pose(mpc_struct, startPose)
-    mpc_struct = define_constraint_tangents(mpc_struct, trackPoints)
-    #mpc_struct = define_constraint_max_search_dist(mpc_struct, trackPoints)
-    mpc_struct = define_objective(mpc_struct)
-    #mpc_struct = define_objective_middle(mpc_struct)
-    #mpc_struct = define_objective_minimize_dist(mpc_struct)
-    #mpc_struct = define_objective_minimize_dist_soft_const(mpc_struct,2, 1)
+
+    mpc_struct = define_objective_max_speed(mpc_struct)
+    #mpc_struct = define_objective_minimize_dist_soft_const_lin(mpc_struct,0.5, 1)
+    #mpc_struct = define_objective_minimize_dist_soft_const_quad(mpc_struct,1, 1)
+    #mpc_struct = define_objective_minimize_dist_soft_const_alpha(mpc_struct,1, 2)
+    #mpc_struct = define_objective_minimize_dist_soft_const_ext(mpc_struct,1, 1)
+
     mpc_struct = update_track_forward_point(mpc_struct, forwardPoint)
 
     return mpc_struct

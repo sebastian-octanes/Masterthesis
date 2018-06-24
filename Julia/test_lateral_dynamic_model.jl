@@ -255,7 +255,7 @@ function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, 
     forwardPoint = RaceCourse.getForwardTrackPoint(itpTrack, evalPoints, N)
     print("last TrackPoint", trackPoints)
     print("\nforwardPoint", forwardPoint)
-    mpc_struct = MPCStruct(N, 0, 0, 0, 0, 0)
+    mpc_struct = MPCStruct(N, 0, 0, 0, 0, 0, 0)
     mpc_struct = init_MPC(mpc_struct, N, dt, startPose, printLevel, max_speed, track_width)
     #mpc_struct = define_constraint_dyn_bycicle(mpc_struct)
     mpc_struct = define_constraint_kin_bycicle(mpc_struct)
@@ -291,7 +291,7 @@ startPose = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
 #define which racecourse should be used
 itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(radius, 3, 11, 0)
 
-N = 15
+N = 10
 printLevel = 0
 dt = 0.05
 max_speed = 30
@@ -328,8 +328,8 @@ while isopen(window)
     res = mapKeyToCarControl(keys, res, N)
 
     #realCarStateVector = VehicleModel.computeCarStepKinModel(realCarStateVector, res, dt)
-    #realCarStateVector = VehicleModel.computeCarStepDynModelBase(realCarStateVector, res, dt)
-    realCarStateVector = VehicleModel.computeCarStepDynKamsch(realCarStateVector, res, dt)
+    realCarStateVector = VehicleModel.computeCarStepDynModelBase(realCarStateVector, res, dt)
+    #realCarStateVector = VehicleModel.computeCarStepDynKamsch(realCarStateVector, res, dt)
 
     stateVector = VehicleModel.createNewStateVector(res, realCarStateVector, dt, N)
     update_start_point_from_pose(mpc_struct, realCarStateVector)
