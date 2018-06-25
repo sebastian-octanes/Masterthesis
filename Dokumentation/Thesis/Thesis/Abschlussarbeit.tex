@@ -389,11 +389,11 @@ Diese werden abhängig von den folgenden Parametern berechnet.
 	Die maximale Kraft, gegen welche die Kurve für große Schräglaufwinkel tendiert. 
 \end{itemize}
 
-Diese ändern sich mit der Normalkraft, welche das Fahrzeug auf die Straße presst. Ist diese Konstant wie in unserem Fall, müssen die Werte nur einmal berechnet werden und bleiben danach gleich. Sie unterscheiden sich jedoch für das vordere $(.)_r$ und hintere Rad $(.)_r$. Werden in einem komplexeren Modell auch die aerodynamischen Abtriebskräfte und die Steigung der Straße berücksichtigt ändern sich $D$, $beta$, $xm$ und $y_a$ mit jeder Veränderung der Normalkraft, was die Neuberechnung von C,B und E zur Folge hat. Zur besseren Veranschaulichung ist in der Zeichnung \ref{fig:tireModelParamete} dargestellt, welchen Einfluss die einzelnen Werte auf die Kurve der Reifenkräfte haben. 
+Diese ändern sich mit der Normalkraft, welche das Fahrzeug auf die Straße presst. Ist diese Konstant wie in unserem Fall, müssen die Werte nur einmal berechnet werden und bleiben danach gleich. Sie unterscheiden sich jedoch für das vordere $(.)_r$ und hintere Rad $(.)_r$. Werden in einem komplexeren Modell auch die aerodynamischen Abtriebskräfte und die Steigung der Straße berücksichtigt ändern sich $D$, $beta$, $xm$ und $y_a$ mit jeder Veränderung der Normalkraft, was die Neuberechnung von C,B und E zur Folge hat. Zur besseren Veranschaulichung ist in der Zeichnung \ref{fig:tireModelParameter} dargestellt, welchen Einfluss die einzelnen Werte auf die Kurve der Reifenkräfte haben. 
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=350pt]{Abbildungen/tireModelParameter.jpg}
+	\includegraphics[width=350pt]{Abbildungen/tireModel.png}
 	\caption{Parameter im Reifenmodell(Platzhalter)}
 	\label{fig:tireModelParameter}
 \end{figure}
@@ -618,8 +618,8 @@ Bei komplexeren Streckengefügen kann es jedoch von Vorteil sein, eine Kurve eve
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=150pt]{Abbildungen/idealTrajektorie.png}
-	\caption{Ideale Trajektorie für eine 90 Grad Kurve (Dummy Bild)}
+	\includegraphics[width=200pt]{Abbildungen/apexTrajektory.png}
+	\caption{Ideale Trajektorie für eine 90 Grad Kurve}
 	\label{fig:idealTrajektorie}
 \end{figure}
 
@@ -693,7 +693,7 @@ $d = |a - \frac{ab}{bb}b| $. Dies ist in der Abbildung \ref{fig:maxDist} bildlic
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=200pt]{Abbildungen/maxDist.png}
+	\includegraphics[width=200pt]{Abbildungen/vektorRejection.png}
 	\caption{Maximieren der Streckendistanz (Dummy)}
 	\label{fig:maxDist}
 \end{figure}
@@ -713,7 +713,7 @@ Mathematisch lassen sich die Tangenten durch eine Vektorprojektion $d = \frac{a*
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=200pt]{Abbildungen/vektorProjektion.png}
+	\includegraphics[width=200pt]{Abbildungen/vektorProjection.png}
 	\caption{Vektor Projektion zum berechnen der tangentialen Beschränkung (platzhalter für richtiges Bild)}
 	\label{fig:vektorProjektion}
 \end{figure}
@@ -839,7 +839,7 @@ Der Aufbau ist in dem Blockdiagramm \ref{fig:block_diagram_sim} nochmals zusamme
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=350pt]{Abbildungen/sim_for_loop.png}
+	\includegraphics[width=350pt]{Abbildungen/MPCSimulation.png}
 	\caption{Blockdiagramm der Simulation ohne MPC}
 	\label{fig:block_diagram_sim}
 \end{figure}
@@ -1063,7 +1063,7 @@ Die problematische Stelle im Kurs ist schematisch für die zwei verschiedenen Ve
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=350pt]{Abbildungen/quadraticCostFunction.png}
+	\includegraphics[width=250pt]{Abbildungen/quadraticCostFunction.png}
 	\caption{Platzhalter}
 	\label{fig:quadraticCostFunct}
 \end{figure}
