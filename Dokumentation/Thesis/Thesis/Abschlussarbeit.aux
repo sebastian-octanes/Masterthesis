@@ -33,6 +33,7 @@
 \@writefile{toc}{\contentsline {chapter}{\numberline {1}Einleitung}{1}{chapter.1}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{lol}{\addvspace {10\p@ }}
 \AC@undonewlabel{acro:FS}
 \newlabel{acro:FS}{{\chpname{Kapitel}1}{1}{Einleitung}{section*.8}{}}
 \acronymused{FS}
@@ -55,6 +56,7 @@
 \@writefile{toc}{\contentsline {chapter}{\numberline {2}Stand der Technik}{4}{chapter.2}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{lol}{\addvspace {10\p@ }}
 \citation{doi:10.1137/S0036144502414942}
 \citation{Williams2016AggressiveDW}
 \citation{rc_car_1_43}
@@ -71,6 +73,7 @@
 \@writefile{toc}{\contentsline {chapter}{\numberline {3}Grundlagen}{6}{chapter.3}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{lol}{\addvspace {10\p@ }}
 \acronymused{MPC}
 \@writefile{toc}{\contentsline {section}{\numberline {3.1}Model Predictive Control}{6}{section.3.1}}
 \newlabel{MPC}{{3.1}{6}{Model Predictive Control}{section.3.1}{}}
@@ -101,10 +104,10 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2.2}Innere-Punkte-Verfahren}{12}{subsection.3.2.2}}
 \newlabel{ipm}{{3.2.2}{12}{Innere-Punkte-Verfahren}{subsection.3.2.2}{}}
 \acronymused{MPC}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.5}{\ignorespaces Beim Innere-Punkte-Verfahren bewegt sich der Optimierer durch das Innere des Polytop auf der Suche nach dem Mimimum.\relax }}{12}{figure.caption.17}}
-\newlabel{fig:iterPointMethod}{{3.5}{12}{Beim Innere-Punkte-Verfahren bewegt sich der Optimierer durch das Innere des Polytop auf der Suche nach dem Mimimum.\relax }{figure.caption.17}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.6}{\ignorespaces Logarithmische Barrierefunktionen\relax }}{13}{figure.caption.18}}
-\newlabel{fig:iterPointLn}{{3.6}{13}{Logarithmische Barrierefunktionen\relax }{figure.caption.18}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.5}{\ignorespaces Beim Innere-Punkte-Verfahren bewegt sich der Optimierer durch das Innere des Polytop auf der Suche nach dem Mimimum\relax }}{12}{figure.caption.17}}
+\newlabel{fig:iterPointMethod}{{3.5}{12}{Beim Innere-Punkte-Verfahren bewegt sich der Optimierer durch das Innere des Polytop auf der Suche nach dem Mimimum\relax }{figure.caption.17}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.6}{\ignorespaces Logarithmische Barrierefunktionen f\IeC {\"u}r verschiedene Gewichtungsfaktoren $\mu $\relax }}{13}{figure.caption.18}}
+\newlabel{fig:iterPointLn}{{3.6}{13}{Logarithmische Barrierefunktionen für verschiedene Gewichtungsfaktoren $\mu $\relax }{figure.caption.18}{}}
 \citation{julDiff}
 \citation{julDiff}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2.3}Automatische Ableitung}{14}{subsection.3.2.3}}
@@ -117,6 +120,7 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.3.1}Kinematisches Modell}{16}{subsection.3.3.1}}
 \newlabel{kinematicModel}{{3.3.1}{16}{Kinematisches Modell}{subsection.3.3.1}{}}
 \newlabel{kinDiscrete}{{3.3.1}{16}{Kinematisches Modell}{equation.3.3.1}{}}
+\newlabel{compute_beta}{{3.3.5}{16}{Kinematisches Modell}{equation.3.3.1}{}}
 \citation{rajamani2011vehicle}
 \@writefile{lof}{\contentsline {figure}{\numberline {3.7}{\ignorespaces Kinematisches Modell:\relax }}{17}{figure.caption.20}}
 \newlabel{fig:kinmodel}{{3.7}{17}{Kinematisches Modell:\relax }{figure.caption.20}{}}
@@ -124,8 +128,8 @@
 \newlabel{betaMax}{{3.3.1}{18}{Begrenzung des Kurvenradius}{section*.21}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}Reifenmodell}{18}{subsection.3.3.2}}
 \newlabel{tireModel}{{3.3.2}{18}{Reifenmodell}{subsection.3.3.2}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.8}{\ignorespaces Schr\IeC {\"a}glaufwinkel\relax }}{19}{figure.caption.22}}
-\newlabel{fig:linLat}{{3.8}{19}{Schräglaufwinkel\relax }{figure.caption.22}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.8}{\ignorespaces Der Schr\IeC {\"a}laufwinkel ergibt sich aus Lenkwinkel \(\delta \) und Bewegungsrichtung \(\theta _{v}\)\relax }}{19}{figure.caption.22}}
+\newlabel{fig:linLat}{{3.8}{19}{Der Schrälaufwinkel ergibt sich aus Lenkwinkel \(\delta \) und Bewegungsrichtung \(\theta _{v}\)\relax }{figure.caption.22}{}}
 \citation{magicFormula}
 \newlabel{eq:magicF}{{3.3.13}{20}{Reifenmodell}{equation.3.3.13}{}}
 \citation{rc_car_1_43}
@@ -141,13 +145,14 @@
 \newlabel{dynModel}{{3.3.3}{24}{Dynamisches Fahrzeugmodell}{subsection.3.3.3}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3.12}{\ignorespaces Dynamic Vehicle Model\relax }}{25}{figure.caption.28}}
 \newlabel{fig:dynModel}{{3.12}{25}{Dynamic Vehicle Model\relax }{figure.caption.28}{}}
-\newlabel{long_dyn_engine}{{3.3.40}{26}{Longitudinale Kräfte}{equation.3.3.40}{}}
-\newlabel{long_dyn_max}{{3.3.41}{26}{Longitudinale Kräfte}{equation.3.3.40}{}}
+\newlabel{long_dyn_engine}{{3.3.39}{26}{Longitudinale Kräfte}{equation.3.3.39}{}}
+\newlabel{long_dyn_max}{{3.3.40}{26}{Longitudinale Kräfte}{equation.3.3.39}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {3.2}{\ignorespaces Vehicle Parameter\relax }}{28}{table.caption.30}}
 \newlabel{vehicleParam}{{3.2}{28}{Vehicle Parameter\relax }{table.caption.30}{}}
 \@writefile{toc}{\contentsline {chapter}{\numberline {4}MPC zur Trajektorienplanung und Regelung}{29}{chapter.4}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{lol}{\addvspace {10\p@ }}
 \@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces Ideale Trajektorie f\IeC {\"u}r eine 90 Grad Kurve (Dummy Bild)\relax }}{29}{figure.caption.31}}
 \newlabel{fig:idealTrajektorie}{{4.1}{29}{Ideale Trajektorie für eine 90 Grad Kurve (Dummy Bild)\relax }{figure.caption.31}{}}
 \acronymused{MPC}
@@ -177,10 +182,12 @@
 \newlabel{eq:distMeasure2}{{4.3.3}{37}{Elastische Distanzminimierung}{equation.4.3.1}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {4.8}{\ignorespaces Verschiedene Distanzma\IeC {\ss }e um das Verhalten der Trajektorienplanung zu beeinflussen.\relax }}{37}{figure.caption.43}}
 \newlabel{fig:elasticCost}{{4.8}{37}{Verschiedene Distanzmaße um das Verhalten der Trajektorienplanung zu beeinflussen.\relax }{figure.caption.43}{}}
+\citation{Scipy}
 \citation{DBLP:journals/corr/TurkinT16}
 \@writefile{toc}{\contentsline {chapter}{\numberline {5}Simulationsumgebung}{39}{chapter.5}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{lol}{\addvspace {10\p@ }}
 \acronymused{MPC}
 \acronymused{MPC}
 \@writefile{toc}{\contentsline {section}{\numberline {5.1}Python}{39}{section.5.1}}
@@ -223,42 +230,47 @@
 \@writefile{toc}{\contentsline {chapter}{\numberline {6}Modellfehler}{46}{chapter.6}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{lol}{\addvspace {10\p@ }}
 \newlabel{modelError}{{\chpname{Kapitel}6}{46}{Modellfehler}{chapter.6}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {6.1}Acceleration}{46}{section.6.1}}
+\acronymused{MPC}
 \@writefile{lof}{\contentsline {figure}{\numberline {6.1}{\ignorespaces Beschleunigung f\IeC {\"u}r verschiedene longitudinale Modelle\relax }}{47}{figure.caption.54}}
 \newlabel{fig:accdec}{{6.1}{47}{Beschleunigung für verschiedene longitudinale Modelle\relax }{figure.caption.54}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {6.2}Skidpad}{47}{section.6.2}}
 \@writefile{lof}{\contentsline {figure}{\numberline {6.2}{\ignorespaces Rundkurs zum messen der maximalen Querbeschleunigung\relax }}{48}{figure.caption.55}}
 \newlabel{fig:roundCourse}{{6.2}{48}{Rundkurs zum messen der maximalen Querbeschleunigung\relax }{figure.caption.55}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {6.3}Orientierung}{49}{section.6.3}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.3}{\ignorespaces \relax }}{50}{figure.caption.56}}
-\newlabel{fig:modelDiffOrient}{{6.3}{50}{\relax }{figure.caption.56}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.4}{\ignorespaces \relax }}{51}{figure.caption.57}}
-\newlabel{fig:modelDiffOrientMaxAcc}{{6.4}{51}{\relax }{figure.caption.57}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.5}{\ignorespaces \relax }}{52}{figure.caption.58}}
-\newlabel{fig:modelDiffTires}{{6.5}{52}{\relax }{figure.caption.58}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.3}{\ignorespaces Orientierung des Rennautos f\IeC {\"u}r eine Sinuskurve als Eingangswert des Lenkwinkels. Es werden die Geschwindigkeiten 7,14,21 und 28 $\frac  {m}{s}$ betrachtet.\relax }}{50}{figure.caption.56}}
+\newlabel{fig:modelDiffOrient}{{6.3}{50}{Orientierung des Rennautos für eine Sinuskurve als Eingangswert des Lenkwinkels. Es werden die Geschwindigkeiten 7,14,21 und 28 $\frac {m}{s}$ betrachtet.\relax }{figure.caption.56}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.4}{\ignorespaces Die gleiche Betrachtung wie in \ref  {fig:modelDiffOrientMaxAcc} mit maximaler longitudinaler Beschleunigung.\relax }}{51}{figure.caption.57}}
+\newlabel{fig:modelDiffOrientMaxAcc}{{6.4}{51}{Die gleiche Betrachtung wie in \ref {fig:modelDiffOrientMaxAcc} mit maximaler longitudinaler Beschleunigung.\relax }{figure.caption.57}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.5}{\ignorespaces Auswirkung der drei Reifenmodelle auf die Orientierung des Fahrzeugs.\relax }}{52}{figure.caption.58}}
+\newlabel{fig:modelDiffTires}{{6.5}{52}{Auswirkung der drei Reifenmodelle auf die Orientierung des Fahrzeugs.\relax }{figure.caption.58}{}}
+\newlabel{long_dyn_max}{{6.3}{52}{Orientierung}{figure.caption.57}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {6.4}Reifenmodelle}{52}{section.6.4}}
-\@writefile{toc}{\contentsline {section}{\numberline {6.5}Longitudinale Modelle}{53}{section.6.5}}
 \@writefile{toc}{\contentsline {chapter}{\numberline {7}Regelung des kinematischen Modells}{54}{chapter.7}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{lol}{\addvspace {10\p@ }}
 \acronymused{MPC}
 \@writefile{toc}{\contentsline {section}{\numberline {7.1}Pr\IeC {\"a}diktionshorizont}{54}{section.7.1}}
 \@writefile{toc}{\contentsline {section}{\numberline {7.2}Kostenfunktionen}{54}{section.7.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.2.1}Verifizierung der Funktionen}{54}{subsection.7.2.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.2.2}Laufzeit}{55}{subsection.7.2.2}}
-\newlabel{runtime}{{7.2.2}{55}{Laufzeit}{subsection.7.2.2}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7.1}{\ignorespaces Berechnungszeit f\IeC {\"u}r verschiedene Kostenfunktionen mit und ohne die ersten 40 von 240 Berechnungen\relax }}{56}{figure.caption.59}}
-\newlabel{fig:computeCost}{{7.1}{56}{Berechnungszeit für verschiedene Kostenfunktionen mit und ohne die ersten 40 von 240 Berechnungen\relax }{figure.caption.59}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7.2}{\ignorespaces Berechnungszeit f\IeC {\"u}r verschiedene Kostenfunktionen mit elastischer Beschr\IeC {\"a}nkung. Mit und ohne die ersten 40 von 240 Berechnungen\relax }}{56}{figure.caption.60}}
-\newlabel{fig:computeCostSoftConst}{{7.2}{56}{Berechnungszeit für verschiedene Kostenfunktionen mit elastischer Beschränkung. Mit und ohne die ersten 40 von 240 Berechnungen\relax }{figure.caption.60}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2.1}Verifizierung der Funktionen}{55}{subsection.7.2.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2.2}Berechnungszeit}{55}{subsection.7.2.2}}
+\newlabel{runtime}{{7.2.2}{55}{Berechnungszeit}{subsection.7.2.2}{}}
 \acronymused{MPC}
+\@writefile{lof}{\contentsline {figure}{\numberline {7.1}{\ignorespaces Berechnungszeit f\IeC {\"u}r verschiedene Kostenfunktionen mit und ohne Berechnung der initialen Optimierung\relax }}{56}{figure.caption.59}}
+\newlabel{fig:computeCost}{{7.1}{56}{Berechnungszeit für verschiedene Kostenfunktionen mit und ohne Berechnung der initialen Optimierung\relax }{figure.caption.59}{}}
+\acronymused{MPC}
+\@writefile{lof}{\contentsline {figure}{\numberline {7.2}{\ignorespaces Berechnungszeit f\IeC {\"u}r verschiedene Kostenfunktionen mit elastischer Beschr\IeC {\"a}nkung.\relax }}{57}{figure.caption.60}}
+\newlabel{fig:computeCostSoftConst}{{7.2}{57}{Berechnungszeit für verschiedene Kostenfunktionen mit elastischer Beschränkung.\relax }{figure.caption.60}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {7.2.3}Rundenzeit}{57}{subsection.7.2.3}}
 \@writefile{lof}{\contentsline {figure}{\numberline {7.3}{\ignorespaces \relax }}{58}{figure.caption.61}}
 \newlabel{fig:lapTimeKin}{{7.3}{58}{\relax }{figure.caption.61}{}}
 \@writefile{toc}{\contentsline {chapter}{\numberline {8}Regelung des dynamischen Modells}{59}{chapter.8}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{lol}{\addvspace {10\p@ }}
 \newlabel{dynModelcontrol}{{\chpname{Kapitel}8}{59}{Regelung des dynamischen Modells}{chapter.8}{}}
 \acronymused{MPC}
 \@writefile{toc}{\contentsline {section}{\numberline {8.1}Maximale Querbeschleunigung und Pr\IeC {\"a}diktionshorizont}{59}{section.8.1}}
@@ -284,6 +296,7 @@
 \@writefile{toc}{\contentsline {chapter}{\numberline {9}Ausblick}{66}{chapter.9}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{lol}{\addvspace {10\p@ }}
 \@writefile{toc}{\contentsline {section}{\numberline {9.1}Zusammenfassung}{66}{section.9.1}}
 \acronymused{MPC}
 \@writefile{toc}{\contentsline {section}{\numberline {9.2}Ausblick}{66}{section.9.2}}
@@ -305,13 +318,14 @@
 \bibcite{FsWorldRank:1}{FsW}
 \bibcite{quadcopterMpc}{GD17}
 \bibcite{MPC_Kinetic}{HB15}
-\@writefile{toc}{\contentsline {chapter}{Literaturverzeichnis}{70}{chapter*.75}}
+\@writefile{toc}{\contentsline {chapter}{Literaturverzeichnis}{71}{chapter*.75}}
 \bibcite{julDiff}{jul}
 \bibcite{KRITAYAKIRANA2010548}{KG10}
 \bibcite{7225830}{KPSB15}
 \bibcite{magicFormula}{PB92}
 \bibcite{MPC_Dynamic}{PER16}
 \bibcite{rajamani2011vehicle}{Raj11}
+\bibcite{Scipy}{Sci}
 \bibcite{GPS_Fusion}{SCT07}
 \bibcite{simplexWiki:1}{sim}
 \bibcite{seborg2010process}{SMED10}
@@ -323,4 +337,4 @@
 \global\csname @altsecnumformattrue\endcsname
 \global\@namedef{scr@dte@chapter@lastmaxnumwidth}{13.46388pt}
 \global\@namedef{scr@dte@section@lastmaxnumwidth}{19.79993pt}
-\global\@namedef{scr@dte@subsection@lastmaxnumwidth}{28.79993pt}
+\global\@namedef{scr@dte@subsection@lastmaxnumwidth}{31.46388pt}

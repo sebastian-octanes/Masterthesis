@@ -93,6 +93,11 @@ R.~Rajamani.
 \newblock {\em Vehicle Dynamics and Control}.
 \newblock Mechanical Engineering Series. Springer US, 2011.
 
+\bibitem[Sci]{Scipy}
+Scipy.
+\newblock \url{https://scipy.org/index.html}.
+\newblock Accessed on 2018-06-23.
+
 \bibitem[SCT07]{GPS_Fusion}
 M.~Spcmgenberg, V.~Calmettes, and J.~Y. Tourneref.
 \newblock Fusion of gps, ins and odometric data for automotive navigation.

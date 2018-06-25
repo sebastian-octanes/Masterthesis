@@ -33,6 +33,7 @@ Too many commas in name 1 of "F. Borrelli , P. Falcone , T. Keviczky , J. Asgari
 while executing---line 1185 of file alpha.bst
 Warning--to sort, need author or key in simplexWiki:1
 Warning--to sort, need author or key in julDiff
+Warning--to sort, need author or key in Scipy
 Warning--empty year in rc_car_1_43
 Warning--empty journal in MPC_Dynamic_Tire_Model
 Too many commas in name 1 of "F. Borrelli , P. Falcone , T. Keviczky , J. Asgari , D. Hrovat" for entry carMPC

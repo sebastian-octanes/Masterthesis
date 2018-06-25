@@ -1,4 +1,4 @@
-sing SFML
+using SFML
 using PyPlot
 include("RaceCourse.jl")
 include("VehicleModel.jl")
@@ -238,7 +238,7 @@ function initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel,
     trackPoints = RaceCourse.getTrackPoints(itpTrack, itpLeftBound, itpRightBound, evalPoints, N)
     forwardPoint = RaceCourse.getForwardTrackPoint(itpTrack, evalPoints, N)
 
-    mpc_struct = MPCStruct(N, 0, 0, 0, 0, 0)
+    mpc_struct = MPCStruct(N, 0, 0, 0, 0, 0, 0)
     mpc_struct = init_MPC(mpc_struct, N, dt, startPose, printLevel, max_speed, trackWidth)
     #mpc_struct = define_constraint_nonlinear_bycicle(mpc_struct)
     mpc_struct = define_constraint_kin_bycicle(mpc_struct)
@@ -246,7 +246,8 @@ function initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel,
     mpc_struct = define_constraint_tangents(mpc_struct, trackPoints)
     #mpc_struct = define_constraint_max_search_dist(mpc_struct, trackPoints)
     #mpc_struct = define_objective(mpc_struct)
-    mpc_struct = define_objective_minimize_dist(mpc_struct)
+
+    mpc_struct = define_objective_minimize_dist_soft_const_ext(mpc_struct,10, 1)
     mpc_struct = update_track_forward_point(mpc_struct, forwardPoint)
 
     return mpc_struct
@@ -272,13 +273,13 @@ carPose = VehicleModel.CarPose(-20,0,10,pi/2.0, 0, 0)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(15, 4, 15, 0)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack2(trackWidth)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack3(trackWidth)
-itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrackUTurn(trackWidth)
+itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrackUUTurn(trackWidth)
 
 
 event = Event()
 window = RenderWindow("test", windowSizeX, windowSizeY)
 dt = 0.05
-max_speed = 30
+max_speed = 33
 spline_pos = []
 
 start_ = 65
@@ -286,7 +287,7 @@ end_ = 10
 steps_ = 12
 
 lin = linspace(start_, end_, steps_)
-lin = [ 31, 32, 33, 34, 35, 36]
+lin = [ 10, 11, 12, 13, 14, 15]
 for i in lin
     N = convert(UInt16, i)
     printLevel = 0
@@ -338,7 +339,7 @@ for i in lin
         #timer
         steps = steps + 1
 
-        dist = abs(RaceCourse.computeDistToTrackBoarder(itpTrack, itpLeftBound, realCarStateVector))
+        dist = abs(RaceCourse.computeDistToTrackBorder(itpTrack, itpLeftBound, realCarStateVector))
         if(dist > trackWidth/2.0 + 0.1)
             print("hit barier")
             spline_pos = vcat(spline_pos, 0)

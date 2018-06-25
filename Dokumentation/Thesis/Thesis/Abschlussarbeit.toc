@@ -27,12 +27,11 @@
 \contentsline {section}{\numberline {6.2}Skidpad}{47}{section.6.2}
 \contentsline {section}{\numberline {6.3}Orientierung}{49}{section.6.3}
 \contentsline {section}{\numberline {6.4}Reifenmodelle}{52}{section.6.4}
-\contentsline {section}{\numberline {6.5}Longitudinale Modelle}{53}{section.6.5}
 \contentsline {chapter}{\numberline {7}Regelung des kinematischen Modells}{54}{chapter.7}
 \contentsline {section}{\numberline {7.1}Pr\IeC {\"a}diktionshorizont}{54}{section.7.1}
 \contentsline {section}{\numberline {7.2}Kostenfunktionen}{54}{section.7.2}
-\contentsline {subsection}{\numberline {7.2.1}Verifizierung der Funktionen}{54}{subsection.7.2.1}
-\contentsline {subsection}{\numberline {7.2.2}Laufzeit}{55}{subsection.7.2.2}
+\contentsline {subsection}{\numberline {7.2.1}Verifizierung der Funktionen}{55}{subsection.7.2.1}
+\contentsline {subsection}{\numberline {7.2.2}Berechnungszeit}{55}{subsection.7.2.2}
 \contentsline {subsection}{\numberline {7.2.3}Rundenzeit}{57}{subsection.7.2.3}
 \contentsline {chapter}{\numberline {8}Regelung des dynamischen Modells}{59}{chapter.8}
 \contentsline {section}{\numberline {8.1}Maximale Querbeschleunigung und Pr\IeC {\"a}diktionshorizont}{59}{section.8.1}
@@ -48,5 +47,6 @@
 \contentsline {subsection}{\numberline {9.2.2}Zweispurmodell}{66}{subsection.9.2.2}
 \contentsline {subsection}{\numberline {9.2.3}Trajektorienplanung}{66}{subsection.9.2.3}
 \contentsline {chapter}{\numberline {A}Anhang}{67}{appendix.A}
-\contentsline {chapter}{Abk\IeC {\"u}rzungsverzeichnis}{69}{chapter*.74}
-\contentsline {chapter}{Literaturverzeichnis}{70}{chapter*.75}
+\contentsline {subsection}{\numberline {A.0.1}Code}{67}{subsection.A.0.1}
+\contentsline {chapter}{Abk\IeC {\"u}rzungsverzeichnis}{70}{chapter*.74}
+\contentsline {chapter}{Literaturverzeichnis}{71}{chapter*.75}
