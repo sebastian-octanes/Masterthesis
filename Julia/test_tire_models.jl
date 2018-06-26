@@ -21,8 +21,8 @@ for i in lin
 end
 
 
-open("outputFiles/tireModel.txt", "w") do io
-    writedlm(io, [lin y1 y3])
+open("outputFiles/tireModel.dat", "w") do io
+    writedlm(io, [lin y1 y2 y3])
 end
 
 plot(lin,y1, label="linear")

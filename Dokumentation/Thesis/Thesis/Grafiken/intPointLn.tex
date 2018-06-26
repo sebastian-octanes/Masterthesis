@@ -1,0 +1,26 @@
+\begin{tikzpicture}
+\begin{axis}[
+width = 0.8\textwidth,
+height = 0.5\textwidth,
+ymin=-10,
+ymax= 20,
+ylabel=Barrierefunktion $-\mu \ln(x)$,
+xlabel=Variable(x),
+legend pos=north east]
+\addplot [color=black, line width=0.5mm] table [x index=0, y index=1]{Data/barrierFunc.dat};
+\addplot [color=blue, line width=0.5mm] table [x index=0, y index=2]{Data/barrierFunc.dat};
+\addplot [color=green, line width=0.5mm] table [x index=0, y index=3]{Data/barrierFunc.dat};
+\addplot [color=yellow, line width=0.5mm] table [x index=0, y index=4]{Data/barrierFunc.dat};
+\addplot [color=orange, line width=0.5mm] table [x index=0, y index=5]{Data/barrierFunc.dat};
+\addplot [color=red, line width=0.5mm] table [x index=0, y index=6]{Data/barrierFunc.dat};
+
+\addlegendentry{$-0.0 \ln(x)$};
+\addlegendentry{$-0.1 \ln(x)$};
+\addlegendentry{$-1.0 \ln(x)$};
+\addlegendentry{$-2.0 \ln(x)$};
+\addlegendentry{$-5.0 \ln(x)$};
+\addlegendentry{$-10.0 \ln(x)$};
+
+
+\end{axis}
+\end{tikzpicture}

@@ -237,8 +237,11 @@ function initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel,
     evalPoints = RaceCourse.getSplinePositions(itpTrack, stateVector, N)
     trackPoints = RaceCourse.getTrackPoints(itpTrack, itpLeftBound, itpRightBound, evalPoints, N)
     forwardPoint = RaceCourse.getForwardTrackPoint(itpTrack, evalPoints, N)
+    forwardPointBounds = RaceCourse.getForwardTrackPointBounds(itpLeftBound, itpRightBound, evalPoints, N)
 
-    mpc_struct = MPCStruct(N, 0, 0, 0, 0, 0)
+    print("last TrackPoint", trackPoints)
+    print("\nforwardPoint", forwardPoint)
+    mpc_struct = MPCStruct(N, 0, 0, 0, 0, 0,0)
     mpc_struct = init_MPC(mpc_struct, N, dt, startPose, printLevel, max_speed, trackWidth)
     #mpc_struct = define_constraint_nonlinear_bycicle(mpc_struct)
     mpc_struct = define_constraint_kin_bycicle(mpc_struct)
@@ -246,9 +249,14 @@ function initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel,
     mpc_struct = define_constraint_tangents(mpc_struct, trackPoints)
     #mpc_struct = define_constraint_max_search_dist(mpc_struct, trackPoints)
     #mpc_struct = define_objective(mpc_struct)
+    #mpc_struct = define_objective_middle(mpc_struct)
     mpc_struct = define_objective_minimize_dist(mpc_struct)
-    mpc_struct = update_track_forward_point(mpc_struct, forwardPoint)
+    #mpc_struct = define_objective_max_track_dist(mpc_struct)
+    #mpc_struct = define_objective_minimize_dist_soft_const(mpc_struct,2, 1)
+    #mpc_struct = define_objective_minimize_dist_soft_const_ext(mpc_struct,10, 1)
 
+    #mpc_struct = update_track_forward_point(mpc_struct, forwardPoint)
+    mpc_struct = update_track_forward_point_bounds(mpc_struct, forwardPoint, forwardPointBounds)
     return mpc_struct
 end
 
@@ -286,7 +294,7 @@ avg_time_without_init = []
 time_total = 0
 time_total_without_init = 0
 #lin = [ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]
-lin = [ 10, 20]
+lin = [ 80]
 for i in lin
     N = convert(UInt16, i)
     count = 0
@@ -331,6 +339,7 @@ for i in lin
 
         #predict last point and compute next state with vehicle model
         realCarStateVector = VehicleModel.computeCarStepKinModel(realCarStateVector, res, dt)
+
         trackVehicleControls = vcat(trackVehicleControls, res[7], res[8])
         stateVector = VehicleModel.createNewStateVector(res, realCarStateVector, dt, N)
         update_start_point_from_pose(mpc_struct, realCarStateVector)
@@ -344,7 +353,7 @@ for i in lin
         #timer
         steps = steps + 1
 
-        dist = abs(RaceCourse.computeDistToTrackBoarder(itpTrack, itpLeftBound, realCarStateVector))
+        dist = abs(RaceCourse.computeDistToTrackBorder(itpTrack, itpLeftBound, realCarStateVector))
         if(steps == 40 && count == 0)
             steps = 0
             count = 1

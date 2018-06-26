@@ -104,9 +104,9 @@ for i in speed
     subplot(212)
 
     scatter(t, phi_base, s=areas, alpha=1.0)
-    #scatter(t, phi_simple, s=areas, alpha=1.0)
-    #scatter(t, phi_lin, s=areas, alpha=1.0)
-    scatter(t, phi_long, s=areas, alpha=1.0)
+    scatter(t, phi_simple, s=areas, alpha=1.0)
+    scatter(t, phi_lin, s=areas, alpha=1.0)
+    #scatter(t, phi_long, s=areas, alpha=1.0)
 
     open("outputFiles/modelDiffTires.txt", "w") do io
         writedlm(io, [t controlVectorSteer phi_base phi_simple phi_lin])

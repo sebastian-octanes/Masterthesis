@@ -9,11 +9,12 @@ ylabel=Laterale Seitenkraft in kN,
 legend pos=north west]
 
 \addplot [color=blue, line width=0.5mm] table [x index=0, y index=1]{Data/tireModel.dat};
-\addplot [color=green,line width=0.5mm] table [x index=0, y index=2]{Data/tireModel.dat};
+\addplot [color=green,line width=0.5mm] table [x index=0, y index=3]{Data/tireModel.dat};
+\addplot [color=yellow,line width=0.5mm] table [x index=0, y index=2]{Data/tireModel.dat};
 
 \addlegendentry{lin. Reifenmodell};
 \addlegendentry{nichtlin. Reifenmodell};
-
+\addlegendentry{vereinfachtes Modell};
 
 \end{axis}
 \end{tikzpicture}

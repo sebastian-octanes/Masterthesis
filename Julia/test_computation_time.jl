@@ -1,4 +1,5 @@
 using SFML
+
 include("RaceCourse.jl")
 include("VehicleModel.jl")
 include("MPC.jl")
@@ -216,24 +217,6 @@ end
 
 
 function mapKeyToCarControl(keys, res, N)
-#=
-    if keys.up == 1
-         res[ 7] = 10
-    elseif keys.down == 1
-        res[ 7] = -10
-    else
-        res[7] = 0
-    end
-
-    if keys.right == 1
-         res[ 8] = -VehicleModel.max_steering_angle
-    elseif keys.left == 1
-         res[ 8] = VehicleModel.max_steering_angle
-    else
-        res[8] = 0
-    end
-=#
-
     if keys.reset == 1
         for i in 1:N
             res[8*i + 1] = 0; res[8*i + 2] = 0; res[8*i + 3] = 0.01; res[8*i + 4] = pi/2
@@ -244,7 +227,8 @@ function mapKeyToCarControl(keys, res, N)
 end
 
 
-function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed, track_width)
+function initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed, trackWidth)
+    startPose = VehicleModel.CarPose(0,0,1.0, pi/2.0, 0, 0)
     stateVector = []
     start_=[startPose.x, startPose.y, startPose.x_d, startPose.psi, 0, 0, 0, 0]
     for i in 0:N
@@ -253,22 +237,26 @@ function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, 
     evalPoints = RaceCourse.getSplinePositions(itpTrack, stateVector, N)
     trackPoints = RaceCourse.getTrackPoints(itpTrack, itpLeftBound, itpRightBound, evalPoints, N)
     forwardPoint = RaceCourse.getForwardTrackPoint(itpTrack, evalPoints, N)
+    forwardPointBounds = RaceCourse.getForwardTrackPointBounds(itpLeftBound, itpRightBound, evalPoints, N)
+
     print("last TrackPoint", trackPoints)
     print("\nforwardPoint", forwardPoint)
-    mpc_struct = MPCStruct(N, 0, 0, 0, 0, 0, 0)
-    mpc_struct = init_MPC(mpc_struct, N, dt, startPose, printLevel, max_speed, track_width)
-    #mpc_struct = define_constraint_dyn_bycicle(mpc_struct)
+    mpc_struct = MPCStruct(N, 0, 0, 0, 0, 0,0)
+    mpc_struct = init_MPC(mpc_struct, N, dt, startPose, printLevel, max_speed, trackWidth)
+    #mpc_struct = define_constraint_nonlinear_bycicle(mpc_struct)
     mpc_struct = define_constraint_kin_bycicle(mpc_struct)
     mpc_struct = define_constraint_start_pose(mpc_struct, startPose)
-    #mpc_struct = define_constraint_tangents(mpc_struct, trackPoints)
+    mpc_struct = define_constraint_tangents(mpc_struct, trackPoints)
     #mpc_struct = define_constraint_max_search_dist(mpc_struct, trackPoints)
-    #mpc_struct = define_objective(mpc_struct)
-    #mpc_struct = define_objective_middle(mpc_struct)
+
+    #mpc_struct = define_objective_max_speed(mpc_struct)
     #mpc_struct = define_objective_minimize_dist(mpc_struct)
-    mpc_struct = define_objective_minimize_dist_soft_const_ext(mpc_struct,10, 1)
+    mpc_struct = define_objective_max_track_dist(mpc_struct)
+    #mpc_struct = define_objective_minimize_dist_soft_const(mpc_struct,2, 1)
+    #mpc_struct = define_objective_minimize_dist_soft_const_ext(mpc_struct,10, 1)
 
-    mpc_struct = update_track_forward_point(mpc_struct, forwardPoint)
-
+    #mpc_struct = update_track_forward_point(mpc_struct, forwardPoint)
+    mpc_struct = update_track_forward_point_bounds(mpc_struct, forwardPoint, forwardPointBounds)
     return mpc_struct
 end
 
@@ -282,105 +270,129 @@ scaleY = windowSizeY/windowSizeMeterY
 positionOffsetMeterX = 20
 positionOffsetMeterY = 25
 
-radius = 10.625
-trackWidth = 3
+radius = 15
+trackWidth = 4
 
 keys = KeyControls(0,0,0,0,0)
-startPose = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
+carPose = VehicleModel.CarPose(0,0,1.0,pi/2.0, 0, 0)
 
 #define which racecourse should be used
-itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(radius, 3, 11, 0)
+#itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(15, 4, 15, 0)
+itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack2(trackWidth)
+#itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack3(trackWidth)
+#itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrackUTurn(trackWidth)
 
-N = 10
-printLevel = 0
-dt = 0.05
-max_speed = 30
-mpc_struct = initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed, trackWidth)
+
 event = Event()
 window = RenderWindow("test", windowSizeX, windowSizeY)
-#create CircularBuffer for tracking Vehicle Path
-carPathBuffer = CircularBuffer{VehicleModel.CarState}(400)
+dt = 0.05
+max_speed = 7
+spline_pos = []
 
-#create Sprites
-RaceTrackLeftSprite, RaceTrackRightSprite = createRaceCourse2(scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, itpTrack, itpLeftBound, itpRightBound, window)
+avg_init_time = []
+avg_time_without_init = []
+init_time = 0
+time_total_without_init = 0
+#lin = [ 10, 20, 30, 40, 50, 60, 70, 80]
+lin = [ 90, 100, 110, 120]
+for i in lin
+    N = convert(UInt16, i)
+    count = 0
+    printLevel = 0
+    init_time = 0
+    time_total_without_init = 0
+    mpc_struct = initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel,max_speed, trackWidth)
 
-#set_framerate_limit(window, convert(Int64, 1 / dt))
-set_framerate_limit(window, 20)
+        #create CircularBuffer for tracking Vehicle Path
+    carPathBuffer = CircularBuffer{VehicleModel.CarState}(400)
 
-clock = Clock()
-#lapTimeActive needed for timer
-lapTimeActive = false
-steps = 0
-circle_time = 0
-circleCount = 0
-realCarStateVector = VehicleModel.CarPose(0,0,0.01,pi/2,0,0)
-while isopen(window)
-    #dt = get_elapsed_time(clock)
-    restart(clock)
-    while pollevent(window, event)
-        if get_type(event) == EventType.CLOSED
-            close(window)
+    #create Sprites
+    RaceTrackLeftSprite, RaceTrackRightSprite = createRaceCourse2(scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, itpTrack, itpLeftBound, itpRightBound, window)
+
+    set_framerate_limit(window, convert(Int64, 1 / dt))
+    #set_framerate_limit(window, 2)
+
+    clock = Clock()
+    #lapTimeActive needed for timer
+    lapTimeActive = false
+    steps = 0
+    realCarStateVector = VehicleModel.CarPose(0,0,1.0,pi/2.0,0,0)
+    trackVehicleControls = []
+
+    steps = 0
+
+    while isopen(window)
+        #dt = get_elapsed_time(clock)
+        restart(clock)
+        while pollevent(window, event)
+            if get_type(event) == EventType.CLOSED
+                close(window)
+            end
         end
-    end
-    keys = checkkeys()
+        keys = checkkeys()
+        tic()
+        res, status =  solve_MPC(mpc_struct)
+        time = toc()
+        if(steps < 20 && count == 0)
+            init_time += time
+        end
+        time_total_without_init += time
+        res = mapKeyToCarControl(keys, res, N)
 
-    res, status = solve_MPC(mpc_struct)
-    res = mapKeyToCarControl(keys, res, N)
+        #predict last point and compute next state with vehicle model
+        realCarStateVector = VehicleModel.computeCarStepKinModel(realCarStateVector, res, dt)
 
-    #realCarStateVector = VehicleModel.computeCarStepKinModel(realCarStateVector, res, dt)
-    realCarStateVector = VehicleModel.computeCarStepDynModelBase(realCarStateVector, res, dt)
-    #realCarStateVector = VehicleModel.computeCarStepDynKamsch(realCarStateVector, res, dt)
+        trackVehicleControls = vcat(trackVehicleControls, res[7], res[8])
+        stateVector = VehicleModel.createNewStateVector(res, realCarStateVector, dt, N)
+        update_start_point_from_pose(mpc_struct, realCarStateVector)
+        evalPoints = RaceCourse.getSplinePositions(itpTrack, stateVector, N)
+        trackPoints = RaceCourse.getTrackPoints(itpTrack, itpLeftBound, itpRightBound, evalPoints, N)
+        forwardPoint = RaceCourse.getForwardTrackPoint(itpTrack, evalPoints, N)
+        forwardPointBounds = RaceCourse.getForwardTrackPointBounds(itpLeftBound, itpRightBound, evalPoints, N)
+        #update_track_forward_point(mpc_struct, forwardPoint)
+        update_track_forward_point_bounds(mpc_struct, forwardPoint, forwardPointBounds)
+        update_track_points(mpc_struct, trackPoints)
 
-    stateVector = VehicleModel.createNewStateVector(res, realCarStateVector, dt, N)
-    update_start_point_from_pose(mpc_struct, realCarStateVector)
-    evalPoints = RaceCourse.getSplinePositions(itpTrack, stateVector, N)
-    trackPoints = RaceCourse.getTrackPoints(itpTrack, itpLeftBound, itpRightBound, evalPoints, N)
-    forwardPoint = RaceCourse.getForwardTrackPoint(itpTrack, evalPoints, N)
-    update_track_forward_point(mpc_struct, forwardPoint)
-    update_track_points(mpc_struct, trackPoints)
+        carPose = VehicleModel.CarPose(stateVector[1], stateVector[2], stateVector[3], stateVector[4], stateVector[5], stateVector[6])
+        #timer
+        steps = steps + 1
 
-    #timer
-    steps = steps + 1
-    if abs(realCarStateVector.x) > 5
-        lapTimeActive = true
-    end
-    #if abs(realCarStateVector.x) < trackWidth/2 && abs(realCarStateVector.y) < 0.4 && lapTimeActive
-    #println("dist_tmp", RaceCourse.computeDistToTrackStartX(itpTrack, itpLeftBound, realCarStateVector) )
-    if(steps > 50 && RaceCourse.computeDistToTrackStartX(itpTrack, itpLeftBound, realCarStateVector) < trackWidth)
-        println("hit")
-        if(RaceCourse.computeDistToTrackStartY(realCarStateVector) < 3 && realCarStateVector.y > 0.0)
-            println("\nlap_time_steps:", steps * dt)
-            restart(clock)
-            circleCount = circleCount + 1
-            circle_time = steps*dt
+        dist = abs(RaceCourse.computeDistToTrackBorder(itpTrack, itpLeftBound, realCarStateVector))
+        if(steps == 20 && count == 0)
             steps = 0
-            lapTimeActive = false
+            count = 1
+            avg_init_time =  vcat(avg_init_time, init_time / 20)
+            time_total_without_init = 0;
         end
-    end
-    if circleCount > 1
-        break
+        if(steps >= 200)
+            avg_time_without_init = vcat(avg_time_without_init, time_total_without_init / steps)
+            break
+        end
+        #add position to carPathBuffer
+        push!(carPathBuffer, VehicleModel.CarState(stateVector[1], stateVector[2], stateVector[3], stateVector[4], stateVector[5], stateVector[6], stateVector[7], stateVector[8]))
+
+        #draw car and raceCource
+        carSprite = createcarsprite(scaleX, scaleY)
+        setpositioncar(carSprite, carPose, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY)
+        drawRaceCourse2(window, RaceTrackLeftSprite, RaceTrackRightSprite)
+        # draw tangents for future points
+        #createTangent(stateVector, itpTrack, itpLeftBound, itpRightBound, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window)
+        #draw carPathBuffer
+        createCarPathPoint(carPathBuffer, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window)
+        #draw predicted movement of car
+        createPredictionPoints(stateVector, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window, N)
+        draw(window, carSprite)
+        #draw car info
+        displayCarData(res, window)
+        display(window)
+        clear(window, SFML.white)
     end
 
-    #add position to carPathBuffer
-    push!(carPathBuffer, VehicleModel.CarState(stateVector[1], stateVector[2], stateVector[3], stateVector[4], stateVector[5], stateVector[6], stateVector[7], stateVector[8]))
-
-    #draw car and raceCource
-    carSprite = createcarsprite(scaleX, scaleY)
-    setpositioncar(carSprite, realCarStateVector, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY)
-    drawRaceCourse2(window, RaceTrackLeftSprite, RaceTrackRightSprite)
-    # draw tangents for future points
-    createTangent(stateVector, itpTrack, itpLeftBound, itpRightBound, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window)
-    #draw carPathBuffer
-    createCarPathPoint(carPathBuffer, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window)
-    #draw predicted movement of car
-    createPredictionPoints(stateVector, scaleX, scaleY, positionOffsetMeterX, positionOffsetMeterY, window, N)
-    draw(window, carSprite)
-    #draw car info
-    displayCarData(res, window)
-    display(window)
-    clear(window, SFML.white)
 end
 
-print("\nfastest circle time in real: ", 5.7)
-print("\ncircle time sim: ", circle_time)
-print("\ncircle time real: ", 4.97)
+print("avg_time", avg_init_time)
+print("avg_time_without_init", avg_time_without_init)
+
+open("outputFiles/computationTimeHorizon.dat", "w") do io
+    writedlm(io, [lin avg_init_time avg_time_without_init])
+end
