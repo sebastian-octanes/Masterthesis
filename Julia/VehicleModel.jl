@@ -3,11 +3,11 @@ module VehicleModel
 #vehicle geometry
 lf  = 1.09   # distance tire to COG
 lr  = 0.9
-lb  = 1.99   #width of car
+lb  = 1.2   #width of car
 Af  = 0.6    #0.6 laut chip
 rad = 0.2    #radius of tires in m
 mass = 230   #car + driver
-I  = 2000    # kgm²
+I  = 400    # kgm²
 
 #values for longitudinal computation
 P_Engine= 40500  #40500 Watt

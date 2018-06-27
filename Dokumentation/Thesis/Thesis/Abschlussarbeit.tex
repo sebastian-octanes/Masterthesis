@@ -883,6 +883,11 @@ In dieser Disziplin fährt das Fahrzeug eine liegende 8. Der limitierende Faktor
 Für das in der Simulationsumgebung hinterlegte kinematische Modell ist die gemessene Rundenzeit 4.65 s. Daraus lässt sich eine Durchschnittsgeschwindigkeit $ v= 13.9 \frac{m}{s}$ berechnen, was einer Querbeschleunigung von $a = 19.37 \frac{m}{s^2}$ entspricht. Das im Fahrzeugmodell hinterlegte $a_{max}$ ist mit 19.62 $ \frac{m}{s^2}$ also sehr nah an dem in der Simulation erfahrenen werten. Die Differenz zu der schnellsten gemessenen Runde mit dem echten Fahrzeug (4.97 s) lässt sich dadurch erklären, dass der MPC-Algorithmus die ideale Stellgrößen berechnet und damit auch einen idealen Rundkurs abfährt. Zudem wurde die maximal gemessene Querbeschleunigung des Fahrzeugs als $a_{max}$ gewählt, dies kann in der Realität nicht durchgängig gehalten werden.
 Für das dynamische Fahrzeugmodell wurde eine minimale Rundenzeit 3.35 s gemessen.  Die damit erhaltene maximale Querbeschleunigung ist deutlich größer als die des kinematischen Models. 
 
+
+TODO
+Liegt an der Radlastverteilung in der Kurve dass beide Reifen zusammen nicht so viel Kraft wirken können!!
+
+
 \begin{figure}
 	\centering
 	\includegraphics[width=200pt]{Abbildungen/roundCourse.png}
@@ -1100,6 +1105,9 @@ Im High Octane Motorsports Verein ist eine Rundenzeitsimulation in der Entwicklu
 Im Driverless-Projekt des High Octane Vereins wird die Middleware \ac{ROS} verwendet um die Software des autonomen Rennautos zu entwickeln. \ac{ROS} unterstützt nativ nur Python und C++. Daher sollte der Algorithmus in C++ implementiert werden, um eine möglichst hohe Performance zu gewährleisten. 
 Es gibt noch kein Framework wie Jump für C++, welches die Verwendung des Optimierers und die Automatische Ableitung kombiniert. Diese zwei Bestandteile müssen also manuell integriert werden. Für die Automatische Ableitung kann zum Beispiel das CppAd Paket verwendet werden, welches unter der Common Public License veröffentlicht wird. Der Optimierer Ipopt ist in C++ implementiert und daher direkt integrierbar. 
 Ein anderer Weg wäre es den \ac{MPC}-Ansatz in Python mit dem Jump ähnlichen Framework CasADi zu implementiere. Wie der Benchmark \ref{fig:juliaBench} in Kapitel \ref{julia} jedoch gezeigt hat ist eine höhere Performance von einer C-Nahen Implementierung zu erwarten. 
+
+\subsection{Fahrzeugparameter anpassen}
+Durch regression die Paramter im dynamischen Modell herausfinden.
 
 
 \appendix
