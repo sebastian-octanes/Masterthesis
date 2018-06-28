@@ -1,8 +1,9 @@
 module VehicleModel
 
 #vehicle geometry
-lf  = 1.09   # distance tire to COG
-lr  = 0.9
+wheelbase = 1.530 #distance between axes
+lf  = wheelbase * 0.43   # distance tire to COG
+lr  = wheelbase * 0.567  # distance back axtle to COG
 lb  = 1.2   #width of car
 Af  = 0.6    #0.6 laut chip
 rad = 0.2    #radius of tires in m
@@ -10,7 +11,7 @@ mass = 230   #car + driver
 I  = 400    # kgm²
 
 #values for longitudinal computation
-P_Engine= 40500  #40500 Watt
+P_Engine= 53000  #40500 Watt
 Cd      = 1.5    #1.5 laut chip drag coefficient
 rho     = 1.225  # air desity in kg/m^3
 Crr     = 0.014  #roll resistance coefficient
@@ -26,12 +27,12 @@ F_max_back = 3274
 min_speed = 0.001
 max_speed = 118/3.6 # 120km/h /3.6 = m/s
 #max_long_acc = 7.2   #m/s**2 longitudinal acceleration max
-max_long_acc = 24   #m/s**2 longitudinal acceleration max
+max_long_acc = 12   #m/s**2 longitudinal acceleration max
 max_throttle = 10   #used for the mpc
-max_long_dec = 25   #m/s**2 longitudinal deceleration max
+max_long_dec = 15   #m/s**2 longitudinal deceleration max
 min_throttle = 10   #used for the mpc minus is added in the mpc
-#max_lat_acc = 2*9.81  # 2g lateral acceleration
-max_lat_acc = 3.5 *9.81  # 2g lateral acceleration
+max_lat_acc = 2*9.81  # 2g lateral acceleration
+#max_lat_acc = 4.0 *9.81  # 2g lateral acceleration
 max_steering_angle = (30.0/180.0)*pi #2
 
 #tire model
@@ -383,8 +384,8 @@ function dyn_model_long(carPose, carControl, dt)
     slip_angle_b =               - atan((carPose.y_d - lf * carPose.psi_d)/ carPose.x_d)
 
     #lat
-    Ffy = 2 * pacejka_tire_model_complex(slip_angle_f, true)
-    Fby = 2 * pacejka_tire_model_complex(slip_angle_b, false)
+    Ffy =  pacejka_tire_model_complex(slip_angle_f, true)
+    Fby =  pacejka_tire_model_complex(slip_angle_b, false)
 
 
     #this part is enhanced compared to enhanced_long
@@ -398,13 +399,13 @@ function dyn_model_long(carPose, carControl, dt)
     if(carControl.throttle > 0)
         power = P_Engine * carControl.throttle/10.0
         Fbx   = power /abs(sqrt(carPose.x_d^2 + carPose.y_d^2))
-        if(Fbx > 2 * VehicleModel.F_long_max)
-            Fbx = 2 * VehicleModel.F_long_max
+        if(Fbx >  VehicleModel.F_long_max)
+            Fbx = VehicleModel.F_long_max
         end
         Ffx = 0
     else
-        Fbx = 2 * VehicleModel.F_long_max * carControl.throttle/10.0
-        Ffx = 2 * VehicleModel.F_long_max * carControl.throttle/10.0
+        Fbx =  VehicleModel.F_long_max * carControl.throttle/10.0
+        Ffx =  VehicleModel.F_long_max * carControl.throttle/10.0
     end
 
 

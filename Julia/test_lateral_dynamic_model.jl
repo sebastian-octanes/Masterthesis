@@ -328,7 +328,8 @@ while isopen(window)
     res = mapKeyToCarControl(keys, res, N)
 
     #realCarStateVector = VehicleModel.computeCarStepKinModel(realCarStateVector, res, dt)
-    realCarStateVector = VehicleModel.computeCarStepDynModelBase(realCarStateVector, res, dt)
+    #realCarStateVector = VehicleModel.computeCarStepDynModelBase(realCarStateVector, res, dt)
+    realCarStateVector = VehicleModel.computeCarStepDynModelLong(realCarStateVector, res, dt)
     #realCarStateVector = VehicleModel.computeCarStepDynKamsch(realCarStateVector, res, dt)
 
     stateVector = VehicleModel.createNewStateVector(res, realCarStateVector, dt, N)

@@ -75,8 +75,11 @@ for i in speed
         kin = vcat(kin, stateVectorKin)
         println("speed", stateVectorKin.x_d)
 
-        stateVectorDyn_Base =  VehicleModel.dyn_model_base(stateVectorDyn_Base, carControl, dt)
+        #stateVectorDyn_Base =  VehicleModel.dyn_model_base(stateVectorDyn_Base, carControl, dt)
+        stateVectorDyn_Base =  VehicleModel.dyn_model_long(stateVectorDyn_Base, carControl, dt)
+
         dyn_base = vcat(dyn_base, stateVectorDyn_Base)
+
 
         stateVectorDyn_KamCircle =  VehicleModel.dyn_model_kamCircle(stateVectorDyn_KamCircle, carControl, dt)
         dyn_kamsch = vcat(dyn_kamsch, stateVectorDyn_KamCircle)
@@ -104,7 +107,7 @@ for i in speed
 
     scatter(t, phi_kin, s=areas, alpha=1.0)
     scatter(t, phi_dyn, s=areas, alpha=1.0)
-    scatter(t, phi_kamsch, s=areas, alpha=1.0)
+    #scatter(t, phi_kamsch, s=areas, alpha=1.0)
 
     open("outputFiles/modelDiffOrientNoAcc7.txt", "w") do io
         writedlm(io, [t controlVectorSteer phi_kin phi_dyn phi_kamsch])
