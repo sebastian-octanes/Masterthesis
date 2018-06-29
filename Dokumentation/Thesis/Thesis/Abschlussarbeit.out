@@ -33,21 +33,21 @@
 \BOOKMARK [2][-]{subsection.7.2.2}{Berechnungszeit}{section.7.2}% 33
 \BOOKMARK [2][-]{subsection.7.2.3}{Rundenzeit}{section.7.2}% 34
 \BOOKMARK [0][-]{chapter.8}{Regelung des dynamischen Modells}{}% 35
-\BOOKMARK [1][-]{section.8.1}{Maximale Querbeschleunigung und Pr\344diktionshorizont}{chapter.8}% 36
-\BOOKMARK [2][-]{subsection.8.1.1}{Dynamisches Modell}{section.8.1}% 37
-\BOOKMARK [2][-]{subsection.8.1.2}{Kammsches Modell}{section.8.1}% 38
-\BOOKMARK [1][-]{section.8.2}{Einfluss des Reifenmodells}{chapter.8}% 39
-\BOOKMARK [1][-]{section.8.3}{Regelfrequenz}{chapter.8}% 40
-\BOOKMARK [1][-]{section.8.4}{Quadratische Funktion}{chapter.8}% 41
-\BOOKMARK [0][-]{chapter.9}{Ausblick}{}% 42
-\BOOKMARK [1][-]{section.9.1}{Zusammenfassung}{chapter.9}% 43
-\BOOKMARK [1][-]{section.9.2}{Ausblick}{chapter.9}% 44
-\BOOKMARK [2][-]{subsection.9.2.1}{Simulator}{section.9.2}% 45
-\BOOKMARK [2][-]{subsection.9.2.2}{Dynamisches Fahrzeugmodell im MPC}{section.9.2}% 46
-\BOOKMARK [2][-]{subsection.9.2.3}{Zweispurmodell}{section.9.2}% 47
-\BOOKMARK [2][-]{subsection.9.2.4}{Implementierung in C++}{section.9.2}% 48
-\BOOKMARK [2][-]{subsection.9.2.5}{Fahrzeugparameter anpassen}{section.9.2}% 49
-\BOOKMARK [0][-]{appendix.A}{Anhang}{}% 50
-\BOOKMARK [1][-]{subsection.A.0.1}{Code}{appendix.A}% 51
-\BOOKMARK [0][-]{chapter*.78}{Abk\374rzungsverzeichnis}{}% 52
-\BOOKMARK [0][-]{chapter*.79}{Literaturverzeichnis}{}% 53
+\BOOKMARK [1][-]{section.8.1}{Elastische Kostenfunktion}{chapter.8}% 36
+\BOOKMARK [1][-]{section.8.2}{Maximale Querbeschleunigung und Pr\344diktionshorizont}{chapter.8}% 37
+\BOOKMARK [2][-]{subsection.8.2.1}{Dynamisches Modell}{section.8.2}% 38
+\BOOKMARK [2][-]{subsection.8.2.2}{Kammsches Modell}{section.8.2}% 39
+\BOOKMARK [1][-]{section.8.3}{Einfluss des Reifenmodells}{chapter.8}% 40
+\BOOKMARK [1][-]{section.8.4}{Regelfrequenz}{chapter.8}% 41
+\BOOKMARK [1][-]{section.8.5}{Quadratische Funktion}{chapter.8}% 42
+\BOOKMARK [0][-]{chapter.9}{Ausblick}{}% 43
+\BOOKMARK [1][-]{section.9.1}{Zusammenfassung}{chapter.9}% 44
+\BOOKMARK [1][-]{section.9.2}{Ausblick}{chapter.9}% 45
+\BOOKMARK [2][-]{subsection.9.2.1}{Simulator}{section.9.2}% 46
+\BOOKMARK [2][-]{subsection.9.2.2}{Dynamisches Fahrzeugmodell im MPC}{section.9.2}% 47
+\BOOKMARK [2][-]{subsection.9.2.3}{Zweispurmodell}{section.9.2}% 48
+\BOOKMARK [2][-]{subsection.9.2.4}{Implementierung in C++}{section.9.2}% 49
+\BOOKMARK [2][-]{subsection.9.2.5}{Fahrzeugparameter anpassen}{section.9.2}% 50
+\BOOKMARK [0][-]{appendix.A}{Anhang}{}% 51
+\BOOKMARK [0][-]{chapter*.72}{Abk\374rzungsverzeichnis}{}% 52
+\BOOKMARK [0][-]{chapter*.73}{Literaturverzeichnis}{}% 53

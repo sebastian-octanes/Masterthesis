@@ -8,7 +8,7 @@
 \contentsline {section}{\numberline {3.2}Optimierung}{9}{section.3.2}
 \contentsline {subsection}{\numberline {3.2.1}Simplex-Verfahren}{11}{subsection.3.2.1}
 \contentsline {subsection}{\numberline {3.2.2}Innere-Punkte-Verfahren}{12}{subsection.3.2.2}
-\contentsline {subsection}{\numberline {3.2.3}Automatische Ableitung}{13}{subsection.3.2.3}
+\contentsline {subsection}{\numberline {3.2.3}Automatische Ableitung}{14}{subsection.3.2.3}
 \contentsline {section}{\numberline {3.3}Fahrzeugmodelle}{16}{section.3.3}
 \contentsline {subsection}{\numberline {3.3.1}Kinematisches Modell}{16}{subsection.3.3.1}
 \contentsline {subsection}{\numberline {3.3.2}Reifenmodell}{18}{subsection.3.3.2}
@@ -32,23 +32,23 @@
 \contentsline {section}{\numberline {7.2}Kostenfunktionen}{55}{section.7.2}
 \contentsline {subsection}{\numberline {7.2.1}Verifizierung der Funktionen}{55}{subsection.7.2.1}
 \contentsline {subsection}{\numberline {7.2.2}Berechnungszeit}{55}{subsection.7.2.2}
-\contentsline {subsection}{\numberline {7.2.3}Rundenzeit}{58}{subsection.7.2.3}
-\contentsline {chapter}{\numberline {8}Regelung des dynamischen Modells}{60}{chapter.8}
-\contentsline {section}{\numberline {8.1}Maximale Querbeschleunigung und Pr\IeC {\"a}diktionshorizont}{60}{section.8.1}
-\contentsline {subsection}{\numberline {8.1.1}Dynamisches Modell}{60}{subsection.8.1.1}
-\contentsline {subsection}{\numberline {8.1.2}Kammsches Modell}{61}{subsection.8.1.2}
-\contentsline {section}{\numberline {8.2}Einfluss des Reifenmodells}{62}{section.8.2}
-\contentsline {section}{\numberline {8.3}Regelfrequenz}{64}{section.8.3}
-\contentsline {section}{\numberline {8.4}Quadratische Funktion}{64}{section.8.4}
-\contentsline {chapter}{\numberline {9}Ausblick}{66}{chapter.9}
-\contentsline {section}{\numberline {9.1}Zusammenfassung}{66}{section.9.1}
-\contentsline {section}{\numberline {9.2}Ausblick}{67}{section.9.2}
-\contentsline {subsection}{\numberline {9.2.1}Simulator}{67}{subsection.9.2.1}
-\contentsline {subsection}{\numberline {9.2.2}Dynamisches Fahrzeugmodell im MPC}{67}{subsection.9.2.2}
-\contentsline {subsection}{\numberline {9.2.3}Zweispurmodell}{68}{subsection.9.2.3}
-\contentsline {subsection}{\numberline {9.2.4}Implementierung in C++}{68}{subsection.9.2.4}
-\contentsline {subsection}{\numberline {9.2.5}Fahrzeugparameter anpassen}{68}{subsection.9.2.5}
-\contentsline {chapter}{\numberline {A}Anhang}{70}{appendix.A}
-\contentsline {subsection}{\numberline {A.0.1}Code}{70}{subsection.A.0.1}
-\contentsline {chapter}{Abk\IeC {\"u}rzungsverzeichnis}{73}{chapter*.78}
-\contentsline {chapter}{Literaturverzeichnis}{74}{chapter*.79}
+\contentsline {subsection}{\numberline {7.2.3}Rundenzeit}{56}{subsection.7.2.3}
+\contentsline {chapter}{\numberline {8}Regelung des dynamischen Modells}{59}{chapter.8}
+\contentsline {section}{\numberline {8.1}Elastische Kostenfunktion}{59}{section.8.1}
+\contentsline {section}{\numberline {8.2}Maximale Querbeschleunigung und Pr\IeC {\"a}diktionshorizont}{61}{section.8.2}
+\contentsline {subsection}{\numberline {8.2.1}Dynamisches Modell}{61}{subsection.8.2.1}
+\contentsline {subsection}{\numberline {8.2.2}Kammsches Modell}{61}{subsection.8.2.2}
+\contentsline {section}{\numberline {8.3}Einfluss des Reifenmodells}{63}{section.8.3}
+\contentsline {section}{\numberline {8.4}Regelfrequenz}{64}{section.8.4}
+\contentsline {section}{\numberline {8.5}Quadratische Funktion}{65}{section.8.5}
+\contentsline {chapter}{\numberline {9}Ausblick}{67}{chapter.9}
+\contentsline {section}{\numberline {9.1}Zusammenfassung}{67}{section.9.1}
+\contentsline {section}{\numberline {9.2}Ausblick}{68}{section.9.2}
+\contentsline {subsection}{\numberline {9.2.1}Simulator}{68}{subsection.9.2.1}
+\contentsline {subsection}{\numberline {9.2.2}Dynamisches Fahrzeugmodell im MPC}{68}{subsection.9.2.2}
+\contentsline {subsection}{\numberline {9.2.3}Zweispurmodell}{69}{subsection.9.2.3}
+\contentsline {subsection}{\numberline {9.2.4}Implementierung in C++}{69}{subsection.9.2.4}
+\contentsline {subsection}{\numberline {9.2.5}Fahrzeugparameter anpassen}{69}{subsection.9.2.5}
+\contentsline {chapter}{\numberline {A}Anhang}{71}{appendix.A}
+\contentsline {chapter}{Abk\IeC {\"u}rzungsverzeichnis}{72}{chapter*.72}
+\contentsline {chapter}{Literaturverzeichnis}{73}{chapter*.73}

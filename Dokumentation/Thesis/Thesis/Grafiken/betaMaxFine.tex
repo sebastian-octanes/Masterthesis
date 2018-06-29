@@ -8,9 +8,12 @@ y dir=reverse,
 x dir=reverse,
 xlabel= Prädiktionsschritte,
 ylabel= Querbeschleunigung in g,
-zlabel= Rundenzeit
+zlabel= Rundenzeit,
+view = {0}{90},
 ]
-\addplot3[surf,mesh/ordering=y varies, shader=interp]  table [x index=0, y index=1, z index=3] {Data/testBetaMaxFine.dat};
+
+\addplot3[contour filled={number = 30,labels={false}}, thick] table [x index=0, y index=1, z index=3] {Data/testBetaMaxFine.dat};
+
 \end{axis}
 \end{tikzpicture}
 

@@ -1,0 +1,12 @@
+\begin{tikzpicture}
+\begin{axis}[
+height = 0.250\textwidth,
+width = 0.465\textwidth,
+xmin= 0,
+xmax = 2.0,
+ymin = -0.6,
+ymax = 0.6,
+ylabel=Lenkwinkel in rad]
+\addplot [color=black, mark=none, line width=0.5mm] table [x index=0, y index=1]{Data/modelDiffOrient/modelDiffOrientNoAcc7.dat};
+\end{axis}
+\end{tikzpicture}

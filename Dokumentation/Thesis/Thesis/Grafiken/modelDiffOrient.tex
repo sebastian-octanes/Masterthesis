@@ -10,8 +10,7 @@ ymax = 0.6,
 xlabel= Zeit in s,
 ylabel=Lenkwinkel in rad,
 legend pos=north west]
-\addplot [color=red, mark=none, line width=0.5mm] table [x index=0, y index=1]{Data/modelDiffOrient/modelDiffOrientNoAcc7.dat};
-\addplot [dashed, mark=none] coordinates {(0.5, -0.8) (0.5, 0)};
+\addplot [color=black, mark=none, line width=0.5mm] table [x index=0, y index=1]{Data/modelDiffOrient/modelDiffOrientNoAcc7.dat};
 \end{axis}
 \end{tikzpicture}%NOLINE
 \begin{tikzpicture}
@@ -25,7 +24,7 @@ ymax = 0.6,
 xlabel= Zeit in s,
 ylabel=Lenkwinkel in rad,
 legend pos=north west]
-\addplot [color=red, mark=none, line width=0.5mm] table [x index=0, y index=1]{Data/modelDiffOrient/modelDiffOrientNoAcc7.dat};
+\addplot [color=black, mark=none, line width=0.5mm] table [x index=0, y index=1]{Data/modelDiffOrient/modelDiffOrientNoAcc7.dat};
 \addplot [dashed, mark=none] coordinates {(0.5, -0.8) (0.5, 0)};
 \end{axis}
 \end{tikzpicture}
@@ -36,19 +35,18 @@ legend pos=north west]
 width = 0.47\textwidth,
 xmin= 0,
 xmax = 2.0,
-ymin = -0.2,
-ymax= 1.2,
+ymin = 0.0,
+ymax= 0.8,
 xlabel= Zeit in s,
 ylabel= Orientierung in rad,
-legend pos=north west]
+legend columns = 3,
+legend entries = {kin. Modell;,dyn. Modell;, dyn. mit K.K.},
+legend to name =modelDiffOrientLegend
+]
 \addplot [color=red, mark=none, line width=0.5mm] table [x index=0, y index=2]{Data/modelDiffOrient/modelDiffOrientNoAcc7.dat};
 \addplot [color=blue, mark=none, line width=0.5mm] table [x index=0, y index=3]{Data/modelDiffOrient/modelDiffOrientNoAcc7.dat};
-\addplot [color=green, mark=none, line width=0.5mm] table [x index=0, y index=4]{Data/modelDiffOrient/modelDiffOrientNoAcc7.dat};
+\addplot [color=green, dashed, mark=none, line width=0.5mm] table [x index=0, y index=4]{Data/modelDiffOrient/modelDiffOrientNoAcc7.dat};
 
-
-\addlegendentry{kin. Modell};
-\addlegendentry{dyn. Modell};
-\addlegendentry{dyn. mit K.K.};
 \end{axis}
 \end{tikzpicture}%NOLINE
 \begin{tikzpicture}
@@ -56,19 +54,15 @@ legend pos=north west]
 width = 0.47\textwidth,
 xmin= 0,
 xmax = 2.0,
-ymin = -0.2,
-ymax= 1.2,
+ymin = 0.0,
+ymax= 0.8,
 xlabel= Zeit in s,
 ylabel= Orientierung in rad,
 legend pos=north west]
 \addplot [color=red, mark=none, line width=0.5mm] table [x index=0, y index=2]{Data/modelDiffOrient/modelDiffOrientNoAcc14.dat};
 \addplot [color=blue, mark=none, line width=0.5mm] table [x index=0, y index=3]{Data/modelDiffOrient/modelDiffOrientNoAcc14.dat};
-\addplot [color=green, mark=none, line width=0.5mm] table [x index=0, y index=4]{Data/modelDiffOrient/modelDiffOrientNoAcc14.dat};
+\addplot [color=green, dashed, mark=none, line width=0.5mm] table [x index=0, y index=4]{Data/modelDiffOrient/modelDiffOrientNoAcc14.dat};
 
-
-\addlegendentry{kin. Modell};
-\addlegendentry{dyn. Modell};
-\addlegendentry{dyn. mit K.K.};
 \end{axis}
 \end{tikzpicture}
 
@@ -77,19 +71,15 @@ legend pos=north west]
 width = 0.47\textwidth,
 xmin= 0,
 xmax = 2.0,
-ymin = -0.2,
-ymax= 1.2,
+ymin = 0.0,
+ymax= 0.8,
 xlabel= Zeit in s,
 ylabel= Orientierung in rad,
 legend pos=north west]
 \addplot [color=red, mark=none, line width=0.5mm] table [x index=0, y index=2]{Data/modelDiffOrient/modelDiffOrientNoAcc21.dat};
 \addplot [color=blue, mark=none, line width=0.5mm] table [x index=0, y index=3]{Data/modelDiffOrient/modelDiffOrientNoAcc21.dat};
-\addplot [color=green, mark=none, line width=0.5mm] table [x index=0, y index=4]{Data/modelDiffOrient/modelDiffOrientNoAcc21.dat};
+\addplot [color=green,dashed,  mark=none, line width=0.5mm] table [x index=0, y index=4]{Data/modelDiffOrient/modelDiffOrientNoAcc21.dat};
 
-
-\addlegendentry{kin. Modell};
-\addlegendentry{dyn. Modell};
-\addlegendentry{dyn. mit K.K.};
 \end{axis}
 \end{tikzpicture}%NOLINE
 \begin{tikzpicture}
@@ -97,19 +87,14 @@ legend pos=north west]
 width = 0.47\textwidth,
 xmin= 0,
 xmax = 2.0,
-ymin = -0.2,
-ymax= 1.2,
+ymin = 0.0,
+ymax= 0.8,
 xlabel= Zeit in s,
 ylabel= Orientierung in rad,
 legend pos=north west]
 \addplot [color=red, mark=none, line width=0.5mm] table [x index=0, y index=2]{Data/modelDiffOrient/modelDiffOrientNoAcc28.dat};
 \addplot [color=blue, mark=none, line width=0.5mm] table [x index=0, y index=3]{Data/modelDiffOrient/modelDiffOrientNoAcc28.dat};
-\addplot [color=green, mark=none, line width=0.5mm] table [x index=0, y index=4]{Data/modelDiffOrient/modelDiffOrientNoAcc28.dat};
-
-
-\addlegendentry{kin. Modell};
-\addlegendentry{dyn. Modell};
-\addlegendentry{dyn. mit K.K.};
+\addplot [color=green,dashed,  mark=none, line width=0.5mm] table [x index=0, y index=4]{Data/modelDiffOrient/modelDiffOrientNoAcc28.dat};
 \end{axis}
 \end{tikzpicture}
 

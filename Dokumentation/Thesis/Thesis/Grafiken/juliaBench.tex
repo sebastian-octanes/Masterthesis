@@ -7,7 +7,7 @@ ymin=-1e0, ymax=1e1,
 ylabel=Ausführungszeiten relativ zu C,
 x tick label style={font=\small,text width=1.2cm,align=center},
 xticklabels={Benchmark,C,Julia,LuaJIT,Go,Fortran,Java,Java-script,Matlab,Mathe-matica, Python},
-legend pos=north west]
+legend pos= north west]
 
 \addplot [color=red, only marks] table [x index=0, y index=1]{Data/juliaBench.dat};
 \addplot [color=blue, only marks] table [x index=0, y index=2]{Data/juliaBench.dat};

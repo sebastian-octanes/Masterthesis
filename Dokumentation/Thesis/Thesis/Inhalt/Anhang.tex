@@ -8,56 +8,5 @@
 \renewcommand{\thefigure}{A\arabic{figure}} 
 \chapter{Anhang}
 
-\subsection*{Elektronischer Anhang }
-
-\subsection*{Fahrzeugdaten}
-\begin{figure}[hb!]
-	\caption{Engine Power}
-	\includegraphics[width=350pt]{Abbildungen/Engine_power.png}
-	\label{fig:enginePower}
-\end{figure}
-
-\begin{figure}[hb!]
-	\caption{Max Tire Force}
-	\includegraphics[width=350pt]{Abbildungen/Engine_power.png}
-	\label{fig:maxTireForce}
-\end{figure}
-
-
-
- \subsection*{Einbindung Grafik im Anhang}
-  \begin{figure}[h!]
-  \begin{centering}
-  {\includegraphics[width=0.33\textwidth]{Abbildungen/fau.png}}
-   \caption{Unterschrift Bild x Die auf die Rotationsfrequenz des Innenzylinders normierten Eigenfrequenzen der gefun-denen Grundmoden der Taylor-Strömung für h(Die azimutale Wellenzahl ist mit m  bezeichnet.)}
-  \end{centering}
-  \end{figure}
-
-\subsection{Code}
-
-\begin{lstlisting}
-[caption={ein paar Zeilen code}\label{lst:vehicleModel},captionpos=t] 
-    for i in 0: N-1
-    
-    @NLexpression(m, x_dd, (VehicleModel.max_long_acc * x[8*i + 7]/10.0))
-    
-    @NLconstraints(m, begin
-    x[(i + 1)*8 + 1] - (x[i * 8 + 1] + x[8*i + 3]*
-    dt*cos(x[i*8 + 4] + atan(lr/(lf + lr) * tan(x[i*8 + 8])))) == 0
-    x[(i + 1)*8 + 2] - (x[i * 8 + 2] + x[8*i + 3]*
-    dt*sin(x[i*8 + 4] + atan(lr/(lf + lr) * tan(x[i*8 + 8])))) == 0
-    x[(i + 1)*8 + 3] - (x[i * 8 + 3] + x_dd*dt) == 0
-    x[(i + 1)*8 + 4] - (x[i * 8 + 4] + x[8*i + 3]*
-    dt / lr*sin(atan(lr/(lf + lr) * tan(x[i*8 + 8])))) == 0
-    atan(0.5 * (lf + lr) * mpc_struct.beta_max / x[i*8 + 3]^2)
-    - atan(lr/(lf + lf) * tan(x[i*8 + 8])) >= 0  #max_beta - beta
-    atan(0.5 * (lf + lr) * mpc_struct.beta_max / x[i*8 + 3]^2)
-    + atan(lr/(lf + lf) * tan(x[i*8 + 8])) >= 0  #max_beta + beta
-    end)
-    end
-\end{lstlisting}
-
-
-
 
 

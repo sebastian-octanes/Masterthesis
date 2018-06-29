@@ -6,10 +6,12 @@ height = 0.6\textwidth,
 xmin= 20,
 xmax= 50,
 ymin= 7,
-ymax= 15,
+ymax= 13,
 xlabel= Prädiktionsschritte,
 ylabel=Rundenzeit s,
-legend pos=north west]
+legend columns = 3,
+legend entries = {min dist(1);,min dist(2) ;,max track (1);, max track (2);, max speed(1);, max speed(2)},
+legend to name =lapTimeKinLegend]
 \addplot [color=red, dashed, mark=none, line width=0.5mm] table [x index=0, y index=1]{Data/lapTimeKin.dat};
 \addplot [color = red,mark=none, line width=0.5mm] table [x index=0, y index=2]{Data/lapTimeKin.dat};
 
@@ -18,21 +20,6 @@ legend pos=north west]
 
 \addplot [color=green, dashed, mark=none, line width=0.5mm] table [x index=0, y index=7]{Data/lapTimeKin.dat};
 \addplot [color=green, mark=none, line width=0.5mm] table [x index=0, y index=9]{Data/lapTimeKin.dat};
-
-\addplot [dashed, mark=none] coordinates {(20, 8.3) (50, 8.3)};
-
-
-\addlegendentry{min dist(1)};
-\addlegendentry{min dist(2)};
-
-\addlegendentry{max dist (1)};
-\addlegendentry{max dist (2)};
-
-\addlegendentry{max speed(1)};
-\addlegendentry{max speed(2)};
-
-
-
 
 \end{axis}
 \end{tikzpicture}
