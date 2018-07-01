@@ -10,8 +10,8 @@ xmin = 10,
 xmax= 120,
 xlabel=Prädiktionsschritte,
 ylabel=Berechnungszeit in s,
-legend columns = 3,
-legend entries = {E-Funktion;,E-Funktion o.i. ;,quad-Funktion;, quad-Funktion o.i.;, alpha-Funktion;, alpha-Funktion o.i.},
+legend columns = 2,
+legend entries = {E-Funktion;,E-Funktion ohne Warmstart ;,quad-Funktion;, quad-Funktion ohne Warmstart;, alpha-Funktion;, alpha-Funktion ohne Warmstart},
 legend to name =computeCostSoftLegend]
 
 \addplot [color=red, dashed, mark=none, line width=0.5mm] table [x index=0, y index=2]{Data/costFunctCompTimeSoftConst.dat};

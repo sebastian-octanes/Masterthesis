@@ -12,14 +12,14 @@ ylabel=Rundenzeit s,
 legend columns = 3,
 legend entries = {min dist(1);,min dist(2) ;,max track (1);, max track (2);, max speed(1);, max speed(2)},
 legend to name =lapTimeKinLegend]
-\addplot [color=red, dashed, mark=none, line width=0.5mm] table [x index=0, y index=1]{Data/lapTimeKin.dat};
-\addplot [color = red,mark=none, line width=0.5mm] table [x index=0, y index=2]{Data/lapTimeKin.dat};
+\addplot [color=blue, dashed, mark=none, line width=0.5mm] table [x index=0, y index=1]{Data/lapTimeKin.dat};
+\addplot [color = blue,mark=none, line width=0.5mm] table [x index=0, y index=2]{Data/lapTimeKin.dat};
 
-\addplot [color=blue, dashed, mark=none, line width=0.5mm] table [x index=0, y index=4]{Data/lapTimeKin.dat};
-\addplot [color=blue, mark=none, line width=0.5mm] table [x index=0, y index=5]{Data/lapTimeKin.dat};
+\addplot [color=green, dashed, mark=none, line width=0.5mm] table [x index=0, y index=4]{Data/lapTimeKin.dat};
+\addplot [color=green, mark=none, line width=0.5mm] table [x index=0, y index=5]{Data/lapTimeKin.dat};
 
-\addplot [color=green, dashed, mark=none, line width=0.5mm] table [x index=0, y index=7]{Data/lapTimeKin.dat};
-\addplot [color=green, mark=none, line width=0.5mm] table [x index=0, y index=9]{Data/lapTimeKin.dat};
+\addplot [color=red, dashed, mark=none, line width=0.5mm] table [x index=0, y index=7]{Data/lapTimeKin.dat};
+\addplot [color=red, mark=none, line width=0.5mm] table [x index=0, y index=9]{Data/lapTimeKin.dat};
 
 \end{axis}
 \end{tikzpicture}

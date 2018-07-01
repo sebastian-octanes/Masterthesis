@@ -31,33 +31,31 @@
 \contentsline {figure}{\numberline {5.4}{\ignorespaces Grafische Darstellung des MPC - Algorithmus in der Simulationsumgebung\relax }}{43}{figure.caption.52}
 \contentsline {figure}{\numberline {5.5}{\ignorespaces Blockdiagramm der Simulation mit dem \ac {MPC}-Algorithmus\relax }}{45}{figure.caption.55}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {6.1}{\ignorespaces Beschleunigung f\IeC {\"u}r verschiedene longitudinale Modelle\relax }}{47}{figure.caption.56}
-\contentsline {figure}{\numberline {6.2}{\ignorespaces Rundkurs zum messen der maximalen Querbeschleunigung\relax }}{48}{figure.caption.57}
+\contentsline {figure}{\numberline {6.1}{\ignorespaces Geschwindigkeitsverlauf bei maximaler Beschleunigung f\IeC {\"u}r verschiedene longitudinale Modelle\relax }}{47}{figure.caption.56}
+\contentsline {figure}{\numberline {6.2}{\ignorespaces Rundkurs zum messen der maximalen Querbeschleunigung\relax }}{49}{figure.caption.57}
 \contentsline {figure}{\numberline {6.3}{\ignorespaces Orientierung des Rennautos f\IeC {\"u}r eine Sinuskurve als Eingangswert des Lenkwinkels. Es werden verschiedene Geschwindigkeiten ohne longitudinale Beschleunigung betrachtet.\relax }}{50}{figure.caption.58}
-\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {7 $\frac {m}{s}$}}}{50}{figure.caption.58}
-\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {14 $\frac {m}{s}$}}}{50}{figure.caption.58}
-\contentsline {subfigure}{\numberline {(e)}{\ignorespaces {21 $\frac {m}{s}$}}}{50}{figure.caption.58}
-\contentsline {subfigure}{\numberline {(f)}{\ignorespaces {28 $\frac {m}{s}$}}}{50}{figure.caption.58}
-\contentsline {figure}{\numberline {6.4}{\ignorespaces Die gleiche Betrachtung wie in \ref {fig:modelDiffOrient} mit maximaler longitudinaler Beschleunigung.\relax }}{51}{figure.caption.59}
-\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {7 $\frac {m}{s}$}}}{51}{figure.caption.59}
-\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {14 $\frac {m}{s}$}}}{51}{figure.caption.59}
-\contentsline {subfigure}{\numberline {(e)}{\ignorespaces {21 $\frac {m}{s}$}}}{51}{figure.caption.59}
-\contentsline {subfigure}{\numberline {(f)}{\ignorespaces {28 $\frac {m}{s}$}}}{51}{figure.caption.59}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {7 $\frac {\text {m}}{\text {s}}$}}}{50}{figure.caption.58}
+\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {14 $\frac {\text {m}}{\text {s}}$}}}{50}{figure.caption.58}
+\contentsline {subfigure}{\numberline {(e)}{\ignorespaces {21 $\frac {\text {m}}{\text {s}}$}}}{50}{figure.caption.58}
+\contentsline {subfigure}{\numberline {(f)}{\ignorespaces {28 $\frac {\text {m}}{\text {s}}$}}}{50}{figure.caption.58}
+\contentsline {figure}{\numberline {6.4}{\ignorespaces Die gleiche Betrachtung wie in \ref {fig:modelDiffOrient} mit maximaler longitudinaler Beschleunigung.\relax }}{52}{figure.caption.59}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {7 $\frac {\text {m}}{\text {s}}$}}}{52}{figure.caption.59}
+\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {14 $\frac {\text {m}}{\text {s}}$}}}{52}{figure.caption.59}
+\contentsline {subfigure}{\numberline {(e)}{\ignorespaces {21 $\frac {\text {m}}{\text {s}}$}}}{52}{figure.caption.59}
+\contentsline {subfigure}{\numberline {(f)}{\ignorespaces {28 $\frac {\text {m}}{\text {s}}$}}}{52}{figure.caption.59}
 \contentsline {figure}{\numberline {6.5}{\ignorespaces Fahrzeugorientierung, abh\IeC {\"a}ngig von den drei verschiedenen Reifenmodellen f\IeC {\"u}r einen sinusf\IeC {\"o}rmigen Lenkwinkel als Eingabe\relax }}{53}{figure.caption.60}
-\addvspace {10\p@ }
-\contentsline {figure}{\numberline {7.1}{\ignorespaces Berechnungszeit der Kostenfunktionen f\IeC {\"u}r verschieden gro\IeC {\ss }e Horizontl\IeC {\"a}ngen\relax }}{57}{figure.caption.62}
+\contentsline {figure}{\numberline {6.6}{\ignorespaces Berechnungszeit der Kostenfunktionen f\IeC {\"u}r verschieden gro\IeC {\ss }e Horizontl\IeC {\"a}ngen\relax }}{57}{figure.caption.62}
 \contentsline {subfigure}{\numberline {(a)}{\ignorespaces center}}{57}{figure.caption.62}
 \contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Mittelwert sobald Warmstart aktiv}}}{57}{figure.caption.62}
-\contentsline {figure}{\numberline {7.2}{\ignorespaces Rundenzeit f\IeC {\"u}r verschiedene Kostenfunktionen und abh\IeC {\"a}ngig von der Anzahl der Pr\IeC {\"a}diktionsschritte. Erste (1) und zweite (2) Runde\relax }}{58}{figure.caption.63}
-\addvspace {10\p@ }
-\contentsline {figure}{\numberline {8.1}{\ignorespaces Berechnungszeit f\IeC {\"u}r verschiedene Kostenfunktionen mit elastischer Beschr\IeC {\"a}nkung.\relax }}{60}{figure.caption.64}
-\contentsline {figure}{\numberline {8.2}{\ignorespaces Die Rundenzeit in Sekunden abh\IeC {\"a}ngig von Querbeschleunigung und Pr\IeC {\"a}diktionsschritten\relax }}{62}{figure.caption.65}
-\contentsline {figure}{\numberline {8.3}{\ignorespaces Die Rundenzeit in Sekunden abh\IeC {\"a}ngig von Querbeschleunigung und Pr\IeC {\"a}diktionsschritten\relax }}{62}{figure.caption.66}
-\contentsline {figure}{\numberline {8.4}{\ignorespaces Die Rundenzeit in Sekunden abh\IeC {\"a}ngig von Querbeschleunigung und Pr\IeC {\"a}diktionsschritten f\IeC {\"u}r das dynamische Modell erweitert durch den \ac {K.K.}\relax }}{63}{figure.caption.67}
-\contentsline {figure}{\numberline {8.5}{\ignorespaces \relax }}{64}{figure.caption.68}
-\contentsline {figure}{\numberline {8.6}{\ignorespaces Berechnungszeit der Kostenfunktionen f\IeC {\"u}r verschieden gro\IeC {\ss }e Horizontl\IeC {\"a}ngen\relax }}{65}{figure.caption.69}
+\contentsline {figure}{\numberline {6.7}{\ignorespaces Rundenzeit f\IeC {\"u}r verschiedene Kostenfunktionen und abh\IeC {\"a}ngig von der Anzahl der Pr\IeC {\"a}diktionsschritte. Erste (1) und zweite (2) Runde\relax }}{58}{figure.caption.63}
+\contentsline {figure}{\numberline {6.8}{\ignorespaces Berechnungszeit f\IeC {\"u}r verschiedene Kostenfunktionen mit elastischer Beschr\IeC {\"a}nkung.\relax }}{60}{figure.caption.64}
+\contentsline {figure}{\numberline {6.9}{\ignorespaces Die Rundenzeit in Sekunden abh\IeC {\"a}ngig von Querbeschleunigung und Pr\IeC {\"a}diktionsschritten\relax }}{62}{figure.caption.65}
+\contentsline {figure}{\numberline {6.10}{\ignorespaces Die Rundenzeit in Sekunden abh\IeC {\"a}ngig von Querbeschleunigung und Pr\IeC {\"a}diktionsschritten\relax }}{62}{figure.caption.66}
+\contentsline {figure}{\numberline {6.11}{\ignorespaces Die Rundenzeit in Sekunden abh\IeC {\"a}ngig von Querbeschleunigung und Pr\IeC {\"a}diktionsschritten f\IeC {\"u}r das dynamische Modell erweitert durch den \ac {K.K.}\relax }}{63}{figure.caption.67}
+\contentsline {figure}{\numberline {6.12}{\ignorespaces \relax }}{64}{figure.caption.68}
+\contentsline {figure}{\numberline {6.13}{\ignorespaces Abh\IeC {\"a}ngigkeit der Fahrzeugregelung von der Frequenz mit der das \ac {MPC}-Verfahren ausgef\IeC {\"u}hrt wird \relax }}{65}{figure.caption.69}
 \contentsline {subfigure}{\numberline {(a)}{\ignorespaces center}}{65}{figure.caption.69}
 \contentsline {subfigure}{\numberline {(b)}{\ignorespaces center}}{65}{figure.caption.69}
-\contentsline {figure}{\numberline {8.7}{\ignorespaces Kurs auf dem Sich das Fahrzeug bewegt jeweils f\IeC {\"u}r die Exponentielle und Quadratische Kostenfunktion\relax }}{66}{figure.caption.70}
+\contentsline {figure}{\numberline {6.14}{\ignorespaces Kurs auf dem Sich das Fahrzeug bewegt, jeweils f\IeC {\"u}r die Exponentielle und Quadratische Kostenfunktion\relax }}{66}{figure.caption.70}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
