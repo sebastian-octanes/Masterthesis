@@ -341,9 +341,9 @@ while isopen(window)
     res, status = solve_MPC(mpc_struct)
     res = mapKeyToCarControl(keys, res, N)
 
-    realCarStateVector = VehicleModel.computeCarStepKinModel(realCarStateVector, res, dt)
+    #realCarStateVector = VehicleModel.computeCarStepKinModel(realCarStateVector, res, dt)
     #realCarStateVector = VehicleModel.computeCarStepDynModelBase(realCarStateVector, res, dt)
-    #realCarStateVector = VehicleModel.computeCarStepDynModelLong(realCarStateVector, res, dt)
+    realCarStateVector = VehicleModel.computeCarStepDynModelLong(realCarStateVector, res, dt)
 
     stateVector = VehicleModel.createNewStateVector(res, realCarStateVector, dt, N)
     update_start_point_from_pose(mpc_struct, realCarStateVector)

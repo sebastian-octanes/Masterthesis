@@ -282,14 +282,14 @@ scaleY = windowSizeY/windowSizeMeterY
 positionOffsetMeterX = 20
 positionOffsetMeterY = 25
 
-radius = 10.625
+radius = 8
 trackWidth = 3
 
 keys = KeyControls(0,0,0,0,0)
 startPose = VehicleModel.CarPose(0,0,0.1,pi/2, 0, 0)
 
 #define which racecourse should be used
-itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(radius, 3, 11, 0)
+itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(radius, 3, 9, 0)
 
 N = 10
 printLevel = 0

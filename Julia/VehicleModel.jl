@@ -31,7 +31,7 @@ max_long_acc = 12   #m/s**2 longitudinal acceleration max
 max_throttle = 10   #used for the mpc
 max_long_dec = 15   #m/s**2 longitudinal deceleration max
 min_throttle = 10   #used for the mpc minus is added in the mpc
-max_lat_acc = 2*9.81  # 2g lateral acceleration
+max_lat_acc = 2.2*9.81  # 2g lateral acceleration
 #max_lat_acc = 4.0 *9.81  # 2g lateral acceleration
 max_steering_angle = (30.0/180.0)*pi #2
 
@@ -384,8 +384,8 @@ function dyn_model_long(carPose, carControl, dt)
     slip_angle_b =               - atan((carPose.y_d - lf * carPose.psi_d)/ carPose.x_d)
 
     #lat
-    Ffy =  pacejka_tire_model_complex(slip_angle_f, true)
-    Fby =  pacejka_tire_model_complex(slip_angle_b, false)
+    Ffy =  0.5* pacejka_tire_model_complex(slip_angle_f, true)
+    Fby =  0.5 *pacejka_tire_model_complex(slip_angle_b, false)
 
 
     #this part is enhanced compared to enhanced_long
@@ -394,6 +394,9 @@ function dyn_model_long(carPose, carControl, dt)
 	Fzr   = mass*g*lr / (lf + lr)
 	Rxf   = mu * Fzf
 	Rxr   = mu * Fzr
+    println("Faero", Faero)
+    println("Freib", Rxf + Rxr)
+
     #as car can only accelerate forward or break in simulation that decreases complexity for the if case
     #long
     if(carControl.throttle > 0)
@@ -408,7 +411,7 @@ function dyn_model_long(carPose, carControl, dt)
         Ffx =  VehicleModel.F_long_max * carControl.throttle/10.0
     end
 
-
+    println("Fbx", Fbx)
     x_new = carPose.x + dt * (carPose.x_d * cos(carPose.psi) - carPose.y_d *sin(carPose.psi))
     y_new = carPose.y + dt * (carPose.x_d * sin(carPose.psi) + carPose.y_d *cos(carPose.psi))
     #this part is enhanced compared to enhanced_long
