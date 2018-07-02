@@ -10,12 +10,12 @@ A level-1 auxiliary file: Inhalt/Anhang.aux
 A level-1 auxiliary file: Inhalt/Abkuerzungsverzeichnis.aux
 The style file: alpha.bst
 Database file #1: Inhalt/literatur.bib
-I was expecting an "="---line 52 of file Inhalt/literatur.bib
+I was expecting an "="---line 68 of file Inhalt/literatur.bib
  :  article 
  :          NUMBER = {280},
 I'm skipping whatever remains of this entry
 Warning--string name "december" is undefined
---line 103 of file Inhalt/literatur.bib
+--line 119 of file Inhalt/literatur.bib
 Warning--to sort, need author or key in Waymo:1
 Warning--to sort, need author or key in BASt5L
 Warning--to sort, need author or key in FsWorldRank:1
@@ -33,6 +33,9 @@ Too many commas in name 1 of "F. Borrelli , P. Falcone , T. Keviczky , J. Asgari
 while executing---line 1185 of file alpha.bst
 Warning--to sort, need author or key in julDiff
 Warning--to sort, need author or key in Scipy
+Warning--to sort, need author or key in CasADi
+Warning--to sort, need author or key in PYADOLC
+Warning--to sort, need author or key in CppAD
 Warning--empty year in rc_car_1_43
 Warning--empty journal in MPC_Dynamic_Tire_Model
 Too many commas in name 1 of "F. Borrelli , P. Falcone , T. Keviczky , J. Asgari , D. Hrovat" for entry carMPC

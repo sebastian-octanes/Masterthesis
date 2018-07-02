@@ -19,6 +19,16 @@ Rechtsfolgen zunehmender fahrzeugautomatisierung.
   \url{https://www.bast.de/BASt_2017/DE/Publikationen/Foko/2013-2012/2012-11.html}.
 \newblock Accessed on 2018-06-22.
 
+\bibitem[Cas]{CasADi}
+Casadi, a symbolic framework.
+\newblock \url{https://github.com/casadi/casadi/wiki}.
+\newblock Accessed on 2018-07-01.
+
+\bibitem[Cpp]{CppAD}
+Python algorithmic differentiation using cppad.
+\newblock \url{https://github.com/b45ch1/pycppad}.
+\newblock Accessed on 2018-07-01.
+
 \bibitem[CUR18]{MPC_Dynamic_Tire_Model}
 FLORIAN CURINGA.
 \newblock {Autonomous racing using model predictive control}.
@@ -87,6 +97,11 @@ GONÇALO~COLLARES PEREIRA.
 \newblock {Model Predictive Control for Autonomous Driving of Over-Actuated
   Research Vehicle}.
 \newblock 2016.
+
+\bibitem[PYA]{PYADOLC}
+Pyadolc, a wrapper for adol-c.
+\newblock \url{https://github.com/b45ch1/pyadolc}.
+\newblock Accessed on 2018-07-01.
 
 \bibitem[Raj11]{rajamani2011vehicle}
 R.~Rajamani.
