@@ -652,7 +652,7 @@ Dieser Teilvektor wird dann für die Anzahl der gewünschten Prädiktionsschritt
   
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=150pt]{Abbildungen/prediction.png}
+	\includegraphics[width=150pt]{Abbildungen/predictionMPC.png}
 	\caption{Grafische Visualisierung der Prädiktion abhängig von den Steuerparametern für drei Schritte in die Zukunft}
 	\label{fig:predictionMpc}
 \end{figure}
@@ -690,7 +690,7 @@ Eine bildliche Darstellung der Kostenfunktion ist in Abbildung \ref{fig:costGoal
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=200pt]{Abbildungen/cost_goal_dist.png}
+	\includegraphics[width=200pt]{Abbildungen/costGoalDist.png}
 	\caption{Zielpunkt Distanzminimierung: Das virtuelle Ziel wird immer weit genug vor dem Fahrzeug her geführt, so dass es nie erreicht werden kann}
 	\label{fig:costGoalDist}
 \end{figure}
@@ -720,7 +720,7 @@ Die Kostenfunktionen führen dazu, dass der Optimierer die Steuerparameter so an
 	\centering
 	\includegraphics[width=200pt]{Abbildungen/tangentialConstraint.png}
 	\caption{Tangentiale Begrenzung hält das Fahrzeug auf der Fahrspur}
-	\label{fig:costGoalDist}
+	\label{fig:tangentialConstraint}
 \end{figure}
 Dieses Verfahren funktioniert nur, da die Beschleunigung des Rennautos physikalischen Grenzen unterliegt und sich daher immer in einem bestimmten Bereich um den Punkt herum bewegt, welcher bei gleichbleibender Geschwindigkeit $\Delta t \cdot v$ Meter entfernt von seinem Vorgängerzustand liegt. Wenn sich dieser Punkt in einer Kurve direkt an der Streckenmarkierung befindet, könnte das Fahrzeug sich, trotz Erfüllen der Tangentialbeschränkung, vom Kurs herunter bewegen. Dies wird dadurch verhindert, dass der nächste Prädiktionsschritt in diesem Fall seine Beschränkung nicht mehr erfüllen würde.
 Mathematisch lassen sich die Tangenten durch eine Vektorprojektion 
