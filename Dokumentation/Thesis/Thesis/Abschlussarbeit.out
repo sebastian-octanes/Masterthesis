@@ -28,7 +28,7 @@
 \BOOKMARK [2][-]{subsection.6.1.3}{Modellabh\344ngige Ver\344nderung der Orientierung}{section.6.1}% 28
 \BOOKMARK [2][-]{subsection.6.1.4}{Reifenmodelle}{section.6.1}% 29
 \BOOKMARK [1][-]{section.6.2}{Regelung des kinematischen Modells}{chapter.6}% 30
-\BOOKMARK [2][-]{subsection.6.2.1}{Mindestl\344nge des Pr\344diktionshorizont}{section.6.2}% 31
+\BOOKMARK [2][-]{subsection.6.2.1}{Mindestl\344nge des Pr\344diktionshorizontes}{section.6.2}% 31
 \BOOKMARK [2][-]{subsection.6.2.2}{Kostenfunktionen}{section.6.2}% 32
 \BOOKMARK [3][-]{subsubsection.6.2.2.1}{Verifizierung der Funktionen}{subsection.6.2.2}% 33
 \BOOKMARK [3][-]{subsubsection.6.2.2.2}{Berechnungszeit}{subsection.6.2.2}% 34
@@ -50,5 +50,5 @@
 \BOOKMARK [2][-]{subsection.7.2.4}{Implementierung in C++}{section.7.2}% 50
 \BOOKMARK [2][-]{subsection.7.2.5}{Fahrzeugparameter anpassen}{section.7.2}% 51
 \BOOKMARK [0][-]{appendix.A}{Anhang}{}% 52
-\BOOKMARK [0][-]{chapter*.72}{Abk\374rzungsverzeichnis}{}% 53
-\BOOKMARK [0][-]{chapter*.73}{Literaturverzeichnis}{}% 54
+\BOOKMARK [0][-]{chapter*.71}{Abk\374rzungsverzeichnis}{}% 53
+\BOOKMARK [0][-]{chapter*.72}{Literaturverzeichnis}{}% 54

@@ -21,7 +21,7 @@
 \contentsline {section}{\numberline {5.1}Python}{41}{section.5.1}
 \contentsline {section}{\numberline {5.2}Julia}{42}{section.5.2}
 \contentsline {section}{\numberline {5.3}\acl {SFML}}{45}{section.5.3}
-\contentsline {section}{\numberline {5.4}Virtueller Rennkurs}{46}{section.5.4}
+\contentsline {section}{\numberline {5.4}Virtueller Rennkurs}{47}{section.5.4}
 \contentsline {chapter}{\numberline {6}Evaluierung}{48}{chapter.6}
 \contentsline {section}{\numberline {6.1}Modellfehler}{48}{section.6.1}
 \contentsline {subsection}{\numberline {6.1.1}Disziplin Acceleration}{48}{subsection.6.1.1}
@@ -29,7 +29,7 @@
 \contentsline {subsection}{\numberline {6.1.3}Modellabh\IeC {\"a}ngige Ver\IeC {\"a}nderung der Orientierung}{51}{subsection.6.1.3}
 \contentsline {subsection}{\numberline {6.1.4}Reifenmodelle}{53}{subsection.6.1.4}
 \contentsline {section}{\numberline {6.2}Regelung des kinematischen Modells}{56}{section.6.2}
-\contentsline {subsection}{\numberline {6.2.1}Mindestl\IeC {\"a}nge des Pr\IeC {\"a}diktionshorizont}{56}{subsection.6.2.1}
+\contentsline {subsection}{\numberline {6.2.1}Mindestl\IeC {\"a}nge des Pr\IeC {\"a}diktionshorizontes}{56}{subsection.6.2.1}
 \contentsline {subsection}{\numberline {6.2.2}Kostenfunktionen}{57}{subsection.6.2.2}
 \contentsline {subsubsection}{\numberline {6.2.2.1}Verifizierung der Funktionen}{57}{subsubsection.6.2.2.1}
 \contentsline {subsubsection}{\numberline {6.2.2.2}Berechnungszeit}{57}{subsubsection.6.2.2.2}
@@ -51,5 +51,5 @@
 \contentsline {subsection}{\numberline {7.2.4}Implementierung in C++}{71}{subsection.7.2.4}
 \contentsline {subsection}{\numberline {7.2.5}Fahrzeugparameter anpassen}{71}{subsection.7.2.5}
 \contentsline {chapter}{\numberline {A}Anhang}{73}{appendix.A}
-\contentsline {chapter}{Abk\IeC {\"u}rzungsverzeichnis}{74}{chapter*.72}
-\contentsline {chapter}{Literaturverzeichnis}{75}{chapter*.73}
+\contentsline {chapter}{Abk\IeC {\"u}rzungsverzeichnis}{74}{chapter*.71}
+\contentsline {chapter}{Literaturverzeichnis}{75}{chapter*.72}
