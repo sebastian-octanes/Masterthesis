@@ -2,19 +2,19 @@
 \begin{axis}[
 view/h=40,
 colorbar horizontal,
-xmax =25,
 xlabel=$x$, ylabel=$y$,
 unbounded coords=jump,
-%y dir=reverse,
-%x dir=reverse,
-xlabel= Prädiktionsschritte,
+xlabel= Maximale Geschwindigkeit in ,
 ylabel= Querbeschleunigung in g,
 zlabel= Rundenzeit,
 view = {0}{90},
 ]
-
-\addplot3[contour filled={number = 30,labels={false}}, thick] table [x index=0, y index=1, z index=3] {Data/testBetaMaxFine.dat};
-
+\addplot3[contour filled={number = 30,labels={false}}, thick] table [x index=0, y index=1, z index=3] {Data/testMaxSpeed.dat};
 \end{axis}
 \end{tikzpicture}
+
+%$\frac{\text{m}}{\text{s}}$
+
+
+
 

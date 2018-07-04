@@ -266,8 +266,8 @@ function initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, 
     #mpc_struct = define_constraint_max_search_dist(mpc_struct, trackPoints)
     #mpc_struct = define_objective_max_speed(mpc_struct)
     #mpc_struct = define_objective_middle(mpc_struct)
-    #mpc_struct = define_objective_minimize_dist(mpc_struct)
-    mpc_struct = define_objective_max_track_dist(mpc_struct)
+    mpc_struct = define_objective_minimize_dist(mpc_struct)
+    #mpc_struct = define_objective_max_track_dist(mpc_struct)
     #mpc_struct = define_objective_minimize_dist_soft_const_lin(mpc_struct,0.5, 1)
 
     #mpc_struct = define_objective_minimize_dist_soft_const_quad(mpc_struct,1, 1)
@@ -341,9 +341,9 @@ while isopen(window)
     res, status = solve_MPC(mpc_struct)
     res = mapKeyToCarControl(keys, res, N)
 
-    #realCarStateVector = VehicleModel.computeCarStepKinModel(realCarStateVector, res, dt)
+    realCarStateVector = VehicleModel.computeCarStepKinModel(realCarStateVector, res, dt)
     #realCarStateVector = VehicleModel.computeCarStepDynModelBase(realCarStateVector, res, dt)
-    realCarStateVector = VehicleModel.computeCarStepDynModelLong(realCarStateVector, res, dt)
+    #realCarStateVector = VehicleModel.computeCarStepDynModelLong(realCarStateVector, res, dt)
 
     stateVector = VehicleModel.createNewStateVector(res, realCarStateVector, dt, N)
     update_start_point_from_pose(mpc_struct, realCarStateVector)

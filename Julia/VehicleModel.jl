@@ -8,7 +8,8 @@ lb  = 1.2   #width of car
 Af  = 0.6    #0.6 laut chip
 rad = 0.2    #radius of tires in m
 mass = 230   #car + driver
-I  = 400    # kgm²
+I  = 1000    # kgm²
+#I  = 400    # kgm²
 
 #values for longitudinal computation
 P_Engine= 53000  #40500 Watt
@@ -27,11 +28,11 @@ F_max_back = 3274
 min_speed = 0.001
 max_speed = 118/3.6 # 120km/h /3.6 = m/s
 #max_long_acc = 7.2   #m/s**2 longitudinal acceleration max
-max_long_acc = 12   #m/s**2 longitudinal acceleration max
+max_long_acc = 24   #m/s**2 longitudinal acceleration max
 max_throttle = 10   #used for the mpc
 max_long_dec = 15   #m/s**2 longitudinal deceleration max
 min_throttle = 10   #used for the mpc minus is added in the mpc
-max_lat_acc = 2.2*9.81  # 2g lateral acceleration
+max_lat_acc = 2.0*9.81  # 2g lateral acceleration
 #max_lat_acc = 4.0 *9.81  # 2g lateral acceleration
 max_steering_angle = (30.0/180.0)*pi #2
 

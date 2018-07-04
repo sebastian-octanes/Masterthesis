@@ -302,8 +302,8 @@ set_framerate_limit(window, convert(Int64, 100))
 carPathBuffer = CircularBuffer{VehicleModel.CarState}(400)
 
 N = 25
-Dt = 0.01:0.01:0.06
-beta = 1.7:0.05:1.75
+Dt = 0.01:0.01:0.01
+beta = 1.55:0.1:1.55
 dt_out = []
 n_out = []
 beta_out = []

@@ -25,11 +25,11 @@ ymax= 0.8,
 xlabel= Zeit in s,
 ylabel= Orientierung in rad,
 legend columns = -1,
-legend entries = {linearisiert;,vereinfacht;,genau},
+legend entries = {linearisiert;,genau},
 legend to name =modelDiffTiresLegend
 ]
 \addplot [color=red, mark=none, line width=0.5mm] table [x index=0, y index=2]{Data/modelDiffTires.dat};
-\addplot [color=blue, mark=none, line width=0.5mm] table [x index=0, y index=3]{Data/modelDiffTires.dat};
+%\addplot [color=blue, mark=none, line width=0.5mm] table [x index=0, y index=3]{Data/modelDiffTires.dat};
 \addplot [color=green, mark=none, line width=0.5mm] table [x index=0, y index=4]{Data/modelDiffTires.dat};
 
 \end{axis}

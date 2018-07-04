@@ -300,26 +300,27 @@ set_framerate_limit(window, convert(Int64, 1 / dt))
 
 #create CircularBuffer for tracking Vehicle Path
 carPathBuffer = CircularBuffer{VehicleModel.CarState}(400)
-beta = 1.05:0.05:1.3
+beta = 1.0:0.2:1.8
 #n = [27,28,29,30,31,32,33,34]
-n = [25]
-
+N = 15
+Speed = 10.0:5.0:30
 lap_time1 = []
 lap_time2 = []
 n_out = []
+speed_out=[]
 beta_out = []
 lap_time_out1 = []
 lap_time_out2 = []
 count = 0
-for N in n
+for speed in Speed
     for b in beta
         percent = count/(size(n)[1]* size(beta)[1])
         println("percent: ",percent)
         count = count + 1
-        n_out = vcat(n_out, N)
+        speed_out = vcat(speed_out, speed)
         beta_out = vcat(beta_out, b)
         #set_framerate_limit(window, 2)
-        mpc_struct = initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, max_speed, trackWidth, b * 9.81, 1, 1)
+        mpc_struct = initMpcSolver(N, dt, startPose, itpTrack, itpLeftBound, itpRightBound, printLevel, speed, trackWidth, b * 9.81, 1, 1)
         laps = 1
         clock = Clock()
         #lapTimeActive needed for timer
@@ -341,12 +342,15 @@ for N in n
             #stateVector = mapKeyToCarControl(keys, stateVector, N)
 
             #predict last point and compute next state with vehicle model
-            #realCarStateVector = VehicleModel.computeCarStepDynFinal(realCarStateVector, res, dt)
-            realCarStateVector = VehicleModel.computeCarStepDynModelBase(realCarStateVector, res, dt)
+            #realCarStateVector = VehicleModel.computeCarStepKinModel(realCarStateVector, res, dt)
+            realCarStateVector = VehicleModel.computeCarStepDynFinal(realCarStateVector, res, dt)
+            #realCarStateVector = VehicleModel.computeCarStepDynModelBase(realCarStateVector, res, dt)
             #realCarStateVector = VehicleModel.computeCarStepDynModelLatLin(realCarStateVector, res, dt)
             #realCarStateVector = VehicleModel.computeCarStepDynModelLatSimple(realCarStateVector, res, dt)
             #realCarStateVector = VehicleModel.computeCarStepDynKamsch(realCarStateVector, res, dt)
-
+            if(realCarStateVector.x_d >= speed)
+                realCarStateVector = VehicleModel.CarPose(realCarStateVector.x, realCarStateVector.y, speed, realCarStateVector.psi, realCarStateVector.y_d, realCarStateVector.psi_d)
+            end
 
             stateVector = VehicleModel.createNewStateVector(res, realCarStateVector, dt, N)
             update_start_point_from_pose(mpc_struct, realCarStateVector)
@@ -416,12 +420,12 @@ for N in n
     end
 end
 
-println("n_out", n_out)
+println("speed_out", speed_out)
 println("beta_out", beta_out)
 println("lap_time_out1", lap_time_out1)
 println("lap_time_out2", lap_time_out2)
 
 
-open("outputFiles/tireDifferenceSimple.dat", "w") do io
-    writedlm(io, [n_out beta_out lap_time_out1 lap_time_out2])
+open("outputFiles/testMaxSpeed.dat", "w") do io
+    writedlm(io, [speed_out beta_out lap_time_out1 lap_time_out2])
 end
