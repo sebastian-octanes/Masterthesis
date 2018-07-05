@@ -1,0 +1,24 @@
+
+\begin{tikzpicture}
+\begin{axis}[
+width = 0.8\textwidth,
+height = 0.6\textwidth,
+ymin = 0,
+ymax = 5,
+ymode = log,
+xmin = 10,
+xmax= 80,
+xlabel=Prädiktionsschritte,
+ylabel=Berechnungszeit in s,
+legend columns = 2,
+legend entries = {e-Funktion;,e-Funktion ohne Warmstart},
+legend to name =computeCostSoftLegendDynamic]
+
+\addplot [color=red,  mark=none, line width=0.5mm] table [x index=0, y index=2]{Data/computationTimeHorizonDynamic.dat};
+\addplot [color = red, dashed,mark=none, line width=0.5mm] table [x index=0, y index=1]{Data/computationTimeHorizonDynamic.dat};
+
+
+\addplot [dashed, mark=none] coordinates {(0, 0.05) (120, 0.05)};
+
+\end{axis}
+\end{tikzpicture}

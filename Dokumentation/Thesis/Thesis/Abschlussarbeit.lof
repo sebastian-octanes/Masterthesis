@@ -49,14 +49,14 @@
 \contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Mittelwert sobald Warmstart aktiv}}}{58}{figure.caption.61}
 \contentsline {figure}{\numberline {6.7}{\ignorespaces Rundenzeit f\IeC {\"u}r verschiedene Kostenfunktionen und abh\IeC {\"a}ngig von der Anzahl der Pr\IeC {\"a}diktionsschritte. Erste (1) und zweite (2) Runde\relax }}{59}{figure.caption.62}
 \contentsline {figure}{\numberline {6.8}{\ignorespaces Berechnungszeit f\IeC {\"u}r verschiedene Kostenfunktionen mit elastischer Beschr\IeC {\"a}nkung.\relax }}{61}{figure.caption.63}
-\contentsline {figure}{\numberline {6.9}{\ignorespaces Die Rundenzeit in Sekunden abh\IeC {\"a}ngig von Querbeschleunigung und Pr\IeC {\"a}diktionsschritten. Wei\IeC {\ss }e Bereiche entsprechen dem Abkommen des Fahrzeug von der Strecke\relax }}{62}{figure.caption.64}
-\contentsline {figure}{\numberline {6.10}{\ignorespaces Die Rundenzeit in Sekunden abh\IeC {\"a}ngig von Querbeschleunigung und Pr\IeC {\"a}diktionsschritten\relax }}{63}{figure.caption.65}
-\contentsline {figure}{\numberline {6.11}{\ignorespaces Die Rundenzeit in Sekunden abh\IeC {\"a}ngig von Querbeschleunigung und Pr\IeC {\"a}diktionsschritten f\IeC {\"u}r das dynamische Modell erweitert durch den \ac {K.K.}\relax }}{64}{figure.caption.66}
-\contentsline {figure}{\numberline {6.12}{\ignorespaces Rundenzeit abh\IeC {\"a}ngig von den Reifenmodellen f\IeC {\"u}r $1,2$ g und verschieden lange Pr\IeC {\"a}diktionshorizonte\relax }}{65}{figure.caption.67}
-\contentsline {figure}{\numberline {6.13}{\ignorespaces Rundenzeit, abh\IeC {\"a}ngig von der maximalen Geschwindigkeit und der Querbeschleunigung f\IeC {\"u}r einen 15 Schritte langen Horizont\relax }}{66}{figure.caption.68}
-\contentsline {figure}{\numberline {6.14}{\ignorespaces Abh\IeC {\"a}ngigkeit der Fahrzeugregelung von der Frequenz mit der das \ac {MPC}-Verfahren ausgef\IeC {\"u}hrt wird \relax }}{67}{figure.caption.69}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces center}}{67}{figure.caption.69}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces center}}{67}{figure.caption.69}
-\contentsline {figure}{\numberline {6.15}{\ignorespaces Kurs auf dem sich das Fahrzeug f\IeC {\"u}r die quadratische Kostenfunktion bewegt\relax }}{68}{figure.caption.70}
-\addvspace {10\p@ }
+\contentsline {figure}{\numberline {6.9}{\ignorespaces Berechnungszeit f\IeC {\"u}r das dynamische Fahrzeugmodell. Als elastische Beschr\IeC {\"a}nkung wurde die e-Funktion und die max-track-Kostenfunktion gew\IeC {\"a}hlt\relax }}{62}{figure.caption.64}
+\contentsline {figure}{\numberline {6.10}{\ignorespaces Verteilung der Berechnungszeit nachdem der Warmstart aktiv ist. Es wurden 200 Optimierungsschritte gemessen.\relax }}{63}{figure.caption.65}
+\contentsline {figure}{\numberline {6.11}{\ignorespaces Die Rundenzeit in Sekunden abh\IeC {\"a}ngig von Querbeschleunigung und Pr\IeC {\"a}diktionsschritten. Wei\IeC {\ss }e Bereiche entsprechen dem Abkommen des Fahrzeug von der Strecke.\relax }}{64}{figure.caption.66}
+\contentsline {figure}{\numberline {6.12}{\ignorespaces Die Rundenzeit in Sekunden abh\IeC {\"a}ngig von Querbeschleunigung und Pr\IeC {\"a}diktionsschritten\relax }}{65}{figure.caption.67}
+\contentsline {figure}{\numberline {6.13}{\ignorespaces Die Rundenzeit in Sekunden abh\IeC {\"a}ngig von Querbeschleunigung und Pr\IeC {\"a}diktionsschritten f\IeC {\"u}r das dynamische Modell erweitert durch den \ac {K.K.}\relax }}{66}{figure.caption.68}
+\contentsline {figure}{\numberline {6.14}{\ignorespaces Rundenzeit abh\IeC {\"a}ngig von den Reifenmodellen f\IeC {\"u}r $1,2$ g und verschieden lange Pr\IeC {\"a}diktionshorizonte\relax }}{66}{figure.caption.69}
+\contentsline {figure}{\numberline {6.15}{\ignorespaces Abh\IeC {\"a}ngigkeit der Fahrzeugregelung von der Frequenz mit der das \ac {MPC}-Verfahren ausgef\IeC {\"u}hrt wird \relax }}{67}{figure.caption.70}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces center}}{67}{figure.caption.70}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces center}}{67}{figure.caption.70}
+\contentsline {figure}{\numberline {6.16}{\ignorespaces Kritische Situation, in der das Rennauto f\IeC {\"u}r die quadratische Kostenfunktion nicht auf dem Kurs bleibt.\relax }}{68}{figure.caption.71}
 \addvspace {10\p@ }

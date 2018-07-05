@@ -1,5 +1,4 @@
 using SFML
-using PyPlot
 include("RaceCourse.jl")
 include("VehicleModel.jl")
 include("MPC.jl")
@@ -294,7 +293,7 @@ avg_time_without_init = []
 time_total = 0
 time_total_without_init = 0
 #lin = [ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]
-lin = [ 80]
+lin = [ 20]
 for i in lin
     N = convert(UInt16, i)
     count = 0
@@ -386,14 +385,3 @@ for i in lin
     end
 
 end
-
-print("avg_time", avg_time)
-print("avg_time_without_init", avg_time_without_init)
-#x = linspace(10, 10 + t -1, t)
-areas = 10*ones(lin)
-scatter(lin,avg_time,s=areas,alpha=1.0)
-grid()
-xlabel("Prediction Steps")
-ylabel("Avgerage Computation Time in s")
-title("Computation Time over Prediction Steps")
-ax = gca()

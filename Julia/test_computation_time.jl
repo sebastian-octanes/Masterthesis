@@ -1,5 +1,4 @@
 using SFML
-
 include("RaceCourse.jl")
 include("VehicleModel.jl")
 include("MPC.jl")
@@ -246,14 +245,14 @@ function initMpcSolver(N, dt, itpTrack, itpLeftBound, itpRightBound, printLevel,
     #mpc_struct = define_constraint_nonlinear_bycicle(mpc_struct)
     mpc_struct = define_constraint_kin_bycicle(mpc_struct)
     mpc_struct = define_constraint_start_pose(mpc_struct, startPose)
-    mpc_struct = define_constraint_tangents(mpc_struct, trackPoints)
+    #mpc_struct = define_constraint_tangents(mpc_struct, trackPoints)
     #mpc_struct = define_constraint_max_search_dist(mpc_struct, trackPoints)
 
     #mpc_struct = define_objective_max_speed(mpc_struct)
     #mpc_struct = define_objective_minimize_dist(mpc_struct)
-    mpc_struct = define_objective_max_track_dist(mpc_struct)
+    #mpc_struct = define_objective_max_track_dist(mpc_struct)
     #mpc_struct = define_objective_minimize_dist_soft_const(mpc_struct,2, 1)
-    #mpc_struct = define_objective_minimize_dist_soft_const_ext(mpc_struct,10, 1)
+    mpc_struct = define_objective_minimize_dist_soft_const_ext(mpc_struct,1, 1)
 
     #mpc_struct = update_track_forward_point(mpc_struct, forwardPoint)
     mpc_struct = update_track_forward_point_bounds(mpc_struct, forwardPoint, forwardPointBounds)
@@ -278,7 +277,8 @@ carPose = VehicleModel.CarPose(0,0,1.0,pi/2.0, 0, 0)
 
 #define which racecourse should be used
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack(15, 4, 15, 0)
-itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack2(trackWidth)
+#itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack2(trackWidth)
+itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack4(trackWidth)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack3(trackWidth)
 #itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrackUTurn(trackWidth)
 
@@ -286,15 +286,15 @@ itpTrack, itpLeftBound, itpRightBound = RaceCourse.buildRaceTrack2(trackWidth)
 event = Event()
 window = RenderWindow("test", windowSizeX, windowSizeY)
 dt = 0.05
-max_speed = 7
+max_speed = 20
 spline_pos = []
-
+time_hist = []
 avg_init_time = []
 avg_time_without_init = []
 init_time = 0
 time_total_without_init = 0
-#lin = [ 10, 20, 30, 40, 50, 60, 70, 80]
-lin = [ 90, 100, 110, 120]
+lin = [35]
+#lin = [ 90, 100, 110, 120]
 for i in lin
     N = convert(UInt16, i)
     count = 0
@@ -336,6 +336,7 @@ for i in lin
         if(steps < 20 && count == 0)
             init_time += time
         end
+        time_hist = vcat(time_hist, time)
         time_total_without_init += time
         res = mapKeyToCarControl(keys, res, N)
 
@@ -361,6 +362,7 @@ for i in lin
         if(steps == 20 && count == 0)
             steps = 0
             count = 1
+            time_hist = []
             avg_init_time =  vcat(avg_init_time, init_time / 20)
             time_total_without_init = 0;
         end
@@ -390,9 +392,11 @@ for i in lin
 
 end
 
-print("avg_time", avg_init_time)
-print("avg_time_without_init", avg_time_without_init)
 
-open("outputFiles/computationTimeHorizon.dat", "w") do io
+open("outputFiles/computationTimeHorizonDynamic.dat", "w") do io
     writedlm(io, [lin avg_init_time avg_time_without_init])
+end
+
+open("outputFiles/computationTimeHorizonDynamicHist.dat", "w") do io
+    writedlm(io, [time_hist],  "\n ")
 end

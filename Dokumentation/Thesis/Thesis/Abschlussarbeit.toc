@@ -36,13 +36,12 @@
 \contentsline {subsubsection}{\numberline {6.2.2.3}Rundenzeit}{59}{subsubsection.6.2.2.3}
 \contentsline {section}{\numberline {6.3}Regelung des dynamischen Modells}{60}{section.6.3}
 \contentsline {subsection}{\numberline {6.3.1}Berechnungszeit der Elastische Kostenfunktion}{60}{subsection.6.3.1}
-\contentsline {subsection}{\numberline {6.3.2}Maximale Querbeschleunigung und Pr\IeC {\"a}diktionshorizont}{61}{subsection.6.3.2}
-\contentsline {subsubsection}{\numberline {6.3.2.1}Dynamisches Modell}{62}{subsubsection.6.3.2.1}
-\contentsline {subsubsection}{\numberline {6.3.2.2}Kammscher Kreis}{63}{subsubsection.6.3.2.2}
-\contentsline {section}{\numberline {6.4}Einfluss des Reifenmodells}{64}{section.6.4}
-\contentsline {subsection}{\numberline {6.4.1}Maximale Geschwindigkeit}{65}{subsection.6.4.1}
-\contentsline {subsection}{\numberline {6.4.2}Regelfrequenz}{66}{subsection.6.4.2}
-\contentsline {subsection}{\numberline {6.4.3}Quadratische Kostenfunktion}{67}{subsection.6.4.3}
+\contentsline {subsection}{\numberline {6.3.2}Maximale Querbeschleunigung und Pr\IeC {\"a}diktionshorizont}{62}{subsection.6.3.2}
+\contentsline {subsubsection}{\numberline {6.3.2.1}Dynamisches Modell}{63}{subsubsection.6.3.2.1}
+\contentsline {subsubsection}{\numberline {6.3.2.2}Kammscher Kreis}{64}{subsubsection.6.3.2.2}
+\contentsline {section}{\numberline {6.4}Einfluss des Reifenmodells}{65}{section.6.4}
+\contentsline {subsection}{\numberline {6.4.1}Regelfrequenz}{66}{subsection.6.4.1}
+\contentsline {subsection}{\numberline {6.4.2}Quadratische Kostenfunktion}{68}{subsection.6.4.2}
 \contentsline {chapter}{\numberline {7}Zusammenfassung}{69}{chapter.7}
 \contentsline {section}{\numberline {7.1}Zusammenfassung}{69}{section.7.1}
 \contentsline {section}{\numberline {7.2}Ausblick}{70}{section.7.2}
@@ -51,6 +50,5 @@
 \contentsline {subsection}{\numberline {7.2.3}Zweispurmodell}{71}{subsection.7.2.3}
 \contentsline {subsection}{\numberline {7.2.4}Implementierung in C++}{71}{subsection.7.2.4}
 \contentsline {subsection}{\numberline {7.2.5}Fahrzeugparameter anpassen}{72}{subsection.7.2.5}
-\contentsline {chapter}{\numberline {A}Anhang}{73}{appendix.A}
-\contentsline {chapter}{Abk\IeC {\"u}rzungsverzeichnis}{74}{chapter*.72}
-\contentsline {chapter}{Literaturverzeichnis}{75}{chapter*.73}
+\contentsline {chapter}{Abk\IeC {\"u}rzungsverzeichnis}{73}{chapter*.73}
+\contentsline {chapter}{Literaturverzeichnis}{74}{chapter*.74}

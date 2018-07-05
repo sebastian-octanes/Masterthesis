@@ -1,0 +1,12 @@
+
+\begin{tikzpicture}
+\begin{axis}[
+width = 0.8\textwidth,
+height = 0.6\textwidth,
+ybar,ymin=0, 
+scaled x ticks={base 10:2}]
+
+\addplot +[hist={bins=8}] table [y index = 0] {Data/computationTimeHorizonHistogram.dat};
+
+\end{axis}
+\end{tikzpicture}

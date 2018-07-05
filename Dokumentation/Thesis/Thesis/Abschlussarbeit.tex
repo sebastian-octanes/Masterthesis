@@ -1125,6 +1125,25 @@ Die Auswahl der in Frage kommenden Kostenfunktionen ist schnell getroffen. Die e
 
 Die deutlich höhere Ausführungszeit bei der alpha-Funktion liegt an deren Form. Jeweils auf der Rückseite der Erhöhung fallen die Kosten wieder gegen null. Der Optimierer muss also einen sehr großen Suchraum betrachten. Es werden auch mögliche Trajektorien evaluiert, die die hohen Kosten für zwei bis drei Schritte in Kauf nehmen und anschließend das Rennauto außerhalb des Kurses steuern. Diese Situation kann nachgestellt werden, indem das Kostenverhältnis zu Gunsten der elastischen Beschränkung angepasst wird, woraufhin das Fahrzeug den Kurs verlässt.  
 
+Zusätzlich zu den Messungen mit dem kinematischen Modell sollen auch Messungen erstellt werden bei denen das dynamische Fahrzeugmodell Verwendung findet. Zudem wird die Geschwindigkeit nicht eingeschränkt. Die Ergebnisse sind in der Abbildung \ref{fig:computeCostSoftConstDynamic} dargestellt. Der Prädiktionshorizont der noch in Echtzeit berechnet werden kann liegt bei etwa 35 Prädiktionsschritten.
+
+\begin{figure}[ht!]
+	\centering
+	\input{Grafiken/computCostSoftConstDynamic.tex} 
+	\ref{computeCostSoftLegendDynamic}
+	\caption{Berechnungszeit für das dynamische Fahrzeugmodell. Als elastische Beschränkung wurde die e-Funktion und die max-track-Kostenfunktion gewählt}
+	\label{fig:computeCostSoftConstDynamic}
+\end{figure}
+
+Für diesen Wert liegt die durchschnittliche Berechnungszeit bei $0,047$ Sekunden. Um abschätzen zu können wie oft die Echtzeitbeschränkung von $0,05$ s überschritten wird, ist in Abbildung \ref{fig:computeCostSoftConstDynamicHist} die Verteilung der Berechnungen dargestellt. 
+
+\begin{figure}[ht!]
+	\centering
+	\input{Grafiken/computCostSoftConstDynamicHist.tex} 
+	%\ref{computeCostSoftLegendDynamicHist}
+	\caption{Verteilung der Berechnungszeit nachdem der Warmstart aktiv ist. Es wurden 200 Optimierungsschritte gemessen.}
+	\label{fig:computeCostSoftConstDynamicHist}
+\end{figure}
 
 \subsection{Maximale Querbeschleunigung und Prädiktionshorizont}
 Zuerst wird ermittelt, bis zu welcher maximalen Querbeschleunigung das Rennauto stabil im Rennkurs geregelt werden kann. 
@@ -1136,7 +1155,7 @@ Der in Abbildung \ref{fig:betaMaxN} dargestellte Graph zeigt den Zusammenhang au
 \begin{figure}[ht!]
 	\centering
 	\input{Grafiken/betaMaxN.tex} 
-	\caption{Die Rundenzeit in Sekunden abhängig von Querbeschleunigung und Prädiktionsschritten. Weiße Bereiche entsprechen dem Abkommen des Fahrzeug von der Strecke}
+	\caption{Die Rundenzeit in Sekunden abhängig von Querbeschleunigung und Prädiktionsschritten. Weiße Bereiche entsprechen dem Abkommen des Fahrzeug von der Strecke.}
 	\label{fig:betaMaxN}
 \end{figure}
 
@@ -1175,18 +1194,6 @@ Der Einfluss des Reifenmodells soll auch kurz untersucht werden. Hierfür wird d
 
 Das Ergebnis der Messung sind in Abbildung \ref{fig:tireModelDiff} dargestellt und entsprechen den Erwartungen. Die Unterschiede der Kurven (siehe \ref{fig:pacejka}) beider Gleichungen zum Berechnen der Reifenkräfte sind nur gering. Die Differenz bei den Rundenzeiten fällt daher auch klein aus. Wie bereits erwähnt, muss die Vereinfachung abhängig von den Reifen des Fahrzeugs gemacht werden. Generell ist dazu zu raten, immer das genaueste Modell zu verwenden.
 
-\subsection{Maximale Geschwindigkeit}
-In diesem Abschnitt soll untersucht werden, welchen Einfluss die Beschränkung der maximalen Geschwindigkeit auf die maximal mögliche Querbeschleunigung und die Rundenzeit besitzt. Gerade für kurze Prädiktionshorizonte macht die Begrenzung einen signifikaten Unterschied. Wenn das Rennauto auf einer Geraden viel Geschwindigkeit aufnimmt und dann in eine Kurve einfährt, kann für geringe Querbeschleunigungen keine Trajektorie geplant werden. Für zu große Querbeschleunigungen wird das Rennauto instabil. Es wird daher untersucht, wie das Rennauto sich bei einem Prädiktionshorizont von 15 Schritten für verschiedene Querbeschleunigungen und maximale Geschwindigkeiten verhält. Die Messergebnisse sind in Abbildung \ref{fig:maxSpeedBetaMax} dargestellt.
-
-\begin{figure}[ht!]
-	\centering
-	\input{Grafiken/maxSpeedBetaMax.tex} 
-	\caption{Rundenzeit, abhängig von der maximalen Geschwindigkeit und der Querbeschleunigung für einen 15 Schritte langen Horizont}
-	\label{fig:maxSpeedBetaMax}
-\end{figure}
-
-Sobald die maximale Geschwindigkeit geringer als 15 $\frac{\text{m}}{\text{s}}$ ist, kann das Rennauto auch für höhere Querbeschleunigungen sicher um den Kurs gefahren werden. Die minimale Rundenzeit in diesem Punkt beträgt $12.7$ s bei $1.6$ g. 
-Das das Fahrzeug für einige Parameterkonfigurationen auch bei höherer Geschwindigkeit den Kurs absolvieren kann, liegt an dem Layout der im Simulator verwendeten Rennstrecke. Manchmal rutscht das Rennauto für höhere Geschwindigkeiten genau so um eine Kurve dass es die sofort darauf Folgende Kurve noch durchfahren kann. Eine Veränderung des Rennkurses würde also ein zum Teil verändertes Bild der Ergebnisse mit sich bringen. Der Trend ist dennoch ersichtlich.
 
 \subsection{Regelfrequenz}
 Abschließend soll noch eine Betrachtung durchgeführt werden, ob eine höhere Aktualisierungsrate die Stabilität des Systems erhöht. Um dies zu überprüfen wird eine Parameterauswahl getroffen, in der das Rennauto beginnt auszubrechen. Bei Abweichungen des Fahrzeugs von der erwarteten Trajektorie wird mit einer höheren Aktualisierungsrate weniger Zeit bis zu einer neu geplanten Trajektorie vergehen. Um eine gute Vergleichbarkeit zu erzielen, wird für jedes $\Delta t$ die Anzahl der Prädiktionsschritte angepasst, alle Messungen beziehen sich also auf einen gleich langen vorausplanten Horizont. Wenn der Zeitwert welcher Vorausprädiziert werden soll, keinen ganzen Teiler für das betrachtete $\Delta t$ besaß, wurde der nächst mögliche Wert gewählt. Die Messungen sind in der Abbildung \ref{fig:measureUpdateRate} zusammengefasst. 
@@ -1212,7 +1219,7 @@ Die problematische Stelle im Kurs ist schematisch für die zwei verschiedenen Ve
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=200pt]{Abbildungen/quadraticCostFunction.png}
-	\caption{Kurs auf dem sich das Fahrzeug für die quadratische Kostenfunktion bewegt}
+	\caption{Kritische Situation, in der das Rennauto für die quadratische Kostenfunktion nicht auf dem Kurs bleibt.}
 	\label{fig:quadraticCostFunct}
 \end{figure}
 
@@ -1246,7 +1253,7 @@ Wie bereits im Stand der Technik ausgeführt, kann nichtlineare Regression dazu 
 
 \appendix
 
-\include{Inhalt/Anhang}
+%\include{Inhalt/Anhang}
 
 \include{Inhalt/Abkuerzungsverzeichnis}
 
