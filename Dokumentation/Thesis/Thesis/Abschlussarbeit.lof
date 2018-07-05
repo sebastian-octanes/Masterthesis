@@ -4,7 +4,7 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {3.1}{\ignorespaces Block Diagramm zu MPC\relax }}{7}{figure.caption.12}
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Funktionsprinzip von \ac {MPC}: Die Kostenfunktion ist die Reduktion der Distanz zur Referenztrajektorie. Durch das Wissen \IeC {\"u}ber das hinterlegte Modell k\IeC {\"o}nnen die Kosten sehr schnell minimiert werden ohne die Beschr\IeC {\"a}nkungen zu verletzen\relax }}{8}{figure.caption.13}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Funktionsprinzip von \ac {MPC}: Die Kostenfunktion ist die Reduktion der Distanz zur Referenztrajektorie. Durch das Wissen \IeC {\"u}ber das hinterlegte Modell k\IeC {\"o}nnen die Kosten sehr schnell minimiert werden ohne die Beschr\IeC {\"a}nkungen zu verletzen.\relax }}{8}{figure.caption.13}
 \contentsline {figure}{\numberline {3.3}{\ignorespaces Lineare Optimierung: Suche des Maximums an den Schnittpunkten der Ungleichungen\relax }}{10}{figure.caption.14}
 \contentsline {figure}{\numberline {3.4}{\ignorespaces Simplex Methode: Ablaufen des Suchraums entlang der Kanten der Ungleichheitsbedingungen von Knoten zu Knoten \cite {simplexWiki:1}\relax }}{11}{figure.caption.15}
 \contentsline {figure}{\numberline {3.5}{\ignorespaces Beim Innere-Punkte-Verfahren bewegt sich der Optimierer durch das Innere des Polytops auf der Suche nach dem Mimimum \cite {InnerePunkteVerfahren:1}\relax }}{13}{figure.caption.16}
@@ -23,7 +23,7 @@
 \contentsline {figure}{\numberline {4.5}{\ignorespaces Tangentiale Begrenzung h\IeC {\"a}lt das Fahrzeug auf der Fahrspur\relax }}{36}{figure.caption.38}
 \contentsline {figure}{\numberline {4.6}{\ignorespaces Vektor Projektion zum berechnen der tangentialen Beschr\IeC {\"a}nkung\relax }}{37}{figure.caption.39}
 \contentsline {figure}{\numberline {4.7}{\ignorespaces Fehlerhaftes Verhalten in Spitzkurven\relax }}{38}{figure.caption.41}
-\contentsline {figure}{\numberline {4.8}{\ignorespaces Verschiedene Distanzma\IeC {\ss }e um das Verhalten der Trajektorienplanung zu beeinflussen\relax }}{40}{figure.caption.43}
+\contentsline {figure}{\numberline {4.8}{\ignorespaces Verschiedene Distanzma\IeC {\ss }e um das Verhalten der Trajektorienplanung zu beeinflussen\relax }}{39}{figure.caption.43}
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {5.1}{\ignorespaces Ausf\IeC {\"u}hrungszeiten f\IeC {\"u}r verschieden gro\IeC {\ss }e Horizontl\IeC {\"a}ngen\relax }}{42}{figure.caption.45}
 \contentsline {figure}{\numberline {5.2}{\ignorespaces Ausf\IeC {\"u}hrungszeiten f\IeC {\"u}r verschiedene Sprachen\relax }}{43}{figure.caption.46}
