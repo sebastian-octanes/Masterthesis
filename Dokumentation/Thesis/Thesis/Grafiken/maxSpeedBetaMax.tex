@@ -2,14 +2,13 @@
 \begin{axis}[
 view/h=40,
 colorbar horizontal,
-xlabel=$x$, ylabel=$y$,
 unbounded coords=jump,
-xlabel= Maximale Geschwindigkeit in ,
+xlabel= Maximale Geschwindigkeit in $\frac{\text{m}}{\text{s}}$,
 ylabel= Querbeschleunigung in g,
 zlabel= Rundenzeit,
 view = {0}{90},
 ]
-\addplot3[contour filled={number = 30,labels={false}}, thick] table [x index=0, y index=1, z index=3] {Data/testMaxSpeed.dat};
+\addplot3[surf, shader=interp] table [x index=0, y index=1, z index=3] {Data/testMaxSpeed.dat};
 \end{axis}
 \end{tikzpicture}
 

@@ -258,7 +258,7 @@
 \RequirePackage{lipsum} % Blindtext
 \RequirePackage{scrhack}
 
-\RequirePackage{microtype} %badboxes sollten veschwinden -geht aber net
+%\RequirePackage{microtype} %badboxes sollten veschwinden -geht aber net
 %\hyphenpenalty=750\RequirePackage{caption} % Gleichungen
 %
 %\pretolerance=10000
@@ -316,7 +316,7 @@
 \def\sloppy{\tolerance=10000000\hfuzz=\maxdimen\vfuzz=\maxdimen}
 \vbadness=18000
 \hbadness=20000
-\sloppy
+%\sloppy
 % no badbox-Warnings- Ende!!!!
 
 %-------------------------------------------

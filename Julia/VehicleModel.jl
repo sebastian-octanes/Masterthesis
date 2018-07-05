@@ -385,8 +385,8 @@ function dyn_model_long(carPose, carControl, dt)
     slip_angle_b =               - atan((carPose.y_d - lf * carPose.psi_d)/ carPose.x_d)
 
     #lat
-    Ffy =  0.5* pacejka_tire_model_complex(slip_angle_f, true)
-    Fby =  0.5 *pacejka_tire_model_complex(slip_angle_b, false)
+    Ffy =  2.0* pacejka_tire_model_complex(slip_angle_f, true)
+    Fby =  2.0* pacejka_tire_model_complex(slip_angle_b, false)
 
 
     #this part is enhanced compared to enhanced_long
@@ -403,16 +403,15 @@ function dyn_model_long(carPose, carControl, dt)
     if(carControl.throttle > 0)
         power = P_Engine * carControl.throttle/10.0
         Fbx   = power /abs(sqrt(carPose.x_d^2 + carPose.y_d^2))
-        if(Fbx >  VehicleModel.F_long_max)
-            Fbx = VehicleModel.F_long_max
+        if(Fbx > 2 * VehicleModel.F_long_max)
+            Fbx = 2 * VehicleModel.F_long_max
         end
         Ffx = 0
     else
-        Fbx =  VehicleModel.F_long_max * carControl.throttle/10.0
-        Ffx =  VehicleModel.F_long_max * carControl.throttle/10.0
+        Fbx = 2 * VehicleModel.F_long_max * carControl.throttle/10.0
+        Ffx = 2 * VehicleModel.F_long_max * carControl.throttle/10.0
     end
 
-    println("Fbx", Fbx)
     x_new = carPose.x + dt * (carPose.x_d * cos(carPose.psi) - carPose.y_d *sin(carPose.psi))
     y_new = carPose.y + dt * (carPose.x_d * sin(carPose.psi) + carPose.y_d *cos(carPose.psi))
     #this part is enhanced compared to enhanced_long

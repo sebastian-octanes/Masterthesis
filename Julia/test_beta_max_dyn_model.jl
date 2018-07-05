@@ -300,9 +300,9 @@ set_framerate_limit(window, convert(Int64, 1 / dt))
 
 #create CircularBuffer for tracking Vehicle Path
 carPathBuffer = CircularBuffer{VehicleModel.CarState}(400)
-beta = 1.05:0.05:1.3
+beta = 1.00:0.1:1.5
 #n = [27,28,29,30,31,32,33,34]
-n = [25]
+n = [50]
 
 lap_time1 = []
 lap_time2 = []
@@ -422,6 +422,6 @@ println("lap_time_out1", lap_time_out1)
 println("lap_time_out2", lap_time_out2)
 
 
-open("outputFiles/tireDifferenceSimple.dat", "w") do io
+open("outputFiles/testBetaMaxFine.dat", "w") do io
     writedlm(io, [n_out beta_out lap_time_out1 lap_time_out2])
 end

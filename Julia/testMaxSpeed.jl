@@ -300,10 +300,10 @@ set_framerate_limit(window, convert(Int64, 1 / dt))
 
 #create CircularBuffer for tracking Vehicle Path
 carPathBuffer = CircularBuffer{VehicleModel.CarState}(400)
-beta = 1.0:0.2:1.8
+beta = 1.0:0.1:1.2
 #n = [27,28,29,30,31,32,33,34]
 N = 15
-Speed = 10.0:5.0:30
+Speed = 10.0:2.0:14
 lap_time1 = []
 lap_time2 = []
 n_out = []
@@ -314,7 +314,7 @@ lap_time_out2 = []
 count = 0
 for speed in Speed
     for b in beta
-        percent = count/(size(n)[1]* size(beta)[1])
+        percent = count/(size(Speed)[1]* size(beta)[1])
         println("percent: ",percent)
         count = count + 1
         speed_out = vcat(speed_out, speed)
@@ -343,8 +343,8 @@ for speed in Speed
 
             #predict last point and compute next state with vehicle model
             #realCarStateVector = VehicleModel.computeCarStepKinModel(realCarStateVector, res, dt)
-            realCarStateVector = VehicleModel.computeCarStepDynFinal(realCarStateVector, res, dt)
-            #realCarStateVector = VehicleModel.computeCarStepDynModelBase(realCarStateVector, res, dt)
+            #realCarStateVector = VehicleModel.computeCarStepDynFinal(realCarStateVector, res, dt)
+            realCarStateVector = VehicleModel.computeCarStepDynModelBase(realCarStateVector, res, dt)
             #realCarStateVector = VehicleModel.computeCarStepDynModelLatLin(realCarStateVector, res, dt)
             #realCarStateVector = VehicleModel.computeCarStepDynModelLatSimple(realCarStateVector, res, dt)
             #realCarStateVector = VehicleModel.computeCarStepDynKamsch(realCarStateVector, res, dt)

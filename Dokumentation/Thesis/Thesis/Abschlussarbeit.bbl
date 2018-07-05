@@ -13,6 +13,11 @@ C.~Athanasiadis, D.~Galanopoulos, and A.~Tefas.
 \newblock In {\em 2012 IEEE Conference on Computational Intelligence and Games
   (CIG)}, pages 116--123, Sept 2012.
 
+\bibitem[AMZ]{AMZRacing}
+Success story amz racing.
+\newblock \url{https://www.sbg-systems.com/news/amz-racingellipse-n}.
+\newblock Accessed on 2018-07-05.
+
 \bibitem[BAS]{BASt5L}
 Rechtsfolgen zunehmender fahrzeugautomatisierung.
 \newblock
@@ -63,10 +68,10 @@ G.~Ganga and M.~M. Dharmana.
 \newblock In {\em 2017 International Conference on Circuit ,Power and Computing
   Technologies (ICCPCT)}, pages 1--6, April 2017.
 
-\bibitem[HB15]{MPC_Kinetic}
-Grischa Gottschalg Lukas~Ortmann Henrik~Bey, Lukas~Brunke.
-\newblock {MPC for Trajectory Planning of Race Cars with Obstacle Avoidance}.
-\newblock 2015.
+\bibitem[Inn]{InnerePunkteVerfahren:1}
+Innere punkte verfahren.
+\newblock \url{https://de.wikipedia.org/wiki/Innere-Punkte-Verfahren}.
+\newblock Accessed on 2018-05-28.
 
 \bibitem[jul]{julDiff}
 Juliadiff.
@@ -118,6 +123,11 @@ M.~Spcmgenberg, V.~Calmettes, and J.~Y. Tourneref.
 \newblock Fusion of gps, ins and odometric data for automotive navigation.
 \newblock In {\em 2007 15th European Signal Processing Conference}, pages
   886--890, Sept 2007.
+
+\bibitem[sim]{simplexWiki:1}
+Simplex verfahren.
+\newblock \url{https://de.wikipedia.org/wiki/Simplex-Verfahren}.
+\newblock Accessed on 2018-05-31.
 
 \bibitem[SMED10]{seborg2010process}
 D.E. Seborg, D.A. Mellichamp, T.F. Edgar, and F.J. Doyle.

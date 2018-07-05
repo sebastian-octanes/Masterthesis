@@ -1,13 +1,13 @@
 \babel@toc {ngerman}{}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {1.1}{\ignorespaces Z\IeC {\"u}richs \ac {FS}-Driverless-Fahrzeug im Jahr 2017 w\IeC {\"a}hrend des Trackdrive\relax }}{2}{figure.caption.9}
+\contentsline {figure}{\numberline {1.1}{\ignorespaces Z\IeC {\"u}richs \ac {FS}-Driverless-Fahrzeug im Jahr 2017 w\IeC {\"a}hrend des Trackdrive \cite {AMZRacing}\relax }}{2}{figure.caption.9}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {3.1}{\ignorespaces Block Diagramm zu MPC\relax }}{7}{figure.caption.12}
 \contentsline {figure}{\numberline {3.2}{\ignorespaces Funktionsprinzip von \ac {MPC}: Die Kostenfunktion ist die Reduktion der Distanz zur Referenztrajektorie. Durch das Wissen \IeC {\"u}ber das hinterlegte Modell k\IeC {\"o}nnen die Kosten sehr schnell minimiert werden ohne die Beschr\IeC {\"a}nkungen zu verletzen\relax }}{8}{figure.caption.13}
 \contentsline {figure}{\numberline {3.3}{\ignorespaces Lineare Optimierung: Suche des Maximums an den Schnittpunkten der Ungleichungen\relax }}{10}{figure.caption.14}
-\contentsline {figure}{\numberline {3.4}{\ignorespaces Simplex Methode: Ablaufen des Suchraums entlang der Kanten der Ungleichheitsbedingungen von Knoten zu Knoten\relax }}{11}{figure.caption.15}
-\contentsline {figure}{\numberline {3.5}{\ignorespaces Beim Innere-Punkte-Verfahren bewegt sich der Optimierer durch das Innere des Polytops auf der Suche nach dem Mimimum\relax }}{13}{figure.caption.16}
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Simplex Methode: Ablaufen des Suchraums entlang der Kanten der Ungleichheitsbedingungen von Knoten zu Knoten \cite {simplexWiki:1}\relax }}{11}{figure.caption.15}
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Beim Innere-Punkte-Verfahren bewegt sich der Optimierer durch das Innere des Polytops auf der Suche nach dem Mimimum \cite {InnerePunkteVerfahren:1}\relax }}{13}{figure.caption.16}
 \contentsline {figure}{\numberline {3.6}{\ignorespaces Auswirkung des Parameters $\mu $ auf das Verhalten der Barrierefunktion\relax }}{14}{figure.caption.17}
 \contentsline {figure}{\numberline {3.7}{\ignorespaces Kinematisches Modell\relax }}{17}{figure.caption.18}
 \contentsline {figure}{\numberline {3.8}{\ignorespaces Der Schr\IeC {\"a}glaufwinkel ergibt sich aus Lenkwinkel \(\delta \) und Bewegungsrichtung \(\theta _{v}\)\relax }}{20}{figure.caption.20}
@@ -52,8 +52,8 @@
 \contentsline {figure}{\numberline {6.9}{\ignorespaces Die Rundenzeit in Sekunden abh\IeC {\"a}ngig von Querbeschleunigung und Pr\IeC {\"a}diktionsschritten. Wei\IeC {\ss }e Bereiche entsprechen dem Abkommen des Fahrzeug von der Strecke\relax }}{62}{figure.caption.64}
 \contentsline {figure}{\numberline {6.10}{\ignorespaces Die Rundenzeit in Sekunden abh\IeC {\"a}ngig von Querbeschleunigung und Pr\IeC {\"a}diktionsschritten\relax }}{63}{figure.caption.65}
 \contentsline {figure}{\numberline {6.11}{\ignorespaces Die Rundenzeit in Sekunden abh\IeC {\"a}ngig von Querbeschleunigung und Pr\IeC {\"a}diktionsschritten f\IeC {\"u}r das dynamische Modell erweitert durch den \ac {K.K.}\relax }}{64}{figure.caption.66}
-\contentsline {figure}{\numberline {6.12}{\ignorespaces \relax }}{65}{figure.caption.67}
-\contentsline {figure}{\numberline {6.13}{\ignorespaces \relax }}{66}{figure.caption.68}
+\contentsline {figure}{\numberline {6.12}{\ignorespaces Rundenzeit abh\IeC {\"a}ngig von den Reifenmodellen f\IeC {\"u}r $1,2$ g und verschieden lange Pr\IeC {\"a}diktionshorizonte\relax }}{65}{figure.caption.67}
+\contentsline {figure}{\numberline {6.13}{\ignorespaces Rundenzeit, abh\IeC {\"a}ngig von der maximalen Geschwindigkeit und der Querbeschleunigung f\IeC {\"u}r einen 15 Schritte langen Horizont\relax }}{66}{figure.caption.68}
 \contentsline {figure}{\numberline {6.14}{\ignorespaces Abh\IeC {\"a}ngigkeit der Fahrzeugregelung von der Frequenz mit der das \ac {MPC}-Verfahren ausgef\IeC {\"u}hrt wird \relax }}{67}{figure.caption.69}
 \contentsline {subfigure}{\numberline {(a)}{\ignorespaces center}}{67}{figure.caption.69}
 \contentsline {subfigure}{\numberline {(b)}{\ignorespaces center}}{67}{figure.caption.69}
