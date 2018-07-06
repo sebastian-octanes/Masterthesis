@@ -43,10 +43,10 @@
 Neben neu aufkommenden Trends in der Automobilindustrie, wie dem Elektroauto, Carsharing und dem aktuellen SUV-Boom, hat sich vor allem das autonome Auto in den letzten zwei Jahren mit dem Aufkommen von Teslas Autopilot stark in das Zentrum der Aufmerksamkeit von Firmen und Konsumenten gerückt. Das Jahr 2018 markiert dabei einen ganz besonderen Meilenstein. 
 Ende des Jahres wird die Alphabet-Tochter Waymo die ersten vollautonomen Taxis in Phoenix für die Öffentlichkeit in Betrieb nehmen \cite{Waymo:1}. 
 Dies ist jedoch nur möglich, da Google im gesamten Gebiet, in dem sie ihren Service anbieten werden, eine hochgenaue Umgebungskarte in die Software der Fahrzeuge integriert. Sollen die Fahrzeuge in unbekannten Umgebungen agieren, müssen sowohl die Sensorsysteme, als auch die Algorithmen noch deutlich weiterentwickelt werden, bevor autonome Autos der sogenannten Stufe 5 frei verfügbar sind. Die Unterteilung dieser Level wurde von der Bundesanstalt für Straßenwesen zur Klassifizierung von selbstfahrenden Autos erstellt \cite{BASt5L}. Die Spanne geht von Stufe 0, keinerlei Assistenz beim Fahren, bis Stufe 5, Vollautomatisierung. In dieser höchsten Stufe kann das Fahrzeug jederzeit ohne das Eingreifen des Fahrers navigieren. 
-Nicht nur in den großen Automobilkonzernen wird deshalb zum Erreichen der höchsten Automatisierungsstufe geforscht. Bereits in der Schule, aber vor allem an Universitäten und Hochschulen, gibt es immer mehr Projekte, an denen die Studenten sich intensiv mit der Entwicklung autonomer Roboter und Fahrzeugplattformen beschäftigen. Ein solches Projekt ist der \ac{FS} Driverless-Wettbewerb.
+Nicht nur in den großen Automobilkonzernen wird deshalb zum Erreichen der höchsten Automatisierungsstufe geforscht. Bereits in der Schule, aber vor allem an Universitäten und Hochschulen gibt es immer mehr Projekte, an denen die Studenten sich intensiv mit der Entwicklung autonomer Roboter und Fahrzeugplattformen beschäftigen. Ein solches Projekt ist der \ac{FS} Driverless-Wettbewerb.
 
 \section{Formula Student Driverless}
-Die Formula Student ist ein Ingenieurswettbewerb für Studenten. Er hat seine Wurzeln in den USA und wurde im Jahre 1981 das erste mal ausgetragen. Das Ziel des Wettbewerbes ist es, im Verlauf eines Jahres ein eigenes Rennauto zu konzipieren, designen, fertigen und sich schlussendlich mit anderen Teams zu messen. Dass der Wettbewerb sehr erfolgreich ist, machen nicht nur die inzwischen fast 700 Teams weltweit \cite{FsWorldRank:1} deutlich, sondern auch die Anzahl der verschiedenen Events, die überall auf der Welt im Sommer stattfinden. Seit dem Jahr 2017 gibt es neben der ursprünglichen Combustion-Klasse und der vor 10 Jahren eingeführten Electric-Klasse auch noch die Driverless-Klasse.
+Die Formula Student ist ein Ingenieurswettbewerb für Studenten. Er hat seine Wurzeln in den USA und wurde im Jahre 1981 das erste mal ausgetragen. Das Ziel des Wettbewerbes ist es, im Verlauf eines Jahres ein eigenes Rennauto zu konzipieren, designen, fertigen und sich schlussendlich mit anderen Teams zu messen. Dass der Wettbewerb sehr erfolgreich ist, machen nicht nur die inzwischen fast 700 Teams weltweit \cite{FsWorldRank:1} deutlich, sondern auch die Anzahl der verschiedenen Events, die überall auf der Welt im Sommer stattfinden. Seit dem Jahr 2017 gibt es neben der ursprünglichen Combustion-Klasse und der später eingeführten Electric-Klasse auch noch die Driverless-Klasse.
 In dieser wird von den Teams ein Altfahrzeug mit Sensoren und Aktoren so erweitert, dass das Rennauto die Kurse autonom befahren kann.
 Der Wettbewerb ist unterteilt in dynamische und statische Disziplinen. In letzteren werden verschiedene Präsentationen von den Teams ausgearbeitet. Diese beziehen sich auf die technische Realisierung, Softwaredesign, Kostenaufstellung und einen Business Plan.
 Die dynamischen Disziplinen, in denen das Fahrzeug selbstständig fährt, sind:
@@ -66,7 +66,7 @@ In der Abbildung \ref{fig:zurichDriverless} ist das autonome Rennauto von Züric
 \end{figure}
 
 \section{Problemstellung}
-Im Laufe dieser Arbeit soll ein Algorithmus entwickelt werden, der die Trajektorienplanung und Regelung eines \ac{FS} Driverless Racecars berechnet. Der dafür gewählte Ansatz ist \ac{MPC}. Es handelt sich dabei um ein Verfahren, welches die Planung von Trajektorien und die Steuerung des Rennautos in einem Algorithmus vereint. Wie der Name schon sagt, wird hierfür ein Modell des zu kontrollierenden Systems benötigt, mit dem daraufhin das zukünftige Verhalten vorausberechnet werden kann. Dieses Wissen wird genutzt um mit Hilfe einer Kostenfunktion die Steuerparameter so zu variieren, dass das Rennauto eine möglichst schnelle Rundenzeit erreicht. In der Arbeit wird untersucht, wie groß die Unterschiede zwischen einem rein geometrischen Fahrzeugmodell und einem um Reifenkräfte erweiterten, für hohe Geschwindigkeiten realistischeren Modell sind. Zudem wird evaluiert, unter welchen Einschränkungen der \ac{MPC}-Ansatz mit hinterlegtem kinematischen Modell ein dynamisches Modell im Simulator steuern kann. Das Ziel ist also eine möglichst niedrige Rundenzeit zu erreichen unter der Voraussetzung, dass das Fahrzeug immer auf dem Kurs bleibt.
+Im Laufe dieser Arbeit soll ein Algorithmus entwickelt werden, der die Trajektorienplanung und Regelung eines \ac{FS} Driverless Racecars berechnet. Der dafür gewählte Ansatz ist \ac{MPC}. Es handelt sich dabei um ein Verfahren, mit welchem sich die Planung von Trajektorien und die Steuerung des Rennautos in einem Algorithmus vereinen lässt. Wie der Name schon sagt, wird hierfür ein Modell des zu kontrollierenden Systems benötigt, mit dem daraufhin das zukünftige Verhalten vorausberechnet werden kann. Dieses Wissen wird genutzt um mit Hilfe einer Kostenfunktion die Steuerparameter so zu variieren, dass das Rennauto eine möglichst schnelle Rundenzeit erreicht. In der Arbeit wird untersucht, wie groß die Unterschiede zwischen einem rein geometrischen Fahrzeugmodell und einem um Reifenkräfte erweiterten, für hohe Geschwindigkeiten realistischeren Modell sind. Zudem wird evaluiert, unter welchen Einschränkungen der \ac{MPC}-Ansatz mit hinterlegtem ki\-ne\-ma\-tischen Modell ein dynamisches Modell im Simulator steuern kann. Das Ziel ist also eine möglichst niedrige Rundenzeit zu erreichen unter der Voraussetzung, dass das Fahrzeug immer auf dem Kurs bleibt.
 
 
 \chapter{Stand der Technik}
@@ -78,7 +78,7 @@ Einen guten Rennfahrer zeichnet die Tatsache aus, dass er sein Fahrzeug in absol
 	\item Kurze Reaktionszeiten (engl.: muscle memory)
 \end{itemize}
 
-Um die Position des Fahrzeugs genau bestimmen zu können, werden verschiedene Sensortypen mit Hilfe von Filterverfahren fusioniert. Die Genauigkeit der Schätzung steigt im Vergleich zu den einzelnen Messsystemen durch die Kombination signifikant an \cite{GPS_Fusion}, \cite{GPS_IMU_Fusion}.  
+Um die Position des Fahrzeugs genau bestimmen zu können, werden verschiedene Sen\-sor\-ty\-pen mit Hilfe von Filterverfahren fusioniert. Die Genauigkeit der Schätzung steigt im Vergleich zu den einzelnen Messsystemen durch die Kombination signifikant an \cite{GPS_Fusion}, \cite{GPS_IMU_Fusion}.  
 \newline
 Um das Rennauto mit hoher Geschwindigkeit einen Rennkurs abfahren zu lassen, wird ein Modell benötigt, welches das dynamische Verhalten des Fahrzeugs abbilden kann. Erst dieses Wissen ermöglicht die Berechnung von Trajektorien, welche das Rennauto an die Grenzen seiner Traktion bringt. Es muss dabei ein guter Kompromiss aus Komplexität (Rechenaufwand) und Genauigkeit der Abbildung gefunden werden.
 Eine sehr genaue Systembeschreibung ermöglicht das Berechnen präziserer Trajektorien. Ist dies jedoch nicht mehr in Echtzeit berechenbar, kann das Modell nicht verwendet werden.
@@ -88,16 +88,16 @@ Die Ansätze variieren je nach Komplexität und zu bewältigenden Fahrsituatione
 	
 	\item Die Nutzung einer dynamischen Fahrzeugbeschreibung die das Einspurmodell um ein lineares oder nichtlineares Reifenmodell erweitert \cite{rc_car_1_43}, \cite{MPC_Dynamic}, \cite{MPC_Dynamic_Tire_Model}
 	
-	\item Ein sehr genaues Zweispurmodell, die zehn Freiheitsgrade betrachtet und sogar das Einfedern des Fahrzeugs berücksichtigt \cite{doi:10.1137/S0036144502414942} 
+	\item Ein sehr genaues Zweispurmodell, das zehn Freiheitsgrade betrachtet und sogar das Einfedern des Fahrzeugs berücksichtigt \cite{doi:10.1137/S0036144502414942} 
 \end{itemize}
 
 Um ein mathematisches Fahrzeugmodell in einem realen Fahrzeug einsetzen zu können, müssen die das System beschreibenden Parameter möglichst genau bestimmt werden. Dies kann mit Hilfe einer Regression sehr effizient und genau realisiert werden \cite{Williams2016AggressiveDW}. \\ 
 \newline
 Sind die Grundvoraussetzungen geschaffen, gibt es unterschiedliche Ansätze, ein Rennauto möglichst schnell um einen Rennkurs fahren zu lassen. Der Einsatz von neuronalen Netzen \cite{6374146} ist eine Möglichkeit, um geeignete Steuerparameter zu berechnen. 
-Ein Ansatz, wie in \cite{KRITAYAKIRANA2010548}, hinterlegt für verschiedene Klothoiden die jeweilige Querbeschleunigung, welche wirken muss, um die Kurve fahren zu können. In einem Diagramm ist dann hinterlegt, wie groß die longitudinale Beschleunigung maximal sein darf, damit das Rennauto nicht instabil wird. Vor allem aber der in dieser Arbeit betrachtete \ac{MPC}-Algorithmus wird in einer Vielzahl von Arbeiten untersucht und verwendet. 
+Ein Ansatz, wie in der Arbeit \cite{KRITAYAKIRANA2010548}, hinterlegt für verschiedene Klothoiden die jeweilige Querbeschleunigung, welche wirken muss, um die Kurve fahren zu können. In einem Diagramm ist dann hinterlegt, wie groß die longitudinale Beschleunigung maximal sein darf, damit das Rennauto nicht instabil wird. Vor allem aber der in dieser Arbeit betrachtete \ac{MPC}-Algorithmus wird in einer Vielzahl von Arbeiten untersucht und verwendet. 
 Die Unterschiede bei den Verfahren beziehen sich auf die getrennte Berechnung von Trajektorie und Regelung, die Trennung von longitudinalem und lateralem Regler \cite{MPC_Dynamic}, \cite{MPC_Dynamic_Tire_Model} oder eine kombinierte Betrachtung \cite{rc_car_1_43}. Im Vergleich hierzu soll in dieser Arbeit die Regelfähigkeit des \ac{MPC}-Ansatzes evaluiert werden, wenn das zugrunde liegende Modell stark von dem echten System abweicht.
 \newline
-Die Aktualisierungszeit für neue Steuerparameter sollte im Anwendungsfall eines autonomen Rennautos zwischen 20 und 100 Hz liegen, je nachdem wie schnell das Fahrzeug fahren soll \cite{rc_car_1_43}, \cite{Williams2016AggressiveDW}.
+Die Aktualisierungszeit für neue Steuerparameter sollte im Anwendungsfall eines au\-to\-nomen Rennautos zwischen 20 und 100 Hz liegen, je nachdem wie schnell das Fahrzeug fahren soll \cite{rc_car_1_43}, \cite{Williams2016AggressiveDW}.
 
 
 \chapter{Grundlagen}
@@ -105,7 +105,7 @@ Um für das Fahrzeug ideale Trajektorien zu berechnen und gleichzeitig das Renna
  
 \section{Model Predictive Control}
 \label{MPC}
-Bei \ac{MPC} handelt es sich um einen Algorithmus, mit dem sich komplexe, multivariable Regelungsprobleme lösen lassen. Er eignet sich für Prozesse mit mehreren Ein- und Ausgängen, die klar definierten Beschränkungen unterliegen. Vorausgesetzt es ist ein ausreichend genaues Modell des Prozesses vorhanden, können mit dem Einbeziehen des aktuellen Systemzustands zukünftige Zustände des Prozesses berechnet werden. Diese Information wird genutzt, um die Eingangsparameter abhängig von dem gewünschten zukünftigen Verhalten des Prozesses zu berechnen \cite{seborg2010process}. \\
+Bei \ac{MPC} handelt es sich um einen Algorithmus mit dem sich komplexe, multivariable Regelungsprobleme lösen lassen. Er eignet sich für Prozesse mit mehreren Ein- und Ausgängen, die klar definierten Beschränkungen unterliegen. Vorausgesetzt es ist ein ausreichend genaues Modell des Prozesses vorhanden, können mit dem Einbeziehen des aktuellen Systemzustands zukünftige Zustände des Prozesses berechnet werden. Diese Information wird genutzt, um die Eingangsparameter abhängig von dem gewünschten zukünftigen Verhalten des Prozesses zu berechnen \cite{seborg2010process}. \\
 Einige wichtige Vorteile von \ac{MPC} sind: 
 \begin{itemize}
 	\item Das sehr gute Annähern an Prozessgrenzen und damit ein hoher Durchsatz/Effizienz. Ein Rennauto versucht zum Beispiel den Kurs bis an die Bande auszunutzen, um die höchste Kurvengeschwindigkeit fahren zu können.
@@ -139,19 +139,19 @@ Bei \ac{MPC} handelt es sich um ein Verfahren, welches immer bis zu einem festen
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=400pt]{Abbildungen/mpcParadigm.png}
-	\caption{Funktionsprinzip von \ac{MPC}: Die Kostenfunktion ist die Reduktion der Distanz zur Referenztrajektorie. Durch das Wissen über das hinterlegte Modell können die Kosten sehr schnell minimiert werden ohne die Beschränkungen zu verletzen.}
+	\caption{Funktionsprinzip von \ac{MPC}: Die Kostenfunktion ist die Reduktion der Distanz zur Referenztrajektorie. Durch das Wissen über das hinterlegte Modell können die Kosten sehr schnell minimiert werden ohne die Bes\-chränk\-ung\-en zu verletzen.}
 	\label{fig:mpcTheory}
 \end{figure}
 
-Wie bereits ausgeführt wurde, berücksichtigt der \ac{MPC}-Ansatz auch Eingangs-, Ausgangs- und Zustandsbeschränkungen, mit denen der Suchraum einschränkt wird. Diese sind im Falle eines Rennautos zum Beispiel die maximale Geschwindigkeit, Lenkeinschlag, Beschleunigung und Bremskraft. Ebenfalls ein sehr gutes Beispiel für eine Zustandsbeschränkung ist die Reisequalität in einem normalen Straßenauto. Ruckartiges Anfahren und allgemein plötzliche Änderung der lateralen wie longitudinalen Beschleunigung trübt bei einem autonomen Fahrzeug das Fahrgefühl. Eine Möglichkeit diesem Problem zu begegnen ist die Begrenzung der Änderungsrate der Beschleunigung des Fahrzeugs.\\
+Wie bereits ausgeführt wurde, berücksichtigt der \ac{MPC}-Ansatz auch Eingangs-, Ausgangs- und Zu\-stands\-be\-schrän\-kungen, mit denen der Suchraum einschränkt wird. Diese sind im Falle eines Rennautos zum Beispiel die maximale Geschwindigkeit, Lenkeinschlag, Beschleunigung und Bremskraft. Ebenfalls ein sehr gutes Beispiel für eine Zu\-stands\-be\-schrän\-kung ist die Reisequalität in einem normalen Straßenauto. Ruckartiges Anfahren und allgemein plötzliche Änderung der lateralen wie longitudinalen Beschleunigung trübt bei einem autonomen Fahrzeug das Fahrgefühl. Eine Möglichkeit diesem Problem zu begegnen ist die Begrenzung der Änderungsrate der Beschleunigung des Fahrzeugs.\\
 
 Das Grundgerüst des \ac{MPC}-Ansatz bildet der Optimierer, der die optimale Lösung für die gewünschte Kostenfunktion sucht. Im Folgenden wird daher auf die Funktionsweise von diesem eingegangen.
 
 
 \section{Optimierung}
-Das Ziel der Optimierung besteht darin, eine gegebene Funktion \(f(\vec{x})\), auch als Kostenfunktion bezeichnet, zu mini- oder maximieren. 
-Dies wird in einer Vielzahl von Anwendungsgebieten genutzt.
-Zur Berechnung von Profit bzw. Verlust in einem Betrieb, der Geschwindigkeit oder Distanz in einem physikalischen Problem oder Beispielsweise die erwartete Kapitalrendite für eine Geldanlage.  
+Das Ziel der Optimierung besteht darin, eine gegebene Funktion \(f(\vec{x})\), auch als Kosten\-funk\-ti\-on bezeichnet, zu mini- oder maximieren. 
+Dies wird in einer Vielzahl von Anwendungs\-ge\-bie\-ten genutzt.
+Zur Berechnung von Profit bzw. Verlust in einem Betrieb, der Geschwin\-dig\-keit oder Distanz in einem physikalischen Problem oder Beispielsweise die erwartete Kapital\-ren\-dite für eine Geldanlage.  
 Die Bezeichnung lineare Programmierung bezieht sich auf die Lösung eines linearen  Optimierungsproblems und hat nichts mit dem eigentlichen Programm zu tun. 
 Die allgemeine mathematische Definition eines Optimierungsproblems ist
 
@@ -169,9 +169,9 @@ $h_j(\vec{x})= 0,$ $j= 1,2,...,m$\\
 Der Eingabeparameter $\vec{x}$ sei aus $\mathbb{R} \textsuperscript{n} $, das heißt, das Problem hängt von \(n\) Einflussparametern ab. Die Zielfunktion $f:D \rightarrow \mathbb{R} $ sei zweifach stetig differenzierbar. Weiterhin sind die Nebenbedingungen in Ungleichheitsform $g_i:D \rightarrow \mathbb{R}$ mit $1\leq i \leq p$ und in Gleichheitsform $h_j:D \rightarrow \!R$ mit $1\leq j \leq m$ gegeben.
 Wird \(f(\vec{x})\) durch \(-f(\vec{x})\) ersetzt, wird aus dem Mini- ein Maximierungsproblem. Der Unterschied zu einem nichtlinearen Programm ist, dass mindestens eine der Gleichungen des Optimierungsproblems nichtlinear ist.
 
-Ein Optimierungsproblem hat nicht immer eine Lösung. Zum Beispiel können sich die  Ungleichungen, welche den Suchraum einschränken, widersprechen ($x \leq 0 $ und $x > 0$). Außerdem kann das Problem unbeschränkt sein. Soll zum Beispiel eine Optimierungsvariable minimiert werden, die nach unten nicht beschränkt ist, kann keine Lösung gefunden werden. 
+Ein Optimierungsproblem hat nicht immer eine Lösung. Zum Beispiel können sich die  Ungleichungen, welche den Suchraum einschränken, widersprechen ($x \leq 0 $ und $x > 0$). Außerdem kann das Problem unbeschränkt sein. Soll zum Beispiel eine Optimierungs\-va\-ri\-a\-ble minimiert werden, die nach unten nicht beschränkt ist, kann keine Lösung gefunden werden. 
 
-Ein Optimierungsproblem lässt sich in Matrixschreibweise darstellen. Es besteht aus der Matrix $A \in \mathbb{R} \textsuperscript{m,n}$, die zusammen mit den Vektoren $b \in \mathbb{R} \textsuperscript{m,1}$ die Un- und Gleichheitsbedingungen enthält. Der Vektor $c \in \mathbb{R} \textsuperscript{1,n}$ kodiert die Zielfunktion. Gesucht wird also der Vektor $x \in \mathbb{R} \textsuperscript{n}$, der die Bedingungen
+Ein Optimierungsproblem lässt sich in Matrixschreibweise darstellen. Es besteht aus der Matrix $A \in \mathbb{R} \textsuperscript{m,n}$, die zusammen mit den Vektoren $\vec{b} \in \mathbb{R} \textsuperscript{m,1}$ die Un- und Gleichheits\-be\-din\-gung\-en enthält. Der Vektor $\vec{c} \in \mathbb{R} \textsuperscript{1,n}$ kodiert die Zielfunktion. Gesucht wird also der Vektor $\vec{x} \in \mathbb{R} \textsuperscript{n}$, der die Bedingungen
 
 \[  \begin{array}{cccc}
 a_{11} x_1 + & ... & + a_{1n} x_n & \leq b_1 \\   	
@@ -182,8 +182,8 @@ a_{m1} x_1 + & ... & + a_{mn} x_n & \leq b_m \\
 \end{array}\] 
 erfüllt und gleichzeitig die Zielfunktion 
 $cx=c_1 x_1 + ... + c_n x_n$ minimiert.
-Die Kurzschreibweise für dieses Gleichungssystem ist: \\
-\text{min} $\{ c\textsuperscript{T}x | Ax \leq b, x \geq 0 \}$
+Die Kurz\-schreib\-wei\-se für dieses Gleichungssystem ist: \\
+\text{min} $\{ c\textsuperscript{T}\vec{x} | A\vec{x} \leq \vec{b}, \vec{x} \geq 0 \}$
 
 Veranschaulichen lässt sich die Lösung des Problems geometrisch im zweidimensionalen Raum, so dargestellt in Abbildung \ref{fig:linOpt}.
 
@@ -194,28 +194,28 @@ Veranschaulichen lässt sich die Lösung des Problems geometrisch im zweidimensi
 	\label{fig:linOpt}
 \end{figure}
 
-Jede Ungleichung $a_i x \leq b_i$ teilt den Suchraum in zwei Hälften, eine mit und eine ohne zulässige Punkte. Die Punkte auf der Grenze sind ebenfalls zulässig. Die Menge der Punkte, welche alle Ungleichungen erfüllt, ist genau der Schnitt dieser Halbräume. Dieser Bereich ist in Abbildung \ref{fig:linOpt} blau dargestellt. Der Punkt, der die Kostenfunktion $c: x \rightarrow c\textsuperscript{T} x$ minimiert, liegt auf den Kanten der Ungleichungen und wird durch Verschiebung der Hyperebene $ \{x| c\textsuperscript{T} x = 0 \}$ in Richtung des Vektors \(c\) gefunden. Nachdem das Optimierungsproblem aufgestellt ist, gibt es verschiedene Ansätze dieses zu berechnen.
+Jede Ungleichung $a_i x \leq b_i$ teilt den Suchraum in zwei Hälften, eine mit und eine ohne zulässige Punkte. Die Punkte auf der Grenze sind ebenfalls zulässig. Die Menge der Punkte, welche alle Ungleichungen erfüllt, ist genau der Schnitt dieser Halbräume. Dieser Bereich ist in Abbildung \ref{fig:linOpt} blau dargestellt. Der Punkt, der die Kostenfunktion $c: x \rightarrow c\textsuperscript{T} x$ minimiert, liegt auf den Kanten der Ungleichungen und wird durch Verschiebung der Hyperebene $ \{x| c\textsuperscript{T} x = 0 \}$ in Richtung des Vektors \(c\) gefunden. Nachdem das Op\-ti\-mie\-rungs\-pro\-blem aufgestellt ist, gibt es verschiedene Ansätze dieses zu berechnen.
 
 
 \subsection{Simplex-Verfahren}
-Bei der in dieser Arbeit zu lösenden Optimierung handelt es sich um ein nichtlineares Optimierungsproblem. Um dieses zu lösen, wird auf ein Innere-Punkte-Verfahren zurückgegriffen. Für ein besseres Verständnis des Verfahrens soll zuerst das Simplex-Verfahren kurz vorgestellt werden. Es wird für lineare Optimierungsprobleme eingesetzt und veranschaulicht die Suche nach der optimalen Lösung sehr gut. Das Verfahren wurde 1951 von Dantzig \cite{dantzig51} entwickelt und basiert auf dem Zusammenhang, dass ein lösbares lineares Programm immer einen Knoten besitzt, an dem sich Kanten verschiedener Ungleichungen treffen und die Kostenfunktion minimieren. Das Verfahren nutzt diese Eigenschaft aus, indem es sich iterativ von einem Eckpunkt zum nächsten bewegt. Das Verfahren ist bildlich in der Grafik \ref{fig:splxMethod} dargestellt.
+Bei der in dieser Arbeit zu lösenden Optimierung handelt es sich um ein nichtlineares Op\-ti\-mie\-rungs\-pro\-blem. Um dieses zu lösen wird auf das Innere-Punkte-Verfahren zurück\-ge\-grif\-fen. Für ein besseres Verständnis des Verfahrens soll zuerst das Simplex-Verfahren kurz vorgestellt werden. Es wird für lineare OOp\-ti\-mie\-rungs\-pro\-bleme eingesetzt und ver\-an\-schau\-licht die Suche nach der optimalen Lösung sehr gut. Das Verfahren wurde 1951 von Dantzig \cite{dantzig51} entwickelt und basiert auf dem Zusammenhang, dass ein lösbares lineares Programm immer einen Knoten besitzt, an dem sich Kanten verschiedener Ungleichungen treffen und die Kostenfunktion minimieren. Das Verfahren nutzt diese Eigenschaft aus, indem es sich iterativ von einem Eckpunkt zum nächsten bewegt. Das Verfahren ist bildlich in der Grafik \ref{fig:splxMethod} dargestellt.
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=200pt]{Abbildungen/simplexMethod.png}
-	\caption{Simplex Methode: Ablaufen des Suchraums entlang der Kanten der Ungleichheitsbedingungen von Knoten zu Knoten \cite{simplexWiki:1}}
+	\caption{Simplex Methode: Ablaufen des Suchraums entlang der Kanten der Un\-gleich\-heits\-be\-din\-gung\-en von Knoten zu Knoten \cite{simplexWiki:1}}
 	\label{fig:splxMethod}
 \end{figure}
 
-Die Kante, die gewählt wird, um sich zum nächsten Eckpunkt zu bewegen, hängt immer davon ab, auf welcher Flanke liegenden Punkte die Kostenfunktion weiter minimieren. Kann keine weitere Flanke gefunden werden, die die Kosten weiter reduziert, endet das Verfahren im Optimum. Die Anzahl der Kanten im Polyeder wächst exponentiell mit der Anzahl der Optimierungsvariablen (n). Da im schlechtesten Fall der Simplex-Algorithmus jeden Knotenpunkt einmal betrachten muss, hat das Verfahren daher ein exponentielles Wachstum $\mathcal{O}(c\textsuperscript{n})$ mit $c>1$ \cite{doi:10.1137/S0036144502414942}. Trotz dieser Problematik hat das Simplex-Verfahren in der Praxis eine sehr gute Laufzeit und kann für den wiederholten Aufruf einer nur leicht veränderten Optimierung (Anpassen von Parametern nach dem letzten Aufruf) einen sogenannten Warmstart nutzen. Dieser beschleunigt die Lösung ebenfalls deutlich.\\
+Die Kante die gewählt wird, um sich zum nächsten Eckpunkt zu bewegen, hängt immer davon ab, auf welcher Flanke liegenden Punkte die Kostenfunktion weiter minimieren. Kann keine weitere Flanke gefunden werden, die die Kosten weiter reduziert, endet das Verfahren im Optimum. Die Anzahl der Kanten im Polyeder wächst exponentiell mit der Anzahl der Optimierungsvariablen (n). Da im schlechtesten Fall der Simplex-Algorithmus jeden Knotenpunkt einmal betrachten muss, hat das Verfahren daher ein exponentielles Wachstum $\mathcal{O}(c\textsuperscript{n})$ mit $c>1$ \cite{doi:10.1137/S0036144502414942}. Trotz dieser Problematik hat das Simplex-Verfahren in der Praxis eine sehr gute Laufzeit und kann für den wiederholten Aufruf einer nur leicht veränderten Optimierung (Anpassen von Parametern nach dem letzten Aufruf) einen sogenannten Warmstart nutzen. Dieser beschleunigt die Lösung ebenfalls deutlich.\\
 
 
 \subsection{Innere-Punkte-Verfahren} 
 \label{ipm} 
-Die Suche nach noch besseren Verfahren, deren Komplexität nur polynomial mit der Dimension anwächst, führte dann in den Jahren 1979 bis 1984 zur Entwicklung eines neuen Algorithmus. Dieser wird als Innere-Punkte-Verfahren bezeichnet und eignet sich auch für nichtlineare Probleme. Die Un- und Gleichheitsbedingungen wie auch die Kostenfunktionen die im \ac{MPC}-Ansatz zum Regeln des Rennautos vorkommen, sind nichtlinear. Sie setzen daher einen Optimierer voraus, der diese Problemen berechnen kann. Zusätzlich gibt es, wie im Kapitel \ref{MPC} erwähnt, Beschränkungen, die bei der Suche der Lösung eingehalten werden müssen. Das Innere-Punkte-Lösungsverfahren erfüllt diese Anforderung für lineare, quadratische und nichtlineare Optimierungsprobleme und wird im Folgenden kurz vorgestellt. Der Ansatz des Verfahrens ist die Bewegung im Inneren des zulässigen Lösungsbereiches und nicht auf den Kanten wie beim Simplex-Verfahren. Diese Bewegung durch das Innere des Polytop ist in Abbildung \ref{fig:iterPointMethod} veranschaulicht.  
+Die Suche nach noch besseren Verfahren, deren Komplexität nur polynomial mit der Dimension anwächst, führte dann in den Jahren 1979 bis 1984 zur Entwicklung eines neuen Algorithmus. Dieser wird als Innere-Punkte-Verfahren bezeichnet. Die Un- und Gleichheitsbedingungen wie auch die Kostenfunktionen die im \ac{MPC}-Ansatz zum Regeln des Rennautos vorkommen, sind nichtlinear. Sie setzen daher einen Optimierer voraus, der diese Problemen berechnen kann. Zusätzlich gibt es, wie im Kapitel \ref{MPC} erwähnt, Beschränkungen, die bei der Suche der Lösung eingehalten werden müssen. Das Innere-Punkte-Lösungsverfahren erfüllt diese Anforderung für lineare, quadratische und nicht\-li\-ne\-are Optimierungsprobleme und wird im Folgenden kurz vorgestellt. Der Ansatz des Verfahrens ist die Bewegung im Inneren des zulässigen Lösungsbereiches und nicht auf den Kanten wie beim Simplex-Verfahren. Diese Bewegung durch das Innere des Polytop ist in Abbildung \ref{fig:iterPointMethod} veranschaulicht.  
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=200pt]{Abbildungen/iterPointMethod.png}
-	\caption{Beim Innere-Punkte-Verfahren bewegt sich der Optimierer durch das Innere des Polytops auf der Suche nach dem Mimimum  \cite{InnerePunkteVerfahren:1}}
+	\caption{Beim Innere-Punkte-Verfahren bewegt sich der Optimierer durch das Innere des Polytops auf der Suche nach dem Mimimum  \cite{InnerePunkteVerfahren:1}.}
 	\label{fig:iterPointMethod}
 \end{figure}
 
@@ -226,7 +226,7 @@ Die daraus resultierende Funktion wird als Barrierefunktion bezeichnet und ist d
 \begin{equation}
 	B(x,\mu) =  c\textsuperscript{T}x - \mu \sum_{i}^{n} \ln x_i
 \end{equation}
-mit $\mu > 0$ und ersetzt die Kostenfunktion im ursprünglichen Optimierungsproblem. Der Strafterm verhindert, dass der Optimierer, wie beim Simplex-Verfahren, an den Grenzen der Un- und Gleichheitsbedingungen nach der Lösung sucht, sondern sich immer im Inneren des zulässigen Lösungsbereiches bewegt. Wird \(\mu\) sehr klein (tendiert gegen null), entspricht die Lösung des Barriereproblems der gleichen wie beim ursprünglichen Optimierungsproblem. Diese Eigenschaft wird genutzt, von einem großen \(\mu\) als Startpunkt iterativ $B(x,\mu)$ zu optimieren und dann vor der nächsten Iteration \(\mu\) zu verkleinern. Das schrittweise verkleinern von $\mu$ dient dazu, sich anfangs grob und schnell, später mit kleinen Schritten und langsam der Lösung zu nähern. Die Auswirkung der stetigen Verkleinerung von \(\mu\) ist in der Abbildung \ref{fig:iterPointLn} veranschaulicht.
+mit $\mu > 0$ und ersetzt die Kostenfunktion im ursprünglichen Optimierungsproblem. Der Strafterm verhindert, dass der Optimierer, wie beim Simplex-Verfahren, an den Grenzen der Un- und Gleichheitsbedingungen nach der Lösung sucht, sondern sich immer im Inneren des zulässigen Lösungsbereiches bewegt. Wird \(\mu\) sehr klein (tendiert gegen null), entspricht die Lösung des Barriereproblems der gleichen wie beim ursprünglichen Optimierungsproblem. Diese Eigenschaft wird genutzt, von einem großen \(\mu\) als Startpunkt iterativ $B(x,\mu)$ zu optimieren und dann vor der nächsten Iteration \(\mu\) zu verkleinern. Das schrittweise verkleinern von $\mu$ dient dazu, sich anfangs grob und schnell, später mit kleinen Schritten und langsam der Lösung zu nähern. Die Auswirkung der stetigen Verkleinerung von \(\mu\) auf die Barrierefunktion ist in der Abbildung \ref{fig:iterPointLn} veranschaulicht.
 
 \begin{figure}[ht!]
 	\centering
@@ -235,31 +235,31 @@ mit $\mu > 0$ und ersetzt die Kostenfunktion im ursprünglichen Optimierungsprob
 	\label{fig:iterPointLn}
 \end{figure}
 
-Um die Lösung in jedem dieser iterativen Schritte zu finden, wird die Ableitung der Barrierefunktion gleich null gesetzt, da in diesem Punkt ein (lokales) Minimum existiert. Um diesen Punkt möglichst schnell zu finden, wird das Newton-Raphson-Verfahren angewandt. Bei diesem handelt es sich um eine Nullstellensuche, welche unter Zuhilfenahme der Ableitung der Funktion möglichst schnell ein Ergebnis findet. Der Algorithmus benötigt daher die Hesse-Matrix der Barrierefunktion. Die Berechnung dieser wird durch eine automatische Ableitung realisiert.
+An dem Punkt, an dem die Ableitung der Barrierefunktion gleich null ist, existiert ein (lokales) Minimum. Dieser Punkt muss also in jedem der iterativen Schritte möglichst schnell gefunden werden. Hierfür findet das Newton-Raphson-Verfahren Anwendung. Bei diesem handelt es sich um eine Nullstellensuche, welche unter Zuhilfenahme der Ableitung der Funktion möglichst schnell ein Ergebnis findet. Der Algorithmus benötigt daher die Hesse-Matrix der Barrierefunktion. Die Berechnung dieser wird durch eine automatische Ableitung realisiert.
 
 \subsection{Automatische Ableitung} 
 
-Ableitungen sind eine Grundvoraussetzung für viele numerische Algorithmen. Die Genauigkeit und Geschwindigkeit der Berechnung ist jedoch oftmals problematisch.
+Ableitungen sind eine Grundvoraussetzung für viele numerische Algorithmen. Die Genau\-ig\-keit und Geschwindigkeit der Berechnung ist jedoch oftmals problematisch.
 
 Ein möglicher Ansatz die Ableitung 
 \begin{equation}
 	\Delta{\tiny } f(x) = (\frac{\partial f}{\partial x_1} (x), ..., \frac{\partial f}{\partial x_n})
 \end{equation}
-der Funktion $f:\Re \textsuperscript{n} \rightarrow \Re $ zu berechnen ist \\
+der Funktion $f:\mathbb{R} \textsuperscript{n} \rightarrow \mathbb{R} $ zu berechnen ist \\
 \begin{equation}
 	f'(x) \approx \frac{f(x+h) - f(h)}{h}
 \end{equation}
  mit $ h \rightarrow 0$.
-Dieser Ansatz ist jedoch mit einer Komplexität von $\mathcal{O}(n)$ sehr ineffizient. Es entstehen zudem Rundungsfehler \cite{julDiff}.
+Dieser Ansatz ist jedoch mit einer Komplexität von $\mathcal{O}(n)$ sehr ineffizient. Es entstehen zudem Rundungsfehler.
 Eine andere Möglichkeit wäre die Ableitung manuell zu berechnen, was jedoch für komplexere Systeme sehr aufwendig und vor allem fehleranfällig ist. Eine bessere Lösung ist die automatische Ableitung (eng.: automatic differentiation). 
-Dieses System kann die Ableitung bis auf die maximal mögliche Genauigkeit eines float-Datentyps berechnen. Zu der höheren Präzision kommt noch die deutlich bessere Laufzeit hinzu. Im Idealfall entspricht die Komplexität $\mathcal{O}(1)$ \cite{julDiff}. Um diese Vorteile nutzen zu können, wird jedoch ein genaues Wissen über die abzuleitende Funktion \(f(x)\) benötigt. Realisiert wird dies durch den Zugriff auf den Sourcecode der Methode oder durch ein Überladen der Operatoren. Das Verfahren ist abhängig von den Möglichkeiten der Programmiersprache und welcher Ansatz bei der Implementierung der automatischen Ableitung verfolgt wurde. \\
+Dieses System kann die Ableitung bis auf die maximal mögliche Genau\-ig\-keit eines float-Datentyps berechnen. Zu der höheren Präzision kommt noch die deutlich bessere Laufzeit hinzu. Im Idealfall entspricht die Komplexität $\mathcal{O}(1)$ \cite{julDiff}. Um diese Vorteile nutzen zu können wird jedoch ein genaues Wissen über die abzuleitende Funktion \(f(x)\) benötigt. Realisiert wird dies durch den Zugriff auf den Sourcecode der Methode oder durch ein Überladen der Operatoren. Das Verfahren ist abhängig von den Möglichkeiten der Programmiersprache und welcher Ansatz bei der Implementierung der automatischen Ableitung verfolgt wurde. \\
 
 Ein Verfahren der Umsetzung ist der Vorwärtsmodus. Dieser basiert auf der Kettenregel 
 \begin{equation}
 	(f \circ g)' = (f' \circ g)g'
 \end{equation}
 
-Um dies auszunutzen wird eine abzuleitende Funktion $ y = f(g(h(x)))$ in seine Bestandteile $y = f(g(h(w_0))) = f(g(w_1)) = f(w_2) = w_3$ aufgetrennt und anschließend in die Kettenregel eingesetzt. 
+Um dies auszunutzen wird eine abzuleitende Funktion $ y = f(g(h(x)))$ in seine Bestandteile $y = f(g(h(w_0))) = f(g(w_1)) = f(w_2) = w_3$ aufgetrennt und anschließend in die Ket\-ten\-re\-gel eingesetzt. 
 \begin{equation}
 \frac{\partial y}{\partial x} = \frac{\partial y}{\partial w_2} \frac{\partial w_2}{\partial w_1} \frac{\partial w_1}{\partial x}
 \end{equation}
@@ -285,8 +285,8 @@ Im Folgenden wird zuerst ein kinematisches Fahrzeugmodell eingeführt und dann z
 
 \subsection{Kinematisches Modell}
 \label{kinematicModel}
-Unter gewissen Einschränkungen kann ein kinematisches Modell die laterale und longitudinale Bewegung eines Fahrzeugs mathematisch beschreiben. In diesem sehr stark vereinfachten Modell werden für die Berechnung der Bewegung keine wirkenden Kräfte berücksichtigt, sondern nur die geometrischen Beziehungen des Fahrzeugs betrachtet. \\
-Im ersten Schritt werden die jeweils an einer Achse verbundenen Räder zu einem einzigen zusammengefasst. Diese Vereinfachung wird als Bicycle Modell bezeichnet und vereinfacht die Berechnungen \cite{BicycleModel}. Obwohl auch für Hinterradlenkung möglich, wird im Folgenden nur die Vorderradlenkung betrachtet, da das Rennauto des High-Octane Motorsport e.V. keine Hinterradlenkung besitzt. Die Lenkwinkel, welche durch das Bicycle Modell berechnet werden, entsprechen nicht den Lenkwinkeln am echten Fahrzeug. Die kurveninneren und kurvenäußeren Räder bewegen sich auf zwei Kreisen mit unterschiedlichen Radien und damit auch verschiedenen Anstellwinkeln. Dies wird in Fahrzeugen durch die Ackermann-Lenkung mechanisch umgesetzt \cite{rajamani2011vehicle}.
+Unter gewissen Einschränkungen kann ein kinematisches Modell die laterale und lon\-gi\-tu\-di\-nale Bewegung eines Fahrzeugs mathematisch beschreiben. In diesem stark vereinfachten Modell werden für die Berechnung der Bewegung keine wirkenden Kräfte berücksichtigt, sondern nur die geometrischen Beziehungen des Fahrzeugs betrachtet. \\
+Im ersten Schritt werden die jeweils an einer Achse verbundenen Räder zu einem einzigen zusammengefasst. Diese Vereinfachung wird als Bicycle Modell bezeichnet und vereinfacht die Berechnungen \cite{BicycleModel}. Obwohl auch für Hinterradlenkung möglich, wird im Fol\-gen\-den nur die Vorderradlenkung betrachtet, da das Rennauto des High-Octane Motorsport e.V. keine Hinterradlenkung besitzt. Die Lenkwinkel, welche durch das Bicycle Modell berechnet werden, entsprechen nicht den Lenkwinkeln am echten Fahrzeug. Die kurven\-inneren und kurvenäußeren Räder bewegen sich auf zwei Kreisen mit unterschiedlichen Radien und damit auch verschiedenen Anstellwinkeln. Dies wird in Fahrzeugen durch die Ackermann-Lenkung mechanisch umgesetzt \cite{rajamani2011vehicle}.
 
 \newpage
 Die nichtlinearen, zeitkontinuierlichen Gleichungen 
@@ -332,12 +332,12 @@ ergibt sich eine mittlere Beschleunigung von $7,47$ $ \frac{\text{m}}{\text{s\te
 
 \subsubsection*{Begrenzung des Kurvenradius}
 \label{betaMax}
-Da beim kinematischen Modell die Annahme getroffen wird, dass das Rad immer in genau die Richtung rollt, in die es zeigt, kann das Fahrzeug bei jeder Geschwindigkeit \(v\) den gleichen Kurvenradius durchfahren. Um auch in höheren Geschwindigkeiten eine akzeptable Regelung zu erhalten, wird eine Beschränkung eingefügt, die die maximale Querbeschleunigung beschränkt. Der Maximalwert entspricht dem höchsten g-Wert, den das Fahrzeug des High-Octane Motorsports mit Aerodynamik in einer Kurve erreichen kann: $a_{max} \sim 2,0$ g. 
+Da beim kinematischen Modell die Annahme getroffen wird, dass das Rad immer in genau die Richtung rollt, in die es zeigt, kann das Fahrzeug bei jeder Geschwindigkeit \(v\) den gleichen Kurvenradius durchfahren. Um auch in höheren Geschwindigkeiten eine akzeptable Regelung zu erhalten, wird eine Beschränkung eingefügt, die die maximale Querbeschleunigung limitiert. Der Maximalwert entspricht dem höchsten g-Wert, den das Fahrzeug des High-Octane Motorsports mit Aerodynamik in einer Kurve erreichen kann: $a_{max} \sim 2,0$ g. 
 Mit der Gleichung
 \begin{equation}
 	|\beta| \leq \arctan \left(\frac{l}{4} \frac{a_{max}}{v^2} \right) \label{limitLatAcc}
 \end{equation}
-wird dies über die Einschränkung des Schwimmwinkels, der wiederum aus dem Lenkwinkel (\ref{compute_beta}) berechnet wird, erreicht. Bei höheren Geschwindigkeiten wird also der minimale Kurvenradius durch die künstliche Limitierung des maximalen Lenkwinkels erreicht. 
+wird dies über die Einschränkung des Schwimmwinkels, der wiederum aus dem Lenkwinkel (\ref{compute_beta}) berechnet wird, erreicht. Bei höheren Geschwindigkeiten wird also der minimale Kurvenradius durch die künstliche Limitierung des maximalen Lenk\-win\-kels erreicht. 
 
 
 \subsection{Reifenmodell}
@@ -345,7 +345,7 @@ wird dies über die Einschränkung des Schwimmwinkels, der wiederum aus dem Lenk
 Da der Reifen der einzige Kontaktpunkt zwischen Fahrbahn und Fahrzeug ist, beeinflusst er das Fahrverhalten maßgeblich. Aufgabe des Reifens ist es, sämtliche Kräfte und Momente zu übertragen und eine optimale Straßenlage zu gewährleisten. Demzufolge ist der Reifen das Bauteil, das die Fahrleistungen des Rennautos am stärksten beeinflusst.
 
 Die Kräfte, die ein Reifen auf die Straße übertragen kann, sind in longitudinalen und lateralen Anteil aufgespalten. Sie hängen ab von der Radlast, die das Fahrzeug auf die Straße presst, dem Schlupf und dem Schräglaufwinkel. Die Radlast \(F_z\) berechnet sich aus der Normalkraft und der Radlastverteilung und wird im Folgenden als konstant angesehen. Der Schlupf tritt in longitudinaler Richtung auf und ist die Differenz aus Umlaufgeschwindigkeit und Bewegungsgeschwindigkeit des Fahrzeugs.
-Nur wenn ein Schlupf vorhanden ist, übertragen Reifen Kraft auf ihren Untergrund. Dies ist bei Beschleunigungsrennen gut zu beobachten, wo die maximale Kraftübertragung im Bereich von 30 Prozent Schlupf liegt (leicht durchdrehende Reifen).
+Nur wenn ein Schlupf vorhanden ist, übertragen Reifen Kraft auf ihren Untergrund. Dies ist bei Be\-schleu\-ni\-gungs\-rennen gut zu beobachten, wo die maximale Kraftübertragung im Bereich von 30 Prozent Schlupf liegt (leicht durchdrehende Reifen).
 Die Seitenführungskraft \(F_y\) wirkt bei einer Kurvenfahrt der Fliehkraft entgegen und hält das Fahrzeug auf der Spur solange ein Kräftegleichgewicht besteht. Für diese laterale Kraft muss der Schräglaufwinkel, genauso wie beim Schlupf, größer null sein. Als Schräglaufwinkel wird der von der Radmittelebene \(\delta\) (Lenkwinkel) und der Bewegungsrichtung \(\theta_{vf}\) des Reifens eingeschlossenen Winkel (siehe Abbildung \ref{fig:linLat})
 
 \begin{equation}
@@ -372,7 +372,7 @@ F_{yr} = C_\alpha \alpha_r
 \end{eqnarray}
 
 Für größere Schräglaufwinkel kann kein linearer Verlauf mehr angenommen werden und es muss eine genauere Approximation der Kräfte gewählt werden. Hierfür wird die sogenannte \ac{M.F.}  \cite{magicFormula} verwendet. Dabei handelt es sich um eine mathematische Gleichung, die sehr gut Messkurven approximiert, die auf Testständen gemessen werden.
-Sie wurde 1993 von Pacejka und Bakker entwickelt und eignet sich sowohl für die Berechnung der longitudinalen, wie auch der lateralen Kräfte. 
+Sie wurde 1992 von Pacejka und Bakker entwickelt und eignet sich sowohl für die Berechnung der longitudinalen, wie auch der lateralen Kräfte. 
 Die Querkräfte $F_y$, die der Reifen auf die Straße überträgt, ergeben sich durch den Schräglaufwinkel $\alpha$.
 
 \begin{equation}
@@ -445,13 +445,13 @@ dargestellt und wurden mit Parametern \ref{tireParam} berechnet, die vom High-Oc
 	\label{tireParam}
 \end{table}
 
-Nicht weiter spezifiziert wird im Folgenden davon ausgegangen, dass das genaueste Modell Verwendung findet.
+Im Folgenden davon ausgegangen, dass immer das genaueste Modell Verwendung findet.
 
 
 
 \subsubsection*{Kammscher Kreis}
 
-Ähnlich wie bei \(F_y\) wird auch die Kraft \(F_x\), welche das Fahrzeug in Längsrichtung beschleunigt, durch den Schlupf berechnet. Dieser hängt direkt von der Geschwindigkeit und Raddrehzahl ab. Da für die Bestimmung dieser jedoch eine Motorsimulation erforderlich wäre, wird \(F_x\) direkt aus der Motorleistung, Reibung und Luftwiderstand berechnet (siehe Abschnitt \ref{dynModel}) und durch \(F_{max}\) begrenzt. \(F_{max}\) entspricht der maximalen Kraft, die der Reifen übertragen kann.\\
+Ähnlich wie bei \(F_y\) wird auch die Kraft \(F_x\), welche das Fahrzeug in Längsrichtung beschleunigt, durch den Schlupf berechnet. Dieser hängt direkt von der Geschwindigkeit und Raddrehzahl ab. Da für die Bestimmung dieser jedoch eine Motorsimulation er\-for\-der\-lich wäre, wird \(F_x\) direkt aus der Motorleistung, der Reibung und dem Luftwiderstand berechnet (siehe Abschnitt \ref{dynModel}) und durch \(F_{max}\) begrenzt. \(F_{max}\) entspricht der maximalen Kraft, die der Reifen übertragen kann.\\
 \begin{equation}
 F_x \leq F_{max}
 \end{equation}
@@ -461,7 +461,7 @@ Der Zusammenhang zwischen lateraler und longitudinaler Kraft wird über den \ac{
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=250pt]{Abbildungen/kamKreis.png}
-	\caption{Kammscher Kreis: Beschränkung der maximal wirkenden Kraft.}
+	\caption{Der Kammscher Kreis beschränkt der maximal wirkenden Kraft.}
 	\label{fig:kamKreis}
 \end{figure}
 
@@ -471,12 +471,12 @@ Dieser schränkt die wirkenden Kräfte so ein, dass die Hypotenuse aus \(F_x\) u
 F_{ll} = \sqrt{F_x^2 + F_y^2} \label{maxForceLL} \\
 F_{ll} \leq F_{max}  \label{limitMaxForceLL}
 \end{eqnarray}
-Falls die Kraft $F_{ll}$ größer als $F_{max}$ ist, wird das Verhältnis der Kräfte 
+Falls die Kraft $F_{ll}$ größer als $F_{max}$ ist, wird das Verhältnis 
 
 \begin{equation}
 	\alpha = \arctan(F_x, F_y)
 \end{equation}
-berechnet und auf $F_{max}$ 
+der Kräfte berechnet und auf $F_{max}$ 
 \begin{eqnarray}
 F_x = F_{max} \sin(\alpha)\\
 F_y = F_{max} \cos(\alpha)
@@ -484,7 +484,7 @@ F_y = F_{max} \cos(\alpha)
 herunterskaliert.
 
 
-Bei einem gleichen Anteil an longitudinaler und lateraler Kraft können die Reifen also das größte Moment auf die Straße übertragen. In Kurven versucht der Rennfahrer genau diesen Punkt zu treffen, um das gesamte Potenzial der Reifen auszunutzen.
+Bei einem gleichen Anteil an longitudinaler und lateraler Kraft können die Reifen also das größte Moment auf die Straße übertragen. In Kurven versucht der Rennfahrer genau diesen Punkt zu treffen, um das gesamte Potenzial der Reifen auszunutzen. Findet das dynamische Modell mit der Erweiterung durch den \ac{K.K.} Verwendung wird dies explizit erwähnt. 
 
 Mit dem Wissen, wie die longitudinalen und lateralen Kräfte berechnet werden, kann nun ein genaueres Systemmodell genutzt werden.
 
@@ -504,7 +504,7 @@ Die Kräfte \(F_{yf}\) und \(F_{yr}\) greifen jeweils am vorderen \((.)_f\) und 
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=300pt]{Abbildungen/dynBicycle.png}
-	\caption{Dynamic Vehicle Model}
+	\caption{dynamisches Fahrzeugmodell}
 	\label{fig:dynModel}
 \end{figure}
 
@@ -553,7 +553,7 @@ Die longitudinale Kraft für Beschleunigung \((.)_{acc}\) und Bremsvorgang \((.)
 \begin{equation}
 	F_{lr_{acc}} = \frac{P_{engine}}{|\dot{x}|} \label{long_dyn_engine}
 \end{equation}
-hängt von der Motorleistung $P_{engine}$ und der Geschwindigkeit $\dot{x}$ ab. Die Motorleistung wird über die Gaspedalstellung tp variiert und berechnet sich aus die Gleichung 
+hängt von der Motorleistung $P_{engine}$ und der Geschwindigkeit $\dot{x}$ ab. Die Motorleistung wird über die Gaspedalstellung tp variiert und berechnet sich aus der Gleichung 
 \begin{equation}
 P_{engine} = P_{engine_{max}} \cdot tp.
 \end{equation}
@@ -563,20 +563,20 @@ Für kleine Geschwindigkeiten begrenzen die Reifen die maximale auf die Straße 
 	F_{lr_{acc}}\leq 2 F_{max} \label{long_dyn_max}.
 \end{equation}
 
-Beim Bremsvorgang, ergibt sich die longitudinale Kraft aus der Bremspedalstellung und den maximalen Reifenkräften.
+Beim Bremsvorgang ergibt sich die longitudinale Kraft aus der Bremspedalstellung $break$ und den maximalen Reifenkräften.
 \begin{equation}
 F_{lr_{dec}} = - 2 F_{max} \cdot break
 \end{equation} 
 
-Solange sich das Fahrzeug vorwärts bewegt, wirken zusätzlich die Luft- und Rollreibung 
+Solange sich das Fahrzeug vorwärts bewegt wirken zusätzlich die Luft- und Rollreibung 
 \begin{eqnarray}
 F_{roll} = m \mu g \\
-F_{aero} = \frac{1}{2} \rho C_d A_f \dot{x}^2
+F_{luft} = \frac{1}{2} \rho C_d A_f \dot{x}^2
 \end{eqnarray}
 der longitudinalen Kraft des Motors entgegen.
 Diese Gleichungen sind nur zulässig, solange von einem Rennkurs ohne Steigung ausgegangen wird. Die resultierende longitudinale Kraft 
 \begin{equation}
-F_{lr} = F_{lr} - F_{aero} - F_{roll}
+F_{lr} = F_{lr} - F_{luft} - F_{roll}
 \end{equation}
 
 wird mit der lateralen Kraft im \ac{K.K.} verrechnet und in der finalen Bewegungsgleichung verwendet.
@@ -600,12 +600,12 @@ y_{k+1} =& Y_{k} + \Delta t(\dot{x}_k \sin(\Psi_k) - \dot{y}_k \cos(\Psi_k) \\
 \dot{\psi}_{k+1} =& \dot{\psi}_k + \Delta t \left( \frac{ l_f F_{yf} -  l_r F_{yr}}{I}  \right)\\
 \end{eqnarray}
 
-Im dynamischen Fahrzeugmodell ändert sich damit auch der Zustandsvektor \\
+Im dynamischen Fahrzeugmodell ändert sich damit im Vergleich zum kinematischen Modell der Zustandsvektor zu\\
 \(x\), \(y\), \(x_d\), \(y_d\), \(\Psi\), \(\dot{\psi}\). \\
 
-Die Fahrzeugparameter \ref{vehicleParam} die zur Berechnung verwendet wurden, beziehen sich auf das aktuellste Fahrzeug des High-Octane Motorsports Verein.
+Die Fahrzeugparameter (\ref{vehicleParam}) die zur Berechnung verwendet wurden, beziehen sich auf das aktuellste Fahrzeug des High-Octane Motorsports Verein.
 
-\begin{table}[]
+\begin{table}[ht!]
 	\centering
 	\caption{Fahrzeug Parameter}
 	\begin{tabular}{l|l|l}
@@ -613,7 +613,7 @@ Die Fahrzeugparameter \ref{vehicleParam} die zur Berechnung verwendet wurden, be
 		Formelzeichen	& Wert & Einheit \\ \hline
 		\(l_f\)	&	0,66 & m\\
 		\(l_r\)	&	0,97 & m\\
-		\(l_b\)	&	1,53 & m \\
+		\(l_b\)	&	1,2 & m \\
 		\(r\)	&	0,2 & m \\
 		\(m\)	&  	220 & kg\\
 		\(I\)	&  	400 & kgm\textsuperscript{2}\\
@@ -621,7 +621,7 @@ Die Fahrzeugparameter \ref{vehicleParam} die zur Berechnung verwendet wurden, be
 		\(P_{engine}\) &  53 & kW\\
 		\(C_d\)	&  	1.5 & - \\
 		\(\rho\)	&  	1,225 & $\frac{\text{kg}}{\text{m\textsuperscript{3}}}$\\
-		\(F_{max}\)	&  	1,6 & kN \\ 
+		\(F_{max}\)	&  	3,1 & kN \\ 
 	\end{tabular}
 	\label{vehicleParam}
 \end{table}
@@ -630,7 +630,7 @@ Die Fahrzeugparameter \ref{vehicleParam} die zur Berechnung verwendet wurden, be
 
 \chapter{MPC zur Trajektorienplanung und Regelung}
 
-Ein schneller Rennfahrer zeichnet sich dadurch aus, dass er genau abschätzen kann, wie viel Kräfte die Reifen des Fahrzeugs auf die Straße übertragen können. Die Kunst liegt also darin, möglichst in jeder Fahrsituation das gesamte Potential voll auszunutzen. Zudem kann er sich dynamisch an Änderungen der Streckenverhältnisse anpassen und versucht immer die Idealtrajektorie zu treffen. Die Definition dieser ist die größtmögliche Streckenlänge in kleinstmöglicher Zeit zurückzulegen. Für eine Gerade oder eine einzige Kurve ist dies in Abbildung \ref{fig:idealTrajektorie} dargestellt. Der sogenannte Scheitelpunkt markiert hierbei den Punkt des geringsten Radius und der kleinsten Geschwindigkeit. An diesem Punkt muss das Fahrzeug im besten Fall genau die Seitenbegrenzung tangieren. 
+Ein schneller Rennfahrer zeichnet sich dadurch aus, dass er genau abschätzen kann, wie viel Kräfte die Reifen des Fahrzeugs auf die Straße übertragen können. Die Kunst liegt also darin, möglichst in jeder Fahrsituation das gesamte Potential voll auszunutzen. Zudem kann er sich dynamisch an Änderungen der Streckenverhältnisse anpassen und versucht immer die Idealtrajektorie zu treffen. Die Definition dieser ist die größtmögliche Streckenlänge in kleinstmöglicher Zeit zurückzulegen. Für eine Kurve ist dies in Abbildung \ref{fig:idealTrajektorie} dargestellt. Der sogenannte Scheitelpunkt markiert hierbei den Punkt des geringsten Radius und der kleinsten Geschwindigkeit. An diesem Punkt muss das Fahrzeug im besten Fall genau die Seitenbegrenzung tangieren. 
 Bei komplexeren Streckengefügen kann es jedoch von Vorteil sein, eine Kurve eventuell nicht ideal auszufahren, um im späteren Verlauf einen größeren Geschwindigkeitsgewinn in einer anderen Kurve einfahren zu können.
 
 \begin{figure}[ht!]
@@ -648,12 +648,12 @@ Vorteile hierfür wären gewesen:
 \begin{itemize}
 	\item Eine einfachere Anpassung der Parameter für das reale Fahrzeug.
 	\item Eine höhere Robustheit. Der Ausfall eines Reglers würde zumindest noch eine eingeschränkte Kontrolle ermöglichen.
-	\item Zwei einfacher zu berechnende Probleme. Da die Berechnungszeit nicht linear mit der Komplexität steigt, wären hier möglicherweise deutliche Geschwindigkeitssteigerungen möglich.
+	\item Zwei einfacher zu berechnende Probleme. Da die Berechnungszeit nicht linear mit der Komplexität steigt, wären hier möglicherweise deutliche Geschwindig\-keits\-stei\-ger\-ung\-en möglich.
 	\item Ein weniger komplexer \ac{MPC}-Ansatz ist einfacher zu testen und zu entwickeln.
 \end{itemize}
 
 Die Vorteile werden aber mit dem Nachteil begleitet, dass bei einem Rennauto die longitudinale und laterale Bewegung des Fahrzeugs stark miteinander korrelieren. Durch die Trennung kann keine optimale Lösung mehr gefunden werden. 
-Zudem ist die Integration komplexer, da beide Regler gleichzeitig laufen und ihre Berechnungen miteinander ausgetauscht werden müssen.
+Zudem ist die Integration komplexer, da beide Regler gleichzeitig laufen und ihre Berechnungen miteinander aus\-ge\-tau\-scht werden müssen.
 Aufgrund des Anwendungsszenarios wurde sich gegen den zweigeteilten Ansatz entschieden.
 
 
@@ -673,10 +673,10 @@ x_i \\ y_i \\ v_i \\ \psi_i \\ a_i \\ \delta_i
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=150pt]{Abbildungen/predictionMPC.png}
-	\caption{Grafische Visualisierung der Prädiktion abhängig von den Steuerparametern für drei Schritte in die Zukunft}
+	\caption{Grafische Visualisierung der Prädiktion für drei Schritte in die Zukunft}
 	\label{fig:predictionMpc}
 \end{figure}
-Zwischen jedem der einzelnen Schritte wird ein $\Delta t$ angenommen, dass dem der Positionsschätzung entspricht, also $\frac{1}{20}$ s. Obwohl immer nur der erste Steuerbefehl des berechneten Steuervektors im realen System angewandt wird, ist der Vektor trotzdem von Nutzen. Sollte die Optimierung, unterbrochen durch andere Prozesse, einmal nicht schnell genug sein, können die Steuerbefehle aus der vorherigen Optimierung verwendet werden. Dies funktioniert solange die Zeitverzögerung kleiner als die gesamte Zukunftsprädiktion ist. Obwohl diese Werte zum Regeln genutzt werden können, nimmt aufgrund von Modellfehlern die Güte der berechneten Werte mit der Anzahl der Prädiktionsschritte ab. Es ist also nicht sinnvoll, den \ac{MPC}-Algorithmus langsamer als die Positionsschätzung berechnen zu lassen. 
+Zwischen jedem der einzelnen Schritte wird ein $\Delta t$ angenommen, dass dem der Positions\-schät\-zung entspricht, also $\frac{1}{20}$ s. Obwohl immer nur der erste Steuerbefehl des berechneten Steuer\-vek\-tors im realen System angewandt wird, ist der Vektor trotzdem von Nutzen. Sollte die Op\-ti\-mie\-rung, unterbrochen durch andere Prozesse, einmal nicht schnell genug sein, können die Steuer\-be\-feh\-le aus der vorherigen Optimierung verwendet werden. Dies funktioniert solange die Zeit\-ver\-zö\-ger\-ung kleiner als die gesamte Zukunftsprädiktion ist. Obwohl diese Werte zum Regeln genutzt werden können, nimmt aufgrund von Modellfehlern die Güte der berechneten Werte mit der Anzahl der Prädiktionsschritte ab. Es ist also nicht sinnvoll, den \ac{MPC}-Algorithmus langsamer als die Positions\-schät\-zung berechnen zu lassen. 
 
   
 
@@ -686,7 +686,7 @@ Nachdem der Vektor mit den Einflussparametern definiert ist, werden im nächsten
 Zu Beginn haben die Teilvektoren $\vec{x}$ keinen Bezug zueinander. Da jedoch die einzelnen Prädiktionsschritte voneinander über den Fahrzeugzustand, Steuerparameter und das Fahrzeugmodell zusammenhängen, werden im zweiten Schritt die Beschränkungen hierfür definiert und als Ungleicheitsbedingungen in das zu optimierende nichtlineare Problem integriert. Dazu wird die diskretisierte Form des Systemmodells genutzt, um immer zwei aufeinander folgende Schritte miteinander zu verknüpfen. 
 
 Zusätzlich zu der Systembeschreibung fehlen noch Einschränkungen für den Optimierer, welche die physikalischen Eigenschaften des Rennautos abbilden.
-Dazu zählen die maximale Geschwindigkeit, die Beschleunigung und der Lenkwinkel. Diese Beschränkungen werden für jeden der Teilvektoren hinterlegt. Zusammen mit dem Fahrzeugmodell benötigt das \ac{MPC} noch eine Kostenfunktion, damit der Optimierer überhaupt einen Anlass hat das Rennauto zu beschleunigen.
+Dazu zählen die ma\-xi\-male Geschwindigkeit, die Beschleunigung und der Lenkwinkel. Diese Beschränkungen werden für jeden der Teilvektoren hinterlegt. Zusammen mit dem Fahrzeugmodell benötigt das \ac{MPC} noch eine Kostenfunktion, damit der Optimierer überhaupt einen Anlass hat das Rennauto zu beschleunigen.
 
 
 \section{Kostenfunktionen}
@@ -698,8 +698,8 @@ Mit der Funktion
 \begin{equation}
 	f(\vec{X}) =  \sum_{1}^{N} \frac{1}{v_i}
 \end{equation}
-wird die Summe aller inversen Geschwindigkeitswerte der einzelnen Prädiktionsschritte addiert und als Kosten versucht zu maximieren.
-Die Berechnung bezieht den Geschwindigkeitswert aus dem aktuellen (0-ten) Fahrzeugzustand nicht ein, da der Optimierer keinen Einfluss mehr auf diesen hat. Der Vorteil dieser Funktion ist die einfache Berechnung und leichte Integration in den \ac{MPC}-Algorithmus. Im weiteren Verlauf wird diese Kostenfunktion als max-speed bezeichnet.
+wird die Summe aller inversen Geschwindigkeitswerte der einzelnen Prädiktionsschritte addiert und als Kosten versucht zu minimieren.
+Die Berechnung bezieht den Ge\-schwin\-dig\-keits\-wert aus dem aktuellen (0-ten) Fahrzeugzustand nicht ein, da der Optimierer keinen Einfluss mehr auf diesen hat. Der Vorteil dieser Funktion ist die einfache Berechnung und leichte Integration in den \ac{MPC}-Algorithmus. Im weiteren Verlauf wird diese Kostenfunk\-ti\-on als Max-Speed bezeichnet.
 
 \subsubsection*{Zielpunkt Distanzminimierung}
 Für diese Kostenfunktion wird vor dem letzten Prädiktionsschritt ein virtuelles Ziel definiert und die Distanz des $N+1$ Schrittes zu diesem Ziel minimiert. Der Optimierer wird also Steuerparameter suchen, die ihn möglichst dicht an dieses Ziel bringen. Das virtuelle Ziel wird nach jedem Update wieder so neu positioniert, dass das Rennauto den Punkt niemals erreichen kann und damit konstant schnell weiterfährt. Die Distanz $d_{goal}$, in der das virtuelle Ziel platziert wird, errechnet sich durch die maximale Geschwindigkeit und die Anzahl der Prädiktionsschritte durch die Gleichung 
@@ -716,24 +716,24 @@ Eine bildliche Darstellung der Kostenfunktion ist in Abbildung \ref{fig:costGoal
 	\caption{Zielpunkt Distanzminimierung: Das virtuelle Ziel wird immer weit genug vor dem Fahrzeug hergeschoben, so dass es nie erreicht werden kann}
 	\label{fig:costGoalDist}
 \end{figure}
-Im weiteren Verlauf wird diese Kostenfunktion mit min-dist bezeichnet.
+Im weiteren Verlauf wird diese Kostenfunktion mit Min-Dist bezeichnet.
 
 \subsubsection*{Maximieren der Streckendistanz}
-Um eine Kostenfunktion zu finden, die einer Idealtrajektorie am nächsten kommt, muss überlegt werden wie diese gemessen werden kann. Die bestmögliche Trajektorie ist diejenige, welche für ein $\Delta t$ die zurückgelegte Strecke, nicht bezogen auf das Fahrzeug, sondern auf den Rennkurs, maximiert. Würde die vom Rennauto zurückgelegte Strecke maximiert werden, würde das Rennauto einfach immer an der äußeren Begrenzung des Kurses entlang fahren. Die Streckenmaximierung lässt sich zu einer Minimierung der nach einem Zeitschritt übrig bleibenden Reststrecke umformen. Die Reststrecke wird einfachheitshalber auf einen Punkt bezogen, der in einer Distanz vor dem letzten Prädiktionsschritt liegt, den dieser nicht erreichen kann. Der Unterschied zur Kostenfunktion, welche die Distanz minimiert ist, dass sich die Differenz nicht auf einen Punkt, sondern auf eine Gerade senkrecht zur Rennkursmitte bezieht.
+Um eine Kostenfunktion zu finden, die einer Idealtrajektorie am nächsten kommt, muss überlegt werden wie diese gemessen werden kann. Die bestmögliche Trajektorie ist diejenige, welche für ein $\Delta t$ die zurückgelegte Strecke, nicht bezogen auf das Fahrzeug, sondern auf den Rennkurs, maximiert. Würde die vom Rennauto zurückgelegte Strecke maximiert werden, würde das Rennauto einfach immer an der äußeren Begrenzung des Kurses entlang fahren. Die Streckenmaximierung lässt sich zu einer Minimierung der nach einem Zeitschritt übrig bleibenden Reststrecke umformen. Die Reststrecke wird einfachheitshalber auf einen Punkt bezogen, der in einer Distanz vor dem letzten Prädiktionsschritt liegt, den dieser nicht erreichen kann. Der Unterschied zur Kosten\-funk\-ti\-on, welche die Distanz minimiert ist, dass sich die Differenz nicht auf einen Punkt, sondern auf eine Gerade senkrecht zur Rennkursmitte bezieht.
 Realisiert wird dies durch eine Vektorabbildung (eng.: vector rejection)
 \begin{equation}
 	d = |a - \frac{ab}{bb}b|.
 \end{equation}
 Der Vektor vom Mittelpunkt der Strecke zum Massenschwerpunkt des Fahrzeugs wird als a bezeichnet und b als der Vektor vom Mittelpunkt der Strecke zur Streckenbegrenzung.
-Der Zusammenhang ist in der Grafik \ref{fig:maxDist} grafisch  veranschaulicht. Zur besseren Darstellung wurde die Nase des Rennautos und nicht der Massenschwerpunkt gewählt.
+Der Zusammenhang ist in der Grafik \ref{fig:maxDist}  veranschaulicht. Zur besseren Darstellung wurde die Nase des Rennautos und nicht der Massenschwerpunkt gewählt.
 
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=200pt]{Abbildungen/vektorRejection.png}
-	\caption{Maximieren der Streckendistanz}
+	\caption{Vektor Projektion zum Maximieren der Streckendistanz}
 	\label{fig:maxDist}
 \end{figure}
-Im weiteren Verlauf wird diese Kostenfunktion als max-track bezeichnet.
+Im weiteren Verlauf wird diese Kostenfunktion als Max-Track bezeichnet.
 
 \section{Strecken- und Positionsbeschränkung}
 \label{trackAndPosConstraint}
@@ -741,11 +741,11 @@ In Folge der Kostenfunktionen werden die Steuerparameter durch den Optimierer so
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=200pt]{Abbildungen/tangentialConstraint.png}
-	\caption{Tangentiale Begrenzung hält das Fahrzeug auf der Fahrspur}
+	\caption{Die tangentiale Begrenzung hält das Fahrzeug auf der Fahrspur.}
 	\label{fig:tangentialConstraint}
 \end{figure}
 
-Solange sich jeder Prädiktionsschritt innerhalb seines Tangentenpaares bewegt, ist die Beschränkung erfüllt. Während des Optimierungsvorgangs wird die Position der Tangenten nicht verändert. Der Prädiktionsschritt \(n\) benötigt einen passenden Streckenabschnitt, für den die Beschränkungen ausgelegt werden. Dazu kann auf die Ergebnisse der vorausgehenden Optimierung zurückgegriffen werden. Die Position des $n+1$-Schrittes wird gewählt und für diesen die Tangenten berechnet. Für den letzten Schritt \(N +1\) ist dies nicht möglich, hier wird mithilfe der Geschwindigkeit und Orientierung ein virtueller Punkt projiziert.   
+Solange sich jeder Prädiktionsschritt innerhalb seines Tangentenpaares bewegt ist die Beschränkung erfüllt. Während des Optimierungsvorgangs wird die Position der Tangenten nicht verändert. Der Prädiktionsschritt \(n\) benötigt einen passenden Streckenabschnitt, für den die Beschränkungen ausgelegt werden. Dazu kann auf die Ergebnisse der vo\-raus\-ge\-henden Optimierung zurückgegriffen werden. Die Position des $n+1$-Schrittes wird gewählt und für diesen die Tangenten berechnet. Für den letzten Schritt \(N +1\) ist dies nicht möglich, hier wird mithilfe der Geschwindigkeit und Orientierung ein virtueller Punkt projiziert.   
 
 
 Dieses Verfahren funktioniert nur durch die physikalischen Grenzen der Beschleunigung des Rennautos. Das Fahrzeug bewegt sich immer in einem bestimmten Bereich um den Punkt herum, der bei gleichbleibender Geschwindigkeit $\Delta t \cdot v$ Meter entfernt von seinem Vorgängerzustand liegt. Wenn sich dieser Punkt in einer Kurve direkt an der Streckenmarkierung befindet, könnte das Fahrzeug sich vom Kurs herunter bewegen, obwohl die Tangentialbeschränkung erfüllt ist. Dies wird dadurch verhindert, dass der nächste Prädiktionsschritt in diesem Fall seine Beschränkung nicht mehr erfüllen würde.
@@ -763,27 +763,25 @@ Die Vektorprojektion ist im Schaubild \ref{fig:vektorProjektion} dargestellt.
 	\label{fig:vektorProjektion}
 \end{figure}
 
-Für diese Beschränkung können sich die Räder des Fahrzeuges über den Rand hinausbewegen. Soll dies verhindert werden, muss diese Beschränkung auf jedes der einzelnen Räder erweitert werden. Das einfache verjüngen der Streckenbreite ist nicht ausreichend, da der Schwerpunkt des Fahrzeugs nicht in der Mitte liegt und das Fahrzeug auch quer stehen kann.
+Für diese Beschränkung können sich die Räder des Fahrzeuges über den Rand hinaus\-be\-we\-gen. Soll dies verhindert werden, muss diese Beschränkung auf jedes der einzelnen Räder erweitert werden. Das einfache verjüngen der Streckenbreite ist nicht ausreichend, da der Schwerpunkt des Fahrzeugs nicht in der Mitte liegt und das Fahrzeug auch quer stehen kann.
 
-Im letzten Schritt, bevor der \ac{MPC}-Algorithmus funktionsbereit ist, wird der Fahrzeugzustand des aktuellen Zeitschritts $t_0$ als Beschränkung verankert.  Dies ist nötig um zu verhindern, dass der Optimierer einfach die \(x\)-, und \(y\)-Position auf den Punkt legt, welcher die Kostenfunktion ideal minimiert. 
+Im letzten Schritt, bevor der \ac{MPC}-Algorithmus funktionsbereit ist, wird der Fahrzeug\-zu\-stand des aktuellen Zeitschritts $t_0$ als Beschränkung verankert.  Dies ist nötig um zu verhindern, dass der Optimierer einfach die \(x\)-, und \(y\)-Position auf den Punkt legt, welcher die Kostenfunktion ideal minimiert. 
 
 \subsubsection*{Suchbereichsbeschränkung}
 Während dem Testen der Kostenfunktion zum Maximieren der Geschwindigkeit ist ein Phänomen aufgetreten. Der Optimierer fand augenscheinlich unmögliche Lösungen, bei denen sich das Rennauto links aus einer Rechtskurve und andersherum herausbewegt.
-Dies passiert jedoch nur in Kurven, die mehr als 90° aufweisen. Der Grund hierfür, liegt in den tangentialen Beschränkungen und darin, dass sie immer nur am Anfang des \ac{MPC}-Zyklus aktualisiert werden. Werden die Tangenten wie in Abbildung \ref{fig:curveAnomaly} sehr lang eingezeichnet, ist ersichtlich, dass eine zweite mögliche Trajektorie entstehen kann. 
+Dies passiert jedoch nur in Kurven, die mehr als 90° aufweisen. Der Grund hierfür liegt in den tangentialen Beschränkungen und darin, dass sie immer nur am Anfang des \ac{MPC}-Zyklus aktualisiert werden. Werden die Tangenten wie in Abbildung \ref{fig:curveAnomaly} sehr lang eingezeichnet, ist ersichtlich, dass eine zweite mögliche Trajektorie entstehen kann. 
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=250pt]{Abbildungen/curveAnomaly.png}
 	\caption{Fehlerhaftes Verhalten in Spitzkurven}
 	\label{fig:curveAnomaly}
 \end{figure}
-Diese ermöglicht eine höhere Geschwindigkeit. Bei der Berechnung der tangentialen Beschränkung für den nächsten \ac{MPC}-Durchlauf liegen jetzt jedoch alle Tangenten nahezu auf einem Punkt und verhindern daher das Ausscheren des Rennautos. Die daher entstehende neue optimale Trajektorie entspricht wieder nahezu der ursprünglichen. Der resultierende Dreierzyklus wird im schlechtesten Fall solange durchlaufen, bis das Fahrzeug eine der Tangenten trifft und die Optimierung abgebrochen wird.\\
-Um dieses Verhalten zu verhindern, wird für diese Kostenfunktion eine zusätzliche Suchbereichsbeschränkung eingeführt. Diese legt um die Prädiktionsschritte der letzten Optimierung einen Kreis zur Einschränkung des Suchbereiches. Ziel ist es, keine so stark abweichende Trajektorie mehr entstehen zu lassen. Es ist darauf zu achten, dass das Fahrzeug trotzdem in den Grenzen seines Fahrzeugmodells keine Beschränkung erfährt. 
-
-Die Suchbereichseinschränkung ist nur für die Kostenfunktion zum Maximieren der Geschwindigkeit benötigt worden.
+Diese ermöglicht eine höhere Geschwindigkeit. Bei der Berechnung der tangentialen Beschränkung für den nächsten \ac{MPC}-Durchlauf liegen jetzt jedoch alle Tangenten nahezu auf einem Punkt. Dies liegt daran, dass zum Ermitteln des Streckenabschnitts an den die Tangenen angelegt werden die kleinste Distanz des Rennautos zur Streckenmitte gesucht wird. An diesem Punkt werden dann die Tangenten angelegt und verhindern daher das Ausscheren des Rennautos. Die daher entstehende neue optimale Trajektorie entspricht wieder nahezu der ursprünglichen. Der resultierende Dreierzyklus wird im schlechtesten Fall solange durchlaufen, bis das Fahrzeug eine der Tangenten trifft und die Optimierung abgebrochen wird.\\
+Um dieses Verhalten zu verhindern wird für diese Kostenfunktion eine zusätzliche Such\-be\-reichs\-be\-schrän\-kung eingeführt. Diese legt um die Prädiktionsschritte der letzten Op\-ti\-mie\-rung einen Kreis zur Einschränkung des Suchbereiches. Ziel ist es, keine so stark abweichende Trajektorie mehr entstehen zu lassen. Es ist darauf zu achten, dass das Fahrzeug trotzdem in den Grenzen seines Fahrzeugmodells keine Beschränkung erfährt. Die Suchbereichseinschränkung ist nur für die Kostenfunktion zum Maximieren der Geschwindigkeit benötigt worden.
 
 \subsubsection*{Elastische Distanzminimierung}
 Der Nachteil der oben aufgeführten Kostenfunktionen ist, dass sie keinen Spielraum beim Erfüllen der Streckenbeschränkung haben. 
-Wenn sowohl das im Simulator wie auch im  \ac{MPC} hinterlegte Fahrzeugmodell exakt gleich sind, kann das virtuelle Rennauto in der Simulationsumgebung bis an die Streckenbegrenzung heranfahren. In der Realität würde eine solche Kostenfunktion das Fahrzeug jedoch zu nah an die Pylonen heranführen. Bei den kleinsten Regelfehlern, Kontaktverlust mit der Fahrbahn (Rutschen), Abweichungen vom Fahrzeugmodell etc. würde das Rennauto vom Kurs abkommen und damit der initiale Fahrzeugzustand ungültig für den Optimierer werden. Um dieses Problem zu umgehen, wird eine neue Art der Kostenfunktion eingeführt, die die Ungleichheitsbedingung der Streckenbegrenzung ersetzt. Dafür wird eine der oberen Funktionen durch einen Kostenanteil erweitert, der wächst, sobald sich das Fahrzeug vom Mittelpunkt der Fahrbahn nach außen hin bewegt. Das Verhältnis der einzelnen Kostenanteile wird der kombinierten Kostenfunktion  
+Wenn sowohl das im Simulator wie auch im  \ac{MPC} hinterlegte Fahrzeugmodell exakt gleich sind, kann das virtuelle Rennauto in der Simulationsumgebung bis an die Streckenbegrenzung heranfahren. In der Realität würde eine solche Kostenfunktion das Fahrzeug jedoch zu nah an die Pylonen heranführen. Bei den kleinsten Regelfehlern, Kontaktverlust mit der Fahrbahn (Rutschen), Abweichungen vom Fahrzeugmodell etc. würde das Rennauto vom Kurs abkommen und damit der initiale Fahrzeugzustand ungültig für den Optimierer werden. Um dieses Problem zu umgehen, wird eine neue Art der Kostenfunktion eingeführt, die die Ungleichheitsbedingung der Streckenbegrenzung ersetzt. Dafür wird eine der oberen Funktionen durch einen Kosten\-an\-teil erweitert, der wächst, sobald sich das Fahrzeug vom Mittelpunkt der Fahrbahn nach außen hin bewegt. Das Verhältnis der einzelnen Kosten\-an\-tei\-le wird der kombinierten Kostenfunktion  
 \begin{equation}
 	f(\vec{x}) = a \left(\sum_{1}^{N} v_i \right) + \left(\sum_{1}^{N} g \left(h \left(\vec{x}_i \right) \right) \right)
 \end{equation}
@@ -796,7 +794,7 @@ Die Funktion $g(d)$ dient als Platzhalter für verschiedene Gewichtungsfunktione
 	g_3(d) = &|\frac{\alpha}{k_1-d} + \frac{\alpha}{k_2 - d}| \label{eq:distMeasure2}
 \end{eqnarray}
 Die Parameter $\alpha$, $k_1$ und $k_2$ dienen zum Variieren der Scheitelpunkte und Steigung.
-Mögliche Graphen der Gleichungen sind zur Veranschaulichung in Abbildung \ref{fig:elasticCost} dargestellt.
+Mögliche Graphen der Gleichungen sind zur Veranschaulichung in Abbildung \ref{fig:elasticCost} dar\-ge\-stel\-lt.
 
 \begin{figure}[ht!]
 	\centering
@@ -807,14 +805,14 @@ Mögliche Graphen der Gleichungen sind zur Veranschaulichung in Abbildung \ref{f
 	\label{fig:elasticCost}
 \end{figure}
 
-Die Idee der Funktionen (\ref{eq:distMeasure1}) und (\ref{eq:distMeasure2}) ist die uneingeschränkte Bewegung des Rennautos auf der ganzen Breite der Strecke. Der Kostenanteil der Distanz von der Mitte wird also bis zum Erreichen der Streckenbegrenzung nahezu vernachlässigt. Erst beim Erreichen des Fahrbahnrandes werden die Kosten sehr schnell extrem groß. Bestenfalls stellen also diese Kostenfunktionen die tangentialen Begrenzungen ideal nach. Die quadratisch wachsende Funktion soll ebenfalls betrachtet werden. Es gilt zu untersuchen, ob bei gesenktem Rechenaufwand eine erfolgreiche Regelung möglich wäre.
+Die Idee der Funktionen (\ref{eq:distMeasure1}) und (\ref{eq:distMeasure2}) ist die uneingeschränkte Bewegung des Rennautos auf der ganzen Breite der Strecke. Der Kostenanteil der Distanz von der Mitte wird also bis zum Erreichen der Streckenbegrenzung nahezu vernachlässigt. Erst beim Erreichen des Fahrbahnrandes werden die Kosten sehr schnell extrem groß. Bestenfalls stellen also diese Kostenfunktionen die tangentialen Begrenzungen ideal nach. Die qua\-dra\-tisch wachsende Funktion soll ebenfalls betrachtet werden. Es gilt zu untersuchen, ob bei gesenktem Rechenaufwand eine erfolgreiche Regelung möglich wäre.
 
 \chapter{Simulationsumgebung}
-Um die Funktion des \ac{MPC}-Algorithmus verifizieren zu können, wurde eine Simulationsumgebung entwickelt. Der Aufbau ist dreigeteilt: Eine Fahrzeugsimulation berechnet mit austauschbaren Fahrzeugmodellen die Bewegung des Rennautos abhängig von Steuereingaben und einem $\Delta t$. Der Regelanteil in Form des \ac{MPC}-Algorithmus und eine Visualisierung auf Basis einer Spiele-Engine welche auch die zeitlichen Abläufe kontrolliert. 
+Um die Funktion des \ac{MPC}-Algorithmus verifizieren zu können, wurde eine Si\-mu\-lations\-um\-ge\-bung entwickelt. Der Aufbau ist dreigeteilt: Eine Fahrzeugsimulation berechnet mit austauschbaren Fahrzeugmodellen die Bewegung des Rennautos abhängig von Steuer\-ein\-ga\-ben und einem $\Delta t$. Der Regelanteil in Form des \ac{MPC}-Algorithmus und eine Visualisierung auf Basis einer Spiele-Engine welche auch die zeitlichen Abläufe kontrolliert. 
 
 \section{Python}
 
-Zu Beginn der Arbeit wurde die Programmiersprache Python verwendet, um den \ac{MPC}-Ansatz zu programmieren. Der Vorteil dieser Sprache ist das schnelle Prototyping. Als Optimierer wurde ein \ac{SLSQP}-Algorithmus verwendet. Dieser ist direkt in die SciPy-Bibliothek \cite{Scipy} integriert und unterstützt nichtlineare Nebenbedingungen mit denen sich das \ac{MPC}-Problem zur Fahrzeugregelung abbilden lässt. Solange die Anzahl der Prädiktionsschritte zehn nicht überschreitet, ist die Ausführungszeit gering genug, um eine Aktualisierungsrate von 20 Hz zu erreichen. Bei größeren Prädiktionsvektoren steigt die Berechnungszeit sehr schnell an. Der Benchmark in Abbildung \ref{fig:pythonBench} ist für das fertige Optimierungsproblem gemessen worden.
+Zu Beginn der Arbeit wurde die Programmiersprache Python verwendet, um den \ac{MPC}-Ansatz zu programmieren. Der Vorteil dieser Sprache ist das schnelle Prototyping. Als Optimierer wurde ein \ac{SLSQP}-Algorithmus verwendet. Dieser ist direkt in die SciPy-Bibliothek \cite{Scipy} integriert und unterstützt nicht\-li\-ne\-are Nebenbedingungen mit denen sich das \ac{MPC}-Problem zur Fahrzeugregelung abbilden lässt. Solange die Anzahl der Prädiktionsschritte zehn nicht überschreitet, ist die Aus\-füh\-rungs\-zeit gering genug, um eine Aktualisierungsrate von 20 Hz zu erreichen. Bei größeren Prä\-dikt\-ions\-vek\-tor\-en steigt die Berechnungszeit sehr schnell an. Der Benchmark in Abbildung \ref{fig:pythonBench} ist für das fertige Optimierungsproblem gemessen worden.
 \begin{figure}[ht!]
 	\centering
 	\input{Grafiken/pythonBench.tex} 
@@ -827,7 +825,7 @@ Eine Implementierung des \ac{MPC}-Ansatzes in CasADi wurde  aufgrund der schlech
 
 \section{Julia}
 \label{julia}
-Julia ist die Programmiersprache, die eine Umsetzung des \ac{MPC}-Algorithmus effizient und performant ermöglicht. Sie wurde im Jahr 2009 von Jeff Bezanson, Stefan Karpinski, Viral B. Shah, und Alan Edelman ersonnen und ist damit noch eine sehr junge Sprache. Sie ist vor allem für numerische Analysen und wissenschaftliche Berechnungen entworfen worden und bietet in diesen Bereichen viele Funktionalitäten. Ebenfalls ein wichtiges Ziel bei der Entwicklung war es, ohne vorheriges Kompilieren sehr schnell zu sein und trotzdem weiterhin das general-purpose Paradigma zu erfüllen. Ein Vergleich der Berechnungsgeschwindigkeit verschiedener Sprachen bezüglich viel genutzter Funktionen im wissenschaftlichen Umfeld ist in der Abbildung \ref{fig:juliaBench} zu sehen.
+Julia ist eine Programmiersprache, die eine Umsetzung des \ac{MPC}-Algorithmus effizient und performant ermöglicht. Sie wurde im Jahr 2009 von Jeff Bezanson, Stefan Karpinski, Viral B. Shah, und Alan Edelman ersonnen und ist damit noch eine sehr junge Sprache. Sie ist vor allem für numerische Analysen und wissenschaftliche Berechnungen entworfen worden und bietet in diesen Bereichen viele Funktionalitäten. Ebenfalls ein wichtiges Ziel bei der Entwicklung war es, ohne vorheriges Kompilieren sehr schnell zu sein und trotzdem weiterhin das general-purpose Paradigma zu erfüllen. Ein Vergleich der Berechnungsgeschwindigkeit verschiedener Sprachen bezüglich viel genutzter Funktionen im wissenschaftlichen Umfeld ist in der Abbildung \ref{fig:juliaBench} zu sehen.
 
 \begin{figure}[ht!]
 	\centering
@@ -840,10 +838,10 @@ Die wichtigsten Feautres von Julia sind:
 
 \begin{itemize}
 	
-	\item Funktionsüberladung (eng.: multiple dispatch)\\Wird genutzt um die gleiche Methode für verschiedene Kombinationen an Eingabeparametern oder Variablentypen zu überladen. Bei dem Funktionsaufruf wird die passende Methodendefinition aufgerufen. \\
+	\item Funktionsüberladung (eng.: multiple dispatch)\\Wird genutzt um die gleiche Methode für verschiedene Kombinationen an Ein\-ga\-be\-pa\-ra\-me\-tern oder Variablentypen zu überladen. Bei dem Funktionsaufruf wird die passende Methodendefinition aufgerufen. \\
 	\item Datentyp detektion (eng.:type inference) \\Das automatische Detektieren des Datentyps. Dies befreit den Programmierer vom Festlegen des Typs und ermöglicht trotzdem Typprüfung. \\
-	\item \ac{JIT} Kompilierer\\ Ein System, in dem ein \ac{JIT} Kompilierer implementiert ist, wandelt den Computer Code erst zur Laufzeit in Bytecode um. 
-	Der große Vorteil liegt in der kontinuierlichen Analyse während der Ausführung. Dadurch können Bereiche ausfindig gemacht werden, die durch ein Neukompilieren eine signifikante Verbesserung bei der Ausführungszeit erfahren würden. \\
+	\item \ac{JIT}-Kompilierer\\ Ein System, in dem ein \ac{JIT} Kompilierer implementiert ist, wandelt den Computer Code erst zur Laufzeit in Bytecode um. 
+	Der große Vorteil liegt in der kontinuierlichen Analyse während der Ausführung. Dadurch können Bereiche ausfindig gemacht werden, die durch ein Neukompilieren eine signifikante Verbesserung bei der Aus\-führ\-ungs\-zeit erfahren würden. \\
 \end{itemize}
 Es wäre möglich die einzelnen benötigten Bestandteile für einen \ac{MPC}-Algorithmus in Julia zu implementieren. Jedoch gibt es eine umfangreiche Erweiterung, welche eine passende Schnittstelle für solche Probleme zur Verfügung stellt.
 
@@ -853,23 +851,23 @@ Es wäre möglich die einzelnen benötigten Bestandteile für einen \ac{MPC}-Alg
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=150pt]{Abbildungen/jumpDiagram.png}
-	\caption{Blockdiagramm von \ac{Jump}. Wichtige Vorteile sind die automatische Ableitung und das einfache Tauschen von Optimierern}
+	\caption{Blockdiagramm von \ac{Jump}. Wichtige Vorteile sind die automatische Ableitung und das einfache Tauschen von Optimierern.}
 	\label{fig:jumpDiagram}
 \end{figure}
 
 Die Definition der Optimierungsprobleme wird in Jump mit einer Syntax vorgesehen, die der standardmäßigen mathematischen Definition ähnelt. Die Integration gestaltet sich daher sehr intuitiv.  Zudem existiert eine ausführliche Dokumentation.
-Obwohl \ac{Jump} Schnittstellen zu vielen verschiedenen Optimierern besitzt, ist nur der \ac{Ipopt} frei nutzbar und dafür ausgelegt nichtlineare Nebenbedingungen zu berücksichtigen. Die Verwendung von \ac{Jump} und \ac{Ipopt} führen zu einer deutlich besseren Skalierung und Laufzeit (siehe \ref{runtime}) als der \ac{SLSQP}-Ansatz in Python. Die Abbruchbedingung in \ac{Ipopt} wurde auf $1e-1$ festgelegt.
+Obwohl \ac{Jump} Schnittstellen zu vielen verschiedenen Optimierern besitzt, ist nur der \ac{Ipopt} frei nutzbar und dafür ausgelegt nichtlineare Nebenbedingungen zu berücksichtigen. Die Verwendung von \ac{Jump} und \ac{Ipopt} führen zu einer deutlich besseren Skalierung und Laufzeit (siehe \ref{runtime}) als der \ac{SLSQP}-Ansatz in Python. Die Ab\-bruch\-be\-din\-gung in \ac{Ipopt} wurde auf $1e-1$ festgelegt.
 
 
 \section{\acl{SFML}}
-Die Basis für die Simulation bildet die \ac{SFML}, die für die grafischen Darstellungen des Kurses, Rennauto, Prädiktionsschritte und Fahrzeuginformationen genutzt wird. Ein Bildschirmfoto der Simulation ist in Abbildung \ref{fig:simVisual} dargestellt.
+Die Basis für die Simulation bildet die \ac{SFML}, die für die grafischen Darstellungen des Kurses, Rennauto, Prädiktionsschritte und Fahr\-zeug\-in\-for\-ma\-ti\-onen genutzt wird. Ein Bildschirmfoto der Simulation ist in Abbildung \ref{fig:simVisual} dargestellt.
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=350pt]{Abbildungen/sim_visual.png}
 	\caption{Grafische Darstellung des MPC - Algorithmus in der Simulationsumgebung}
 	\label{fig:simVisual}
 \end{figure} 
-Zusätzlich zur Visualisierung stellt die Spiele-Engine auch sicher, dass die zeitlichen Abläufe eingehalten werden. Das Grundprinzip ist eine einzige unendlich laufende Schleife, die mit einer vorher festgelegten Wiederholungsrate ausgeführt wird. Benötigen die Berechnungen innerhalb dieser Schleife länger als das angegebene
+Zusätzlich zur Visualisierung stellt die Spiele-Engine auch sicher, dass die zeitlichen Abläufe ein\-ge\-hal\-ten werden. Das Grundprinzip ist eine einzige unendlich laufende Schleife, die mit einer vorher festgelegten Wiederholungsrate ausgeführt wird. Benötigen die Berechnungen innerhalb dieser Schleife länger als das angegebene
 $\Delta t =  \frac{1}{20}$ s, sinkt die Ausführungsrate, überschritten wird sie jedoch nie. Innerhalb dieser Schleife werden mögliche Eingaben der Nutzer oder Ereignisse der einzelnen Objekte abgearbeitet. Im zweiten Schritt werden alle Berechnungen der eigentlichen Fahrzeugsimulation und \ac{MPC}-Algorithmus ausgeführt und im letzten Schritt werden die grafischen Elemente erstellt und angezeigt. Wie für eine Spiele-Engine üblich, befindet sich der Ursprung des Koordinatensystems in der linken oberen Ecke. Die y-Achse ist daher entgegengesetzt zu dem in der Fahrzeugsimulation verwendeten Standardachsenaufbau orientiert. Zudem werden Distanzen in der Engine nur in Pixeln gemessen. Es wurden daher zwei Parameter eingeführt, die die Fenstergröße in Pixeln festlegen (in \(x\)- und  \(y\)-Richtung) und zusätzlich eine Angabe wie vielen Metern dieser jeweils in Pixeln entspricht. Die daraus resultierenden Verhältnisse 
 \begin{eqnarray}
 	scaleX = \frac{windowSizeXinPixel}{windowSizeXinM} \\
@@ -885,15 +883,15 @@ Der Aufbau ist in dem Blockdiagramm \ref{fig:block_diagram_sim} nochmals zusamme
 	\caption{Blockdiagramm der Simulation mit dem \ac{MPC}-Algorithmus}
 	\label{fig:block_diagram_sim}
 \end{figure}
-Der Simulator berechnet abhängig vom aktuellen Fahrzeugzustand die Streckenbegrenzungen und hinterlegt diese zusammen mit dem Fahrzeugzustand im \ac{MPC}-Algorithmus. Im nächsten Schritt errechnet der Optimierer die Steuerparameter für den Prädiktionshorizont. Zusammen mit dem dynamischen Fahrzeugmodell und den Steuerparametern, wird der neue Fahrzeugzustand berechnet und der nächste Durchlauf der Simulationsschleife gestartet.
+Der Simulator berechnet abhängig vom aktuellen Fahrzeugzustand die Streck\-en\-be\-gren\-zung\-en und hinterlegt diese zusammen mit dem Fahrzeugzustand im \ac{MPC}-Algorithmus. Im nächsten Schritt errechnet der Optimierer die Steuerparameter für den Prädiktionshorizont. Zusammen mit dem dynamischen Fahrzeugmodell und den Steuerparametern wird der neue Fahrzeugzustand berechnet und der nächste Durchlauf der Simulationsschleife gestartet.
 
 \section{Virtueller Rennkurs}
-Wie in der Einführung bereits erwähnt, ist das Ziel der Arbeit ein \ac{MPC}-Algorithmus zu entwickeln mit dem die Trackdrive-Disziplin möglichst schnell abgefahren werden kann. Die Grundvoraussetzung für diese Arbeit ist die bereits vollständig erstellte Karte des Rennkurses und eine Lokalisierung innerhalb dieser Karte. Die Updaterate für diese Positionsschätzung wird mit 20 Hz angenommen. Das Ziel ist es also, die Regelparameter mit einem $\Delta t$ von $\frac{1}{20}$ s für das Rennauto berechnen zu können. Zum Testen der Algorithmen wurde ein beliebiger Kurs definiert. Entscheidend war das Einhalten des Regelwerks mit einem minimalen Kurvenradius von 9 m, Maximallänge einer Geraden von 80 m und maximal 180° Spitzkurven. Die Strecke wird als kubischer Spline hinterlegt. Bei einem Spline (auch Polynomzug) handelt es sich um eine Funktion, die stückweise aus Polynomen zusammengesetzt ist. Kubische Splines werden unter anderem zur Berechnung des Bahnverlaufes bei Achterbahnen verwendet, um ruckartige Beschleunigungswechsel für die Fahrgäste zu vermeiden. Auch beim Entwurf von Kurven und Oberflächen sind Splines von Bedeutung. Die Stützpunkte werden durch das Zusammensetzen von verschiedenen Streckenelementen erzeugt. Der Vorteil ist das schnelle und einfache erstellen beliebiger Strecken. 
+Wie in der Einführung bereits erwähnt, ist das Ziel der Arbeit ein \ac{MPC}-Algorithmus zu entwickeln mit dem die Trackdrive-Disziplin möglichst schnell abgefahren werden kann. Die Grundvoraussetzung für diese Arbeit ist die bereits vollständig erstellte Karte des Rennkurses und eine Lokalisierung innerhalb dieser Karte. Die Updaterate für diese Positionsschätzung wird mit 20 Hz angenommen. Das Ziel ist es also, die Regelparameter mit einem $\Delta t$ von $\frac{1}{20}$ s für das Rennauto berechnen zu können. Zum Testen der Algorithmen wurde ein beliebiger Kurs definiert. Entscheidend war das Einhalten des Regelwerks mit einem minimalen Kurvenradius von 9 m, Maximallänge einer Geraden von 80 m und maximal 180° Spitzkurven. Die Strecke wird als kubischer Spline hinterlegt. Bei einem Spline (auch Polynomzug) handelt es sich um eine Funktion, die stückweise aus Polynomen zusammengesetzt ist. Kubische Splines werden unter anderem zur Berechnung des Bahnverlaufes bei Achterbahnen verwendet, um ruckartige Beschleunigungswechsel für die Fahrgäste zu vermeiden. Auch beim Entwurf von Kurven und Oberflächen sind Splines von Bedeutung. Die Stützpunkte werden durch das Zusammensetzen von ver\-schie\-den\-en Streckenelementen erzeugt. Der Vorteil ist das schnelle und einfache erstellen beliebiger Strecken. 
 
 \chapter{Evaluierung}
 \section{Modellfehler}
 \label{modelError}
-Ohne eine Verifizierung der Plausibilität der implementierten Modelle ist keine systematische Untersuchung möglich. Hierfür wurden die zwei Disziplinen \text{acceleration} und \text{skidpad} gewählt und die besten gefahrenen Ergebnisse des Rennautos des High-Octane Motorspors als Vergleichsbasis genutzt.
+Ohne eine Verifizierung der Plausibilität der implementierten Modelle ist keine sys\-te\-ma\-tische Untersuchung möglich. Hierfür wurden die zwei Disziplinen \text{acceleration} und \text{skidpad} gewählt und die besten gefahrenen Ergebnisse des Rennautos des High-Octane Motorspors als Vergleichsbasis genutzt.
 
 
 \subsection{Disziplin Acceleration}
@@ -908,7 +906,7 @@ Das dritte Modell betrachtet zusätzlich zur Motorleistung, die Rollreibung und 
 	\caption{Geschwindigkeitsverlauf bei maximaler Beschleunigung für verschiedene longitudinale Modelle}
 	\label{fig:accdec}
 \end{figure}
-Zuerst werden die Beschleunigungskurven betrachtet. Hierfür wird mit allen hinterlegten Modellen fünf Sekunden lang maximal beschleunigt und direkt danach $2,5$ s mit maximaler Kraft gebremst.
+Zuerst werden die Geschwindigkeitskurven betrachtet. Hierfür wird mit allen hinterlegten Modellen fünf Sekunden lang maximal beschleunigt und direkt danach $2,5$ s mit maximaler Kraft gebremst.
 In der Grafik \ref{fig:accdec} wird deutlich wie stark sich die einzelnen Modelle, obwohl sie sich auf das gleiche Fahrzeug beziehen, voneinander unterscheiden. Das Fahrzeug besitzt eine Maximalgeschwindigkeit von $121$  $\frac{\text{km}}{\text{h}}$, welche durch die Übersetzung im Getriebe limitiert wird. Das kinematische Modell trifft mit seiner durchschnittlichen Beschleunigung exakt die gefahrenen Testwerte. Da die dynamischen Modelle jedoch eine größere Anfangsbeschleunigung besitzen, wird die Anfangsbeschleunigung des im \ac{MPC}-Algorithmus hinterlegt Modell auf die gleiche Steigung angepasst. Die Steigung beträgt $24$ $ \frac{\text{m}}{\text{s\textsuperscript{2}}}$. 
 Als nächstes wird die Zeit über eine Strecke von $75$ m gemessen. Das Ergebnis für das kinematische Modell, mit angepasster Beschleunigungskurve, beträgt $3,0$ Sekunden. Dieser Wert ist, wie bereits zu erwarten war, deutlich zu schnell. Realistische Werte liegen zwischen $3,8$ und $4,5$ Sekunden, je nach Fähigkeiten des Fahrers, Wetterbedingungen und Reifentemperatur. Das dynamische Modell, das keinerlei Reibung berücksichtigt, ist ebenfalls mit $3,45$ Sekunden zu schnell. Mit Reibung entsteht ein realistischer Wert von $4,3$ Sekunden, was typischen Messzeiten für das Fahrzeug des High-Octane Motorspors e.V. entspricht. Für ein gutes longitudinales Modell des Fahrzeugs muss also der Luftwiderstand, der einen deutlich größeren Anteil auf die Gesamtreibung hat als der Rollwiderstand, berücksichtigt werden. Die Rollreibung ist bei maximaler Geschwindigkeit um den Faktor 100 kleiner als die aerodynamischen Kräfte und entspricht etwa 6 und 592 N respektive. Im Folgenden wird immer das um Reibung erweiterte longitudinalen Modell verwendet.
 
@@ -934,12 +932,12 @@ Die Bahngeschwindigkeit wird durch die Kreisfrequenz $\omega$ berechnet.
 \end{eqnarray}
 
 
-Für das in der Simulationsumgebung hinterlegte kinematische Modell ist die gemessene Rundenzeit $4,65$ s. Daraus lässt sich eine Durchschnittsgeschwindigkeit $ v= 13.9$ $ \frac{\text{m}}{\text{s}}$ berechnen, was einer Querbeschleunigung von $a = 19.37$ $ \frac{\text{m}}{\text{s\textsuperscript{2}}}$ entspricht. Das im Fahrzeugmodell hinterlegte $a_{max}$ ist mit $19,62$ $ \frac{\text{m}}{\text{s\textsuperscript{2}}}$ also sehr nah an dem in der Simulation erreichten Werten. Die Differenz zu der schnellsten gemessenen Runde mit dem echten Fahrzeug ($4,77$ s) lässt sich dadurch erklären, dass der MPC-Algorithmus die idealen Stellgrößen berechnet und damit auch einen idealen Rundkurs abfährt. Zudem wurde die maximal gemessene Querbeschleunigung des Fahrzeugs als $a_{max}$ gewählt. Diese kann in der Realität nicht durchgängig gehalten werden. Der Wert wurde beim Einlenken mit hoher Geschwindigkeit ermittelt. In diesem Fall besitzt das Rennauto, aufgrund seiner Aerodynamik, einen hohen Abtrieb. Durch die höhere Normalkraft, die die Reifen auf die Straße presst, können größere laterale Kräfte übertragen werden.
+Für das in der Simulationsumgebung hinterlegte kinematische Modell ist die gemessene Rundenzeit $4,65$ s. Daraus lässt sich eine Durchschnittsgeschwindigkeit $ v= 13.9$ $ \frac{\text{m}}{\text{s}}$ berechnen, was einer Querbeschleunigung von $a = 19.37$ $ \frac{\text{m}}{\text{s\textsuperscript{2}}}$ entspricht. Das im Fahr\-zeug\-mo\-dell hinterlegte $a_{max}$ ist mit $19,62$ $ \frac{\text{m}}{\text{s\textsuperscript{2}}}$ also sehr nah an dem in der Simulation erreichten Werten. Die Differenz zu der schnellsten gemessenen Runde mit dem echten Fahrzeug ($4,77$ s) lässt sich dadurch erklären, dass der MPC-Algorithmus die idealen Stellgrößen berechnet und damit auch einen idealen Rundkurs abfährt. Zudem wurde die maximal gemessene Querbeschleunigung des Fahrzeugs als $a_{max}$ gewählt. Diese kann in der Realität nicht durchgängig gehalten werden. Der Wert wurde beim Einlenken mit hoher Geschwindigkeit ermittelt. In diesem Fall besitzt das Rennauto, aufgrund seiner Aerodynamik, einen hohen Abtrieb. Durch die höhere Normalkraft, die die Reifen auf die Straße presst, können größere laterale Kräfte übertragen werden.
 Für das dynamische Fahrzeugmodell wurde eine minimale Rundenzeit 3,35 s gemessen.  Die damit erhaltene maximale Querbeschleunigung ist deutlich größer als die des kinematischen Modells. Die Differenz ist auf eine zu stark vereinfachte Annahme der Reifenkräfte zurückzuführen. Die von der \ac{M.F.} errechneten lateralen Kräfte werden verdoppelt, da das Fahrzeug in der Realität jeweils zwei Räder pro Achse besitzt. In schnell gefahrenen Kurven verlagert sich jedoch die Gewichtskraft des Rennautos, die den Reifen auf die Straße presst, stark auf das kurvenäußere Rad. Die vom kurveninneren Rad maximal übertragbare Kraft bricht daher deutlich ein.
 Die maximal übertragbare Kraft des Reifens steigt zwar mit höherer Normalkraft an, jedoch ist der Zusammenhang nichtlinear und nähert sich immer mehr einem maximalen Wert an. Das kurvenäußere Rad kann daher den Verlust des inneren Reifens nicht kompensieren. Dieser Zusammenhang ist die Grundlage für das Verwenden eines Stabilisators im Fahrzeug. Er verringert den Effekt und führt zu einem besseren Fahrverhalten.
 
 Da im Skidpad die Querbeschleunigung konstant ist, spielt das Trägheitsmoment in dieser Disziplin eine untergeordnete Rolle.
-Ein deutlich dynamischeres Szenario soll die Unterschiede zwischen kinematischem und dynamischen Szenario besser veranschaulichen.
+Ein deutlich dynamischeres Szenario soll die Unterschiede zwischen kinematischem und dynamischen Modell besser veranschaulichen.
 
 \subsection{Modellabhängige Veränderung der Orientierung}
 In der Darstellung \ref{fig:modelDiffOrient} ist die Änderung der Orientierung für einen oszillierenden Lenkwinkel veranschaulicht. Es werden die vier verschiedenen Geschwindigkeiten $7$, $14$, $21$ und $28$ $\frac{\text{m}}{\text{s}}$ ohne jegliche longitudinale Beschleunigung getestet. Dies soll einen guten Überblick über den gesamten Geschwindigkeitsbereich ermöglichen.
@@ -973,7 +971,7 @@ In der Darstellung \ref{fig:modelDiffOrient} ist die Änderung der Orientierung 
 	\caption{Orientierung des Rennautos für eine Sinuskurve als Eingangswert des Lenkwinkels. Es werden verschiedene Geschwindigkeiten ohne longitudinale Beschleunigung betrachtet.}\label{fig:modelDiffOrient}
 \end{figure}
 
-Zuerst wird das Verhalten des kinematischen Modells betrachtet. Bei der geringsten Geschwindigkeit von $7$ $\frac{\text{m}}{\text{s}}$ folgt die Orientierung noch genau dem Lenkwinkel nach und erreicht damit den Maximalwert im Nulldurchgang der Sinusfunktion des Lenkwinkels. Mit höheren Geschwindigkeiten begrenzt jedoch immer stärker die Beschränkung der maximalen Querbeschleunigung. Bei $14$ $\frac{\text{m}}{\text{s}}$ ist dies deutlich durch den leicht abgerundeten Anfangspunkt der Kurve erkennbar. Dies ist bei $21$ und $28$ $\frac{\text{m}}{\text{s}}$ nicht mehr der Fall. Ab  $14$ $\frac{\text{m}}{\text{s}}$ begrenzt die maximale Querbeschleunigung auch immer stärker die maximal erreichte Orientierung. 
+Zuerst wird das Verhalten des kinematischen Modells betrachtet. Bei der geringsten Geschwindigkeit von $7$ $\frac{\text{m}}{\text{s}}$ folgt die Orientierung noch genau dem Lenkwinkel nach und erreicht damit den Maximalwert im Nulldurchgang der Sinusfunktion des Lenkwinkels. Mit höheren Geschwindigkeiten begrenzt jedoch immer stärker die Beschränkung der maximalen Querbeschleunigung. Bei $14$ $\frac{\text{m}}{\text{s}}$ ist dies durch den leicht abgerundeten An\-fangs\-punkt der Kurve erkennbar. Dies ist bei $21$ und $28$ $\frac{\text{m}}{\text{s}}$ nicht mehr der Fall. Ab  $14$ $\frac{\text{m}}{\text{s}}$ begrenzt die maximale Querbeschleunigung auch immer stärker die maximal erreichte Orientierung. 
 
 Das Verhalten des dynamischen Modells und das des um den \ac{K.K.} erweiterten Modells sind in diesem Anwendungsfall genau gleich. Dies ist darauf zurückzuführen, dass keinerlei longitudinale Kraft an den Reifen anliegt. Die vom Reifen zu übertragenden Kräfte bewegen sich daher nur auf der x-Achse des \ac{K.K.} und erfahren keine Einschränkung. 
 Das Verhalten der dynamischen Modelle bei den unterschiedlichen Geschwindigkeiten ist nicht direkt aus den Gleichungen nachvollziehbar.
@@ -1004,7 +1002,7 @@ Dem Verlauf der Diagramme kann entnommen werden, dass die maximale Orientierung 
 		\label{fig:modelDiffOrientMax28}
 	}	
 	\ref{modelDiffOrientLegend}
-	\caption{Die gleiche Betrachtung wie in \ref{fig:modelDiffOrient} mit maximaler longitudinaler Beschleunigung.}\label{fig:modelDiffOrientMaxAcc}
+	\caption{Die gleiche Betrachtung wie in \ref{fig:modelDiffOrient} mit maximaler longitudinaler Be\-schleu\-ni\-gung.}\label{fig:modelDiffOrientMaxAcc}
 \end{figure}
 
 Wird nun das gleiche Szenario aber für eine zusätzliche longitudinale Beschleunigung betrachtet, ergibt sich ein gänzlich neues Bild (siehe \ref{fig:modelDiffOrientMaxAcc}).
@@ -1018,14 +1016,14 @@ Wie bereits im Kapitel \ref{tireModel}, wird für die Simulation standardmäßig
 
 An der Orientierung lässt sich gut erkennen, dass die Modellierung der Reifen einen starken Einfluss auf das Verhalten des Fahrzeugs besitzt. Der Unterschied zwischen den Modellen beträgt im Maximum etwa $0,2$ rad. 
 Ob die Differenz auch einen Einfluss auf die Regelung des dynamischen Modells hat, wird im Abschnitt \ref{dynModelcontrol} näher beleuchtet. \\
-Ist das Einsparen von Rechenzeit keine Priorität, sollte generell immer das beste Reifenmodell verwendet werden. Wie schon im Kapitel \ref{tireModel} angedeutet, hängt beim dynamischen Modell das Verhalten sehr stark von den Reifenkräften ab und sollte daher möglichst genau abgebildet werden. Soll trotzdem viel Rechenleistung gespart werden, entspricht das lineare Modell einer guten Alternative zur \ac{M.F.}. Es liefert eine gute Annäherung und ist zudem noch weniger komplex. Dies gilt jedoch nur für den Fall von Rennreifen, da sie über einen großen Bereich des Schräglaufwinkels hohe Seitenkräfte übertragen können. Normale Straßenreifen brechen deutlich stärker nach dem Erreichen ihrer maximalen Seitenkraft ein und werden daher nicht gut durch das linearisierte Modell repräsentiert. 
+Ist das Einsparen von Rechenzeit keine Priorität, sollte generell immer das beste Reifen\-mo\-dell verwendet werden. Wie schon im Kapitel \ref{tireModel} angedeutet, hängt beim dynamischen Modell das Verhalten sehr stark von den Reifenkräften ab und sollte daher möglichst genau abgebildet werden. Soll trotzdem viel Rechenleistung gespart werden, entspricht das lineare Modell einer guten Alternative zur \ac{M.F.}. Es liefert eine gute Annäherung und ist zudem noch weniger komplex. Dies gilt jedoch nur für den Fall von Rennreifen, da sie über einen großen Bereich des Schräglaufwinkels hohe Seitenkräfte übertragen können. Normale Straßenreifen brechen deutlich stärker nach dem Erreichen ihrer maximalen Seitenkraft ein und werden daher nicht gut durch das linearisierte Modell repräsentiert. 
 
 
 \begin{figure}
 	\centering
 	\input{Grafiken/modelDiffTires.tex} 
 	\ref{modelDiffTiresLegend}
-	\caption{Fahrzeugorientierung, abhängig von den drei verschiedenen Reifenmodellen für einen sinusförmigen Lenkwinkel als Eingabe}
+	\caption{Fahrzeugorientierung, abhängig von den drei verschiedenen Reifenmodellen für einen sinusförmigen Lenkwinkel als Eingabe.}
 	\label{fig:modelDiffTires}
 \end{figure}
 
@@ -1036,24 +1034,24 @@ Um dies tun zu können, muss zuerst die mindestens erforderliche Länge des Prä
 
 \subsection{Mindestlänge des Prädiktionshorizontes} 
 In einem Szenario im öffentlichen Verkehr muss der Horizont immer mindestens so lang gewählt werden, dass eine Vollbremsung von der aktuellen Geschwindigkeit durchgeführt werden könnte, bevor das Fahrzeug das Ende des Horizontes erreicht hat. Auf dem Rennkurs ist dies nicht nötig. Es ist nicht davon auszugehen, dass sich plötzlich Hindernisse auf der Strecke befinden (bei Formula Student Driverless befindet sich immer nur ein Fahrzeug auf der Strecke). Da im Simulator und im \ac{MPC}-Algorithmus das gleiche Fahrzeugmodell hinterlegt ist, wird die tangentiale Beschränkung genutzt, um das Rennauto daran zu hindern die Strecke zu verlassen.
-Zuerst wird der minimale Prädiktionshorizont für einen sichere Runde auf dem Kurs gesucht. Um diesen Wert zu finden, wurde eine Teilstrecke definiert, die aus einer $80$ Meter langen Gerade direkt in zwei aneinander gehängte $180$° Kurven mit $9$ m Außenradius übergeht. Diese Konstellation, entspricht der Fahrsituation die nach Regelwerk zulässig ist und das Fahrzeug sowohl longitudinal (bremsen) als auch lateral (enge Kurve) maximal beansprucht. Die Tests haben ergeben, dass bereits ein Horizont von $12$ Schritten für die Kostenfunktionen, welche die Distanz max/-minimieren, ausreichend ist. Die Maximalgeschwindigkeit beträgt genau die vom Fahrzeugmodell begrenzten $121$ $\frac{\text{km}}{\text{h}}$ auf der Geraden und eine maximalen Kurvengeschwindigkeit von $32$ $\frac{\text{km}}{\text{h}}$. 
-Für die max-speed-Kostenfunktion wird ein anderer Horizont benötigt, als für die beiden anderen Kostenfunktionen. Der Algorithmus lenkt in Kurven nicht direkt so ein, dass das Fahrzeug am inneren der Kurve entlangfährt. Stattdessen fährt er möglichst lange geradeaus, um die maximale Geschwindigkeit zu erreichen. Der minimale Horizont ist daher im Vergleich zu den beiden anderen Funktionen $8$ Zeitschritte länger und damit mindestens $20$ Prädiktionsschritte lang.
+Zuerst wird der minimale Prädiktionshorizont für einen sichere Runde auf dem Kurs gesucht. Um diesen Wert zu finden wurde eine Teilstrecke definiert, die aus einer $80$ Meter langen Gerade direkt in zwei aneinander gehängte $180$° Kurven mit $9$ m Außenradius übergeht. Diese Konstellation, entspricht der Fahrsituation die nach Regelwerk zulässig ist und das Fahrzeug sowohl longitudinal (bremsen) als auch lateral (enge Kurve) maximal beansprucht. Die Tests haben ergeben, dass bereits ein Horizont von zwölf Schritten für die Kostenfunktionen welche die Distanz max/-minimieren, ausreichend ist. Die Maximalgeschwindigkeit beträgt genau die vom Fahrzeugmodell begrenzten $121$ $\frac{\text{km}}{\text{h}}$ auf der Geraden und eine maximalen Kurven\-ge\-schwin\-dig\-keit von $32$ $\frac{\text{km}}{\text{h}}$. 
+Für die Max-Speed-Kostenfunktion wird ein anderer Horizont benötigt, als für die beiden anderen Kostenfunktionen. Der Algorithmus lenkt in Kurven nicht direkt so ein, dass das Fahrzeug am inneren der Kurve entlangfährt. Stattdessen fährt er möglichst lange geradeaus, um die maximale Geschwindigkeit zu erreichen. Der minimale Horizont ist daher im Vergleich zu den beiden anderen Funktionen acht Zeitschritte länger und damit mindestens $20$ Prädiktionsschritte lang.
 
 
 \subsection{Kostenfunktionen}
-Mit der Information wie groß der kleinste Prädiktionshorizont mindestens sein muss, wird nun untersucht, wie die unterschiedlichen Kostenfunktionen gegeneinander abschneiden. Um eine gute Vergleichbarkeit zu erhalten, wird ein zufälliger Rennkurs erstellt, auf dem die Messungen durchgeführt werden. 
+Mit der Information wie groß der kleinste Prädiktionshorizont mindestens sein muss, wird nun untersucht, wie die unterschiedlichen Kostenfunktionen gegeneinander abschneiden. Um eine gute Vergleichbarkeit zu erhalten wird ein zufälliger Rennkurs erstellt, auf dem die Messungen durchgeführt werden. 
 
 \subsubsection{Verifizierung der Funktionen}
-Bevor die Messungen für die einzelnen Kostenfunktionen erstellt werden, wird sichergestellt, dass die Funktionen auch fehlerfrei funktionieren. Auf einer im Simulator definierten $75$ m Geraden wird überprüft, ob die Zeit zum Abfahren dieser Strecke für alle Funktionen gleich ist. Abweichungen könnten zum Beispiel entstehen, wenn die Zielposition für die min-dist-Kostenfunktion nicht groß genug gewählt ist und beim Beschleunigen die Distanz zu null wird. In diesem Fall würde das Fahrzeug für die $75$ m mehr Zeit benötigen als die max-speed-Kostenfunktion. Ebenfalls wurde untersucht, ob das Rennauto für eine der Kostenfunktionen einen Slalom fährt um die Geschwindigkeit oder den zurückgelegten Weg zu maximieren. Die Funktionen haben alle wie erwartet maximal beschleunigt und den $75$ m Kurs in der gleichen Zeit absolviert. Die Werte sind in der Tabelle \ref{accVerification} aufgelistet.
+Bevor die Messungen für die einzelnen Kostenfunktionen erstellt werden, wird sicher\-ge\-stel\-lt, dass die Funktionen auch fehlerfrei funktionieren. Auf einer im Simulator definierten $75$ m Geraden wird überprüft, ob die Zeit zum Abfahren dieser Strecke für alle Funktionen gleich ist. Abweichungen könnten zum Beispiel entstehen, wenn die Zielposition für die Min-Dist-Kostenfunktion nicht groß genug gewählt ist und beim Beschleunigen die Distanz zu null wird. In diesem Fall würde das Fahrzeug für die $75$ m mehr Zeit benötigen als die Max-Speed-Kostenfunktion. Ebenfalls wurde untersucht, ob das Rennauto für eine der Kostenfunktionen einen Slalom fährt um die Geschwindigkeit oder den zurückgelegten Weg zu maximieren. Die Funktionen haben alle wie erwartet maximal beschleunigt und den $75$ m Kurs in der gleichen Zeit absolviert. Die Werte sind in der Tabelle \ref{accVerification} aufgelistet.
 
 \begin{table}[ht!]
 	\centering
 	\begin{tabular}{l|l}
 		\hline
 		Kostenfunktion	& Zeit  \\ \hline
-		max-speed	&	3,05 s \\
-		min-dist	&	3,05 s \\
-		max-track	&	3,05 s \\
+		Max-Speed	&	3,05 s \\
+		Min-Dist	&	3,05 s \\
+		Max-Track	&	3,05 s \\
 
 	\end{tabular}
 	\caption{Beschleunigungszeit für unterschiedliche Kostenfunktionen}
@@ -1080,28 +1078,25 @@ Die Ergebnisse der Messung sind in der Abbildung \ref{fig:computeCost} dargestel
 	\caption{Berechnungszeit der Kostenfunktionen für verschieden große Horizontlängen}\label{fig:computeCost}
 \end{figure}
 
-Bei einigen Kostenfunktionen dauert die  Berechnung des initialen Optimierungsvektors, im Vergleich zu allen darauf folgenden Schritten, extrem lange. Dies liegt an dem sogenannten Warmstart. Solange die Parameter der Beschränkungen (neue Tangenten und neue Startposition) nicht signifikant verändert werden, findet der Optimierer in aufeinander folgenden Schritten sehr schnell eine passende Lösung. Dies ist mit einem  Schieberegister vergleichbar, in dem die Lösung einen Schritt nach links verschoben wird und nur für den letzten Schritt eine neue Lösung gesucht werden muss. Aus diesem Grund wurden auch Messungen erstellt, die erst anfangen, sobald der Warmstart durchgeführt wird. 
-Trotz der mathematischen Ähnlichkeit der beiden Kostenfunktionen max-track und min-dist ist die Ausführungszeit der Optimierungsschritte ohne Warmstart sehr unterschiedlich. Die max-track Funktion ist deutlich besser und liegt ohne Warmstart auf einem Niveau mit der max-speed Funktion.
-Sobald der Warmstart aktiv ist, dauert die Berechnungszeit für min-dist und max-track ungefähr gleich lange und skaliert besser als die max-speed Kostenfunktion für große Horizontlängen.
-
-
-
+Bei der Min-Dist-Kostenfunktionen dauert die Berechnung des initialen Op\-ti\-mie\-rungs\-vek\-tors, im Vergleich zu den darauf folgenden Schritten, extrem lange. Dies liegt an dem sogenannten Warmstart. Solange die Parameter der Beschränkungen (neue Tangenten und neue Start\-po\-si\-tion) nicht signifikant verändert werden, findet der Optimierer in aufeinander folgenden Schritten sehr schnell eine passende Lösung. Dies ist mit einem  Schieberegister ver\-gleich\-bar, in dem die Lösung einen Schritt nach links verschoben wird und nur für den letzten Schritt eine neue Lösung gesucht werden muss. Aus diesem Grund wurden auch Messungen erstellt, die erst anfangen, sobald der Warmstart durchgeführt wird. 
+Trotz der ma\-the\-ma\-tisch\-en Ähnlichkeit der beiden Kostenfunktionen Max-Track und Min-Dist ist die Ausführungszeit der Optimierungsschritte ohne Warmstart sehr unterschiedlich. Die Max-Track Funktion ist deutlich besser und liegt ohne Warmstart auf einem Niveau mit der Max-Speed Funktion.
+Sobald der Warmstart aktiv ist, dauert die Berechnungszeit für Min-Dist und Max-Track ungefähr gleich lange und skaliert besser als die Max-Speed Kostenfunktion für große Horizontlängen.
 
 \subsubsection{Rundenzeit}
 \label{laptime}
-Um die Qualität der Kostenfunktionen einschätzen zu können, wird im Folgenden die Rundenzeit betrachtet. Die Zeit wird abhängig von den Prädiktionsschritten untersucht. Gemessen werden immer die ersten zwei Runden, da in der ersten Runde die Anfangsbeschleunigung und die eventuell ungünstige Startposition die Rundenzeit beeinträchtigen. Es wurde auch jeweils noch eine dritte Rundenzeit ermittelt, diese entspricht aber nahezu genau der vorhergehenden. Die Ergebnisse sind in der Grafik \ref{fig:lapTimeKin} visualisiert.
+Um die Qualität der Kostenfunktionen einschätzen zu können, wird im Folgenden die Rundenzeit betrachtet. Die Zeit wird abhängig von den Prädiktionsschritten untersucht. Gemessen werden immer die ersten zwei Runden, da in der ersten Runde die Anfangs\-be\-schleu\-ni\-gung und die eventuell ungünstige Startposition die Rundenzeit beeinträchtigen. Es wurde auch jeweils noch eine dritte Rundenzeit ermittelt, diese entspricht aber nahezu genau der vorhergehenden. Die Ergebnisse sind in der Grafik \ref{fig:lapTimeKin} visualisiert.
 
 \begin{figure}[ht!]
 	\centering
 	\input{Grafiken/lapTimeKin.tex} 
 	\ref{lapTimeKinLegend}
-	\caption{Rundenzeit für verschiedene Kostenfunktionen und abhängig von der Anzahl der Prädiktionsschritte. Erste (1) und zweite (2) Runde}
+	\caption{Rundenzeit für verschiedene Kostenfunktionen und abhängig von der Anzahl der Prädiktionsschritte. Gemessen wurde die erste (1) und zweite (2) Runde.}
 	\label{fig:lapTimeKin}
 \end{figure}
 
-Die max-speed-Kostenfunktion wird für größere Vorwärtsprädiktion immer langsamer. Dieses Phänomen lässt sich mit dem größeren Wissen über den Kursverlauf erklären. Desto weiter in die Zukunft der Optimierer schauen kann, desto mehr fängt er an  Kurven voll auszufahren, also den zurückgelegten Weg länger zu planen. Dadurch kann zwar die Geschwindigkeit erhöht werden, die Rundenzeit leidet allerdings deutlich darunter. 
-Die Differenz zwischen den beiden Kostenfunktionen, welche die Distanz zu einem Punkt minimiert beziehungsweise die gefahrene Streckendistanz maximiert, ist sehr klein und auch bei geringeren Horizontlängen bereits sehr gut. Wird zusätzlich die Berechnungszeit betrachtet, setzt sich die max-track Kostenfunktion deutlich als die bessere ab. \\
-Nachdem die Grundlagen für die Kostenfunktionen und Vergleichswerte bezüglich der Rundenzeit erstellt wurden, wird im folgenden Abschnitt die Regelfähigkeit der komplexeren Modelle im Simulator überprüft.
+Die Max-Speed-Kostenfunktion wird für größere Vorwärtsprädiktion immer langsamer. Dieses Phänomen lässt sich mit dem größeren Wissen über den Kursverlauf erklären. Desto weiter in die Zukunft der Optimierer schauen kann, desto mehr fängt er an  Kurven voll auszufahren, also den zurückgelegten Weg länger zu planen. Dadurch kann zwar die Geschwindigkeit erhöht werden, die Rundenzeit leidet allerdings deutlich darunter. 
+Die Differenz zwischen den beiden Kostenfunktionen, welche die Distanz zu einem Punkt minimiert beziehungsweise die gefahrene Streckendistanz maximiert, ist sehr klein und auch bei geringeren Horizontlängen bereits sehr gut. Wird zusätzlich die Berechnungszeit betrachtet, setzt sich die Max-Track Kostenfunktion deutlich als die bessere ab. Generell ist die Verbesserung der Rundenzeit mit höherer Anzahl der Prädiktionsschritte eher als gering zu betrachten. Ab 50 Schritten war keine nennenswerte Verbesserung mehr messbar. \\
+Nachdem die Grundlagen für die Kostenfunktionen und Vergleichswerte bezüglich der Rundenzeit erstellt wurden, wird im folgenden Abschnitt die Regelfähigkeit der kom\-plex\-eren Modelle im Simulator überprüft.
 
 \section{Regelung des dynamischen Modells}
 \label{dynModelcontrol}
@@ -1109,27 +1104,27 @@ In der Realität ist das kinematische Modell nur für geringe Geschwindigkeiten 
 Die deutlichen Unterschiede der Modelle wurden bereits im Kapitel \ref{modelError} evaluiert. Für diesen Abschnitt wird vom, um Reibung erweiterten, dynamischen Fahrzeugmodell ausgegangen.
 
 \subsection{Berechnungszeit der Elastische Kostenfunktion}
-Die max-track-Kostenfunktion hat sich im letzten Abschnitt, bezogen auf Berechnungszeit und Rundenzeit, als die Beste herausgestellt. Daher wird sie als Grundlage für die elastische Kostenfunktion genutzt und zusätzlich noch durch die Kosten für die Position auf der Spur erweitert. Im Folgenden wird nun zuerst die Berechnungszeit untersucht. Die Messungen werden mit dem kinematischen Modell im Simulator vorgenommen, um eine möglichst gute Vergleichbarkeit mit den Ergebnissen aus \ref{runtime} zu erhalten. Die Ergebnisse der Messung sind in der Abbildung \ref{fig:computeCostSoftConst} dargestellt.
+Die Max-Track-Kostenfunktion hat sich im letzten Abschnitt, bezogen auf Berechnungszeit und Rundenzeit, als die Beste herausgestellt. Daher wird sie als Grundlage für die elastische Kostenfunktion genutzt und zusätzlich noch durch die Kosten für die Position auf der Spur erweitert. Im Folgenden wird nun zuerst die Berechnungszeit untersucht. Die Messungen werden mit dem kinematischen Modell im Simulator vorgenommen, um eine möglichst gute Vergleichbarkeit mit den Ergebnissen aus \ref{runtime} zu erhalten. Die Ergebnisse der Messung sind in der Abbildung \ref{fig:computeCostSoftConst} dargestellt.
 
 \begin{figure}[ht!]
 	\centering
 	\input{Grafiken/computCostSoftConst.tex} 
 	\ref{computeCostSoftLegend}
-	\caption{Berechnungszeit für verschiedene Kostenfunktionen mit elastischer Beschränkung.}
+	\caption{Berechnungszeit für verschiedene Kostenfunktionen mit elastischer Be\-schrän\-kung.}
 	\label{fig:computeCostSoftConst}
 \end{figure}
 
 Die Auswahl der in Frage kommenden Kostenfunktionen ist schnell getroffen. Die e-Funktion und die quadratische-Funktion haben eine deutlich bessere Laufzeit und lassen sogar die einfacheren Kostenfunktionen aus der vorherigen Messung hinter sich. Dies ist darauf zurückzuführen, dass keine tangentialen Beschränkungen mehr vorhanden sind und damit das \ac{MPC}-Problem eine geringere Komplexität aufweist.
 
-Die deutlich höhere Ausführungszeit bei der alpha-Funktion liegt an deren Form. Jeweils auf der Rückseite der Erhöhung fallen die Kosten wieder gegen null. Der Optimierer muss also einen sehr großen Suchraum betrachten. Es werden auch mögliche Trajektorien evaluiert, die die hohen Kosten für zwei bis drei Schritte in Kauf nehmen und anschließend das Rennauto außerhalb des Kurses steuern. Diese Situation kann nachgestellt werden, indem das Kostenverhältnis zu Gunsten der elastischen Beschränkung angepasst wird, woraufhin das Fahrzeug den Kurs verlässt.  
+Die deutlich höhere Ausführungszeit bei der alpha-Funktion liegt an ihrer Form. Jeweils auf der Rückseite der Erhöhung fallen die Kosten wieder gegen null. Der Optimierer muss also einen sehr großen Suchraum betrachten. Es werden auch mögliche Trajektorien evaluiert, die die hohen Kosten für zwei bis drei Schritte in Kauf nehmen und anschließend das Rennauto außerhalb des Kurses steuern. Diese Situation kann nachgestellt werden, indem das Kostenverhältnis zu Gunsten der elastischen Beschränkung angepasst wird, woraufhin das Fahrzeug den Kurs verlässt.  
 
-Zusätzlich zu den Messungen mit dem kinematischen Modell sollen auch Messungen erstellt werden bei denen das dynamische Fahrzeugmodell Verwendung findet. Zudem wird die Geschwindigkeit nicht eingeschränkt. Die Ergebnisse sind in der Abbildung \ref{fig:computeCostSoftConstDynamic} dargestellt. Der Prädiktionshorizont der noch in Echtzeit berechnet werden kann liegt bei etwa 35 Prädiktionsschritten.
+Zusätzlich zu den Messungen mit dem kinematischen Modell sollen auch Messungen erstellt werden bei denen das dynamische Fahrzeugmodell Verwendung findet. Zudem wird die Geschwindigkeit nicht eingeschränkt. Die Messungen werden also für ein Szenario erstellt in dem das Fahrzeug oftmals von der geplanten Trajektorie abfährt und nah an die Streckengrenzen kommt. Die Ergebnisse sind in der Abbildung \ref{fig:computeCostSoftConstDynamic} dargestellt. Der Prädiktionshorizont der noch in Echtzeit berechnet werden kann liegt bei etwa 35 Prädiktionsschritten.
 
 \begin{figure}[ht!]
 	\centering
 	\input{Grafiken/computCostSoftConstDynamic.tex} 
 	\ref{computeCostSoftLegendDynamic}
-	\caption{Berechnungszeit für das dynamische Fahrzeugmodell. Als elastische Beschränkung wurde die e-Funktion und die max-track-Kostenfunktion gewählt}
+	\caption{Berechnungszeit für das dynamische Fahrzeugmodell. Als elastische Be\-schrän\-kung wurde die e-Funktion und die Max-Track-Kostenfunktion gewählt.}
 	\label{fig:computeCostSoftConstDynamic}
 \end{figure}
 
@@ -1144,8 +1139,7 @@ Für diesen Wert liegt die durchschnittliche Berechnungszeit bei $0,047$ Sekunde
 \end{figure}
 
 \subsection{Maximale Querbeschleunigung und Prädiktionshorizont}
-Zuerst wird ermittelt, bis zu welcher maximalen Querbeschleunigung das Rennauto stabil im Rennkurs geregelt werden kann. 
-Um diesen Wert zu finden, wurde die elastische Beschränkung basierend auf der e-Funktion gewählt. Ein sehr großer Kostenfaktor wurde eingestellt, um sicherzustellen, dass das Fahrzeug den Kurs nicht verlässt um abzukürzen. Erst wenn der Regler die Kontrolle verliert und das Fahrzeug nicht mehr auf dem Rennkurs halten kann, ist die maximal regelbare Querbeschleunigung erreicht.
+Zuerst wird ermittelt, bis zu welcher maximalen Querbeschleunigung  das Rennauto stabil im Rennkurs geregelt werden kann. Die Querbeschleunigung wird im kinematischen Modell des \ac{MPC}-Algorithmus hinterlegt, woraufhin dieser die Trajektorien anpasst. Um den besten Wert zu finden wurde die elastische Beschränkung basierend auf der e-Funktion gewählt. Ein sehr großer Kostenfaktor wurde eingestellt, um sicherzustellen, dass das Fahrzeug den Kurs nicht verlässt um abzukürzen. Erst wenn der Regler die Kontrolle verliert und das Fahrzeug nicht mehr auf dem Rennkurs halten kann, ist die maximal regelbare Querbeschleunigung erreicht.
 
 \subsubsection{Dynamisches Modell}
 Für dieses Anwendungsszenario wird zuerst das dynamische Modell evaluiert. Daraufhin werden dann die Messungen ebenfalls für das Modell, das durch den \ac{K.K.} erweitert wurde, erstellt.
@@ -1162,14 +1156,13 @@ Die beste erreichte Zeit mit $11,6$ s ist entgegen der Erwartung für einen kurz
 \begin{figure}[ht!]
 	\centering
 	\input{Grafiken/betaMaxFine.tex} 
-	\caption{Die Rundenzeit in Sekunden abhängig von Querbeschleunigung und Prädiktionsschritten}
+	\caption{Die Rundenzeit in Sekunden abhängig von Querbeschleunigung und Prädiktionsschritten. Weiße Bereiche entsprechen dem Abkommen des Fahrzeug von der Strecke.}
 	\label{fig:betaMaxFine}
 \end{figure}
-
-Dadurch, dass die Geschwindigkeit nicht begrenzt ist, kann das Fahrzeug bei zu geringen wie auch bei zu großen Querbeschleunigungen nicht auf dem Kurs gehalten werden. Erst bei einem größeren Prädiktionshorizont bremst der \ac{MPC}-Algorithmus früh genug ab, um bei geringen Querbeschleunigungen die Kurvenradien durchfahren zu können. Der Einfluss der maximalen Geschwindigkeit wird daher im Abschnitt näher betrachtet.
+Für so kurzen Prädiktionshorizont mit 15 Schritten entsteht das Phänomen, dass sowohl für kleine als auch für große Querbeschleunigungen das Rennauto den Kurs nicht vollenden kann. Bei zu kleinen Werten liegt das an der zu hohen Geschwindigkeit mit der das Rennauto in eine Kurve einfährt und keine Trajektorie mehr berechnet werden kann die die maximale Querbeschleunigung nicht überschreitet. Bei zu großen Werten für die Querbeschleunigung sind die Trajektorien zu aggressiv und das Rennauto rutscht vom Kurs. Eine Möglichkeit diesem Problem zu begegnen ist die Begrenzung der maximalen zulässigen Geschwindigkeit. Dass bei der Anzahl der Prädiktionsschritte von 23 und 24 das Rennauto nicht um den Kurs fahren kann, bei 18 bis 22 jedoch schon, kann an dem Layout des Kurses liegen. Für gewissen Parameterkombinationen trifft das Rennauto eine Trajektorie die genau richtig durch eine Engstelle führt, während für eine andere Kombination das Fahrzeug einfach aus der Kurve heraus fährt.
 
 \subsubsection{Kammscher Kreis}
-Die gleichen Messungen wurden nun auch für das dynamische Modell mit hinterlegtem \ac{K.K.} durchgeführt. Die beste erreichte Rundenzeit (siehe \ref{fig:betaMaxFineKam}) liegt bei $11,65$ Sekunden. Dieser Wert wurde für einen Prädiktionshorizont von $21$ Schritten bei der maximalen Querbeschleunigung von $1,2$ g erreicht. Dieses Ergebnis überrascht im Hinblick auf die deutlichen Unterschiede der Modelle. Das dynamische Modell, das in Situationen, in denen stark beschleunigt und gebremst wird deutlich höhere Kräfte übertragen kann, kann sich in der schnellsten Runde nur um einen Zeitschritt mit $0,05$ s absetzen. Dieses Ergebnis entsteht dadurch, dass durch das hinterlegte kinematische Modell und die Beschränkung der Querbeschleunigung der Regler sehr früh das Bremsen anfängt, um in der Kurve möglichst nah an den Apex zu kommen. 
+Die gleichen Messungen wurden nun auch für das dynamische Modell mit hinterlegtem \ac{K.K.} durchgeführt. Die beste erreichte Rundenzeit (siehe \ref{fig:betaMaxFineKam}) liegt bei $11,65$ Sekunden. Dieser Wert wurde für einen Prädiktionshorizont von $21$ Schritten bei der maximalen Querbeschleunigung von $1,2$ g erreicht. Dieses Ergebnis überrascht im Hinblick auf die deutlichen Unterschiede der Modelle. Das dynamische Modell das in Situationen in denen stark beschleunigt und gebremst wird deutlich höhere Kräfte übertragen kann, kann sich in der schnellsten Runde nur um einen Zeitschritt mit $0,05$ s absetzen. Dieses Ergebnis entsteht dadurch, dass durch das hinterlegte kinematische Modell und die Beschränkung der Querbeschleunigung der Regler sehr früh das Bremsen anfängt, um in der Kurve möglichst nah an den Scheitelpunkt zu kommen. 
 Die longitudinalen Kräfte sind daher bereits klein wenn die maximalen lateralen Kräfte auftreten. Die Einschränkung durch den 
 \ac{K.K.} tritt daher auch nur geringfügig auf.
 
@@ -1181,34 +1174,34 @@ Die longitudinalen Kräfte sind daher bereits klein wenn die maximalen lateralen
 \end{figure}
 
 \section{Einfluss des Reifenmodells}
-Der Einfluss des linearen Reifenmodells auf die Regelung soll nun untersucht werden. Hierfür wird die Grenzsituation aus dem vorherigen Abschnitt gewählt. Für die maximale Querbeschleunigung wurde $1,2$ g gewählt und verschieden Prädiktionszeiten evaluiert. 
+Der Einfluss des linearen Reifenmodells auf die Regelung soll nun untersucht werden. Hierfür wird die Grenzsituation aus dem vorherigen Abschnitt gewählt. Für die maximale Querbeschleunigung wurde $1,2$ g gewählt und verschieden Prädiktionszeiten evaluiert. Es kam wieder das Modell, welches um den \ac{K.K.} erweitert ist, zum Einsatz.
 
 \begin{figure}[ht!]
 	\centering
 	\input{Grafiken/tireModelDiff.tex} 
-	\caption{Rundenzeit abhängig von den Reifenmodellen für $1,2$ g und verschieden lange Prädiktionshorizonte}
+	\caption{Die Rundenzeit abhängig von den Reifenmodellen für $1,2$ g und verschieden lange Prädiktionshorizonte.}
 	\label{fig:tireModelDiff}
 \end{figure}
 
-Das Ergebnis der Messung sind in Abbildung \ref{fig:tireModelDiff} dargestellt und entsprechen den Erwartungen. Die Unterschiede der Kurven (siehe \ref{fig:pacejka}) beider Gleichungen zum Berechnen der Reifenkräfte sind nur gering. Die Differenz bei den Rundenzeiten fällt daher auch klein aus. Wie bereits erwähnt, muss die Vereinfachung abhängig von den Reifen des Fahrzeugs gemacht werden. Generell ist dazu zu raten, immer das genaueste Modell zu verwenden.
+Das Ergebnis der Messung sind in Abbildung \ref{fig:tireModelDiff} dargestellt und entsprechen den Erwartungen. Die Unterschiede der Kurven (siehe \ref{fig:pacejka}) beider Gleichungen zum Berechnen der Reifenkräfte sind nur gering. Die Differenz bei den Rundenzeiten fällt daher auch klein aus. Wie bereits erwähnt muss die Vereinfachung abhängig von den Reifen des Fahrzeugs gemacht werden. Generell ist dazu zu raten, immer das genaueste Modell zu verwenden.
 
 
 \subsection{Regelfrequenz}
-Abschließend soll noch eine Betrachtung durchgeführt werden, ob eine höhere Aktualisierungsrate die Stabilität des Systems erhöht. Um dies zu überprüfen wird eine Parameterauswahl getroffen, in der das Rennauto beginnt auszubrechen. Bei Abweichungen des Fahrzeugs von der erwarteten Trajektorie wird mit einer höheren Aktualisierungsrate weniger Zeit bis zu einer neu geplanten Trajektorie vergehen. Um eine gute Vergleichbarkeit zu erzielen, wird für jedes $\Delta t$ die Anzahl der Prädiktionsschritte angepasst, alle Messungen beziehen sich also auf einen gleich langen vorausplanten Horizont. Wenn der Zeitwert welcher Vorausprädiziert werden soll, keinen ganzen Teiler für das betrachtete $\Delta t$ besaß, wurde der nächst mögliche Wert gewählt. Die Messungen sind in der Abbildung \ref{fig:measureUpdateRate} zusammengefasst. 
+Abschließend soll noch eine Betrachtung durchgeführt werden, ob eine höhere Ak\-tu\-a\-li\-sie\-rungs\-ra\-te die Stabilität des Systems erhöht. Um dies zu überprüfen wird eine Parameter\-aus\-wahl getroffen, in der das Rennauto beginnt auszubrechen. Bei Abweichungen des Fahrzeugs von der erwarteten Trajektorie wird mit einer höheren Ak\-tu\-a\-li\-sie\-rungs\-ra\-te weniger Zeit bis zu einer neu geplanten Trajektorie vergehen. Um eine gute Vergleichbarkeit zu erzielen wird für jedes $\Delta t$ die Anzahl der Prädiktionsschritte angepasst, alle Messungen beziehen sich also auf einen gleich langen vorausplanten Horizont. Wenn der Zeitwert welcher Vorausprädiziert werden soll, keinen ganzen Teiler für das betrachtete $\Delta t$ besaß, wurde der nächst mögliche Wert gewählt. Die Messungen sind in der Abbildung \ref{fig:measureUpdateRate} zusammengefasst. 
 \begin{figure}[ht!]
 	\centering
-	\subfigure[center][Maximal mögliche Querbeschleunigung bei der das Fahrzeug noch den Kurs komplett abfahren kann]{
+	\subfigure[center][Maximal mögliche Querbeschleunigung bei der das Fahrzeug noch den Kurs komplett abfahren kann.]{
 		\input{Grafiken/deltaTMaxB.tex} 
 		\label{fig:deltaTMaxB}
 	}%NOLINE
-	\subfigure[center][Beste Rundenzeit die gemessen wurde]{
+	\subfigure[center][Die beste Rundenzeit die gemessen wurde.]{
 		\input{Grafiken/deltaTMaxSpeed.tex} 
 		\label{fig:deltaTMaxSpeed}
 	}
 	\caption{Abhängigkeit der Fahrzeugregelung von der Frequenz mit der das \ac{MPC}-Verfahren ausgeführt wird }\label{fig:measureUpdateRate}
 \end{figure}
 Je kleiner das $\Delta t$ gewählt wurde, desto höhere Querbeschleunigungen konnte der Regler noch kontrollieren, bevor das Rennauto den Kurs verlässt. Die höhere Querbeschleunigung korreliert jedoch nicht mit einer besseren Rundenzeit. Das Rennauto verlässt bei Querbeschleunigungen ab $1,5$ g in jeder Kurve die Ideallinie. Die beste Rundenzeit wurde daher für alle Aktualisierungsraten bei etwa $1,4$ g gemessen. 
-Die hohe Aktualisierungsrate für ein $\Delta t = \frac{1}{100}$ s erzeugt die beste Rundenzeit. Die Berechnungsdauer ist jedoch auch signifikant größer und deutlich langsamer als für Echtzeit nötig wäre. Betrachtet man das im vorherigen Abschnitt gemessene Verhalten der Rundenzeit für verschieden lange Prädiktionshorizonte, sollte der Fokus also auf eine höhere Aktuallisierungsrate der Positionsschätzung und des \ac{MPC}-Algorithmus gelegt werden. Die verwendete Aktualisierungsrate von 20 Hz ($\Delta t$ = 0,05) stellt einen guten Mittelweg aus Berechnungszeit und Rundenzeit dar. Ab einem $\Delta t$ von 0,07 s war es ohne eine Einschränkung der Maximalgeschwindigkeit nicht mehr möglich das Fahrzeug zu kontrollieren. Unabhängig von der gewählten Querbeschleunigung. 
+Die hohe Ak\-tu\-a\-li\-sie\-rungs\-ra\-te für ein $\Delta t = \frac{1}{100}$ s erzeugt die beste Rundenzeit. Die Berechnungsdauer ist jedoch auch signifikant größer und deutlich langsamer als für Echtzeit nötig wäre. Betrachtet man das im vorherigen Abschnitt gemessene Verhalten der Rundenzeit für verschieden lange Prädiktionshorizonte, sollte der Fokus also auf eine höhere Ak\-tu\-a\-li\-sie\-rungs\-ra\-te der Positionsschätzung und des \ac{MPC}-Algorithmus gelegt werden. Die verwendete Ak\-tu\-a\-li\-sie\-rungs\-ra\-te von 20 Hz ($\Delta t$ = 0,05) stellt einen guten Mittelweg aus Berechnungszeit und Rundenzeit dar. Ab einem $\Delta t$ von 0,07 s war es ohne eine Einschränkung der Maximalgeschwindigkeit nicht mehr möglich das Fahrzeug zu kon\-t\-rol\-lie\-ren. Unabhängig von der gewählten Quer\-be\-schleu\-ni\-gung. 
 
 \subsection{Quadratische Kostenfunktion}
 Die Idee hinter der quadratischen Funktion ist, dass das Rennauto etwas mehr in der Mitte der Spur bleibt und daher im besten Fall auch bei höheren Geschwindigkeiten noch kontrollierbarer bleibt. Da es jedoch keinen abrupten Kostenanstieg an den Kursgrenzen gibt, muss evaluiert werden, für welchen Faktor $\alpha$ und das Verhältnis a der Regler die besten Rundenzeiten liefert, ohne den Kurs zu verlassen. Für $N$ wurde ein konstanter Wert von $25$ Schritten mit einem $\Delta t$ von $0,05$ s gewählt. In den Messungen hat sich der Ansatz nicht bestätigen lassen. Die Trajektorien werden immer möglichst in der Mitte des Kurses angelegt. Bei aufeinander folgenden Kurven, in denen das dynamische Modell stark vom kinematischen abweicht, verliert das Fahrzeug dadurch sehr schnell die Kontrolle. Auch geringe Querbeschleunigungen ändern an diesem Problem nichts, da die maximale Geschwindigkeit des Fahrzeugs nicht eingeschränkt ist. Die Folge daraus ist, dass das Rennauto mit zu hohen Geschwindigkeiten in die Kurven einfährt. Ohne ein genaueres Fahrzeugmodell im \ac{MPC}-Algorithmus ist eine Regelung des Rennautos, trotz der schnellen Berechnungszeit, mit dieser Kostenfunktion nicht zu empfehlen.
@@ -1222,16 +1215,16 @@ Die problematische Stelle im Kurs ist schematisch für die zwei verschiedenen Ve
 \end{figure}
 
 \chapter[Zusammenfassung]{Zusammenfassung und Ausblick}
-Dieses Kapitel fasst noch einmal die Ergebnisse der Arbeit zusammen und bietet anschließend noch einige Anregungen für Verbesserungen des Algorithmus, Simulators und was in der Zukunft noch untersucht werden kann.
+Dieses Kapitel fasst noch einmal die Ergebnisse der Arbeit zusammen und bietet an\-schlie\-ßend noch einige Anregungen für Verbesserungen des Algorithmus, Simulators und was in der Zukunft noch untersucht werden kann.
 \section{Zusammenfassung}
-In dieser Arbeit wurde eine Simulationsumgebung erstellt, die auf verschiedene Fahrzeugmodelle zurückgreifen kann und genutzt wird, um die Regelbarkeit eines Rennautos mithilfe eines \ac{MPC}-Ansatzes zu überprüfen. Dies soll die Grundlage für die Entwicklung der Regelung und Trajektorienplanung des ersten High-Octane Motorsports Driverless Fahrzeugs bilden. Es handelt sich dabei um ein hoch performantes Rennauto, welches für niedrige Geschwindigkeiten (bis $121$ $\frac{\text{km}}{\text{h}}$) und hohe Kurvendynamik ausgelegt ist. Besonderes Augenmerk wurde auf die Echtzeitfähigkeit und die Unterschiede zwischen den einzelnen Fahrzeugmodellen gelegt. Es ist nicht nur wichtig, ein möglichst realistisches Modell des Rennautos zu besitzen, der Algorithmus muss auch performant genug sein um eine Aktualisierungsrate von mindestens 20 Hz realisieren zu können. 
-Im \ac{MPC}-Algorithmus wurde ein einfaches kinematisches Fahrzeugmodell hinterlegt, um die Bewegung des Rennautos vorausberechnen zu können. Dieses wurde im Simulator durch ein deutlich realistischeres, dynamisches Fahrzeugmodell simuliert. Die Unterschiede zwischen den Modellen wurden genutzt, um zu evaluieren wie robust der Algorithmus noch ist, wenn die hinterlegte Systembeschreibung von der Realität abweicht. Um das Fahrzeug auf der Spur zu halten ohne dass der Algorithmus bei einer Überschreitung der Seitenlinien abbricht, wurden verschiedene Kostenfunktionen untersucht, die die tangentialen Beschränkungen in die Kostenfunktion integrieren. Das beste Ergebnis lieferte eine e-Funktion, die an den Grenzen sehr schnell groß wird. Sie zeichnet sich durch eine schnelle Berechnungszeit und eine gute Approximation der tangentialen Beschränkung aus. Die Untersuchungen der Länge des Prädiktionshorizontes und der Aktualisierungsrate verdeutlichen, dass das gewählte $\Delta t$ einen größeren Einfluss auf die schnellste Rundenzeit hat als die Zeit mit der in die Zukunft prädiziert wird. Hier muss abhängig von der zur Verfügung stehenden Rechenleistung ein Kompromiss gesucht werden. Die höchste Priorität hat jedoch ein möglichst genaues Fahrzeugmodell. Durch den Umstieg im Simulator vom kinematischen auf das dynamische Fahrzeugmodell ist die Rundenzeit signifikant schlechter geworden. Mit einem genaueren Modell im \ac{MPC}-Algorithmus ist also auch mit einer besseren Regelung zu rechnen.  
+In dieser Arbeit wurde eine Simulationsumgebung erstellt, die auf verschiedene Fahr\-zeug\-mo\-delle zurückgreifen kann und genutzt wird, um die Regelbarkeit eines Rennautos mithilfe eines \ac{MPC}-Ansatzes zu überprüfen.Dies soll die Grundlage für die Entwicklung der Regelung und Trajektorienplanung des ersten High-Octane Motorsports Driverless Fahrzeugs bilden. Es handelt sich dabei um ein hoch performantes Rennauto, welches für niedrige Ge\-schwin\-dig\-kei\-ten (bis $121$ $\frac{\text{km}}{\text{h}}$) und hohe Kurvendynamik ausgelegt ist. Besonderes Augenmerk wurde auf die Echtzeitfähigkeit und die Unterschiede zwischen den einzelnen Fahrzeugmodellen gelegt. Es ist nicht nur wichtig, ein möglichst realistisches Modell des Rennautos zu besitzen, der Algorithmus muss auch performant genug sein um eine Aktualisierungsrate von mindestens 20 Hz realisieren zu können. 
+Im \ac{MPC}-Algorithmus wurde ein einfaches kinematisches Fahrzeugmodell hinterlegt, um die Be\-we\-gung des Rennautos vorausberechnen zu können. Dieses wurde im Simulator durch ein deutlich realistischeres, dynamisches Fahrzeugmodell simuliert. Die Unterschiede zwischen den Modellen wurden genutzt, um zu evaluieren wie robust der Algorithmus noch ist, wenn die hinterlegte Systembeschreibung von der Realität abweicht. Um das Fahrzeug auf der Spur zu halten ohne dass der Algorithmus bei einer Überschreitung der Seitenlinien abbricht, wurden verschiedene Kostenfunktionen untersucht, die die tangentialen Beschränkungen in die Kostenfunktion integrieren. Das beste Ergebnis lieferte eine e-Funktion, die an den Grenzen sehr schnell groß wird. Sie zeichnet sich durch eine schnelle Berechnungszeit und eine gute Approximation der tangentialen Beschränkung aus. Die Untersuchungen der Länge des Prädiktionshorizontes und der Aktualisierungsrate verdeutlichen, dass das gewählte $\Delta t$ einen größeren Einfluss auf die schnellste Rundenzeit hat als die Zeit mit der in die Zukunft prädiziert wird. Hier muss abhängig von der zur Verfügung stehenden Rechenleistung ein Kompromiss gesucht werden. Die höchste Priorität hat jedoch ein möglichst genaues Fahrzeugmodell. Durch den Umstieg im Simulator vom kinematischen auf das dynamische Fahrzeugmodell ist die Rundenzeit signifikant schlechter geworden. Mit einem genaueren Modell im \ac{MPC}-Algorithmus ist also auch mit einer besseren Regelung zu rechnen.  
 
 \section{Ausblick}
 Im nächsten Abschnitt wird auf die Verbesserungsmöglichkeiten eingegangen, um den \ac{MPC}-Ansatz noch leistungsfähiger zu machen und die Simulation zu Verbessern.
 \subsection{Simulator}
-In der aktuellen Version des Simulators bezieht sich die Beschränkung durch die Streckenbegrenzung auf den Mittelpunkt des Fahrzeugs. Diese Einschränkung kann erweitert werden, indem die tangentialen Beschränkungen auf allen vier Rädern angewandt werden. Ein weiterer Punkt, der noch keine Beachtung gefunden hat, ist die Definition der verschiedenen Rennkurse. Die Stützpunkte mit denen der virtuelle Rennkurs definiert ist, besteht aus Geraden und Punkten, die auf Kreisen mit verschiedenen Radien liegen. Im echten Straßenbau wird für den Übergang zwischen der Geraden und dem Kreis auf Klothoiden gesetzt. Das Ergebnis sind Kurven die ruckfrei bzw. ihre Krümmung eine stetige Funktion der Länge sind. \\
-Eine Vereinfachung die in der Realität eine entscheidende Rolle spielt, ist die Änderungsrate des Lenkwinkels. Im Simulator kann das Fahrzeug beliebig schnell zwischen Lenkeinschlägen wechseln. Dies ist natürlich im echten Rennauto nicht möglich. Eine Einschränkung dieser Änderungsrate für die dynamischen Modelle ist daher eine sinnvolle Erweiterung.\\
+In der aktuellen Version des Simulators bezieht sich die Beschränkung durch die Strecken\-be\-gren\-zung auf den Mittelpunkt des Fahrzeugs. Diese Einschränkung kann erweitert werden, indem die tangentialen Beschränkungen auf allen vier Rädern angewandt werden. Ein weiterer Punkt, der noch keine Beachtung gefunden hat, ist die Definition der ver\-schie\-den\-en Rennkurse. Die Stützpunkte mit denen der virtuelle Rennkurs definiert ist, besteht aus Geraden und Punkten, die auf Kreisen mit ver\-schie\-den\-en Radien liegen. Im echten Straßenbau wird für den Übergang zwischen der Geraden und dem Kreis auf Klothoiden gesetzt. Das Ergebnis sind Kurven die ruckfrei bzw. ihre Krümmung eine stetige Funktion der Länge sind. \\
+Eine Vereinfachung die in der Realität eine entscheidende Rolle spielt, ist die Änderungsrate des Lenkwinkels. Im Simulator kann das Fahrzeug beliebig schnell zwischen Lenk\-ein\-schlä\-gen wechseln. Dies ist natürlich im echten Rennauto nicht möglich. Eine Einschränkung dieser Änderungsrate für die Fahrzeugmodelle ist daher eine sinnvolle Erweiterung.\\
 Ebenfalls vorstellbar wäre die Berücksichtigung der Bewegung des Fahrzeugs während die Regelparameter vom \ac{MPC}-Algorithmus berechnet werden. Die Stellgrößen beziehen sich auf eine Position, die nicht mehr der aktuellen entspricht sobald die Berechnung abgeschlossen ist.
 
 \subsection{Dynamisches Fahrzeugmodell im MPC}
