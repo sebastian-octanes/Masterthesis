@@ -47,10 +47,10 @@
 \contentsline {figure}{\numberline {6.6}{\ignorespaces Berechnungszeit der Kostenfunktionen f\IeC {\"u}r verschieden gro\IeC {\ss }e Horizontl\IeC {\"a}ngen\relax }}{58}{figure.caption.61}
 \contentsline {subfigure}{\numberline {(a)}{\ignorespaces center}}{58}{figure.caption.61}
 \contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Mittelwert sobald Warmstart aktiv}}}{58}{figure.caption.61}
-\contentsline {figure}{\numberline {6.7}{\ignorespaces Rundenzeit f\IeC {\"u}r verschiedene Kostenfunktionen und abh\IeC {\"a}ngig von der Anzahl der Pr\IeC {\"a}diktionsschritte. Gemessen wurde die erste (1) und zweite (2) Runde.\relax }}{59}{figure.caption.62}
-\contentsline {figure}{\numberline {6.8}{\ignorespaces Berechnungszeit f\IeC {\"u}r verschiedene Kostenfunktionen mit elastischer Be\-schr\IeC {\"a}n\-kung.\relax }}{61}{figure.caption.63}
+\contentsline {figure}{\numberline {6.7}{\ignorespaces Berechnungszeit f\IeC {\"u}r verschiedene Kostenfunktionen mit elastischer Be\-schr\IeC {\"a}n\-kung.\relax }}{59}{figure.caption.62}
+\contentsline {figure}{\numberline {6.8}{\ignorespaces Rundenzeit f\IeC {\"u}r verschiedene Kostenfunktionen und abh\IeC {\"a}ngig von der Anzahl der Pr\IeC {\"a}diktionsschritte. Gemessen wurde die erste (1) und zweite (2) Runde.\relax }}{61}{figure.caption.63}
 \contentsline {figure}{\numberline {6.9}{\ignorespaces Berechnungszeit f\IeC {\"u}r das dynamische Fahrzeugmodell. Als elastische Be\-schr\IeC {\"a}n\-kung wurde die e-Funktion und die Max-Track-Kostenfunktion gew\IeC {\"a}hlt.\relax }}{62}{figure.caption.64}
-\contentsline {figure}{\numberline {6.10}{\ignorespaces Verteilung der Berechnungszeit nachdem der Warmstart aktiv ist. Es wurden 200 Optimierungsschritte gemessen.\relax }}{63}{figure.caption.65}
+\contentsline {figure}{\numberline {6.10}{\ignorespaces Summation der Verteilungen der Berechnungszeit nachdem der Warmstart aktiv ist.\relax }}{63}{figure.caption.65}
 \contentsline {figure}{\numberline {6.11}{\ignorespaces Die Rundenzeit in Sekunden abh\IeC {\"a}ngig von Querbeschleunigung und Pr\IeC {\"a}diktionsschritten. Wei\IeC {\ss }e Bereiche entsprechen dem Abkommen des Fahrzeug von der Strecke.\relax }}{64}{figure.caption.66}
 \contentsline {figure}{\numberline {6.12}{\ignorespaces Die Rundenzeit in Sekunden abh\IeC {\"a}ngig von Querbeschleunigung und Pr\IeC {\"a}diktionsschritten. Wei\IeC {\ss }e Bereiche entsprechen dem Abkommen des Fahrzeug von der Strecke.\relax }}{65}{figure.caption.67}
 \contentsline {figure}{\numberline {6.13}{\ignorespaces Die Rundenzeit in Sekunden abh\IeC {\"a}ngig von Querbeschleunigung und Pr\IeC {\"a}diktionsschritten f\IeC {\"u}r das dynamische Modell erweitert durch den \ac {K.K.}\relax }}{66}{figure.caption.68}
