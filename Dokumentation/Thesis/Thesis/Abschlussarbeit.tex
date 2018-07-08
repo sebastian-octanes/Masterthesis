@@ -461,7 +461,7 @@ Der Zusammenhang zwischen lateraler und longitudinaler Kraft wird über den \ac{
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=250pt]{Abbildungen/kamKreis.png}
-	\caption{Der Kammscher Kreis beschränkt der maximal wirkenden Kraft.}
+	\caption{Der Kammscher Kreis beschränkt die maximal wirkenden Kraft}
 	\label{fig:kamKreis}
 \end{figure}
 
@@ -504,7 +504,7 @@ Die Kräfte \(F_{yf}\) und \(F_{yr}\) greifen jeweils am vorderen \((.)_f\) und 
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=300pt]{Abbildungen/dynBicycle.png}
-	\caption{dynamisches Fahrzeugmodell}
+	\caption{Dynamisches Fahrzeugmodell}
 	\label{fig:dynModel}
 \end{figure}
 
@@ -607,7 +607,7 @@ Die Fahrzeugparameter (\ref{vehicleParam}) die zur Berechnung verwendet wurden, 
 
 \begin{table}[ht!]
 	\centering
-	\caption{Fahrzeug Parameter}
+	\caption{Fahrzeugparameter}
 	\begin{tabular}{l|l|l}
 		\hline
 		Formelzeichen	& Wert & Einheit \\ \hline
@@ -714,7 +714,7 @@ Eine bildliche Darstellung der Kostenfunktion ist in Abbildung \ref{fig:costGoal
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=200pt]{Abbildungen/costGoalDist.png}
-	\caption{Zielpunkt Distanzminimierung: Das virtuelle Ziel wird immer weit genug vor dem Fahrzeug hergeschoben, so dass es nie erreicht werden kann}
+	\caption{Zielpunkt Distanzminimierung: Das virtuelle Ziel wird immer weit genug vor dem Fahrzeug hergeschoben, so dass es nie erreicht werden kann.}
 	\label{fig:costGoalDist}
 \end{figure}
 Im weiteren Verlauf wird diese Kostenfunktion mit Min-Dist bezeichnet.
@@ -760,7 +760,7 @@ Die Vektorprojektion ist im Schaubild \ref{fig:vektorProjektion} dargestellt.
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=200pt]{Abbildungen/vektorProjection.png}
-	\caption{Vektor Projektion zum berechnen der tangentialen Beschränkung}
+	\caption{Vektor Projektion zum Berechnen der tangentialen Beschränkung}
 	\label{fig:vektorProjektion}
 \end{figure}
 
@@ -852,7 +852,7 @@ Es wäre möglich die einzelnen benötigten Bestandteile für einen \ac{MPC}-Alg
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=150pt]{Abbildungen/jumpDiagram.png}
-	\caption{Blockdiagramm von \ac{Jump}. Wichtige Vorteile sind die automatische Ableitung und das einfache Tauschen von Optimierern.}
+	\caption{Das Blockdiagramm von \ac{Jump}. Wichtige Vorteile sind die automatische Ableitung und das einfache Tauschen von Optimierern.}
 	\label{fig:jumpDiagram}
 \end{figure}
 
@@ -865,7 +865,7 @@ Die Basis für die Simulation bildet die \ac{SFML}, die für die grafischen Dars
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=350pt]{Abbildungen/sim_visual.png}
-	\caption{Grafische Darstellung des MPC - Algorithmus in der Simulationsumgebung}
+	\caption{Grafische Darstellung des MPC-Algorithmus in der Simulationsumgebung}
 	\label{fig:simVisual}
 \end{figure} 
 Zusätzlich zur Visualisierung stellt die Spiele-Engine auch sicher, dass die zeitlichen Abläufe ein\-ge\-hal\-ten werden. Das Grundprinzip ist eine einzige unendlich laufende Schleife, die mit einer vorher festgelegten Wiederholungsrate ausgeführt wird. Benötigen die Berechnungen innerhalb dieser Schleife länger als das angegebene
@@ -892,7 +892,7 @@ Wie in der Einführung bereits erwähnt, ist das Ziel der Arbeit ein \ac{MPC}-Al
 \chapter{Evaluierung}
 \section{Modellfehler}
 \label{modelError}
-Ohne eine Verifizierung der Plausibilität der implementierten Modelle ist keine sys\-te\-ma\-tische Untersuchung möglich. Hierfür wurden die zwei Disziplinen \text{acceleration} und \text{skidpad} gewählt und die besten gefahrenen Ergebnisse des Rennautos des High-Octane Motorspors als Vergleichsbasis genutzt.
+Ohne eine Verifizierung der Plausibilität der implementierten Modelle ist keine sys\-te\-ma\-tische Untersuchung möglich. Hierfür wurden die zwei Disziplinen \text{Acceleration} und \text{Skidpad} gewählt und die besten gefahrenen Ergebnisse des Rennautos des High-Octane Motorspors als Vergleichsbasis genutzt.
 
 
 \subsection{Disziplin Acceleration}
@@ -908,7 +908,7 @@ Das dritte Modell betrachtet zusätzlich zur Motorleistung, die Rollreibung und 
 	\label{fig:accdec}
 \end{figure}
 Zuerst werden die Geschwindigkeitskurven betrachtet. Hierfür wird mit allen hinterlegten Modellen fünf Sekunden lang maximal beschleunigt und direkt danach $2,5$ s mit maximaler Kraft gebremst.
-In der Grafik \ref{fig:accdec} wird deutlich wie stark sich die einzelnen Modelle, obwohl sie sich auf das gleiche Fahrzeug beziehen, voneinander unterscheiden. Das Fahrzeug besitzt eine Maximalgeschwindigkeit von $121$  $\frac{\text{km}}{\text{h}}$, welche durch die Übersetzung im Getriebe limitiert wird. Das kinematische Modell trifft mit seiner durchschnittlichen Beschleunigung exakt die gefahrenen Testwerte. Da die dynamischen Modelle jedoch eine größere Anfangsbeschleunigung besitzen, wird die Anfangsbeschleunigung des im \ac{MPC}-Algorithmus hinterlegt Modell auf die gleiche Steigung angepasst. Als nächstes wird die Zeit über eine Strecke von $75$ m gemessen. Das Ergebnis für das kinematische Modell, mit angepasster Beschleunigungskurve, beträgt $3,0$ Sekunden. Dieser Wert ist, wie bereits zu erwarten war, deutlich zu schnell. Realistische Werte liegen zwischen $3,8$ und $4,5$ Sekunden, je nach Fähigkeiten des Fahrers, Wetterbedingungen und Reifentemperatur. Das dynamische Modell, das keinerlei Reibung berücksichtigt, ist ebenfalls mit $3,45$ Sekunden zu schnell. Mit Reibung entsteht ein realistischer Wert von $4,3$ Sekunden, was typischen Messzeiten für das Fahrzeug des High-Octane Motorspors e.V. entspricht. Für ein gutes longitudinales Modell des Fahrzeugs muss also der Luftwiderstand, der einen deutlich größeren Anteil auf die Gesamtreibung hat als der Rollwiderstand, berücksichtigt werden. Die Rollreibung ist bei maximaler Geschwindigkeit um den Faktor 100 kleiner als die aerodynamischen Kräfte und entspricht etwa 6 und 592 N respektive. Im Folgenden wird immer das um Reibung erweiterte longitudinalen Modell verwendet.
+In der Grafik \ref{fig:accdec} wird deutlich wie stark sich die einzelnen Modelle, obwohl sie sich auf das gleiche Fahrzeug beziehen, voneinander unterscheiden. Das Fahrzeug besitzt eine Maximalgeschwindigkeit von $121$  $\frac{\text{km}}{\text{h}}$, welche durch die Übersetzung im Getriebe limitiert wird. Das kinematische Modell trifft mit seiner durchschnittlichen Beschleunigung exakt die gefahrenen Testwerte. Da die dynamischen Modelle jedoch eine größere Anfangsbeschleunigung besitzen, wird die Anfangsbeschleunigung des im \ac{MPC}-Algorithmus hinterlegt Modell auf die gleiche Steigung angepasst. Als nächstes wird die Zeit über eine Strecke von $75$ m gemessen. Das Ergebnis für das kinematische Modell, mit angepasster Beschleunigungskurve, beträgt $3,0$ Sekunden. Dieser Wert ist, wie bereits zu erwarten war, deutlich zu schnell. Realistische Werte liegen zwischen $3,8$ und $4,5$ Sekunden, je nach Fähigkeiten des Fahrers, der Wetterbedingungen und der Reifentemperatur. Das dynamische Modell, das keinerlei Reibung berücksichtigt, ist ebenfalls mit $3,45$ Sekunden zu schnell. Mit Reibung entsteht ein realistischer Wert von $4,3$ Sekunden, was typischen Messzeiten für das Fahrzeug des High-Octane Motorspors e.V. entspricht. Für ein gutes longitudinales Modell des Fahrzeugs muss also der Luftwiderstand, der einen deutlich größeren Anteil auf die Gesamtreibung hat als der Rollwiderstand, berücksichtigt werden. Die Rollreibung ($6$ N)ist bei maximaler Geschwindigkeit um den Faktor 100 kleiner als die aerodynamischen Kräfte ($592$ N). Im Folgenden wird immer das um Reibung erweiterte longitudinalen Modell verwendet.
 
 
 \subsection{Disziplin Skidpad}
@@ -931,8 +931,8 @@ Die Bahngeschwindigkeit $v$ wird mit der Gleichung
 \end{eqnarray}
 berechnet.
 
-Für das in der Simulationsumgebung hinterlegte kinematische Modell ist die gemessene Rundenzeit $4,65$ s. Daraus lässt sich eine Durchschnittsgeschwindigkeit $ v= 14.35$ $ \frac{\text{m}}{\text{s}}$ berechnen, was einer Querbeschleunigung von $a = 19.40$ $ \frac{\text{m}}{\text{s\textsuperscript{2}}}$ entspricht. Das im Fahr\-zeug\-mo\-dell hinterlegte $a_{max}$ ist mit $19,62$ $ \frac{\text{m}}{\text{s\textsuperscript{2}}}$ ($2$ g) also sehr nah an dem in der Simulation erreichten Werten. Die Differenz zu der schnellsten gemessenen Runde mit dem echten Fahrzeug ($4,77$ s) lässt sich dadurch erklären, dass der MPC-Algorithmus die idealen Stellgrößen berechnet und damit auch einen idealen Rundkurs abfährt. Zudem wurde die maximal gemessene Querbeschleunigung des Fahrzeugs als $a_{max}$ gewählt. Diese kann in der Realität nicht durchgängig gehalten werden. Der Wert wurde beim Einlenken mit hoher Geschwindigkeit ermittelt. In diesem Fall besitzt das Rennauto, aufgrund seiner Aerodynamik, einen hohen Abtrieb. Durch die höhere Normalkraft, die die Reifen auf die Straße presst, können größere laterale Kräfte übertragen werden.
-Für das dynamische Fahrzeugmodell wurde eine minimale Rundenzeit 3,35 s gemessen.  Die damit erhaltene maximale Querbeschleunigung ist deutlich größer als die des kinematischen Modells. Die Differenz ist auf eine zu stark vereinfachte Annahme der Reifenkräfte zurückzuführen. Die von der \ac{M.F.} errechneten lateralen Kräfte werden verdoppelt, da das Fahrzeug in der Realität jeweils zwei Räder pro Achse besitzt. In schnell gefahrenen Kurven verlagert sich jedoch die Gewichtskraft des Rennautos, die den Reifen auf die Straße presst, stark auf das kurvenäußere Rad. Die vom kurveninneren Rad maximal übertragbare Kraft bricht daher deutlich ein.
+Für das in der Simulationsumgebung hinterlegte kinematische Modell ist die gemessene Rundenzeit $4,65$ s. Daraus lässt sich eine Durchschnittsgeschwindigkeit $ v= 14.35$ $ \frac{\text{m}}{\text{s}}$ berechnen, was einer Querbeschleunigung von $a = 19.40$ $ \frac{\text{m}}{\text{s\textsuperscript{2}}}$ entspricht. Das im Fahr\-zeug\-mo\-dell hinterlegte $a_{max}$ ist mit $19,62$ $ \frac{\text{m}}{\text{s\textsuperscript{2}}}$ ($2$ g) also sehr nah an dem in der Simulation erreichten Werten. Diese Werte sind realistisch mit dem Fahrzeug des High-Octane Motorspors erreichbar. Die schnellste gemessene Zeit beträgt etwa $4,8$ Sekunden. 
+Für das dynamische Fahrzeugmodell wurde eine minimale Rundenzeit $3,35$ s gemessen.  Die damit erhaltene maximale Querbeschleunigung ist deutlich größer als die des kinematischen Modells. Die Differenz ist auf eine zu stark vereinfachte Annahme der Reifenkräfte zurückzuführen. Die von der \ac{M.F.} errechneten lateralen Kräfte werden verdoppelt, da das Fahrzeug in der Realität jeweils zwei Räder pro Achse besitzt. In schnell gefahrenen Kurven verlagert sich jedoch die Gewichtskraft des Rennautos, die den Reifen auf die Straße presst, stark auf das kurvenäußere Rad. Die vom kurveninneren Rad übertragene Kraft bricht daher deutlich ein.
 Die maximal übertragbare Kraft des Reifens steigt zwar mit höherer Normalkraft an, jedoch ist der Zusammenhang nichtlinear und nähert sich immer mehr einem maximalen Wert an. Das kurvenäußere Rad kann daher den Verlust des inneren Reifens nicht kompensieren. 
 
 Da im Skidpad die Querbeschleunigung konstant ist, spielt das Trägheitsmoment in dieser Disziplin eine untergeordnete Rolle.
@@ -967,14 +967,14 @@ In der Darstellung \ref{fig:modelDiffOrient} ist die Änderung der Orientierung 
 		\label{fig:modelDiffOrient28}
 	}	
 	\ref{modelDiffOrientLegend}
-	\caption{Orientierung des Rennautos für eine Sinuskurve als Eingangswert des Lenkwinkels. Es werden verschiedene Geschwindigkeiten ohne longitudinale Beschleunigung betrachtet.}\label{fig:modelDiffOrient}
+	\caption{Die Orientierung des Rennautos für eine Sinuskurve als Eingangswert des Lenkwinkels. Es werden verschiedene Geschwindigkeiten ohne longitudinale Beschleunigung betrachtet.}\label{fig:modelDiffOrient}
 \end{figure}
 
-Zuerst wird das Verhalten des kinematischen Modells betrachtet. Bei der geringsten Geschwindigkeit von $7$ $\frac{\text{m}}{\text{s}}$ folgt die Orientierung noch genau dem Lenkwinkel nach und erreicht damit den Maximalwert im Nulldurchgang der Sinusfunktion des Lenkwinkels. Mit höheren Geschwindigkeiten begrenzt jedoch immer stärker die Beschränkung der maximalen Querbeschleunigung. Bei $14$ $\frac{\text{m}}{\text{s}}$ ist dies durch den leicht abgerundeten An\-fangs\-punkt der Kurve erkennbar. Dies ist bei $21$ und $28$ $\frac{\text{m}}{\text{s}}$ nicht mehr der Fall. Ab  $14$ $\frac{\text{m}}{\text{s}}$ begrenzt die maximale Querbeschleunigung auch immer stärker die maximal erreichte Orientierung. 
+Zuerst wird das Verhalten des kinematischen Modells betrachtet. Bei der geringsten Geschwindigkeit von $7$ $\frac{\text{m}}{\text{s}}$ folgt die Orientierung noch genau dem Lenkwinkel nach und erreicht damit den Maximalwert im Nulldurchgang der Sinusfunktion des Lenkwinkels. Auch die Kurvenform entspricht der Sinuskurve. Mit höheren Geschwindigkeiten begrenzt jedoch immer stärker die Beschränkung der maximalen Querbeschleunigung. Bei $14$ $\frac{\text{m}}{\text{s}}$ ist dies durch den leicht abgerundeten An\-fangs\-punkt der Kurve erkennbar. Dies ist bei $21$ und $28$ $\frac{\text{m}}{\text{s}}$ nicht mehr der Fall. Ab  $14$ $\frac{\text{m}}{\text{s}}$ begrenzt die maximale Querbeschleunigung auch immer stärker die maximal erreichte Orientierung. 
 
-Das Verhalten des dynamischen Modells ist deutlich stärker von der Geschwindigkeit abhängig. Es sticht sofort ins Auge, dass es dem Fahrzeug deutlich schwerer fällt von einer Drehrichtung auf die entgegengesetzte zu Wechseln. Vor allem bei der niedrigsten Geschwindigkeiten von $7$ $\frac{\text{m}}{\text{s}}$ liegen zwischen dem ersten maximum und dem ersten minimum der Orientierung nur $0,12$ rad. Das kinematische Modell änderte in der gleichen Zeit seine Orientierung um $0,6$ rad. Dieses Verhalten ändert sich stark mit der gefahrenen Geschwindigkeit. Die Amplitude der Sinusschwingung, mit der sich die Orientierung ändert, wächst mit zunehmender Geschwindigkeit an, bis bei $28$ $\frac{\text{m}}{\text{s}}$ das maximum mit $0,32$ rad erreicht wird. Die Differenz zum kinematischen Modell ist dann mit $0,34$ rad nahezu gleich. Generell eilt das dynamische Fahrzeugmodell der Änderung des Lenkwinkels um etwa $0,2$ rad hinterher. Dieser Wert ist unverändert für alle Geschwindigkeiten und lässt sich auf das Trägheitsmoment zurückführen.
+Das Verhalten des dynamischen Modells ist deutlich stärker von der Geschwindigkeit abhängig. Es sticht sofort ins Auge, dass es dem Fahrzeug deutlich schwerer fällt von einer Drehrichtung auf die entgegengesetzte zu Wechseln. Vor allem bei der niedrigsten Geschwindigkeiten von $7$ $\frac{\text{m}}{\text{s}}$ liegen zwischen dem ersten Maximum und dem ersten Minimum der Orientierung nur $0,12$ rad. Das kinematische Modell änderte in der gleichen Zeit seine Orientierung um $0,6$ rad. Dieses Verhalten ändert sich stark mit der gefahrenen Geschwindigkeit. Die Amplitude der Sinusschwingung, mit der sich die Orientierung ändert, wächst mit zunehmender Geschwindigkeit an, bis bei $28$ $\frac{\text{m}}{\text{s}}$ das Maximum mit $0,32$ rad erreicht wird. Die Differenz zum kinematischen Modell ist dann mit $0,34$ rad nahezu gleich. Generell eilt das dynamische Fahrzeugmodell der Änderung des Lenkwinkels um etwa $0,2$ rad hinterher. Dieser Wert ist unverändert für alle Geschwindigkeiten und lässt sich auf das Trägheitsmoment zurückführen.
 
-Das Verhalten des dynamischen Modells und das des um den \ac{K.K.} erweiterten Modells sind in diesem Anwendungsfall genau gleich. Dies ist darauf zurückzuführen, dass keinerlei longitudinale Kraft an den Reifen anliegt. Die vom Reifen zu übertragenden Kräfte bewegen sich daher nur auf der x-Achse des \ac{K.K.} und erfahren keine Einschränkung. 
+Das Verhalten des dynamischen Modells und des um den \ac{K.K.} erweiterten Modells sind in diesem Anwendungsfall genau gleich. Der Grund hierfür ist, dass keinerlei longitudinale Kraft an den Reifen anliegt. Die vom Reifen zu übertragenden Kräfte bewegen sich daher nur auf der x-Achse des \ac{K.K.} und erfahren keine Einschränkung. 
 
 
 \begin{figure}
@@ -1006,24 +1006,24 @@ Das Verhalten des dynamischen Modells und das des um den \ac{K.K.} erweiterten M
 \end{figure}
 
 Wird nun das gleiche Szenario aber für eine zusätzliche longitudinale Beschleunigung betrachtet, ergibt sich ein neues Bild (siehe \ref{fig:modelDiffOrientMaxAcc}).
-Zuerst lohnt sich nochmals der Blick auf das kinematische Modell. Hier ist nun gut zu erkennen, wie mit zunehmender Geschwindigkeit die Kurve immer weniger abgerundet ist und durch die maximale Querbeschleunigung begrenzt wird. Das Verhalten der beiden dynamischen Modelle ist in diesem Szenario nicht mehr kongruent. Für $7$ $\frac{\text{m}}{\text{s}}$ ist die große Differenz klar durch die eingeschränkten lateralen Kräfte durch den \ac{K.K.} ersichtlich. Dass die Differenz bei dem letzten Diagramm mit $28$ $\frac{\text{m}}{\text{s}}$ nahezu verschwindet, ist auf $F_x$ zurück zu führen. Dieses wird mit der Gleichung (\ref{long_dyn_engine}) \\ 
+Zuerst lohnt sich nochmals der Blick auf das kinematische Modell. Hier ist nun gut zu erkennen, wie mit zunehmender Ge\-schwin\-dig\-keit die Kurve immer weniger abgerundet ist und durch die maximale Querbeschleunigung begrenzt wird. Das Verhalten der beiden dynamischen Modelle ist in diesem Szenario nicht mehr kongruent. Für $7$ $\frac{\text{m}}{\text{s}}$ ist die große Differenz klar durch die eingeschränkten lateralen Kräfte durch den \ac{K.K.} ersichtlich. Dass die Differenz bei dem letzten Diagramm mit $28$ $\frac{\text{m}}{\text{s}}$ nahezu verschwindet ist auf $F_x$ zurück zu führen. Dieses wird mit der Gleichung (\ref{long_dyn_engine}) \\ 
 $F_{lr_{acc}} = \frac{P_{engine}}{|\dot{x}|}$\\
 berechnet und mit zunehmender Geschwindigkeit immer kleiner. 
 
 
 \subsection{Reifenmodelle}
-Wie bereits im Kapitel \ref{tireModel}, wird für die Simulation standardmäßig die \ac{M.F.} genutzt. Im Folgenden soll nun darauf eingegangen werden, was für eine Auswirkung das linearisierte  Modelle auf das Fahrzeugverhalten hat. Auch für diese Untersuchung wird eine Sinuswelle als Eingabe für den Lenkwinkel des Modells gewählt und die verschiedenen resultierenden Orientierungen des Fahrzeugs betrachtet (siehe Abbildung \ref{fig:modelDiffTires}).
+Wie bereits im Kapitel \ref{tireModel} wird für die Simulation standardmäßig die \ac{M.F.} genutzt. Im Folgenden soll nun darauf eingegangen werden, was für eine Auswirkung das linearisierte  Modelle auf das Fahrzeugverhalten hat. Auch für diese Untersuchung wird eine Sinuswelle als Eingabe für den Lenkwinkel des Modells gewählt und die verschiedenen resultierenden Orientierungen des Fahrzeugs betrachtet (siehe Abbildung \ref{fig:modelDiffTires}).
 
 An der Orientierung lässt sich gut erkennen, dass die Modellierung der Reifen einen starken Einfluss auf das Verhalten des Fahrzeugs besitzt. Der Unterschied zwischen den Modellen beträgt im Maximum etwa $0,2$ rad. 
 Ob die Differenz auch einen Einfluss auf die Regelung des dynamischen Modells hat, wird im Abschnitt \ref{dynModelcontrol} näher beleuchtet. \\
-Ist das Einsparen von Rechenzeit keine Priorität, sollte generell immer das beste Reifen\-mo\-dell verwendet werden. Wie schon im Kapitel \ref{tireModel} angedeutet, hängt beim dynamischen Modell das Verhalten sehr stark von den Reifenkräften ab und sollte daher möglichst genau abgebildet werden. Soll trotzdem viel Rechenleistung gespart werden, entspricht das lineare Modell einer guten Alternative zur \ac{M.F.}. Es liefert eine gute Annäherung und ist zudem noch weniger komplex. Dies gilt jedoch nur für den Fall von Rennreifen, da sie über einen großen Bereich des Schräglaufwinkels hohe Seitenkräfte übertragen können. Normale Straßenreifen brechen deutlich stärker nach dem Erreichen ihrer maximalen Seitenkraft ein und werden daher nicht gut durch das linearisierte Modell repräsentiert. 
+Ist die Einsparung von Rechenzeit keine Priorität, sollte generell immer das beste Reifen\-mo\-dell verwendet werden. Wie schon im Kapitel \ref{tireModel} angedeutet, hängt beim dynamischen Modell das Verhalten sehr stark von den Reifenkräften ab und sollte daher möglichst genau abgebildet werden. Soll trotzdem viel Rechenleistung gespart werden, entspricht das lineare Modell einer guten Alternative zur \ac{M.F.}. Es liefert eine gute Annäherung und ist zudem noch weniger komplex. Dies gilt jedoch nur für den Fall von Rennreifen, da sie über einen großen Bereich des Schräglaufwinkels hohe Seitenkräfte übertragen können. Normale Straßenreifen brechen deutlich stärker nach dem Erreichen ihrer maximalen Seitenkraft ein und werden daher nicht gut durch das linearisierte Modell repräsentiert. 
 
 
 \begin{figure}
 	\centering
 	\input{Grafiken/modelDiffTires.tex} 
 	\ref{modelDiffTiresLegend}
-	\caption{Fahrzeugorientierung, abhängig von den drei verschiedenen Reifenmodellen für einen sinusförmigen Lenkwinkel als Eingabe.}
+	\caption{Fahrzeugorientierung, abhängig von den zwei verschiedenen Reifenmodellen für einen sinusförmigen Lenkwinkel als Eingabe.}
 	\label{fig:modelDiffTires}
 \end{figure}
 
@@ -1034,7 +1034,7 @@ Um dies tun zu können, muss zuerst die mindestens erforderliche Länge des Prä
 
 \subsection{Mindestlänge des Prädiktionshorizontes} 
 In einem Szenario im öffentlichen Verkehr muss der Horizont immer mindestens so lang gewählt werden, dass eine Vollbremsung von der aktuellen Geschwindigkeit durchgeführt werden könnte, bevor das Fahrzeug das Ende des Horizontes erreicht hat. Auf dem Rennkurs ist dies nicht nötig. Es ist nicht davon auszugehen, dass sich plötzlich Hindernisse auf der Strecke befinden (bei Formula Student Driverless befindet sich immer nur ein Fahrzeug auf der Strecke). Da im Simulator und im \ac{MPC}-Algorithmus das gleiche Fahrzeugmodell hinterlegt ist, wird die tangentiale Beschränkung genutzt, um das Rennauto daran zu hindern die Strecke zu verlassen.
-Zuerst wird der minimale Prädiktionshorizont für einen sichere Runde auf dem Kurs gesucht. Um diesen Wert zu finden wurde eine Teilstrecke definiert, die aus einer $80$ Meter langen Gerade direkt in zwei aneinander gehängte $180$° Kurven mit $9$ m Außenradius übergeht. Diese Konstellation, entspricht der Fahrsituation die nach Regelwerk zulässig ist und das Fahrzeug sowohl longitudinal (bremsen) als auch lateral (enge Kurve) maximal beansprucht. Die Tests haben ergeben, dass bereits ein Horizont von zwölf Schritten für die Kostenfunktionen welche die Distanz max/-minimieren, ausreichend ist. Die Maximalgeschwindigkeit beträgt genau die vom Fahrzeugmodell begrenzten $121$ $\frac{\text{km}}{\text{h}}$ auf der Geraden und eine maximalen Kurven\-ge\-schwin\-dig\-keit von $32$ $\frac{\text{km}}{\text{h}}$. 
+Zuerst wird der minimale Prädiktionshorizont für einen sichere Runde auf dem Kurs gesucht. Um diesen Wert zu finden wurde eine Teilstrecke definiert, die aus einer $80$ Meter langen Gerade direkt in zwei aneinander gehängte $180$° Kurven mit $9$ m Außenradius übergeht. Diese Konstellation entspricht der Fahrsituation die nach Regelwerk zulässig ist und das Fahrzeug sowohl longitudinal (bremsen) als auch lateral (enge Kurve) maximal beansprucht. Die Tests haben ergeben, dass bereits ein Horizont von zwölf Schritten für die Kostenfunktionen, welche die Distanz max/-minimieren, ausreichend ist. Die Maximalgeschwindigkeit beträgt genau die vom Fahrzeugmodell begrenzten $121$ $\frac{\text{km}}{\text{h}}$ auf der Geraden und eine maximalen Kurven\-ge\-schwin\-dig\-keit von $32$ $\frac{\text{km}}{\text{h}}$. 
 Für die Max-Speed-Kostenfunktion wird ein anderer Horizont benötigt, als für die beiden anderen Kostenfunktionen. Der Algorithmus lenkt in Kurven nicht direkt so ein, dass das Fahrzeug am inneren der Kurve entlangfährt. Stattdessen fährt er möglichst lange geradeaus, um die maximale Geschwindigkeit zu erreichen. Der minimale Horizont ist daher im Vergleich zu den beiden anderen Funktionen acht Zeitschritte länger und damit mindestens $20$ Prädiktionsschritte lang.
 
 
@@ -1046,6 +1046,7 @@ Bevor die Messungen für die einzelnen Kostenfunktionen erstellt werden, wird si
 
 \begin{table}[ht!]
 	\centering
+	\caption{Fahrzeit für unterschiedliche Kostenfunktionen}
 	\begin{tabular}{l|l}
 		\hline
 		Kostenfunktion	& Zeit  \\ \hline
@@ -1054,7 +1055,7 @@ Bevor die Messungen für die einzelnen Kostenfunktionen erstellt werden, wird si
 		Max-Track	&	3,05 s \\
 
 	\end{tabular}
-	\caption{Beschleunigungszeit für unterschiedliche Kostenfunktionen}
+
 	\label{accVerification}
 \end{table}
 
@@ -1080,7 +1081,7 @@ Die Ergebnisse der Messung sind in der Abbildung \ref{fig:computeCost} dargestel
 
 Bei der Min-Dist-Kostenfunktionen dauert die Berechnung des initialen Op\-ti\-mie\-rungs\-vek\-tors, im Vergleich zu den darauf folgenden Schritten, extrem lange. Dies liegt an dem sogenannten Warmstart. Solange die Parameter der Beschränkungen (neue Tangenten und neue Start\-po\-si\-tion) nicht signifikant verändert werden, findet der Optimierer in aufeinander folgenden Schritten sehr schnell eine passende Lösung. Dies ist mit einem  Schieberegister ver\-gleich\-bar, in dem die Lösung einen Schritt nach links verschoben wird und nur für den letzten Schritt eine neue Lösung gesucht werden muss. Aus diesem Grund wurden auch Messungen erstellt, die erst anfangen, sobald der Warmstart durchgeführt wird. 
 Trotz der ma\-the\-ma\-tisch\-en Ähnlichkeit der beiden Kostenfunktionen Max-Track und Min-Dist ist die Ausführungszeit der Optimierungsschritte ohne Warmstart sehr unterschiedlich. Die Max-Track-Funktion ist deutlich besser und liegt ohne Warmstart auf einem Niveau mit der Max-Speed-Funktion.
-Sobald der Warmstart aktiv ist, dauert die Berechnungszeit für Min-Dist und Max-Track ungefähr gleich lange und skaliert besser als die Max-Speed-Kostenfunktion für große Horizontlängen.
+Sobald der Warmstart aktiv ist dauert die Berechnungszeit für Min-Dist und Max-Track ungefähr gleich lange und skaliert besser als die Max-Speed-Kostenfunktion für große Horizontlängen.
 
 
 Bezogen auf Berechnungszeit und Rundenzeit ist die Max-Track-Kostenfunktion damit die beste Kostenfunktion. Sie wird daher als die Grundlage für die elastische Kostenfunktion genutzt und zusätzlich noch durch die Kosten für die Position auf der Spur erweitert. Im Folgenden wird nun die Berechnungszeit der verschiedenen elastischen Kostenfunktionen evaluiert. Die Messungen werden ebenfalls mit dem kinematischen Modell hinterlegt im Simulator vorgenommen, um eine möglichst gute Vergleichbarkeit mit den Ergebnissen aus der vorherigen Messung zu erhalten. Die Ergebnisse der Messung sind in der Abbildung \ref{fig:computeCostSoftConst} dargestellt.
@@ -1089,7 +1090,7 @@ Bezogen auf Berechnungszeit und Rundenzeit ist die Max-Track-Kostenfunktion dami
 	\centering
 	\input{Grafiken/computCostSoftConst.tex} 
 	\ref{computeCostSoftLegend}
-	\caption{Berechnungszeit für verschiedene Kostenfunktionen mit elastischer Be\-schrän\-kung.}
+	\caption{Die Berechnungszeit für verschiedene Kostenfunktionen mit elastischer Be\-schrän\-kung.}
 	\label{fig:computeCostSoftConst}
 \end{figure}
 
@@ -1105,38 +1106,38 @@ Um die Qualität der Kostenfunktionen einschätzen zu können, wird im Folgenden
 	\centering
 	\input{Grafiken/lapTimeKin.tex} 
 	\ref{lapTimeKinLegend}
-	\caption{Rundenzeit für verschiedene Kostenfunktionen und abhängig von der Anzahl der Prädiktionsschritte. Gemessen wurde die erste (1) und zweite (2) Runde.}
+	\caption{Die Rundenzeit für verschiedene Kostenfunktionen und abhängig von der Anzahl der Prädiktionsschritte. Gemessen wurde die erste (1) und zweite (2) Runde.}
 	\label{fig:lapTimeKin}
 \end{figure}
 
-Die Max-Speed-Kostenfunktion wird für größere Vorwärtsprädiktion immer langsamer. Dieses Phänomen lässt sich mit dem größeren Wissen über den Kursverlauf erklären. Desto weiter in die Zukunft der Optimierer schauen kann, desto mehr fängt er an  Kurven voll auszufahren, also den zurückgelegten Weg länger zu planen. Dadurch kann zwar die Geschwindigkeit erhöht werden, die Rundenzeit leidet allerdings deutlich darunter. 
-Die Differenz zwischen den beiden Kostenfunktionen, welche die Distanz zu einem Punkt minimiert beziehungsweise die gefahrene Streckendistanz maximiert, ist sehr klein und auch bei geringeren Horizontlängen bereits sehr gut. Wird zusätzlich die Berechnungszeit betrachtet, setzt sich die Max-Track Kostenfunktion deutlich als die bessere ab. Generell ist die Verbesserung der Rundenzeit mit höherer Anzahl der Prädiktionsschritte eher als gering zu betrachten. Ab 50 Schritten war keine nennenswerte Verbesserung mehr messbar. \\
+Die Max-Speed-Kostenfunktion wird für eine größere Vorwärtsprädiktion immer langsamer. Dieses Phänomen lässt sich mit dem größeren Wissen über den Kursverlauf erklären. Je weiter in die Zukunft der Optimierer schauen kann, umso mehr fängt er an  Kurven voll auszufahren, also den zurückgelegten Weg länger zu planen. Dadurch kann zwar die Geschwindigkeit erhöht werden, die Rundenzeit leidet allerdings deutlich darunter. 
+Die Differenz zwischen den beiden Kostenfunktionen, welche die Distanz zu einem Punkt minimiert beziehungsweise die gefahrene Streckendistanz maximiert, ist sehr klein und auch bei geringeren Horizontlängen bereits sehr gut. Wird zusätzlich die Berechnungszeit betrachtet setzt sich die Max-Track Kostenfunktion deutlich als die bessere ab. Generell ist die Verbesserung der Rundenzeit mit höherer Anzahl der Prädiktionsschritte eher als gering zu betrachten. Ab 50 Schritten war keine nennenswerte Verbesserung mehr messbar. \\
 Nachdem die Grundlagen für die Kostenfunktionen und Vergleichswerte bezüglich der Rundenzeit erstellt wurden, wird im folgenden Abschnitt die Regelfähigkeit der kom\-plex\-eren Modelle im Simulator überprüft.
 
 \section{Regelung des dynamischen Modells}
 \label{dynModelcontrol}
 In der Realität ist das kinematische Modell nur für geringe Geschwindigkeiten genau genug, um die Bewegung des Fahrzeugs zu modellieren. Im Folgenden wird deswegen das Modell im Simulator durch das dynamische Fahrzeugmodell mit berechneten Reifenkräften ersetzt. Das Ziel ist es zu evaluieren, wie gut sich das deutlich komplexere System mit dem weiterhin im \ac{MPC}-Algorithmus hinterlegten, sehr einfachen kinematischen Modell, regeln lässt.
-Die deutlichen Unterschiede der Modelle wurden bereits im Kapitel \ref{modelError} evaluiert. Für diesen Abschnitt wird vom, um Reibung erweiterten, dynamischen Fahrzeugmodell ausgegangen.
+Die deutlichen Unterschiede der Modelle wurden bereits im Kapitel \ref{modelError} evaluiert. Für die Messungen in diesem Abschnitt wird vom dynamischen Fahrzeugmodell ausgegangen welches um Reibung erweitert ist.
 
 \subsection{Berechnungszeit der Elastische Kostenfunktion}
  
 
-Zusätzlich zu den Messungen mit dem kinematischen Modell (siehe \ref{runtime}) sollen auch Messungen erstellt werden bei denen das dynamische Fahrzeugmodell Verwendung findet. Die Messungen werden also für ein Szenario erstellt in dem das Fahrzeug oftmals von der geplanten Trajektorie abfährt und nah an die Streckengrenzen kommt. Die Ergebnisse sind in der Abbildung \ref{fig:computeCostSoftConstDynamic} dargestellt. 
+Zusätzlich zu den Messungen mit dem kinematischen Modell (siehe \ref{runtime}) sollen auch Messungen erstellt werden, bei denen das dynamische Fahrzeugmodell Verwendung findet. Die Messungen werden also für ein Szenario erstellt in dem das Fahrzeug oftmals von der geplanten Trajektorie abfährt und nah an die Streckengrenzen kommt. Die Ergebnisse sind in der Abbildung \ref{fig:computeCostSoftConstDynamic} dargestellt. 
 
 \begin{figure}[ht!]
 	\centering
 	\input{Grafiken/computCostSoftConstDynamic.tex} 
 	\ref{computeCostSoftLegendDynamic}
-	\caption{Berechnungszeit für das dynamische Fahrzeugmodell. Als elastische Be\-schrän\-kung wurde die e-Funktion und die Max-Track-Kostenfunktion gewählt.}
+	\caption{Die Berechnungszeit für das dynamische Fahrzeugmodell. Als elastische Be\-schrän\-kung wurde die e-Funktion und die Max-Track-Kostenfunktion gewählt.}
 	\label{fig:computeCostSoftConstDynamic}
 \end{figure}
-Der Prädiktionshorizont der noch in Echtzeit berechnet werden kann liegt bei etwa 35 Prädiktionsschritten. Für diesen Wert liegt die durchschnittliche Berechnungszeit bei $0,047$ Sekunden. Um abschätzen zu können wie oft die Echtzeitbeschränkung von $0,05$ s überschritten wird ist in Abbildung \ref{fig:computeCostSoftConstDynamicHist} die Verteilung der Berechnungen dargestellt. 
+Der Prädiktionshorizont der noch in Echtzeit berechnet werden kann liegt bei etwa 35 Prädiktionsschritten. Für diesen Wert liegt die durchschnittliche Berechnungszeit bei $0,047$ Sekunden. Um abschätzen zu können wie oft die Echtzeitbeschränkung von $0,05$ s überschritten wird, ist in Abbildung \ref{fig:computeCostSoftConstDynamicHist} die Verteilung der Berechnungen dargestellt. 
 
 \begin{figure}[ht!]
 	\centering
 	\input{Grafiken/computCostSoftConstDynamicHist.tex} 
 	%\ref{computeCostSoftLegendDynamicHist}
-	\caption{Summation der Verteilungen der Berechnungszeit nachdem der Warmstart aktiv ist.}
+	\caption{Die Summation der Verteilungen der Berechnungszeit nachdem der Warmstart aktiv ist.}
 	\label{fig:computeCostSoftConstDynamicHist}
 \end{figure}
 
@@ -1151,29 +1152,29 @@ Der in Abbildung \ref{fig:betaMaxN} dargestellte Graph zeigt den Zusammenhang au
 \begin{figure}[ht!]
 	\centering
 	\input{Grafiken/betaMaxN.tex} 
-	\caption{Die Rundenzeit in Sekunden abhängig von Querbeschleunigung und Prädiktionsschritten. Weiße Bereiche entsprechen dem Abkommen des Fahrzeug von der Strecke.}
+	\caption{Die Rundenzeit in Sekunden, abhängig von Querbeschleunigung und Prädiktionsschritten. Weiße Bereiche entsprechen dem Abkommen des Fahrzeug von der Strecke.}
 	\label{fig:betaMaxN}
 \end{figure}
 
-Die beste erreichte Zeit mit $11,6$ s ist entgegen der Erwartung für einen kurzen Horizont von $20$ Schritten erreicht worden. Dies hängt vermutlich damit zusammen, dass bei einem großen Prädiktionshorizont die Bahn des Rennautos sehr nah an den Streckenbegrenzungen vorbeiführt. Dadurch sind höhere Geschwindigkeiten in engen Kurven möglich. Das dynamische Modell schießt jedoch deutlich öfter über die geplante Trajektorie hinaus als bei einem kurzen Horizont. Die ideale Querbeschleunigung für den \ac{MPC}-Regler liegt bei $1,3$ g. Die Rundenzeiten wurden jeweils für die zweite Runde gemessen. Nachdem die erste Messung nur recht grob durchgeführt wurde um einen großen Bereich abzudecken, ist in der Grafik \ref{fig:betaMaxFine} der Bereich von $15$-$25$ Prädiktionsschritten genauer untersucht worden.
+Die beste erreichte Zeit mit $11,6$ s ist entgegen der Erwartung für einen kurzen Horizont von $20$ Schritten erreicht worden. Dies hängt vermutlich damit zusammen, dass bei einem großen Prädiktionshorizont die Bahn des Rennautos sehr nah an den Streckenbegrenzungen vorbeiführt. Dadurch sind höhere Geschwindigkeiten in engen Kurven möglich. Das dynamische Modell schießt dann jedoch deutlich öfter über die geplante Trajektorie hinaus als bei einem kurzen Horizont. Die ideale Querbeschleunigung für den \ac{MPC}-Regler liegt bei $1,3$ g. Die Rundenzeiten wurden jeweils für die zweite Runde gemessen. Nachdem die erste Messung nur recht grob durchgeführt wurde um einen großen Bereich abzudecken, ist in der Grafik \ref{fig:betaMaxFine} der Bereich von $15$-$25$ Prädiktionsschritten genauer untersucht worden.
 
 \begin{figure}[ht!]
 	\centering
 	\input{Grafiken/betaMaxFine.tex} 
-	\caption{Die Rundenzeit in Sekunden abhängig von Querbeschleunigung und Prädiktionsschritten. Weiße Bereiche entsprechen dem Abkommen des Fahrzeug von der Strecke.}
+	\caption{Die Rundenzeit in Sekunden, abhängig von Querbeschleunigung und Prädiktionsschritten. Weiße Bereiche entsprechen dem Abkommen des Fahrzeug von der Strecke.}
 	\label{fig:betaMaxFine}
 \end{figure}
-Für so kurzen Prädiktionshorizont mit $15$ Schritten entsteht das Phänomen, dass sowohl für kleine als auch für große Querbeschleunigungen das Rennauto den Kurs nicht vollenden kann. Bei zu kleinen Werten liegt das an der zu hohen Geschwindigkeit mit der das Rennauto in eine Kurve einfährt und keine Trajektorie mehr berechnet werden kann die die maximale Querbeschleunigung nicht überschreitet. Bei zu großen Werten für die Querbeschleunigung sind die Trajektorien zu aggressiv und das Rennauto rutscht vom Kurs. Eine Möglichkeit diesem Problem zu begegnen ist die Begrenzung der maximalen zulässigen Geschwindigkeit. Dass bei der Anzahl der Prädiktionsschritte von $23$ und $24$ das Rennauto nicht um den Kurs fahren kann, bei $18$ bis $22$ jedoch schon, kann an dem Layout des Kurses liegen. Für gewissen Parameterkombinationen trifft das Rennauto eine Trajektorie die genau richtig durch eine Engstelle führt, während für eine andere Kombination das Fahrzeug einfach aus der Kurve heraus fährt.
+Für einen kurzen Prädiktionshorizont mit $15$ Schritten entsteht das Phänomen, dass sowohl für kleine als auch für große Querbeschleunigungen das Rennauto den Kurs nicht vollenden kann. Bei zu kleinen Werten liegt dies an der zu hohen Geschwindigkeit mit der das Rennauto in eine Kurve einfährt und keine Trajektorie mehr berechnet werden kann, die die maximale Querbeschleunigung nicht überschreitet. Bei zu großen Werten für die Querbeschleunigung sind die Trajektorien zu aggressiv und das Rennauto rutscht vom Kurs. Eine Möglichkeit diesem Problem zu begegnen ist die Begrenzung der maximalen zulässigen Geschwindigkeit. Dass bei der Anzahl der Prädiktionsschritte von $23$ und $24$ das Rennauto nicht um den Kurs fahren kann, bei $18$ bis $22$ jedoch schon, kann an dem Layout des Kurses liegen. Für gewissen Parameterkombinationen trifft das Rennauto eine Trajektorie die genau richtig durch eine Engstelle führt. Für andere Kombination dagegen fährt das Fahrzeug einfach aus der Kurve heraus. Die Differenz der Zeiten zum kinematischen Modell zeigen deutlich, wie oft das Fahrzeug sich anders verhält als das im \ac{MPC}-Algorithmus hinterlegte Modell. Das dadurch resultierende Nachregeln und Abbremsen resultiert in einer über $3$ Sekunden höheren Rundenzeit.
 
 \subsubsection{Kammscher Kreis}
-Die gleichen Messungen wurden nun auch für das dynamische Modell mit hinterlegtem \ac{K.K.} durchgeführt. Die beste erreichte Rundenzeit (siehe \ref{fig:betaMaxFineKam}) liegt bei $11,65$ Sekunden. Dieser Wert wurde für einen Prädiktionshorizont von $21$ Schritten bei der maximalen Querbeschleunigung von $1,2$ g erreicht. Dieses Ergebnis überrascht im Hinblick auf die deutlichen Unterschiede der Modelle. Das dynamische Modell das in Situationen in denen stark beschleunigt und gebremst wird deutlich höhere Kräfte übertragen kann, kann sich in der schnellsten Runde nur um einen Zeitschritt mit $0,05$ s absetzen. Dieses Ergebnis könnte dadurch entstehen, dass durch das hinterlegte kinematische Modell und die Beschränkung der Querbeschleunigung der Regler sehr früh das Bremsen anfängt, um in der Kurve möglichst nah an den Scheitelpunkt zu kommen. 
-Die longitudinalen Kräfte sind daher bereits klein wenn die maximalen lateralen Kräfte auftreten. Die Einschränkung durch den 
+Die gleichen Messungen wurden nun auch für das dynamische Modell mit hinterlegtem \ac{K.K.} durchgeführt. Die beste erreichte Rundenzeit (siehe \ref{fig:betaMaxFineKam}) liegt bei $11,65$ Sekunden. Dieser Wert wurde für einen Prädiktionshorizont von $21$ Schritten bei der maximalen Querbeschleunigung von $1,2$ g erreicht. Dieses Ergebnis überrascht im Hinblick auf die deutlichen Unterschiede der Modelle. Das dynamische Modell das in Situationen in denen stark beschleunigt und gebremst wird deutlich höhere Kräfte übertragen kann, hat sich in der schnellsten Runde nur um einen Zeitschritt mit $0,05$ s abgesetzt. Dieses Ergebnis könnte dadurch entstehen, dass durch das hinterlegte kinematische Modell und die Beschränkung der Querbeschleunigung der Regler sehr früh das Bremsen anfängt, um in der Kurve möglichst nah an den Scheitelpunkt zu kommen. 
+Die longitudinalen Kräfte sind daher bereits klein, wenn die maximalen lateralen Kräfte auftreten. Die Einschränkung durch den 
 \ac{K.K.} tritt daher auch nur geringfügig auf.
 
 \begin{figure}
 	\centering
 	\input{Grafiken/betaMaxFineKam.tex} 
-	\caption{Die Rundenzeit in Sekunden abhängig von Querbeschleunigung und Prädiktionsschritten für das dynamische Modell erweitert durch den \ac{K.K.}}
+	\caption{Die Rundenzeit in Sekunden, abhängig von Querbeschleunigung und Prädiktionsschritten für das dynamische Modell erweitert durch den \ac{K.K.}}
 	\label{fig:betaMaxFineKam}
 \end{figure}
 
@@ -1183,15 +1184,15 @@ Der Einfluss des linearen Reifenmodells auf die Regelung soll nun untersucht wer
 \begin{figure}[ht!]
 	\centering
 	\input{Grafiken/tireModelDiff.tex} 
-	\caption{Die Rundenzeit abhängig von den Reifenmodellen für $1,2$ g und verschieden lange Prädiktionshorizonte.}
+	\caption{Die Rundenzeit, abhängig von den Reifenmodellen für $1,2$ g und verschieden lange Prädiktionshorizonte.}
 	\label{fig:tireModelDiff}
 \end{figure}
 
-Das Ergebnis der Messung sind in Abbildung \ref{fig:tireModelDiff} dargestellt und entsprechen den Erwartungen. Die Unterschiede der Kurven (siehe \ref{fig:pacejka}) beider Gleichungen zum Berechnen der Reifenkräfte sind nur gering. Die Differenz bei den Rundenzeiten fällt daher auch klein aus. Wie bereits erwähnt muss die Vereinfachung abhängig von den Reifen des Fahrzeugs gemacht werden. Generell ist dazu zu raten, immer das genaueste Modell zu verwenden.
+Das Ergebnis der Messung sind in Abbildung \ref{fig:tireModelDiff} dargestellt und entsprechen den Erwartungen. Die Unterschiede der Kurven (siehe \ref{fig:pacejka}) beider Gleichungen zum Berechnen der Reifenkräfte sind nur gering. Die Differenz bei den Rundenzeiten fällt daher auch klein aus. Wie bereits beschrieben muss die Vereinfachung abhängig von den Reifen des Fahrzeugs gemacht werden. Generell ist dazu zu raten immer das genaueste Modell zu verwenden.
 
 
 \subsection{Regelfrequenz}
-Abschließend soll noch eine Betrachtung durchgeführt werden, ob eine höhere Ak\-tu\-a\-li\-sie\-rungs\-ra\-te die Stabilität des Systems erhöht. Um dies zu überprüfen wird eine Parameter\-aus\-wahl getroffen, in der das Rennauto beginnt auszubrechen. Bei Abweichungen des Fahrzeugs von der erwarteten Trajektorie wird mit einer höheren Ak\-tu\-a\-li\-sie\-rungs\-ra\-te weniger Zeit bis zu einer neu geplanten Trajektorie vergehen. Um eine gute Vergleichbarkeit zu erzielen wird für jedes $\Delta t$ die Anzahl der Prädiktionsschritte angepasst, alle Messungen beziehen sich also auf einen gleich langen vorausplanten Horizont. Wenn der Zeitwert welcher Vorausprädiziert werden soll, keinen ganzen Teiler für das betrachtete $\Delta t$ besaß, wurde der nächst mögliche Wert gewählt. Die Messungen sind in der Abbildung \ref{fig:measureUpdateRate} zusammengefasst. 
+Abschließend soll noch eine Betrachtung durchgeführt werden, ob eine höhere Ak\-tu\-a\-li\-sie\-rungs\-ra\-te die Stabilität des Systems erhöht. Um dies zu überprüfen wird eine Parameter\-aus\-wahl getroffen, in der das Rennauto beginnt auszubrechen. Bei Abweichungen des Fahrzeugs von der erwarteten Trajektorie wird mit einer höheren Ak\-tu\-a\-li\-sie\-rungs\-ra\-te weniger Zeit bis zu einer neu geplanten Trajektorie vergehen. Um eine gute Vergleichbarkeit zu erzielen wird für jedes $\Delta t$ die Anzahl der Prädiktionsschritte angepasst. Alle Messungen beziehen sich also auf einen gleich langen vorausplanten Horizont. Wenn der Zeitwert, welcher vorausprädiziert werden soll, keinen ganzen Teiler für das betrachtete $\Delta t$ besaß, wurde der nächst mögliche Wert gewählt. Die Messungen sind in der Abbildung \ref{fig:measureUpdateRate} zusammengefasst. 
 \begin{figure}[ht!]
 	\centering
 	\subfigure[center][Maximal mögliche Querbeschleunigung bei der das Fahrzeug noch den Kurs komplett abfahren kann.]{
@@ -1202,13 +1203,13 @@ Abschließend soll noch eine Betrachtung durchgeführt werden, ob eine höhere A
 		\input{Grafiken/deltaTMaxSpeed.tex} 
 		\label{fig:deltaTMaxSpeed}
 	}
-	\caption{Abhängigkeit der Fahrzeugregelung von der Frequenz mit der das \ac{MPC}-Verfahren ausgeführt wird }\label{fig:measureUpdateRate}
+	\caption{Die Abhängigkeit der Fahrzeugregelung von der Frequenz mit der das \ac{MPC}-Verfahren ausgeführt wird. }\label{fig:measureUpdateRate}
 \end{figure}
 Je kleiner das $\Delta t$ gewählt wurde, desto höhere Querbeschleunigungen konnte der Regler noch kontrollieren, bevor das Rennauto den Kurs verlässt. Die höhere Querbeschleunigung korreliert jedoch nicht mit einer besseren Rundenzeit. Das Rennauto verlässt bei höheren Querbeschleunigungen sehr häufig die Ideallinie. In Kurven erfordert dies ein starkes Abbremsen um die Kurve vollenden zu können. Die beste Rundenzeit wurde daher für keine der Aktualisierungsraten bei Werten größer $1,4$ g gemessen. 
-Die hohe Ak\-tu\-a\-li\-sie\-rungs\-ra\-te für ein $\Delta t = \frac{1}{100}$ s erzeugt die beste Rundenzeit. Die Berechnungsdauer ist jedoch auch signifikant größer und deutlich langsamer als für Echtzeit nötig wäre. Betrachtet man das im vorherigen Abschnitt gemessene Verhalten der Rundenzeit für verschieden lange Prädiktionshorizonte, sollte der Fokus also auf eine höhere Ak\-tu\-a\-li\-sie\-rungs\-ra\-te der Positionsschätzung und des \ac{MPC}-Algorithmus gelegt werden. Die verwendete Ak\-tu\-a\-li\-sie\-rungs\-ra\-te von $20$ Hz ($\Delta t$ = $0,05$) stellt einen guten Mittelweg aus Berechnungszeit und Rundenzeit dar. Ab einem $\Delta t$ von $0,07$ s war es ohne eine Einschränkung der Maximalgeschwindigkeit nicht mehr möglich das Fahrzeug zu kon\-t\-rol\-lie\-ren. Unabhängig von der gewählten Quer\-be\-schleu\-ni\-gung. 
+Die hohe Ak\-tu\-a\-li\-sie\-rungs\-ra\-te für ein $\Delta t = \frac{1}{100}$ s erzeugt die beste Rundenzeit. Die Berechnungsdauer ist jedoch auch signifikant größer und deutlich langsamer als für die Echtzeitanforderung nötig wäre. Betrachtet man das im vorherigen Abschnitt gemessene Verhalten der Rundenzeit für verschieden lange Prädiktionshorizonte, sollte der Fokus also auf eine höhere Ak\-tu\-a\-li\-sie\-rungs\-ra\-te der Positionsschätzung und des \ac{MPC}-Algorithmus gelegt werden. Die verwendete Ak\-tu\-a\-li\-sie\-rungs\-ra\-te von $20$ Hz ($\Delta t$ = $0,05$) stellt einen guten Mittelweg aus Berechnungszeit und Run\-den\-zeit dar. Ab einem $\Delta t$ von $0,07$ s war es ohne eine Einschränkung der Maximalgeschwindigkeit nicht mehr möglich das Fahrzeug zu kon\-t\-rol\-lie\-ren. Dies ist Unabhängig von der gewählten Quer\-be\-schleu\-ni\-gung. 
 
 \subsection{Quadratische Kostenfunktion}
-Die Idee hinter der quadratischen Funktion ist, dass das Rennauto etwas mehr in der Mitte der Spur bleibt und daher im besten Fall auch bei höheren Geschwindigkeiten noch kontrollierbarer bleibt. Da es jedoch keinen abrupten Kostenanstieg an den Kursgrenzen gibt, muss evaluiert werden, für welchen Faktor $\alpha$ und das Verhältnis a der Regler die besten Rundenzeiten liefert, ohne den Kurs zu verlassen. Für $N$ wurde ein konstanter Wert von $25$ Schritten mit einem $\Delta t$ von $0,05$ s gewählt. In den Messungen hat sich der Ansatz nicht bestätigen lassen. Die Trajektorien werden immer möglichst in der Mitte des Kurses angelegt. Bei aufeinander folgenden Kurven, in denen das dynamische Modell stark vom kinematischen abweicht, verliert das Fahrzeug dadurch sehr schnell die Kontrolle. Auch geringe Querbeschleunigungen ändern an diesem Problem nichts, da die maximale Geschwindigkeit des Fahrzeugs nicht eingeschränkt ist. Die Folge daraus ist, dass das Rennauto mit zu hohen Geschwindigkeiten in die Kurven einfährt. Ohne ein genaueres Fahrzeugmodell im \ac{MPC}-Algorithmus ist eine Regelung des Rennautos, trotz der schnellen Berechnungszeit, mit dieser Kostenfunktion nicht zu empfehlen.
+Die Idee hinter der quadratischen Funktion ist, dass das Rennauto etwas mehr in der Mitte der Spur bleibt. Also wie einen Gravitation die das Fahrzeug beim Verlassen der Spur immer stäker wieder zur Mitte hin zieht und daher im besten Fall auch bei höheren Geschwindigkeiten noch kontrollierbar bleibt. Da es jedoch keinen abrupten Kostenanstieg an den Kursgrenzen gibt, muss evaluiert werden, für welchen Faktor $\alpha$ und das Verhältnis a der Regler die besten Rundenzeiten liefert, ohne den Kurs zu verlassen. Für $N$ wurde ein konstanter Wert von $25$ Schritten mit einem $\Delta t$ von $0,05$ s gewählt. In den Messungen hat sich der Ansatz nicht bestätigen lassen. Die Trajektorien werden immer möglichst in der Mitte des Kurses angelegt. Bei aufeinander folgenden Kurven, in denen das dynamische Modell stark vom kinematischen abweicht, verliert das Fahrzeug sehr schnell die Kontrolle. Auch geringe Querbeschleunigungen ändern an diesem Problem nichts, da die maximale Geschwindigkeit des Fahrzeugs nicht eingeschränkt ist. Die Folge daraus ist, dass das Rennauto mit zu hohen Geschwindigkeiten in die Kurven einfährt. Ohne ein genaueres Fahrzeugmodell im \ac{MPC}-Algorithmus ist eine Regelung des Rennautos, trotz der schnellen Berechnungszeit, mit dieser Kostenfunktion nicht zu empfehlen.
 Die problematische Stelle im Kurs ist schematisch für die zwei verschiedenen Verhalten der quadratischen und der exponentiellen Kostenfunktion dargestellt. 
 
 \begin{figure}[ht!]
@@ -1219,20 +1220,20 @@ Die problematische Stelle im Kurs ist schematisch für die zwei verschiedenen Ve
 \end{figure}
 
 \chapter[Zusammenfassung]{Zusammenfassung und Ausblick}
-Dieses Kapitel fasst noch einmal die Ergebnisse der Arbeit zusammen und bietet an\-schlie\-ßend noch einige Anregungen für Verbesserungen des Algorithmus, Simulators und was in der Zukunft noch untersucht werden kann.
+Dieses Kapitel fasst noch einmal die Ergebnisse der Arbeit zusammen und bietet an\-schlie\-ßend noch einige Anregungen für Verbesserungen des Algorithmus, des Simulators und was in der Zukunft noch untersucht werden kann.
 \section{Zusammenfassung}
-In dieser Arbeit wurde eine Simulationsumgebung erstellt, die auf verschiedene Fahr\-zeug\-mo\-delle zurückgreifen kann und genutzt wird, um die Regelbarkeit eines Rennautos mithilfe eines \ac{MPC}-Ansatzes zu überprüfen.Dies soll die Grundlage für die Entwicklung der Regelung und Trajektorienplanung des ersten High-Octane Motorsports Driverless Fahrzeugs bilden. Es handelt sich dabei um ein hoch performantes Rennauto, welches für niedrige Ge\-schwin\-dig\-kei\-ten (bis $121$ $\frac{\text{km}}{\text{h}}$) und hohe Kurvendynamik ausgelegt ist. Besonderes Augenmerk wurde auf die Echtzeitfähigkeit und die Unterschiede zwischen den einzelnen Fahrzeugmodellen gelegt. Es ist nicht nur wichtig, ein möglichst realistisches Modell des Rennautos zu besitzen, der Algorithmus muss auch performant genug sein um eine Aktualisierungsrate von mindestens 20 Hz realisieren zu können. 
-Im \ac{MPC}-Algorithmus wurde ein einfaches kinematisches Fahrzeugmodell hinterlegt, um die Be\-we\-gung des Rennautos vorausberechnen zu können. Dieses wurde im Simulator durch ein deutlich realistischeres, dynamisches Fahrzeugmodell simuliert. Die Unterschiede zwischen den Modellen wurden genutzt, um zu evaluieren wie robust der Algorithmus noch ist, wenn die hinterlegte Systembeschreibung von der Realität abweicht. Um das Fahrzeug auf der Spur zu halten ohne dass der Algorithmus bei einer Überschreitung der Seitenlinien abbricht, wurden verschiedene Kostenfunktionen untersucht, die die tangentialen Beschränkungen in die Kostenfunktion integrieren. Das beste Ergebnis lieferte eine e-Funktion, die an den Grenzen sehr schnell groß wird. Sie zeichnet sich durch eine schnelle Berechnungszeit und eine gute Approximation der tangentialen Beschränkung aus. Die Untersuchungen der Länge des Prädiktionshorizontes und der Aktualisierungsrate verdeutlichen, dass das gewählte $\Delta t$ einen größeren Einfluss auf die schnellste Rundenzeit hat als die Zeit mit der in die Zukunft prädiziert wird. Hier muss abhängig von der zur Verfügung stehenden Rechenleistung ein Kompromiss gesucht werden. Die höchste Priorität hat jedoch ein möglichst genaues Fahrzeugmodell. Durch den Umstieg im Simulator vom kinematischen auf das dynamische Fahrzeugmodell ist die Rundenzeit signifikant schlechter geworden. Mit einem genaueren Modell im \ac{MPC}-Algorithmus ist also auch mit einer besseren Regelung zu rechnen.  
+In dieser Arbeit wurde eine Simulationsumgebung erstellt, die auf verschiedene Fahr\-zeug\-mo\-delle zurückgreifen kann und genutzt wird, um die Regelbarkeit eines Rennautos mithilfe eines \ac{MPC}-Ansatzes zu überprüfen. Dies soll die Grundlage für die Entwicklung der Regelung und Trajektorienplanung des ersten High-Octane Motorsports Driverless Fahrzeugs bilden. Es handelt sich dabei um ein hoch performantes Rennauto, welches für niedrige Ge\-schwin\-dig\-kei\-ten (bis $121$ $\frac{\text{km}}{\text{h}}$) und hohe Kurvendynamik ausgelegt ist. Besonderes Augenmerk wurde auf die Echtzeitfähigkeit und die Unterschiede zwischen den einzelnen Fahrzeugmodellen gelegt. Es ist nicht nur wichtig, ein möglichst realistisches Modell des Rennautos zu besitzen. Der Algorithmus muss auch performant genug sein um eine Aktualisierungsrate von mindestens 20 Hz realisieren zu können. 
+Im \ac{MPC}-Algorithmus wurde ein einfaches kinematisches Fahrzeugmodell hinterlegt, um die Be\-we\-gung des Rennautos vorausberechnen zu können. Dieses wurde im Simulator durch ein deutlich realistischeres, dynamisches Fahrzeugmodell simuliert. Die Unterschiede zwischen den Modellen wurden genutzt, um zu evaluieren wie robust der Algorithmus noch ist, wenn die hinterlegte Systembeschreibung von der Realität abweicht. Um das Fahrzeug auf der Spur zu halten, ohne dass der Algorithmus bei einer Überschreitung der Seitenlinien abbricht, wurden verschiedene Kostenfunktionen untersucht, die die tangentialen Beschränkungen in die Kostenfunktion integrieren. Das beste Ergebnis lieferte eine e-Funktion die an den Grenzen sehr schnell groß wird. Sie zeichnet sich durch eine schnelle Berechnungszeit und eine gute Approximation der tangentialen Beschränkung aus. Die Untersuchungen der Länge des Prädiktionshorizontes und der Aktualisierungsrate verdeutlichen, dass das gewählte $\Delta t$ einen größeren Einfluss auf die schnellste Rundenzeit hat, als die Zeit mit der in die Zukunft prädiziert wird. Hier muss abhängig von der zur Verfügung stehenden Rechenleistung ein Kompromiss gesucht werden. Die höchste Priorität hat jedoch ein möglichst genaues Fahrzeugmodell. Durch den Umstieg im Simulator vom kinematischen auf das dynamische Fahrzeugmodell ist die Rundenzeit signifikant schlechter geworden. Mit einem genaueren Modell im \ac{MPC}-Algorithmus ist also auch mit einer besseren Regelung zu rechnen.  
 
 \section{Ausblick}
-Im nächsten Abschnitt wird auf die Verbesserungsmöglichkeiten eingegangen, um den \ac{MPC}-Ansatz noch leistungsfähiger zu machen und die Simulation zu Verbessern.
+Im nächsten Abschnitt wird auf die Verbesserungsmöglichkeiten eingegangen, um den \ac{MPC}-Ansatz noch leistungsfähiger zu machen und die Simulation zu verbessern.
 \subsection{Simulator}
-In der aktuellen Version des Simulators bezieht sich die Beschränkung durch die Strecken\-be\-gren\-zung auf den Mittelpunkt des Fahrzeugs. Diese Einschränkung kann erweitert werden, indem die tangentialen Beschränkungen auf allen vier Rädern angewandt werden. Ein weiterer Punkt, der noch keine Beachtung gefunden hat, ist die Definition der ver\-schie\-den\-en Rennkurse. Die Stützpunkte mit denen der virtuelle Rennkurs definiert ist, besteht aus Geraden und Punkten, die auf Kreisen mit ver\-schie\-den\-en Radien liegen. Im echten Straßenbau wird für den Übergang zwischen der Geraden und dem Kreis auf Klothoiden gesetzt. Das Ergebnis sind Kurven die ruckfrei bzw. ihre Krümmung eine stetige Funktion der Länge sind. \\
-Eine Vereinfachung die in der Realität eine entscheidende Rolle spielt, ist die Änderungsrate des Lenkwinkels. Im Simulator kann das Fahrzeug beliebig schnell zwischen Lenk\-ein\-schlä\-gen wechseln. Dies ist natürlich im echten Rennauto nicht möglich. Eine Einschränkung dieser Änderungsrate für die Fahrzeugmodelle ist daher eine sinnvolle Erweiterung.\\
-Ebenfalls vorstellbar wäre die Berücksichtigung der Bewegung des Fahrzeugs während die Regelparameter vom \ac{MPC}-Algorithmus berechnet werden. Die Stellgrößen beziehen sich auf eine Position, die nicht mehr der aktuellen entspricht sobald die Berechnung abgeschlossen ist.
+In der aktuellen Version des Simulators bezieht sich die Beschränkung durch die Strecken\-be\-gren\-zung auf den Mittelpunkt des Fahrzeugs. Diese Einschränkung kann erweitert werden, indem die tangentialen Beschränkungen auf allen vier Rädern angewandt werden. Ein weiterer Punkt, der noch keine Beachtung gefunden hat, ist die Definition der ver\-schie\-den\-en Rennkurse. Die Stützpunkte mit denen der virtuelle Rennkurs definiert ist besteht aus Geraden und Punkten, die auf Kreisen mit ver\-schie\-den\-en Radien liegen. Im echten Straßenbau wird für den Übergang zwischen der Geraden und dem Kreis auf Klothoiden gesetzt. Das Ergebnis sind Kurven die ruckfrei bzw. ihre Krümmung eine stetige Funktion der Länge sind. \\
+Eine Vereinfachung, die in der Realität eine entscheidende Rolle spielt, ist die Änderungsrate des Lenkwinkels. Im Simulator kann das Fahrzeug beliebig schnell zwischen Lenk\-ein\-schlä\-gen wechseln. Dies ist natürlich im echten Rennauto nicht möglich. Eine Einschränkung dieser Änderungsrate für die Fahrzeugmodelle ist daher eine sinnvolle Erweiterung.\\
+Ebenfalls vorstellbar wäre die Berücksichtigung der Bewegung des Fahrzeugs während die Regelparameter vom \ac{MPC}-Algorithmus berechnet werden. Die Stellgrößen beziehen sich auf eine Position, die nicht mehr der aktuellen entspricht, sobald die Berechnung abgeschlossen ist.
 
 \subsection{Dynamisches Fahrzeugmodell im MPC}
-In dieser Arbeit wurde untersucht, unter welchen Bedingungen ein autonomes Rennauto mit einem \ac{MPC}-Algorithmus geregelt werden kann. Das für das Fahrzeug hinterlegte Modell, welches zur Prädiktion zukünftiger Systemzustände genutzt wird, entspricht einem kinematischen Modell. Trotz dieser Einschränkung sind bereits hohe Geschwindigkeiten gut kontrollierbar. Performance an der Leistungsgrenze des Rennautos ist jedoch erst zu erwarten, wenn das dynamische Modell im \ac{MPC}-Ansatz hinterlegt wird, um die zukünftigen Zustände zu berechnen. An diesem Punkt würde der Regler auch die ganze Querdynamik des Fahrzeugs mit in die Lösung einbeziehen. Es muss untersucht werden, welche Einschränkungen das für die Länge des prädizierten Horizontes bedeutet, da die Komplexität der Berechnung steigt. Die Messungen in Kapitel \ref{laptime} haben jedoch ergeben, dass der größere Prädiktionshorizont weniger Einfluss auf die Rundenzeit hat als das Modell.
+In dieser Arbeit wurde untersucht, unter welchen Bedingungen ein autonomes Rennauto mit einem \ac{MPC}-Algorithmus geregelt werden kann. Das für das Fahrzeug hinterlegte Modell, welches zur Prädiktion zukünftiger Systemzustände genutzt wird, entspricht einem kinematischen Modell. Trotz dieser Einschränkung sind bereits hohe Geschwindigkeiten gut kontrollierbar. Performance an der Leistungsgrenze des Rennautos ist jedoch erst zu erwarten, wenn das dynamische Modell im \ac{MPC}-Ansatz hinterlegt wird, um die zukünftigen Zustände zu berechnen. Durch die Integration würde der Regler auch die ganze Querdynamik des Fahrzeugs mit in die Lösung einbeziehen. Es muss untersucht werden, welche Einschränkungen das für die Länge des prädizierten Horizontes bedeutet, da die Komplexität der Berechnung steigt. Die Messungen in Kapitel \ref{laptime} haben jedoch ergeben, dass der größere Prädiktionshorizont weniger Einfluss auf die Rundenzeit hat als das Modell.
 
 \subsection{Zweispurmodell}
 Im High-Octane Motorsports Verein ist eine Rundenzeitsimulation in der Entwicklung. Für diese wird ein genaues Zweispurmodell genutzt, welches das Fahrwerk, Abtrieb, Nicken, Rollen, Federkräfte und ein sehr genaues Reifenmodell berücksichtigt. Die Berechnungszeit ist nicht mehr in einem Bereich, der in Echtzeit realisierbar ist. Für die Steuerparameter könnte das Modell trotzdem mit dem \ac{MPC}-Ansatz kombiniert werden, um die idealen Steuerparameter zu finden.
@@ -1240,7 +1241,7 @@ Im High-Octane Motorsports Verein ist eine Rundenzeitsimulation in der Entwicklu
 \subsection{Implementierung in C++}
 Im Driverless-Projekt des High-Octane Vereins wird die Middleware \ac{ROS} verwendet um die Software des autonomen Rennautos zu entwickeln. \ac{ROS} unterstützt nativ nur Python und C++. Daher sollte der Algorithmus in C++ implementiert werden, um eine möglichst hohe Performance zu gewährleisten. 
 Es gibt es für C++  kein Framework wie \ac{Jump}. Die Kombination aus Optimierer und der automatischen Ableitung muss vom Entwickler selbst programmiert werden. Für die automatische Ableitung kann zum Beispiel das CppAd Paket verwendet werden, welches unter der Common Public License veröffentlicht wird. Der Optimierer \ac{Ipopt} ist in C++ implementiert und daher direkt integrierbar. 
-Ein anderer Weg wäre es, den \ac{MPC}-Ansatz in Python mit dem \ac{Jump} ähnlichen Framework CasADi zu implementieren. Wie der Benchmark \ref{fig:juliaBench} in Kapitel \ref{julia} jedoch gezeigt hat, ist eine höhere Performance von einer C-Nahen Implementierung zu erwarten. 
+Ein anderer Weg ist, den \ac{MPC}-Ansatz in Python mit dem \ac{Jump} ähnlichen Framework CasADi zu implementieren. Wie der Benchmark \ref{fig:juliaBench} in Kapitel \ref{julia} jedoch gezeigt hat, ist eine höhere Performance von einer C-Nahen Implementierung zu erwarten. 
 
 \subsection{Fahrzeugparameter anpassen}
 Wie bereits im Stand der Technik ausgeführt, kann nichtlineare Regression dazu verwendet werden die Werte, mit denen das Modell parametrisiert ist, zu verbessern. Das Rennauto wird von einem menschlichen Fahrer in verschiedenen Szenarien gefahren und sowohl die Steuerparameter (Gas, Bremse, Lenkung) wie auch der Fahrzeugzustand mit möglichst hoher Frequenz abgespeichert. Die so erfassten Daten werden genutzt, um die Parameter des Modells anzupassen und die Differenz zwischen Modell und Realität zu minimieren. 

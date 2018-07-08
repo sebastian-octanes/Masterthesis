@@ -13,27 +13,27 @@
 \contentsline {figure}{\numberline {3.8}{\ignorespaces Der Schr\IeC {\"a}glaufwinkel ergibt sich aus Lenkwinkel \(\delta \) und Bewegungsrichtung \(\theta _{v}\)\relax }}{20}{figure.caption.20}
 \contentsline {figure}{\numberline {3.9}{\ignorespaces Parameter im Reifenmodell\relax }}{21}{figure.caption.22}
 \contentsline {figure}{\numberline {3.10}{\ignorespaces Laterale Kr\IeC {\"a}fte der Reifen abh\IeC {\"a}ngig vom Schr\IeC {\"a}glaufwinkel\relax }}{22}{figure.caption.23}
-\contentsline {figure}{\numberline {3.11}{\ignorespaces Der Kammscher Kreis beschr\IeC {\"a}nkt der maximal wirkenden Kraft.\relax }}{23}{figure.caption.27}
-\contentsline {figure}{\numberline {3.12}{\ignorespaces dynamisches Fahrzeugmodell\relax }}{25}{figure.caption.28}
+\contentsline {figure}{\numberline {3.11}{\ignorespaces Der Kammscher Kreis beschr\IeC {\"a}nkt die maximal wirkenden Kraft\relax }}{23}{figure.caption.27}
+\contentsline {figure}{\numberline {3.12}{\ignorespaces Dynamisches Fahrzeugmodell\relax }}{25}{figure.caption.28}
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {4.1}{\ignorespaces Ideale Trajektorie f\IeC {\"u}r eine 90 Grad Kurve\relax }}{30}{figure.caption.31}
 \contentsline {figure}{\numberline {4.2}{\ignorespaces Grafische Visualisierung der Pr\IeC {\"a}diktion f\IeC {\"u}r drei Schritte in die Zukunft\relax }}{32}{figure.caption.32}
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Zielpunkt Distanzminimierung: Das virtuelle Ziel wird immer weit genug vor dem Fahrzeug hergeschoben, so dass es nie erreicht werden kann\relax }}{34}{figure.caption.35}
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Zielpunkt Distanzminimierung: Das virtuelle Ziel wird immer weit genug vor dem Fahrzeug hergeschoben, so dass es nie erreicht werden kann.\relax }}{34}{figure.caption.35}
 \contentsline {figure}{\numberline {4.4}{\ignorespaces Vektor Projektion zum Maximieren der Streckendistanz\relax }}{35}{figure.caption.37}
 \contentsline {figure}{\numberline {4.5}{\ignorespaces Die tangentiale Begrenzung h\IeC {\"a}lt das Fahrzeug auf der Fahrspur.\relax }}{36}{figure.caption.38}
-\contentsline {figure}{\numberline {4.6}{\ignorespaces Vektor Projektion zum berechnen der tangentialen Beschr\IeC {\"a}nkung\relax }}{37}{figure.caption.39}
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Vektor Projektion zum Berechnen der tangentialen Beschr\IeC {\"a}nkung\relax }}{37}{figure.caption.39}
 \contentsline {figure}{\numberline {4.7}{\ignorespaces Fehlerhaftes Verhalten in Spitzkurven\relax }}{38}{figure.caption.41}
 \contentsline {figure}{\numberline {4.8}{\ignorespaces Verschiedene Distanzma\IeC {\ss }e um das Verhalten der Trajektorienplanung zu beeinflussen\relax }}{40}{figure.caption.43}
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {5.1}{\ignorespaces Ausf\IeC {\"u}hrungszeiten f\IeC {\"u}r verschieden gro\IeC {\ss }e Horizontl\IeC {\"a}ngen\relax }}{42}{figure.caption.45}
 \contentsline {figure}{\numberline {5.2}{\ignorespaces Ausf\IeC {\"u}hrungszeiten f\IeC {\"u}r verschiedene Sprachen\relax }}{43}{figure.caption.46}
-\contentsline {figure}{\numberline {5.3}{\ignorespaces Blockdiagramm von \ac {Jump}. Wichtige Vorteile sind die automatische Ableitung und das einfache Tauschen von Optimierern.\relax }}{44}{figure.caption.50}
-\contentsline {figure}{\numberline {5.4}{\ignorespaces Grafische Darstellung des MPC - Algorithmus in der Simulationsumgebung\relax }}{45}{figure.caption.53}
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Das Blockdiagramm von \ac {Jump}. Wichtige Vorteile sind die automatische Ableitung und das einfache Tauschen von Optimierern.\relax }}{44}{figure.caption.50}
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Grafische Darstellung des MPC-Algorithmus in der Simulationsumgebung\relax }}{45}{figure.caption.53}
 \contentsline {figure}{\numberline {5.5}{\ignorespaces Blockdiagramm der Simulation mit dem \ac {MPC}-Algorithmus\relax }}{46}{figure.caption.54}
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {6.1}{\ignorespaces Geschwindigkeitsverlauf bei maximaler Beschleunigung f\IeC {\"u}r verschiedene longitudinale Modelle\relax }}{49}{figure.caption.55}
 \contentsline {figure}{\numberline {6.2}{\ignorespaces Rundkurs zum Messen der maximalen Querbeschleunigung\relax }}{50}{figure.caption.56}
-\contentsline {figure}{\numberline {6.3}{\ignorespaces Orientierung des Rennautos f\IeC {\"u}r eine Sinuskurve als Eingangswert des Lenkwinkels. Es werden verschiedene Geschwindigkeiten ohne longitudinale Beschleunigung betrachtet.\relax }}{52}{figure.caption.57}
+\contentsline {figure}{\numberline {6.3}{\ignorespaces Die Orientierung des Rennautos f\IeC {\"u}r eine Sinuskurve als Eingangswert des Lenkwinkels. Es werden verschiedene Geschwindigkeiten ohne longitudinale Beschleunigung betrachtet.\relax }}{52}{figure.caption.57}
 \contentsline {subfigure}{\numberline {(c)}{\ignorespaces {7 $\frac {\text {m}}{\text {s}}$}}}{52}{figure.caption.57}
 \contentsline {subfigure}{\numberline {(d)}{\ignorespaces {14 $\frac {\text {m}}{\text {s}}$}}}{52}{figure.caption.57}
 \contentsline {subfigure}{\numberline {(e)}{\ignorespaces {21 $\frac {\text {m}}{\text {s}}$}}}{52}{figure.caption.57}
@@ -43,19 +43,19 @@
 \contentsline {subfigure}{\numberline {(d)}{\ignorespaces {14 $\frac {\text {m}}{\text {s}}$}}}{54}{figure.caption.58}
 \contentsline {subfigure}{\numberline {(e)}{\ignorespaces {21 $\frac {\text {m}}{\text {s}}$}}}{54}{figure.caption.58}
 \contentsline {subfigure}{\numberline {(f)}{\ignorespaces {28 $\frac {\text {m}}{\text {s}}$}}}{54}{figure.caption.58}
-\contentsline {figure}{\numberline {6.5}{\ignorespaces Fahrzeugorientierung, abh\IeC {\"a}ngig von den drei verschiedenen Reifenmodellen f\IeC {\"u}r einen sinusf\IeC {\"o}rmigen Lenkwinkel als Eingabe.\relax }}{55}{figure.caption.59}
+\contentsline {figure}{\numberline {6.5}{\ignorespaces Fahrzeugorientierung, abh\IeC {\"a}ngig von den zwei verschiedenen Reifenmodellen f\IeC {\"u}r einen sinusf\IeC {\"o}rmigen Lenkwinkel als Eingabe.\relax }}{55}{figure.caption.59}
 \contentsline {figure}{\numberline {6.6}{\ignorespaces Berechnungszeit der Kostenfunktionen f\IeC {\"u}r verschieden gro\IeC {\ss }e Horizontl\IeC {\"a}ngen\relax }}{58}{figure.caption.61}
 \contentsline {subfigure}{\numberline {(a)}{\ignorespaces center}}{58}{figure.caption.61}
 \contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Mittelwert sobald Warmstart aktiv}}}{58}{figure.caption.61}
-\contentsline {figure}{\numberline {6.7}{\ignorespaces Berechnungszeit f\IeC {\"u}r verschiedene Kostenfunktionen mit elastischer Be\-schr\IeC {\"a}n\-kung.\relax }}{59}{figure.caption.62}
-\contentsline {figure}{\numberline {6.8}{\ignorespaces Rundenzeit f\IeC {\"u}r verschiedene Kostenfunktionen und abh\IeC {\"a}ngig von der Anzahl der Pr\IeC {\"a}diktionsschritte. Gemessen wurde die erste (1) und zweite (2) Runde.\relax }}{61}{figure.caption.63}
-\contentsline {figure}{\numberline {6.9}{\ignorespaces Berechnungszeit f\IeC {\"u}r das dynamische Fahrzeugmodell. Als elastische Be\-schr\IeC {\"a}n\-kung wurde die e-Funktion und die Max-Track-Kostenfunktion gew\IeC {\"a}hlt.\relax }}{62}{figure.caption.64}
-\contentsline {figure}{\numberline {6.10}{\ignorespaces Summation der Verteilungen der Berechnungszeit nachdem der Warmstart aktiv ist.\relax }}{63}{figure.caption.65}
-\contentsline {figure}{\numberline {6.11}{\ignorespaces Die Rundenzeit in Sekunden abh\IeC {\"a}ngig von Querbeschleunigung und Pr\IeC {\"a}diktionsschritten. Wei\IeC {\ss }e Bereiche entsprechen dem Abkommen des Fahrzeug von der Strecke.\relax }}{64}{figure.caption.66}
-\contentsline {figure}{\numberline {6.12}{\ignorespaces Die Rundenzeit in Sekunden abh\IeC {\"a}ngig von Querbeschleunigung und Pr\IeC {\"a}diktionsschritten. Wei\IeC {\ss }e Bereiche entsprechen dem Abkommen des Fahrzeug von der Strecke.\relax }}{65}{figure.caption.67}
-\contentsline {figure}{\numberline {6.13}{\ignorespaces Die Rundenzeit in Sekunden abh\IeC {\"a}ngig von Querbeschleunigung und Pr\IeC {\"a}diktionsschritten f\IeC {\"u}r das dynamische Modell erweitert durch den \ac {K.K.}\relax }}{66}{figure.caption.68}
-\contentsline {figure}{\numberline {6.14}{\ignorespaces Die Rundenzeit abh\IeC {\"a}ngig von den Reifenmodellen f\IeC {\"u}r $1,2$ g und verschieden lange Pr\IeC {\"a}diktionshorizonte.\relax }}{67}{figure.caption.69}
-\contentsline {figure}{\numberline {6.15}{\ignorespaces Abh\IeC {\"a}ngigkeit der Fahrzeugregelung von der Frequenz mit der das \ac {MPC}-Verfahren ausgef\IeC {\"u}hrt wird \relax }}{68}{figure.caption.70}
+\contentsline {figure}{\numberline {6.7}{\ignorespaces Die Berechnungszeit f\IeC {\"u}r verschiedene Kostenfunktionen mit elastischer Be\-schr\IeC {\"a}n\-kung.\relax }}{59}{figure.caption.62}
+\contentsline {figure}{\numberline {6.8}{\ignorespaces Die Rundenzeit f\IeC {\"u}r verschiedene Kostenfunktionen und abh\IeC {\"a}ngig von der Anzahl der Pr\IeC {\"a}diktionsschritte. Gemessen wurde die erste (1) und zweite (2) Runde.\relax }}{61}{figure.caption.63}
+\contentsline {figure}{\numberline {6.9}{\ignorespaces Die Berechnungszeit f\IeC {\"u}r das dynamische Fahrzeugmodell. Als elastische Be\-schr\IeC {\"a}n\-kung wurde die e-Funktion und die Max-Track-Kostenfunktion gew\IeC {\"a}hlt.\relax }}{62}{figure.caption.64}
+\contentsline {figure}{\numberline {6.10}{\ignorespaces Die Summation der Verteilungen der Berechnungszeit nachdem der Warmstart aktiv ist.\relax }}{63}{figure.caption.65}
+\contentsline {figure}{\numberline {6.11}{\ignorespaces Die Rundenzeit in Sekunden, abh\IeC {\"a}ngig von Querbeschleunigung und Pr\IeC {\"a}diktionsschritten. Wei\IeC {\ss }e Bereiche entsprechen dem Abkommen des Fahrzeug von der Strecke.\relax }}{64}{figure.caption.66}
+\contentsline {figure}{\numberline {6.12}{\ignorespaces Die Rundenzeit in Sekunden, abh\IeC {\"a}ngig von Querbeschleunigung und Pr\IeC {\"a}diktionsschritten. Wei\IeC {\ss }e Bereiche entsprechen dem Abkommen des Fahrzeug von der Strecke.\relax }}{65}{figure.caption.67}
+\contentsline {figure}{\numberline {6.13}{\ignorespaces Die Rundenzeit in Sekunden, abh\IeC {\"a}ngig von Querbeschleunigung und Pr\IeC {\"a}diktionsschritten f\IeC {\"u}r das dynamische Modell erweitert durch den \ac {K.K.}\relax }}{66}{figure.caption.68}
+\contentsline {figure}{\numberline {6.14}{\ignorespaces Die Rundenzeit, abh\IeC {\"a}ngig von den Reifenmodellen f\IeC {\"u}r $1,2$ g und verschieden lange Pr\IeC {\"a}diktionshorizonte.\relax }}{67}{figure.caption.69}
+\contentsline {figure}{\numberline {6.15}{\ignorespaces Die Abh\IeC {\"a}ngigkeit der Fahrzeugregelung von der Frequenz mit der das \ac {MPC}-Verfahren ausgef\IeC {\"u}hrt wird. \relax }}{68}{figure.caption.70}
 \contentsline {subfigure}{\numberline {(a)}{\ignorespaces center}}{68}{figure.caption.70}
 \contentsline {subfigure}{\numberline {(b)}{\ignorespaces center}}{68}{figure.caption.70}
 \contentsline {figure}{\numberline {6.16}{\ignorespaces Kritische Situation, in der das Rennauto f\IeC {\"u}r die quadratische Kostenfunktion nicht auf dem Kurs bleibt.\relax }}{69}{figure.caption.71}
